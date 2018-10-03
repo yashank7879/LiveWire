@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "386254959445",
+    "firebase_url": "https://advance-honor-216806.firebaseio.com",
+    "project_id": "advance-honor-216806",
+    "storage_bucket": "advance-honor-216806.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:386254959445:android:a9469a204d522532",
+        "android_client_info": {
+          "package_name": "com.livewire"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "386254959445-74l1vg217b1hpt0v2pm9hgik99rb9ktf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.livewire",
+            "certificate_hash": "63a9b139991cafa65c3f2dae974011c586d53e33"
+          }
+        },
+        {
+          "client_id": "386254959445-ku2nftvhirpj5i5h82cr06p0rlsnkir5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_CHm3xpNwlYSItonXroQl28FiMyizeww"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "386254959445-ku2nftvhirpj5i5h82cr06p0rlsnkir5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
