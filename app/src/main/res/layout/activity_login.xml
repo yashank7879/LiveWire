@@ -68,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:fontFamily="@font/poppins_medium"
-                android:text="@string/lorem_ipsum"
+                android:text="WELCOME TO LIVE WIRE"
                 android:textColor="@color/colorDarkBlack"
                 android:textSize="@dimen/_16sdp" />
 
@@ -80,7 +80,7 @@
                 android:gravity="center"
                 android:paddingEnd="@dimen/_15sdp"
                 android:paddingStart="@dimen/_15sdp"
-                android:text="@string/demo_text"
+                android:text="If you have not joined our community yet, please sign up."
                 android:textColor="@color/colorDarkGray"
                 android:textSize="@dimen/_12sdp" />
 

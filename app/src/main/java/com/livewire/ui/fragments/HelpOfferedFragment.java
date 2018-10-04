@@ -10,11 +10,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +21,6 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -44,7 +41,6 @@ import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
 import com.livewire.utils.ProgressDialog;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -53,7 +49,7 @@ import java.util.ArrayList;
 import static com.livewire.utils.ApiCollection.BASE_URL;
 
 
-public class HelpOfferedFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+public class HelpOfferedFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener, SubCategoryAdapter.SubCategoryLisner {
     private Context mContext;
     private RelativeLayout mainLayout;
     private ArrayList<HelpOfferedResponce.DataBean> offerList;
@@ -63,6 +59,7 @@ public class HelpOfferedFragment extends Fragment implements View.OnClickListene
     private ImageView btnFilter;
     private int width;
     private ArrayList<CategoryModel> subCategoryList;
+    private ArrayList<SubCategoryResponse.DataBean> subCategoryTempList;
     private SubCategoryResponse subCategoryResponse;
     private Spinner subCategorySpinner;
     private SubCategoryAdapter subCategoryAdapter;
@@ -72,6 +69,7 @@ public class HelpOfferedFragment extends Fragment implements View.OnClickListene
     private TextView tvClearAll;
     private RelativeLayout filterLayout;
     private RecyclerView rvFilter;
+    private SubCategoryAdapter subCategoryAdapterList;
 
     @Override
     public void onAttach(Context context) {
@@ -92,6 +90,8 @@ public class HelpOfferedFragment extends Fragment implements View.OnClickListene
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         width = displaymetrics.widthPixels;
+
+        subCategoryTempList = new ArrayList<>();
         subCategoryList = new ArrayList<>();
         offerList = new ArrayList<>();
         progressDialog = new ProgressDialog(mContext);
@@ -111,6 +111,11 @@ public class HelpOfferedFragment extends Fragment implements View.OnClickListene
         recyclerView.setAdapter(offeredAdapter);
         btnFilter.setOnClickListener(this);
         tvClearAll.setOnClickListener(this);
+
+        LinearLayoutManager layoutManager1 = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
+        rvFilter.setLayoutManager(layoutManager1);
+        subCategoryAdapterList = new SubCategoryAdapter(mContext, subCategoryList, this, "FilterKey");
+        rvFilter.setAdapter(subCategoryAdapterList);
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -140,10 +145,19 @@ public class HelpOfferedFragment extends Fragment implements View.OnClickListene
                                 String message = response.getString("message");
                                 if (status.equals("success")) {
                                     subCategoryResponse = new Gson().fromJson(String.valueOf(response), SubCategoryResponse.class);
-                                    SubCategoryResponse.DataBean dataBean = new SubCategoryResponse.DataBean();
 
+                                    for (int i = 0; i < subCategoryResponse.getData().size(); i++) {
+                                        SubCategoryResponse.DataBean dataBean = new SubCategoryResponse.DataBean();
+                                        dataBean.setCategoryName(subCategoryResponse.getData().get(i).getCategoryName());
+                                        dataBean.setCategoryId(subCategoryResponse.getData().get(i).getCategoryId());
+                                        dataBean.setPosition(i+1);
+                                        subCategoryTempList.add(dataBean);
+                                    }
+                                    // subCategoryTempList.addAll(subCategoryResponse.getData());
+
+                                    SubCategoryResponse.DataBean dataBean = new SubCategoryResponse.DataBean();
                                     dataBean.setCategoryName("Skills");
-                                    subCategoryResponse.getData().add(0, dataBean);
+                                    subCategoryTempList.add(0, dataBean);
                                 } else {
                                     Constant.snackBar(mainLayout, message);
                                 }
@@ -182,7 +196,7 @@ public class HelpOfferedFragment extends Fragment implements View.OnClickListene
                             HelpOfferedResponce helpOfferedResponce = new Gson().fromJson(String.valueOf(response), HelpOfferedResponce.class);
                             offerList.addAll(helpOfferedResponce.getData());
                             offeredAdapter.notifyDataSetChanged();
-
+                            subCategoryAdapterList.notifyDataSetChanged();
 
                         } else {
                             offerList.clear();
@@ -212,7 +226,7 @@ public class HelpOfferedFragment extends Fragment implements View.OnClickListene
             case R.id.btn_filter:
                 openFilterDialog();
                 break;
-            case  R.id.tv_clear_all:
+            case R.id.tv_clear_all:
                 subCategoryList.clear();
                 filterLayout.setVisibility(View.GONE);
                 helpOfferedApi();
@@ -239,14 +253,14 @@ public class HelpOfferedFragment extends Fragment implements View.OnClickListene
 
             LinearLayoutManager layoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
             recyclerView.setLayoutManager(layoutManager);
-            subCategoryAdapter = new SubCategoryAdapter(mContext, subCategoryList);
+            subCategoryAdapter = new SubCategoryAdapter(mContext, subCategoryList, this, "DialogKey");
             recyclerView.setAdapter(subCategoryAdapter);
 
-            ArrayAdapter categoryAdapter = new ArrayAdapter<>(mContext, R.layout.spinner_item, subCategoryResponse.getData());
+            ArrayAdapter categoryAdapter = new ArrayAdapter<>(mContext, R.layout.spinner_item, subCategoryTempList);
             categoryAdapter.setDropDownViewResource(R.layout.spinner_drop_down);
             subCategorySpinner.setOnItemSelectedListener(this);
             subCategorySpinner.setAdapter(categoryAdapter);
-            final StringBuilder sb = new StringBuilder();
+
 
             tvCancel.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -262,16 +276,9 @@ public class HelpOfferedFragment extends Fragment implements View.OnClickListene
                     if (subCategoryList.size() == 0) {
                         Constant.snackBar(addSkillsLayout, "Please Select at least one Skill");
                     } else {
-                        for (int i = 0; i < subCategoryList.size(); i++) {
-                            sb.append(subCategoryList.get(i).getCategoryId());
-                            sb.append(",");
-                        }
+                        skillsString();
+                        subCategoryAdapter.notifyDataSetChanged();
                         filterLayout.setVisibility(View.VISIBLE);
-                        LinearLayoutManager layoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
-                        rvFilter.setLayoutManager(layoutManager);
-                        SubCategoryAdapter subCategoryAdapter = new SubCategoryAdapter(mContext, subCategoryList);
-                        rvFilter.setAdapter(subCategoryAdapter);
-                        skillsStrin = String.valueOf(sb);
                         helpOfferedApi();
                         dialog.dismiss();
                     }
@@ -291,11 +298,15 @@ public class HelpOfferedFragment extends Fragment implements View.OnClickListene
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch (parent.getId()) {
             case R.id.sub_category_spinner:
-                if (!subCategoryResponse.getData().get(subCategorySpinner.getSelectedItemPosition()).getCategoryName().equals("Skills")) {
+                // if (!subCategoryResponse.getData().get(subCategorySpinner.getSelectedItemPosition()).getCategoryName().equals("Skills")) {
+                if (!subCategoryTempList.get(subCategorySpinner.getSelectedItemPosition()).getCategoryName().equals("Skills")) {
+
                     CategoryModel category = new CategoryModel();
-                    category.setCategoryName(subCategoryResponse.getData().get(subCategorySpinner.getSelectedItemPosition()).getCategoryName());
-                    category.setCategoryId(subCategoryResponse.getData().get(subCategorySpinner.getSelectedItemPosition()).getCategoryId());
+                    category.setCategoryName(subCategoryTempList.get(subCategorySpinner.getSelectedItemPosition()).getCategoryName());
+                    category.setCategoryId(subCategoryTempList.get(subCategorySpinner.getSelectedItemPosition()).getCategoryId());
+                    category.setPosition(subCategoryTempList.get(subCategorySpinner.getSelectedItemPosition()).getPosition());
                     subCategoryList.add(category);
+                    subCategoryTempList.remove(subCategorySpinner.getSelectedItemPosition());
                     subCategoryAdapter.notifyDataSetChanged();
                     subCategorySpinner.setSelection(0);
                     //recyclerView.smoothScrollToPosition(subCategoryList.size()-1);
@@ -308,5 +319,48 @@ public class HelpOfferedFragment extends Fragment implements View.OnClickListene
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+
+    @Override
+    public void subCategoryItemOnClick(int pos, CategoryModel categoryModel, String key) {
+        if (key.equals("FilterKey")) {
+            subCategoryList.remove(pos);
+            subCategoryAdapterList.notifyDataSetChanged();
+            if (subCategoryList.size() != 0) {
+                skillsString();
+                helpOfferedApi();
+            } else {
+                skillsString();
+                helpOfferedApi();
+                filterLayout.setVisibility(View.GONE);
+            }
+        } else {
+            SubCategoryResponse.DataBean dataBean = new SubCategoryResponse.DataBean();
+            dataBean.setCategoryName(categoryModel.getCategoryName());
+            dataBean.setCategoryId(categoryModel.getCategoryId());
+            dataBean.setPosition(categoryModel.getPosition());
+
+            if (subCategoryTempList.size()>categoryModel.getPosition()) {
+                subCategoryTempList.add(categoryModel.getPosition(), dataBean);
+            }else {
+                subCategoryTempList.add(subCategoryTempList.size(),dataBean);
+            }
+            subCategoryList.remove(pos);
+            subCategoryAdapterList.notifyDataSetChanged();
+            subCategoryAdapter.notifyDataSetChanged();
+            //  subCategoryTempList.add()
+        }
+    }
+
+    private String skillsString() {
+        final StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < subCategoryList.size(); i++) {
+            sb.append(subCategoryList.get(i).getCategoryId());
+            sb.append(",");
+        }
+        skillsStrin = String.valueOf(sb);
+
+        return skillsStrin;
+    }
+
 }
 

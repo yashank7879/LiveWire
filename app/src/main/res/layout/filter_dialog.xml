@@ -52,12 +52,14 @@
                 android:layout_marginTop="@dimen/_3sdp"
                 android:text="@string/all_jobs"
                 android:fontFamily="@font/poppins_light"
+                android:textColor="@color/colorDarkGray"
                 android:textSize="@dimen/_8sdp"
                 android:paddingTop="@dimen/_3sdp"
                 android:paddingBottom="@dimen/_3sdp"
                 android:paddingLeft="@dimen/_8sdp"
                 android:paddingRight="@dimen/_8sdp"
                 android:background="@drawable/rounded_corner_gray"
+
                 />
 
             <TextView
@@ -84,6 +86,7 @@
                 android:text="@string/pending_request"
                 android:fontFamily="@font/poppins_light"
                 android:textSize="@dimen/_8sdp"
+                android:textColor="@color/colorDarkGray"
                 android:background="@drawable/rounded_corner_gray"
                 android:paddingTop="@dimen/_3sdp"
                 android:paddingBottom="@dimen/_3sdp"
@@ -116,13 +119,14 @@
                 android:layout_height="@dimen/_20sdp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/sub_category_spinner"
                 android:rotation="360"
                 app:srcCompat="@drawable/ic_arrow_drop_down_black" />
 
 
             <Spinner
                 android:id="@+id/sub_category_spinner"
-                android:layout_width="@dimen/_210sdp"
+                android:layout_width="@dimen/_230sdp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="@color/colorBlackTransparent"
@@ -176,7 +180,8 @@
             android:background="?android:attr/selectableItemBackground"
             android:padding="@dimen/_5sdp"
             android:text="@string/cancel"
-            android:textColor="@color/colorGreen" />
+            android:textColor="@color/colorGreen"
+            />
     </LinearLayout>
 
 </RelativeLayout>

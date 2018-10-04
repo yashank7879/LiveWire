@@ -7,6 +7,18 @@ package com.livewire.model;
 public class CategoryModel {
    private String categoryId;
    private String categoryName;
+    private int position;
+
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
+
     public String getCategoryId() {
         return categoryId;
     }

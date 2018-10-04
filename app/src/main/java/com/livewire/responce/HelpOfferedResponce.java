@@ -75,6 +75,7 @@ public class HelpOfferedResponce {
         private String parentCategoryName;
         private String subCategoryName;
         private String distance_in_km;
+        private String currentTime;
 
         public String getUserId() {
             return userId;
@@ -194,6 +195,14 @@ public class HelpOfferedResponce {
 
         public void setDistance_in_km(String distance_in_km) {
             this.distance_in_km = distance_in_km;
+        }
+
+        public String getCurrentTime() {
+            return currentTime;
+        }
+
+        public void setCurrentTime(String currentTime) {
+            this.currentTime = currentTime;
         }
     }
 }

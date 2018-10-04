@@ -922,7 +922,7 @@ mediaFilesList.remove(0);
                 long fileSizeInKB = fileSizeInBytes / 1024;
                 // Convert the KB to MegaBytes (1 MB = 1024 KBytes)
                 long fileSizeInMB = fileSizeInKB / 1024;
-                if (fileSizeInMB <= 30) {
+                if (fileSizeInMB <= 10) {
                     Log.e(TAG, String.valueOf(fileSizeInMB));
                     videoFile = new ArrayList<>();
                     videoFile.add(file);

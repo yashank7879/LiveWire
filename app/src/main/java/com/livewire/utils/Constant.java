@@ -18,6 +18,10 @@ import android.widget.TextView;
 
 import com.livewire.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import static com.livewire.utils.ImageRotator.decodeBitmap;
 
 /**
@@ -117,5 +121,59 @@ public class Constant {
         if (inputMethodManager != null) {
             inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+    }
+
+    //*********** day diffrence  *****************//
+    public static String getDayDifference(String departDateTime, String returnDateTime) {
+        String returnDay = "";
+        SimpleDateFormat simpleDateFormat =
+                new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        try {
+
+            Date startDate = simpleDateFormat.parse(departDateTime);
+            Date endDate = simpleDateFormat.parse(returnDateTime);
+
+            //milliseconds
+            long different = endDate.getTime() - startDate.getTime();
+
+
+            long secondsInMilli = 1000;
+            long minutesInMilli = secondsInMilli * 60;
+            long hoursInMilli = minutesInMilli * 60;
+            long daysInMilli = hoursInMilli * 24;
+
+            long elapsedDays = different / daysInMilli;
+            different = different % daysInMilli;
+
+            long elapsedHours = different / hoursInMilli;
+            different = different % hoursInMilli;
+
+            long elapsedMinutes = different / minutesInMilli;
+            different = different % minutesInMilli;
+
+            long elapsedSeconds = different / secondsInMilli;
+
+            if (elapsedDays == 0) {
+                if (elapsedHours == 0) {
+                    if (elapsedMinutes == 0) {
+                        returnDay = /*elapsedSeconds +*/ " Just now";
+                    } else {
+                        returnDay = elapsedMinutes + " minutes ago";
+                    }
+                } else if (elapsedHours == 1) {
+                    returnDay = elapsedHours + " hour ago";
+                } else {
+                    returnDay = elapsedHours + " hours ago";
+                }
+            } else if (elapsedDays == 1) {
+                returnDay =  /*elapsedDays + */"yesterday";
+            } else {
+                returnDay = elapsedDays + " days ago";
+            }
+        } catch (ParseException e) {
+            Log.d("day diffrence",e.getMessage());
+        }
+        return returnDay;
     }
 }

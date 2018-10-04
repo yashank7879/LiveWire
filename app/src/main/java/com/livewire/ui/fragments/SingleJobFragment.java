@@ -303,7 +303,7 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
                         String status = response.getString("status");
                         String message = response.getString("message");
                         if (status.equals("success")) {
-                            Constant.snackBar(mainLayout,status);
+                            Constant.snackBar(mainLayout,"Your job successfully post");
                         }else {
                             Constant.snackBar(mainLayout,message);
                         }

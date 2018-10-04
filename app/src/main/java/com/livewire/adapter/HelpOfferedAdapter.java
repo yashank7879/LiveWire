@@ -19,12 +19,14 @@ import android.widget.TextView;
 
 import com.livewire.R;
 import com.livewire.responce.HelpOfferedResponce;
+import com.livewire.utils.Constant;
 import com.squareup.picasso.Picasso;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -60,7 +62,7 @@ public class HelpOfferedAdapter extends RecyclerView.Adapter<HelpOfferedAdapter.
             holder.tvBudget.setText("$ "+dataBean.getJob_budget());
             holder.tvName.setText(dataBean.getName());
             holder.tvDistance.setText(dataBean.getDistance_in_km()+" Km away");
-           // holder.tvDate.setText(dataBean.getJob_start_date());
+            holder.tvTime.setText(Constant.getDayDifference(dataBean.getCrd(),dataBean.getCurrentTime()));
             Picasso.with(holder.ivProfileImg.getContext()).load(dataBean.getProfileImage()).fit().into(holder.ivProfileImg);
 
             //********"2018-07-04" date format converted into "04 july 2018"***********//
@@ -73,17 +75,7 @@ public class HelpOfferedAdapter extends RecyclerView.Adapter<HelpOfferedAdapter.
                 sd = new SimpleDateFormat("dd MMMM yyyy");
                 start = sd.format(newStartDate);
 
-                SpannableStringBuilder builder = new SpannableStringBuilder();
-                SpannableString userName = new SpannableString(start.substring(0,2));
-                userName.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.colorDarkBlack)), 0, 2, 0);
-                userName.setSpan(new StyleSpan(Typeface.BOLD), 0, userName.length(), 0);
-                builder.append(userName);
-                SpannableString interesString = new SpannableString(start.substring(3));
-//                interesString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.colorDarkBlack)), 3, start.length(), 0);
-
-                builder.append(interesString);
-                holder.tvDate.setText(builder);
-
+                holder.tvDate.setText(dateTextColorChange(start));
                // holder.tvDate.setText(start);
             } catch (ParseException e) {
                 Log.e(TAG, e.getMessage());
@@ -130,6 +122,17 @@ public class HelpOfferedAdapter extends RecyclerView.Adapter<HelpOfferedAdapter.
             btnSendRequest = view.findViewById(R.id.btn_send_request);
             tvMoreInfo = view.findViewById(R.id.tv_more_info);
         }
+    }
+    private SpannableStringBuilder dateTextColorChange(String start){
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+        SpannableString userName = new SpannableString(start.substring(0,2)+" ");
+        userName.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.colorDarkBlack)), 0, 2, 0);
+        userName.setSpan(new StyleSpan(Typeface.BOLD), 0, userName.length(), 0);
+        builder.append(userName);
+        SpannableString interesString = new SpannableString(start.substring(3));
+//                interesString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.colorDarkBlack)), 3, start.length(), 0);
+        builder.append(interesString);
+        return  builder;
     }
 /*
     private void colorChangeText(){
