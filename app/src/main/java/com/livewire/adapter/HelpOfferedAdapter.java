@@ -14,7 +14,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.livewire.R;
@@ -26,7 +28,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -38,10 +39,14 @@ public class HelpOfferedAdapter extends RecyclerView.Adapter<HelpOfferedAdapter.
     private static final String TAG = HelpOfferedAdapter.class.getName();
     private Context mContext;
     private  List<HelpOfferedResponce.DataBean> dataBeanList;
+    private  HelpOfferItemListener listener;
+    private RelativeLayout manLayout;
 
-    public HelpOfferedAdapter(Context mContext, List<HelpOfferedResponce.DataBean> data) {
+    public HelpOfferedAdapter(Context mContext, List<HelpOfferedResponce.DataBean> data, HelpOfferItemListener listener, RelativeLayout mainLayout) {
         this.mContext = mContext ;
         this.dataBeanList= data;
+        this.listener = listener;
+        this.manLayout = mainLayout;
 
     }
 
@@ -76,11 +81,25 @@ public class HelpOfferedAdapter extends RecyclerView.Adapter<HelpOfferedAdapter.
                 start = sd.format(newStartDate);
 
                 holder.tvDate.setText(dateTextColorChange(start));
-               // holder.tvDate.setText(start);
+                // holder.tvDate.setText(start);
             } catch (ParseException e) {
                 Log.e(TAG, e.getMessage());
             }
 
+           if (dataBean.getJob_confirmed().equals("0")){ // pending request
+               holder.btnSendRequest.setBackground(null);
+               holder.btnSendRequest.setText(R.string.pending_request);
+               holder.btnSendRequest.setTextColor(ContextCompat.getColor(mContext, R.color.colorOrange));
+               holder.btnSendRequest.setClickable(false);
+   /*        }else if (dataBean.getJob_confirmed().equals("1")){// accepted
+               holder.btnSendRequest.setClickable(false);
+           }else if (dataBean.getJob_confirmed().equals("2")){// job not accepted
+            holder.btnSendRequest.setClickable(false);*/
+            }else if (dataBean.getJob_confirmed().equals("3")){// job not send
+               holder.btnSendRequest.setBackground(mContext.getResources().getDrawable(R.drawable.button_green_bg));
+               holder.btnSendRequest.setText(R.string.send_request);
+               holder.btnSendRequest.setTextColor(ContextCompat.getColor(mContext,R.color.colorWhite));
+           }
         }
 
     }
@@ -105,7 +124,7 @@ public class HelpOfferedAdapter extends RecyclerView.Adapter<HelpOfferedAdapter.
         private TextView tvDistance;
         private Button btnSendRequest;
         private TextView tvMoreInfo;
-
+        private LinearLayout llMoreInfo;
         public MyViewHolder(View view) {
             super(view);
             tvDate = view.findViewById(R.id.tv_date);
@@ -114,6 +133,7 @@ public class HelpOfferedAdapter extends RecyclerView.Adapter<HelpOfferedAdapter.
             tvCategory = view.findViewById(R.id.tv_category);
             tvSubcategory = view.findViewById(R.id.tv_subcategory);
             tvBudget = view.findViewById(R.id.tv_budget);
+            llMoreInfo = view.findViewById(R.id.ll_more_info);
 
             ivProfileImg = view.findViewById(R.id.iv_profile_img);
             tvName = view.findViewById(R.id.tv_name);
@@ -121,6 +141,28 @@ public class HelpOfferedAdapter extends RecyclerView.Adapter<HelpOfferedAdapter.
             tvDistance = view.findViewById(R.id.tv_distance);
             btnSendRequest = view.findViewById(R.id.btn_send_request);
             tvMoreInfo = view.findViewById(R.id.tv_more_info);
+
+            llMoreInfo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.helpOfferItemOnClick(dataBeanList.get(getAdapterPosition()),mContext.getString(R.string.moreinfo));
+                }
+            });
+
+            btnSendRequest.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (Constant.isNetworkAvailable(mContext,manLayout)) {
+                        btnSendRequest.setBackground(null);
+                        btnSendRequest.setText(R.string.pending_request);
+                        btnSendRequest.setTextColor(ContextCompat.getColor(mContext, R.color.colorOrange));
+                        //   btnSendRequest.setVisibility(View.GONE);
+                        btnSendRequest.setClickable(false);
+                        listener.helpOfferItemOnClick(dataBeanList.get(getAdapterPosition()), mContext.getString(R.string.sendrequest));
+                    }
+                }
+            });
+
         }
     }
     private SpannableStringBuilder dateTextColorChange(String start){
@@ -146,6 +188,11 @@ public class HelpOfferedAdapter extends RecyclerView.Adapter<HelpOfferedAdapter.
         holder.userName.setText(builder);
         //holder.time.setText(Constant.getDayDifference(interestedListResponce.getUpd(), currentTime));
     }*/
+
+    public interface HelpOfferItemListener{
+        void helpOfferItemOnClick(HelpOfferedResponce.DataBean dataBean,String helpoffer);
+
+    }
 }
 
 

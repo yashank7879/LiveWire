@@ -121,7 +121,7 @@
         android:layout_below="@+id/tv_name"
         android:layout_toRightOf="@+id/iv_profile_img"
         android:numStars="5"
-        android:progressTint="@color/colorOrange"
+        android:progressTint="@color/coloryellow"
         android:rating="3" />
 
     <LinearLayout
@@ -160,12 +160,26 @@
         android:layout_below="@+id/view1_id"
         android:layout_marginRight="@dimen/_8sdp"
         android:background="@drawable/button_green_bg"
-        android:text="Send Request"
+        android:text="@string/send_request"
         android:textAllCaps="false"
         android:textColor="@color/colorWhite"
-        android:textSize="@dimen/_10sdp" />
+        android:textSize="@dimen/_10sdp"
+
+        />
+
+   <!-- <TextView
+        android:id="@+id/request_pending"
+        style="@style/smallPopinsRegularStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Request Pending"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/view1_id"
+        android:layout_marginRight="@dimen/_8sdp"
+        />-->
 
     <LinearLayout
+        android:id="@+id/ll_more_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"

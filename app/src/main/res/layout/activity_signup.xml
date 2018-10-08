@@ -114,6 +114,7 @@
             android:inputType="text"
             android:singleLine="true"
             android:textSize="@dimen/_12sdp"
+            android:textColor="@color/colorDarkGray"
             />
 
         <View
@@ -136,7 +137,9 @@
             android:hint="@string/email_id"
             android:inputType="textEmailAddress"
             android:singleLine="true"
-            android:textSize="@dimen/_12sdp" />
+            android:textSize="@dimen/_12sdp"
+            android:textColor="@color/colorDarkGray"
+            />
 
         <View
             android:layout_width="match_parent"
@@ -155,9 +158,10 @@
             android:layout_marginRight="@dimen/_30sdp"
             android:background="@null"
             android:fontFamily="@font/poppins_light"
-            android:hint="Town of Residence"
+            android:hint="@string/town_of_residence"
             android:singleLine="true"
             android:textSize="@dimen/_12sdp"
+            android:textColor="@color/colorDarkGray"
             android:visibility="gone"
             />
 
@@ -185,7 +189,9 @@
             android:imeOptions="actionDone"
             android:inputType="textPassword"
             android:singleLine="true"
-            android:textSize="@dimen/_12sdp" />
+            android:textSize="@dimen/_12sdp"
+            android:textColor="@color/colorDarkGray"
+            />
 
         <View
             android:layout_width="match_parent"

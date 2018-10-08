@@ -1,12 +1,13 @@
 package com.livewire.responce;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by mindiii on 10/2/18.
  */
 
-public class HelpOfferedResponce {
+public class HelpOfferedResponce implements Serializable {
     /**
      * status : success
      * message : OK
@@ -41,7 +42,7 @@ public class HelpOfferedResponce {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable{
         /**
          * userId : 2
          * name : shekhar
@@ -76,6 +77,7 @@ public class HelpOfferedResponce {
         private String subCategoryName;
         private String distance_in_km;
         private String currentTime;
+        private String job_confirmed;
 
         public String getUserId() {
             return userId;
@@ -203,6 +205,14 @@ public class HelpOfferedResponce {
 
         public void setCurrentTime(String currentTime) {
             this.currentTime = currentTime;
+        }
+
+        public String getJob_confirmed() {
+            return job_confirmed;
+        }
+
+        public void setJob_confirmed(String job_confirmed) {
+            this.job_confirmed = job_confirmed;
         }
     }
 }

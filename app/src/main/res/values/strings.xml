@@ -57,16 +57,29 @@
     <string name="max_price">Max Price</string>
     <string name="help_offered">HELP OFFERED</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+    <!-- filter dialog  -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="apply">Apply</string>
     <string name="filter">Filter</string>
     <string name="sort_by">Sort By</string>
     <string name="all_jobs">All Jobs</string>
     <string name="new_jobs">New Jobs</string>
-    <string name="pending_request">Pending Request</string>
     <string name="filter_by">Filter By</string>
     <string name="more_info">More Info</string>
+
+
     <string name="no_job_post_available">No job post available</string>
+    <string name="if_you_have_not_joined">If you have not joined our community yet, please sign up.</string>
+    <string name="welcome_to_live_wire">WELCOME TO LIVE WIRE</string>
+    <string name="posted_by">Posted By</string>
+    <string name="chat">Chat</string>
+    <string name="deatils_of_help_needed">Details Of Help Needed</string>
+    <string name="house_amp_needed"><![CDATA[House & Needed]]></string>
+
+    <string name="job_detail">JOB DETAIL</string>
+    <string name="moreinfo">MoreInfo</string>
+    <string name="sendrequest">SendRequest</string>
+    <string name="pending_request">Pending Request</string>
+    <string name="send_request">Send Request</string>
 
 </resources>

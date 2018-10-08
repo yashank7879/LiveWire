@@ -9,7 +9,7 @@ public class ApiCollection {
     public static final String BASE_URL = "http://dev.livewire.work/service/";
 
     ///""""""""""' live api  """""""""//
-    //public static final String BASE_URL = "http://livewire.work/service/";
+    //public static final String BASE_URL = "https://livewire.work/service/";
 
     //String jd = "http://livewire.work/service/forgotPassword";
     //String jfd = "http://dev.livewire.work/service/forgotPassword";

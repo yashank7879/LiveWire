@@ -3,6 +3,7 @@ package com.livewire.ui.fragments;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +39,7 @@ import com.livewire.adapter.SubCategoryAdapter;
 import com.livewire.model.CategoryModel;
 import com.livewire.responce.HelpOfferedResponce;
 import com.livewire.responce.SubCategoryResponse;
+import com.livewire.ui.activity.JobDetailWorkerActivity;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
 import com.livewire.utils.ProgressDialog;
@@ -49,7 +52,7 @@ import java.util.ArrayList;
 import static com.livewire.utils.ApiCollection.BASE_URL;
 
 
-public class HelpOfferedFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener, SubCategoryAdapter.SubCategoryLisner {
+public class HelpOfferedFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener, SubCategoryAdapter.SubCategoryLisner,HelpOfferedAdapter.HelpOfferItemListener {
     private Context mContext;
     private RelativeLayout mainLayout;
     private ArrayList<HelpOfferedResponce.DataBean> offerList;
@@ -107,7 +110,7 @@ public class HelpOfferedFragment extends Fragment implements View.OnClickListene
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(layoutManager);
-        offeredAdapter = new HelpOfferedAdapter(mContext, offerList);
+        offeredAdapter = new HelpOfferedAdapter(mContext, offerList,this,mainLayout);
         recyclerView.setAdapter(offeredAdapter);
         btnFilter.setOnClickListener(this);
         tvClearAll.setOnClickListener(this);
@@ -362,5 +365,52 @@ public class HelpOfferedFragment extends Fragment implements View.OnClickListene
         return skillsStrin;
     }
 
+    @Override
+    public void helpOfferItemOnClick(HelpOfferedResponce.DataBean dataBean,String key) {
+        if (key.equals(getString(R.string.moreinfo))) {
+            Log.e( "helpOfferItemOnClick: ", dataBean.getJobId() );
+            Intent intent = new Intent(mContext, JobDetailWorkerActivity.class);
+            intent.putExtra("JobIdKey",dataBean);
+            startActivity(intent);
+
+        }else if (key.equals(getString(R.string.sendrequest))){
+        sendRequestApi(dataBean.getJobId());
+        }
+    }
+
+    //Jobpost/sendRequest
+    private void sendRequestApi(String jobId) {
+        if (Constant.isNetworkAvailable(mContext , mainLayout)){
+            progressDialog.show();
+            AndroidNetworking.post(BASE_URL + "Jobpost/sendRequest")
+                    .addHeaders("authToken", PreferenceConnector.readString(mContext, PreferenceConnector.AUTH_TOKEN, ""))
+                    .addBodyParameter("job_id", jobId)
+                    .addBodyParameter("request_to", "2")
+                    .addBodyParameter("request_status", "0")
+                    .setPriority(Priority.MEDIUM)
+                    .build().getAsJSONObject(new JSONObjectRequestListener() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        progressDialog.dismiss();
+                        String status = response.getString("status");
+                        String message = response.getString("message");
+                        if (status.equals("success")) {
+                            Constant.snackBar(mainLayout, message);
+                        } else {
+                            Constant.snackBar(mainLayout, message);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onError(ANError anError) {
+                    progressDialog.dismiss();
+                }
+            });
+        }
+    }
 }
 

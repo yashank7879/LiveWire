@@ -57,6 +57,10 @@ dependencies {
     ///"""""" video compressor"""""""""""//
     implementation 'net.ypresto.androidtranscoder:android-transcoder:0.2.0'
     implementation 'com.loopeer.lib:shadow:0.0.4-beta3'
+
+    //silicon videocomresser
+    implementation 'com.iceteck.silicompressorr:silicompressor:2.1'
+
     implementation group: 'cz.msebera.android', name: 'httpclient', version: '4.4.1.1'
 
     implementation 'com.android.volley:volley:1.1.0'

@@ -15,6 +15,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.os.SystemClock;
 import android.provider.MediaStore;
@@ -62,6 +63,7 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
+import com.iceteck.silicompressorr.SiliCompressor;
 import com.livewire.R;
 import com.livewire.adapter.CategaryAdapter;
 import com.livewire.cropper.CropImage;
@@ -94,11 +96,13 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.Future;
 
@@ -112,10 +116,8 @@ import static com.livewire.utils.Constant.RECORD_AUDIO;
 public class CompleteProfileActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener, AdapterView.OnItemClickListener,
         AdapterView.OnItemSelectedListener {
     private static final String TAG = CompleteProfileActivity.class.getName();
-    private GoogleApiClient mGoogleApiClient;
     private Uri tmpUri;
     private CircleImageView ivProfileImg;
-    private Bitmap profileImageBitmap;
     private ImageView inactiveUserImg;
     private int width;
     private List<CategoryModel> category = new ArrayList<>();
@@ -227,7 +229,6 @@ public class CompleteProfileActivity extends AppCompatActivity implements View.O
         width = displaymetrics.widthPixels;
 
 
-
         progressDialog = new ProgressDialog(this);
         mainLayout = findViewById(R.id.main_layout);
         TextView tvSkip = findViewById(R.id.tv_skip);
@@ -255,14 +256,6 @@ public class CompleteProfileActivity extends AppCompatActivity implements View.O
         flProfileImg.setOnClickListener(this);
         btnSave.setOnClickListener(this);
 
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
 
         if (getIntent().hasExtra("imageKey")) {
             if (getIntent().getStringExtra("imageKey") != null) {
@@ -457,6 +450,8 @@ public class CompleteProfileActivity extends AppCompatActivity implements View.O
                 long fileSizeInMB = fileSizeInKB / 1024;
 
                 if (fileSizeInMB > 10) {
+
+
                     compressVideo(finalVideoUri, file);
                 } else {
                     videoFile = new ArrayList<>();
@@ -603,7 +598,7 @@ public class CompleteProfileActivity extends AppCompatActivity implements View.O
                 try {
                     inactiveUserImg.setVisibility(View.GONE);
                     ivProfileImg.setImageURI(tmpUri);
-                    profileImageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), tmpUri);
+                    Bitmap profileImageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), tmpUri);
                     File file = savebitmap(this.getExternalCacheDir(), profileImageBitmap, ".jpg");
                     profileImageFileList.add(file);
                 } catch (IOException e) {
@@ -628,7 +623,7 @@ public class CompleteProfileActivity extends AppCompatActivity implements View.O
 // Convert the KB to MegaBytes (1 MB = 1024 KBytes)
                     long fileSizeInMB = fileSizeInKB / 1024;
 
-                    if (fileSizeInMB <= 18) {
+                    if (fileSizeInMB < 30) {
                         finalVideoUri = videoUri;
                         finalVideoFilePath = videoFilePath;
                         thumbBitmap = ImageVideoUtils.getVidioThumbnail(finalVideoFilePath); //ImageVideoUtil.getCompressBitmap();
@@ -662,7 +657,7 @@ mediaFilesList.remove(0);
                         mediaFilesList.add(0, null);
                     }*/
                     } else {
-                        Toast.makeText(this, "Please take less than 20Mb file", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Please take less than 30 Mb file", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Toast.makeText(this, "Video format not supported", Toast.LENGTH_LONG).show();
@@ -864,7 +859,7 @@ mediaFilesList.remove(0);
         }
     }
 
-    //"""""""""Video Compreesor"""""""""""""//
+ /*   //"""""""""Video Compreesor"""""""""""""//
     private void compressVideo(Uri uri, final File tmpFile) {
 
         final File file;
@@ -944,19 +939,29 @@ mediaFilesList.remove(0);
             Log.w("Error while closing", e);
         }
     }
+*/
+
+    private void compressVideo(Uri uri, final File tmpFile) {
+       File f = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/videos");
+        if (f.mkdirs() || f.isDirectory())
+            //compress and output new video specs
+            new VideoCompressAsyncTask(this).execute(finalVideoFilePath, f.getPath());
+
+    }
+
 
     private void apiCallForUploadVideo(ArrayList<File> tmpFile) {
         VolleyMySingleton volleySingleton = new VolleyMySingleton(CompleteProfileActivity.this);
         RequestQueue mRequest = volleySingleton.getInstance().getRequestQueue();
         mRequest.start();
         progressDialog.show();
-       // progressbar.setVisibility(View.VISIBLE);
+        // progressbar.setVisibility(View.VISIBLE);
         MultiPartRequest mMultiPartRequest = new MultiPartRequest(new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 progressDialog.dismiss();
-               // pDialog.dismiss();
-              //  progressbar.setVisibility(View.GONE);
+                // pDialog.dismiss();
+                //  progressbar.setVisibility(View.GONE);
                 setResponse(null, error);
             }
         }, new Response.Listener() {
@@ -1068,6 +1073,53 @@ mediaFilesList.remove(0);
         json = new Gson().toJson(subCategoryModelList);
 
         return json;
+    }
+
+    private class VideoCompressAsyncTask extends AsyncTask<String, Void, String> {
+        private Context mContext;
+
+        public VideoCompressAsyncTask(Context mCon) {
+            this.mContext = mCon;
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+
+            String filePath = null;
+            try {
+
+                filePath = SiliCompressor.with(mContext).compressVideo(strings[0], strings[1]);
+
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+            return filePath;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+
+            File videoFil = new File(s);
+            long fileSizeInBytes = videoFil.length();
+            // Convert the bytes to Kilobytes (1 KB = 1024 Bytes)
+            long fileSizeInKB = fileSizeInBytes / 1024;
+            // Convert the KB to MegaBytes (1 MB = 1024 KBytes)
+            long fileSizeInMB = fileSizeInKB / 1024;
+            Log.e("Compresss Video size", String.valueOf(((videoFil.length() / 1024) / 1024)));
+
+            if (fileSizeInMB < 10 ){
+                Uri compressUri = Uri.fromFile(videoFil);
+                //FileProvider.getUriForFile(mContext, mContext.getApplicationContext().getPackageName()+ FILE_PROVIDER_EXTENTION, imageFile);
+                videoFile = new ArrayList<>();
+                videoFile.add(videoFil);
+                apiCallForUploadVideo(videoFile);
+            }else {
+                progressDialog.dismiss();
+                finalVideoFilePath = "";
+                finalVideoUri = null;
+                Constant.snackBar(mainLayout,"Please select another video");
+            }
+        }
     }
 
 }

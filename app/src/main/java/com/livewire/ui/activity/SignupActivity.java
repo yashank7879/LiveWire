@@ -96,7 +96,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private void intializeView() {
         progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false);
-        progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
         TextView tvLiveWire = findViewById(R.id.tv_live_wire);
         mainLayout = findViewById(R.id.main_layout);
