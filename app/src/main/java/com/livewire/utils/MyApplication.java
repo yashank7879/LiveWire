@@ -4,6 +4,8 @@ import android.app.Application;
 
 import com.androidnetworking.AndroidNetworking;
 import com.crashlytics.android.Crashlytics;
+import com.facebook.FacebookSdk;
+
 import io.fabric.sdk.android.Fabric;
 
 /**
@@ -16,5 +18,7 @@ public class MyApplication extends Application{
         super.onCreate();
         Fabric.with(this, new Crashlytics());
         AndroidNetworking.initialize(getApplicationContext());
+        FacebookSdk.sdkInitialize(getApplicationContext());
+
     }
 }

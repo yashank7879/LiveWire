@@ -30,6 +30,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.livewire.R;
+import com.livewire.ui.fragments.MyJobClientFragment;
 import com.livewire.ui.fragments.PostJobHomeFragment;
 import com.livewire.utils.PreferenceConnector;
 
@@ -53,6 +54,7 @@ public class ClientMainActivity extends AppCompatActivity implements View.OnClic
     private android.support.v4.app.FragmentManager fm;
     private boolean doubleBackToExitPressedOnce = false;
     private Runnable runnable;
+    private TextView tvLiveWire;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +81,7 @@ public class ClientMainActivity extends AppCompatActivity implements View.OnClic
         userSettingLl = (LinearLayout) findViewById(R.id.user_setting_ll);
         ivUser = (ImageView) findViewById(R.id.iv_user);
         containerId = findViewById(R.id.fl_container);
-        TextView tvLiveWire = findViewById(R.id.tv_live_wire);
+         tvLiveWire = findViewById(R.id.tv_live_wire);
         tvLiveWire.setText(liveWireText(this));
 
 
@@ -124,6 +126,9 @@ public class ClientMainActivity extends AppCompatActivity implements View.OnClic
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         ivMyJob.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorGreen)));
                     }
+                    tvLiveWire.setText("MY JOBS");
+                    tvLiveWire.setTextColor(ContextCompat.getColor(this,R.color.colorGreen));
+                    replaceFragment(new MyJobClientFragment(), false, R.id.fl_container); // first time replace home fragment
 
                     clickId = R.id.my_job_ll;
                 }
@@ -139,6 +144,8 @@ public class ClientMainActivity extends AppCompatActivity implements View.OnClic
                 break;
 
             case R.id.add_ll:
+                tvLiveWire.setText(liveWireText(this));
+                replaceFragment(new PostJobHomeFragment(), false, R.id.fl_container);
                 if (clickId != R.id.add_ll) {
                     inActiveTab();
                     clickId = R.id.add_ll;

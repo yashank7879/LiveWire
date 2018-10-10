@@ -47,7 +47,6 @@ public class HelpOfferedAdapter extends RecyclerView.Adapter<HelpOfferedAdapter.
         this.dataBeanList= data;
         this.listener = listener;
         this.manLayout = mainLayout;
-
     }
 
     @NonNull

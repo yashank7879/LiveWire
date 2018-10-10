@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -39,9 +41,13 @@ import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.livewire.R;
+import com.livewire.adapter.SelectWeekAdapter;
 import com.livewire.model.JobCreationModel;
+import com.livewire.model.WeekListModel;
 import com.livewire.responce.AddSkillsResponce;
+import com.livewire.ui.activity.NearYouClientActivity;
 import com.livewire.utils.Constant;
+import com.livewire.utils.PreferenceConnector;
 import com.livewire.utils.ProgressDialog;
 import com.livewire.utils.Validation;
 
@@ -67,7 +73,7 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
     private TextView tvStartDate;
     private TextView tvEndDate;
     private TextView tvWeekDays;
-    private TextView tvHourRequierd;
+    private TextView etHourRequierd;
     private TextView tvLocation;
     private EditText etDescription;
     private Context mContext;
@@ -86,6 +92,7 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
     private String startDateString="";
     private String endDateString="";
     private Calendar endDateTime;
+    private ArrayList<WeekListModel> weekList;
 
     @Nullable
     @Override
@@ -117,12 +124,20 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
         tvEndDate = view.findViewById(R.id.tv_end_date);
         RelativeLayout weekDaysRl = view.findViewById(R.id.week_days_rl);
         tvWeekDays =  view.findViewById(R.id.tv_week_days);
-        tvHourRequierd = view.findViewById(R.id.tv_hour_requierd);
+        etHourRequierd = view.findViewById(R.id.et_hour_requierd);
         RelativeLayout locationRl = view.findViewById(R.id.location_rl);
         tvLocation = view.findViewById(R.id.tv_location);
         RelativeLayout descriptionRl = view.findViewById(R.id.description_rl);
         etDescription = view.findViewById(R.id.description_tv);
         mainLayout = view.findViewById(R.id.sv_ongoing_job);
+
+        weekList = new ArrayList<>();
+        weekList.add(new WeekListModel("Monday",false));
+        weekList.add( new WeekListModel( "Tuesday",false));
+        weekList.add( new WeekListModel( "Wednesday",false));
+        weekList.add( new WeekListModel( "Friday",false));
+        weekList.add( new WeekListModel( "Saturday",false));
+        weekList.add( new WeekListModel( "Sunday",false));
 
         selectSkillsRl.setOnClickListener(this);
         jobStartDateRl.setOnClickListener(this);
@@ -146,7 +161,7 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
                 openEndDateDialog();
                 break;
             case R.id.week_days_rl:
-
+                openWeekDialog();
                 break;
             case R.id.location_rl:
                 autoCompletePlacePicker();
@@ -155,6 +170,38 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
                 jobValidations();
                 break;
         }
+    }
+
+    private void openWeekDialog() {
+        final Dialog dialog = new Dialog(mContext);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setContentView(R.layout.select_week_dialog);
+        dialog.getWindow().setLayout((width * 10) / 11, WindowManager.LayoutParams.WRAP_CONTENT);
+        Button btnDone = dialog.findViewById(R.id.btn_done);
+        final RelativeLayout addSkillsLayout = dialog.findViewById(R.id.select_skill_rl);
+        RecyclerView recyclerView = dialog.findViewById(R.id.rv_week);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
+        recyclerView.setLayoutManager(layoutManager);
+        SelectWeekAdapter weekAdapter = new SelectWeekAdapter(mContext, weekList);
+        recyclerView.setAdapter(weekAdapter);
+
+        final StringBuffer sb = new StringBuffer();
+        btnDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (int i=0 ; i<weekList.size();i++){
+                    if (weekList.get(i).isWeekDay()){
+                        sb.append(weekList.get(i).getWeekDays());
+                            sb.append(",");
+                    }
+                }
+                tvWeekDays.setText(sb);
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+
     }
 
     private void jobValidations() {
@@ -166,7 +213,7 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
             Constant.snackBar(mainLayout, "Please enter End date");
         } else if (Validation.isEmpty(tvWeekDays)) {
             Constant.snackBar(mainLayout, "Please Select week days");
-        } else if (Validation.isEmpty(tvHourRequierd)) {
+        } else if (Validation.isEmpty(etHourRequierd)) {
             Constant.snackBar(mainLayout, "Please enter hour required");
         } else if (Validation.isEmpty(tvLocation)) {
             Constant.snackBar(mainLayout, "Please enter your Location");
@@ -180,20 +227,56 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
             model.job_location = locationPlace;
             model.job_latitude = String.valueOf(locationLatLng.latitude);
             model.job_longitude = String.valueOf(locationLatLng.longitude);
+            model.job_time_duration  = etHourRequierd.getText().toString();
             model.job_week_days = tvWeekDays.getText().toString();
             model.job_type = "2";
             model.job_title = "test";
             model.job_description = etDescription.getText().toString();
 
-
-            singleJobCreationApi(model);
+            onGoingJobCreationApi(model);
         }
     }
 
-    private void singleJobCreationApi(JobCreationModel model) {
-        Constant.snackBar(mainLayout,"Success");
+    private void onGoingJobCreationApi(JobCreationModel model) {
+        if (Constant.isNetworkAvailable(mContext, mainLayout)) {
+            progressDialog.show();
+            AndroidNetworking.post(BASE_URL + "Jobpost/clientJobPost")
+                    .addHeaders("authToken", PreferenceConnector.readString(mContext, PreferenceConnector.AUTH_TOKEN, ""))
+                    .addBodyParameter(model)
+                    .setPriority(Priority.MEDIUM)
+                    .build().getAsJSONObject(new JSONObjectRequestListener() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    progressDialog.dismiss();
+                    try {
+                        String status = response.getString("status");
+                        String message = response.getString("message");
+                        if (status.equals("success")) {
+
+                            String jobId = response.getString("clientJobId");
+                            Intent intent = new Intent(mContext, NearYouClientActivity.class);
+                            intent.putExtra("JobIdKey",jobId);
+                            startActivity(intent);
+                           // clientJobId
+                            Constant.snackBar(mainLayout,"Your job successfully post");
+                        }else {
+                            Constant.snackBar(mainLayout,message);
+                        }
+                    }catch (JSONException e){
+                        Log.d(TAG,e.getMessage());
+                    }
+                }
+
+                @Override
+                public void onError(ANError anError) {
+                    Log.d(TAG,anError.getErrorDetail());
+                    progressDialog.dismiss();
+                }
+            });
+        }
     }
 
+    //""""End date picker dialog """""""""""""//
     private void openEndDateDialog() {
         if (!startDateString.equals("")) {
             final Calendar calendar = Calendar.getInstance();
@@ -224,6 +307,7 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
         }
     }
 
+    //""""start date picker dialog """""""""""""
     private void openStartDateDialog() {
         final Calendar calendar = Calendar.getInstance();
         mYear = calendar.get(Calendar.YEAR);

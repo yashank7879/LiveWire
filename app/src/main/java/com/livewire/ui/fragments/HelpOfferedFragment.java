@@ -178,7 +178,7 @@ public class HelpOfferedFragment extends Fragment implements View.OnClickListene
         }
     }
 
-    private void helpOfferedApi() {
+    private void helpOfferedApi() {// help offer api calling
         if (Constant.isNetworkAvailable(mContext, mainLayout)) {
             progressDialog.show();
             AndroidNetworking.post(BASE_URL + "Jobpost/getJobList")
@@ -368,7 +368,6 @@ public class HelpOfferedFragment extends Fragment implements View.OnClickListene
     @Override
     public void helpOfferItemOnClick(HelpOfferedResponce.DataBean dataBean,String key) {
         if (key.equals(getString(R.string.moreinfo))) {
-            Log.e( "helpOfferItemOnClick: ", dataBean.getJobId() );
             Intent intent = new Intent(mContext, JobDetailWorkerActivity.class);
             intent.putExtra("JobIdKey",dataBean);
             startActivity(intent);

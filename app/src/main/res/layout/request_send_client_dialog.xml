@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_bg">
+
+    <TextView
+        android:id="@+id/heading"
+        style="@style/mediumPopinsMediumStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/_10sdp"
+        android:text="@string/rate_i_can_offer"
+        android:textColor="@color/colorGreen" />
+
+    <View
+        android:id="@+id/view1_id"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/heading"
+        android:background="@color/colorLightGray" />
+
+    <ImageView
+        android:id="@+id/iv_money"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_50sdp"
+        android:layout_below="@id/view1_id"
+        android:layout_centerHorizontal="true"
+        app:srcCompat="@drawable/ic_user_setting" />
+
+    <TextView
+        android:id="@+id/tv_content"
+        style="@style/smallPopinsRegularStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_money"
+        android:layout_margin="@dimen/_10sdp"
+        android:paddingLeft="@dimen/_25sdp"
+        android:paddingRight="@dimen/_25sdp"
+        android:text="@string/demo_text"
+        android:textAlignment="center"
+        android:textColor="@color/colorDarkBlack" />
+
+    <TextView
+        android:id="@+id/tv_dollar"
+        style="@style/mediumPopinsLightStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_content"
+        android:layout_marginLeft="@dimen/_8sdp"
+        android:text="@string/dollar"
+        android:textColor="@color/colorDarkBlack" />
+
+    <EditText
+        style="@style/mediumPopinsLightStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/tv_dollar"
+        android:layout_marginEnd="@dimen/_8sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_toEndOf="@+id/tv_dollar"
+        android:background="@null"
+        android:hint="Enter Offer Rate (Per hour)"
+        android:textColor="@color/colorDarkBlack"
+        android:textColorHint="@color/colorLightGray" />
+
+    <View
+        android:id="@+id/view2_id"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/tv_dollar"
+        android:layout_margin="@dimen/_8sdp"
+        android:background="@color/colorLightGray" />
+
+    <Button
+        android:id="@+id/btn_send_request"
+        style="@style/mediumPopinsLightStyle"
+        android:layout_width="@dimen/_120sdp"
+        android:layout_height="@dimen/_32sdp"
+        android:layout_below="@+id/view2_id"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/_25sdp"
+        android:background="@drawable/button_green_bg"
+        android:padding="@dimen/_5sdp"
+        android:text="@string/send_request"
+        android:textAllCaps="false"
+        android:textColor="@color/colorWhite" />
+
+    <TextView
+        style="@style/mediumPopinsLightStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_send_request"
+        android:layout_centerHorizontal="true"
+        android:padding="@dimen/_5sdp"
+        android:text="@string/cancel"
+        android:textColor="@color/colorGreen" />
+
+
+</RelativeLayout>

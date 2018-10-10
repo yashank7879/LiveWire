@@ -55,9 +55,9 @@ dependencies {
     ///"""""""' Auto complet place """""""""""""""//
     implementation 'com.google.android.gms:play-services-places:15.0.1'
     ///"""""" video compressor"""""""""""//
-    implementation 'net.ypresto.androidtranscoder:android-transcoder:0.2.0'
     implementation 'com.loopeer.lib:shadow:0.0.4-beta3'
 
+    implementation 'com.facebook.android:facebook-login:4.37.0'
     //silicon videocomresser
     implementation 'com.iceteck.silicompressorr:silicompressor:2.1'
 

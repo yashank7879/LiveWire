@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/_5sdp"
+    android:background="@color/colorWhite">
+
+    <!--
+        <TextView
+            android:id="@+id/tv_date"
+            style="@style/mediumPopinsLightStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="@dimen/_5sdp"
+            android:text="23 Sep 2018"
+            android:textColor="@color/colorDarkBlack" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/tv_date"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/_8sdp"
+            android:text="10 min ago"
+            android:textColor="@color/colorLightGray"
+            android:textSize="@dimen/_10sdp" />-->
+
+
+    <TextView
+        android:id="@+id/tv_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="Cook"
+        android:textColor="@color/colorDarkBlack"
+        android:textSize="@dimen/_12sdp" />
+
+    <TextView
+        android:id="@+id/tv_subcategory"
+        style="@style/smallPopinsRegularStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_category"
+        android:layout_marginLeft="@dimen/_8sdp"
+        android:text="House &amp; Home"
+        android:textColor="@color/colorDarkGray" />
+
+    <TextView
+        android:id="@+id/range"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="@string/rate_range"
+        android:textColor="@color/colorDarkGray"
+        android:textSize="@dimen/_10sdp"
+
+        />
+
+
+
+    <TextView
+        android:id="@+id/tv_range"
+        style="@style/smallPopinsRegularStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/range"
+        android:layout_toStartOf="@+id/hr"
+        android:text="$ 60.30"
+        android:textColor="@color/colorDarkGray" />
+
+    <TextView
+        android:id="@+id/hr"
+        style="@style/SmallPopinsLightStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/tv_range"
+        android:layout_alignBottom="@+id/tv_range"
+        android:layout_alignEnd="@+id/range"
+        android:text="@string/hr"
+        android:textColor="@color/colorDarkGray"
+        android:textSize="@dimen/_8sdp" />
+
+    <View
+        android:id="@+id/view1_id"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/tv_range"
+        android:layout_margin="@dimen/_8sdp"
+        android:background="@color/colorLightGray" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_profile_img"
+        android:layout_width="@dimen/_35sdp"
+        android:layout_height="@dimen/_35sdp"
+        android:layout_below="@+id/view1_id"
+        android:layout_marginLeft="@dimen/_8sdp"
+        android:layout_marginRight="@dimen/_8sdp"
+        android:src="@drawable/ic_user"
+        app:civ_border_color="@color/colorGreen"
+        app:civ_border_width="1dp" />
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view1_id"
+        android:layout_toRightOf="@+id/iv_profile_img"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="Rachel Fallon"
+        android:textColor="@color/colorDarkBlack"
+        android:textSize="@dimen/_10sdp" />
+
+    <RatingBar
+        android:id="@+id/rating_bar"
+        style="@style/Widget.AppCompat.RatingBar.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_name"
+        android:layout_toRightOf="@+id/iv_profile_img"
+        android:numStars="5"
+        android:progressTint="@color/coloryellow"
+        android:rating="3" />
+
+    <LinearLayout
+        android:id="@+id/llkm_away"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rating_bar"
+        android:layout_toRightOf="@+id/iv_profile_img">
+
+        <TextView
+            android:id="@+id/tv_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:text="1 km away"
+            android:textColor="@color/colorDarkGray"
+            android:textSize="@dimen/_10sdp" />
+
+        <ImageView
+            android:layout_width="@dimen/_10sdp"
+            android:layout_height="@dimen/_10sdp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/_3sdp"
+            app:srcCompat="@drawable/ic_sent_mail"
+
+            />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_send_request"
+        style="@style/smallPopinsRegularStyle"
+        android:layout_width="@dimen/_85sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/tv_name"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_8sdp"
+        android:background="@drawable/button_green_bg"
+        android:text="@string/send_request"
+        android:textAllCaps="false"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/_10sdp" />
+
+    <!-- <TextView
+         android:id="@+id/request_pending"
+         style="@style/smallPopinsRegularStyle"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="Request Pending"
+         android:layout_alignParentRight="true"
+         android:layout_below="@+id/view1_id"
+         android:layout_marginRight="@dimen/_8sdp"
+         />-->
+
+
+</RelativeLayout>

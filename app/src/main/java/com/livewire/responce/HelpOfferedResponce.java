@@ -44,6 +44,7 @@ public class HelpOfferedResponce implements Serializable {
 
     public static class DataBean implements Serializable{
         /**
+         *
          * userId : 2
          * name : shekhar
          * profileImage : http://dev.livewire.work/./uploads/profile/thumb/dBhYSx8ZuHcmV0C5.jpg

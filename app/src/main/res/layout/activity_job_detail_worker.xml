@@ -88,7 +88,7 @@
                 android:fontFamily="@font/poppins_semibold"
                 android:text="Rachel Fallon"
                 android:textColor="@color/colorDarkBlack"
-                android:textSize="@dimen/_14sdp" />
+                android:textSize="@dimen/_12sdp" />
 
             <RatingBar
                 android:id="@+id/rating_bar"
@@ -221,7 +221,7 @@
                 android:fontFamily="@font/poppins_semibold"
                 android:text="Cook"
                 android:textColor="@color/colorDarkBlack"
-                android:textSize="@dimen/_14sdp"/>
+                android:textSize="@dimen/_12sdp"/>
 
             <TextView
                 android:id="@+id/tv_date"
@@ -255,7 +255,7 @@
                 android:fontFamily="@font/poppins_regular"
                 android:text="@string/house_amp_needed"
                 android:textColor="@color/colorDarkGray"
-                android:textSize="@dimen/_14sdp"
+                android:textSize="@dimen/_12sdp"
                 />
 
             <TextView
@@ -266,7 +266,7 @@
                 android:layout_marginRight="@dimen/_5sdp"
                 android:text="@string/budget"
                 android:fontFamily="@font/poppins_regular"
-                android:textSize="@dimen/_14sdp"
+                android:textSize="@dimen/_12sdp"
                 android:textColor="@color/colorDarkBlack"
                 />
 
@@ -275,7 +275,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_semibold"
-                android:textSize="@dimen/_14sdp"
+                android:textSize="@dimen/_12sdp"
                 android:layout_alignBaseline="@id/tv_budget"
                 android:layout_toRightOf="@id/tv_budget"
                 android:text="$ 6.99"
@@ -299,7 +299,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:text="@string/description"
-                android:textSize="@dimen/_14sdp"
+                android:textSize="@dimen/_12sdp"
                 android:textColor="@color/colorDarkBlack"
                  />
 
@@ -322,7 +322,7 @@
                 android:layout_centerInParent="true"
                 android:layout_margin="@dimen/_15sdp"
                 android:background="@drawable/button_green_bg"
-                android:text="Send Request"
+                android:text="@string/send_request"
                 android:textAllCaps="false"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/_10sdp" />

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/nearyou_layout"
+    android:background="@color/colorBlackTransparent"
+    tools:context="com.livewire.ui.activity.NearYouClientActivity">
+
+
+    <com.loopeer.shadow.ShadowView
+        android:id="@+id/action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:shadowColor="#666666"
+        app:shadowMarginBottom="3dp"
+        app:shadowRadius="@dimen/_5sdp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp">
+
+            <TextView
+                style="@style/mediumPopinsMediumStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/near_you"
+                android:textColor="@color/colorGreen" />
+
+            <ImageView
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:padding="@dimen/_4sdp"
+                app:srcCompat="@drawable/ic_left_arrow"
+                android:tint="@color/colorDarkBlack"
+                android:id="@+id/iv_back"
+                />
+
+
+        </RelativeLayout>
+
+    </com.loopeer.shadow.ShadowView>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_near_you"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/action_bar"
+        >
+
+
+    </android.support.v7.widget.RecyclerView>
+
+
+</RelativeLayout>

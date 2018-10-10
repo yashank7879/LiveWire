@@ -5,7 +5,6 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.Notification;
 import android.app.NotificationManager;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,8 +15,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
-import android.os.ParcelFileDescriptor;
-import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -52,8 +49,6 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -84,9 +79,6 @@ import com.livewire.utils.PreferenceConnector;
 import com.livewire.utils.ProgressDialog;
 import com.squareup.picasso.Picasso;
 
-import net.ypresto.androidtranscoder.MediaTranscoder;
-import net.ypresto.androidtranscoder.format.MediaFormatStrategyPresets;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -102,9 +94,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.UUID;
-import java.util.concurrent.Future;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -136,7 +126,6 @@ public class CompleteProfileActivity extends AppCompatActivity implements View.O
     public static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
     private String locationPlace;
     private Notification.Builder mBuilder;
-    private Dialog pDialog;
     private ProgressBar progressbar;
     private TextView tv_for_videoP;
     private NotificationManager mNotifyManager;
@@ -312,6 +301,7 @@ public class CompleteProfileActivity extends AppCompatActivity implements View.O
             Constant.snackBar(mainLayout, "please add introvideo");
         } else {
             mPram = new HashMap<>();
+
             mPram.put("workerSkillData", getWorkerSkillData());
             mPram.put("latitude", String.valueOf(locationLatLng.latitude));
             mPram.put("longitude", String.valueOf(locationLatLng.longitude));

@@ -181,6 +181,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/select_week_days"
                 android:textColor="@color/colorDarkBlack"
+                android:singleLine="true"
                 android:textColorHint="@color/colorLightGray"/>
 
         </RelativeLayout>
@@ -194,18 +195,21 @@
             android:background="@color/colorLightGray" />
 
         <EditText
-            android:id="@+id/tv_hour_requierd"
+            android:id="@+id/et_hour_requierd"
             style="@style/SmallPopinsLightStyle"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/_5sdp"
             android:layout_marginLeft="@dimen/_20sdp"
             android:layout_marginRight="@dimen/_20sdp"
             android:layout_marginTop="@dimen/_20sdp"
             android:hint="@string/hour_required_per_day"
+            android:inputType="number"
             android:textColor="@color/colorDarkBlack"
             android:background="@null"
-            android:textColorHint="@color/colorLightGray" />
+            android:textColorHint="@color/colorLightGray"
+            android:singleLine="true"
+            />
 
         <View
             android:layout_width="match_parent"
@@ -272,7 +276,7 @@
                 android:background="@null"
                 android:hint="@string/description"
                 android:maxLines="3"
-                android:imeOptions="actionDone"
+                android:imeOptions="actionNext"
                 android:textColor="@color/colorDarkBlack"
                 android:textColorHint="@color/colorLightGray"
                 />

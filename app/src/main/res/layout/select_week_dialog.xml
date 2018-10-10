@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_bg">
+
+
+    <TextView
+        android:id="@+id/tv_sd"
+        style="@style/mediumPopinsMediumStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="@dimen/_10sdp"
+        android:text="@string/select_days"
+        android:textColor="@color/colorGreen"
+        android:layout_centerHorizontal="true"
+        />
+
+    <View
+        android:id="@+id/view1_id"
+        android:layout_below="@+id/tv_sd"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorLightGray" />
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_week"
+        android:layout_below="@+id/view1_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_10sdp">
+
+    </android.support.v7.widget.RecyclerView>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rv_week"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+
+
+        <Button
+            android:id="@+id/btn_done"
+            style="@style/mediumPopinsLightStyle"
+            android:layout_width="@dimen/_120sdp"
+            android:layout_height="@dimen/_32sdp"
+            android:text="@string/done"
+            android:textAllCaps="false"
+            android:background="@drawable/button_green_bg"
+            android:textColor="@color/colorWhite"
+            android:padding="@dimen/_5sdp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/_20sdp"
+            />
+
+    </LinearLayout>
+
+</RelativeLayout>
