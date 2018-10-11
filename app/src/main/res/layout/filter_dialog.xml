@@ -129,7 +129,7 @@
                 android:layout_width="@dimen/_230sdp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:background="@color/colorBlackTransparent"
+                android:background="@color/colorExtraLightGray"
                 android:clickable="true"
                 android:focusable="true"
                 android:focusableInTouchMode="true"

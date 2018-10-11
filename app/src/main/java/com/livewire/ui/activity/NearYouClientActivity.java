@@ -44,6 +44,7 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
     private NearYouAdapter nearYouAdapter;
     private String jobId;
     private int width;
+    private TextView tv_no_job_post;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,11 +62,12 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
         if (getIntent().getStringExtra("JobIdKey") != null) {
             jobId = getIntent().getStringExtra("JobIdKey");
         }
+        //jobId = "34";
         progressDialog = new ProgressDialog(this);
         mainLayout = findViewById(R.id.nearyou_layout);
         ImageView ivBack = findViewById(R.id.iv_back);
         nearYouList = new ArrayList<>();
-
+        tv_no_job_post = findViewById(R.id.tv_no_job_post);
         RecyclerView recyclerView = findViewById(R.id.rv_near_you);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -94,6 +96,9 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
                             nearYouList.addAll(helpOfferedResponce.getData());
                             nearYouAdapter.notifyDataSetChanged();
                         } else {
+                            if (nearYouList.size() == 0) {
+                                tv_no_job_post.setVisibility(View.VISIBLE);
+                            }
                             Constant.snackBar(mainLayout, message);
                         }
                     } catch (JSONException e) {
@@ -126,12 +131,22 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
 
     private void openRequestDialog() {
 
-        final Dialog dialog = new Dialog(this);
+       /* final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.request_send_client_dialog);
         dialog.getWindow().setLayout((width * 10) / 11, WindowManager.LayoutParams.WRAP_CONTENT);
         TextView tvCancel = dialog.findViewById(R.id.tv_cancel);
+
+       tvCancel.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               dialog.dismiss();
+           }
+       });
+
+        dialog.show();
+        dialog.setCancelable(false);*/
 
     }
 }

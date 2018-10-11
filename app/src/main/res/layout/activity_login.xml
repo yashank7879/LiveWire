@@ -319,7 +319,7 @@
                     android:fontFamily="@font/poppins_regular"
                     android:padding="@dimen/_5sdp"
                     android:text="@string/sign_up"
-                    android:textSize="@dimen/_12sdp"
+                    android:textSize="@dimen/_13sdp"
                     android:textColor="@color/colorGreen" />
 
             </LinearLayout>

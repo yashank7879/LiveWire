@@ -33,7 +33,7 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
                 android:padding="@dimen/_4sdp"
                 app:srcCompat="@drawable/ic_left_arrow"
                 android:tint="@color/colorDarkBlack"
@@ -73,8 +73,8 @@
                 android:layout_width="@dimen/_35sdp"
                 android:layout_height="@dimen/_35sdp"
                 android:layout_below="@+id/tv_posted_by"
-                android:layout_marginLeft="@dimen/_8sdp"
-                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
                 android:src="@drawable/ic_user"
                 app:civ_border_color="@color/colorGreen"
                 app:civ_border_width="1dp" />
@@ -84,7 +84,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_posted_by"
-                android:layout_toRightOf="@+id/iv_profile_img"
+                android:layout_toEndOf="@+id/iv_profile_img"
                 android:fontFamily="@font/poppins_semibold"
                 android:text="Rachel Fallon"
                 android:textColor="@color/colorDarkBlack"
@@ -96,7 +96,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_name"
-                android:layout_toRightOf="@+id/iv_profile_img"
+                android:layout_toEndOf="@+id/iv_profile_img"
                 android:numStars="5"
                 android:progressTint="@color/coloryellow"
                 android:rating="3" />
@@ -107,7 +107,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/rating_bar"
                 android:layout_marginBottom="@dimen/_5sdp"
-                android:layout_toRightOf="@+id/iv_profile_img">
+                android:layout_toEndOf="@+id/iv_profile_img">
 
                 <TextView
                     android:id="@+id/tv_distance"
@@ -116,13 +116,13 @@
                     android:fontFamily="@font/poppins_medium"
                     android:text="1 km away"
                     android:textColor="@color/colorDarkGray"
-                    android:textSize="@dimen/_10sdp" />
+                    android:textSize="@dimen/_9sdp" />
 
                 <ImageView
                     android:layout_width="@dimen/_10sdp"
                     android:layout_height="@dimen/_10sdp"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/_3sdp"
+                    android:layout_marginStart="@dimen/_3sdp"
                     app:srcCompat="@drawable/ic_sent_mail"
 
                     />
@@ -136,10 +136,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="@dimen/_8sdp"
-                android:paddingLeft="@dimen/_15sdp"
+                android:paddingStart="@dimen/_15sdp"
                 android:paddingTop="@dimen/_3sdp"
                 android:paddingBottom="@dimen/_3sdp"
-                android:paddingRight="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_5sdp"
                 android:background="@drawable/time_shape"
                 android:text="10 min ago"
                 android:textAllCaps="false"
@@ -152,7 +152,8 @@
                 android:layout_alignParentEnd="true"
                 android:layout_below="@+id/tv_time"
                 android:layout_margin="@dimen/_3sdp"
-                android:padding="@dimen/_5sdp">
+                android:padding="@dimen/_5sdp"
+                tools:ignore="UseCompoundDrawables">
 
                 <ImageView
                     android:layout_width="@dimen/_25sdp"
@@ -227,7 +228,7 @@
                 android:id="@+id/tv_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toLeftOf="@+id/tv_date_month"
+                android:layout_toStartOf="@+id/tv_date_month"
                 android:layout_alignBaseline="@id/tv_category"
                 android:text="23"
                 style="@style/mediumPopinsRegularStyle"
@@ -238,7 +239,7 @@
                 android:id="@+id/tv_date_month"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:fontFamily="@font/poppins_light"
                 android:textColor="@color/colorDarkBlack"
                 android:textSize="@dimen/_10sdp"
@@ -263,7 +264,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_sub_category"
-                android:layout_marginRight="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
                 android:text="@string/budget"
                 android:fontFamily="@font/poppins_regular"
                 android:textSize="@dimen/_12sdp"
@@ -277,7 +278,7 @@
                 android:fontFamily="@font/poppins_semibold"
                 android:textSize="@dimen/_12sdp"
                 android:layout_alignBaseline="@id/tv_budget"
-                android:layout_toRightOf="@id/tv_budget"
+                android:layout_toEndOf="@id/tv_budget"
                 android:text="$ 6.99"
                 android:textColor="@color/colorDarkBlack" />
 
@@ -301,7 +302,7 @@
                 android:text="@string/description"
                 android:textSize="@dimen/_12sdp"
                 android:textColor="@color/colorDarkBlack"
-                 />
+                />
 
             <TextView
                 android:id="@+id/tv_description"

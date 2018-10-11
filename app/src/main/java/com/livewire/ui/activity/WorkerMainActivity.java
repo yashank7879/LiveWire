@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
@@ -91,6 +92,7 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
         switch (v.getId()){
             case R.id.btn_logout:
                 PreferenceConnector.clear(WorkerMainActivity.this);
+                LoginManager.getInstance().logOut();
                 Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
                         new ResultCallback<Status>() {
                             @Override

@@ -22,8 +22,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/tv_date"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/_8sdp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/_10sdp"
         android:text="10 min ago"
         android:textColor="@color/colorLightGray"
         android:textSize="@dimen/_10sdp" />
@@ -34,17 +34,25 @@
         android:layout_height="1dp"
         android:layout_below="@+id/tv_date"
         android:layout_marginBottom="@dimen/_5sdp"
-        android:background="@color/colorLightGray" />
+        android:background="@color/colorExtraLightGray" />
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view_id"
+        android:paddingLeft="@dimen/_10sdp"
+        android:paddingRight="@dimen/_10sdp"
+        >
+
 
     <TextView
         android:id="@+id/tv_category"
         android:fontFamily="@font/poppins_semibold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/view_id"
-        android:layout_marginLeft="@dimen/_8sdp"
         android:text="Cook"
-        android:textSize="@dimen/_14sdp"
+        android:textSize="@dimen/_12sdp"
         android:textColor="@color/colorDarkBlack" />
 
     <TextView
@@ -53,7 +61,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_category"
-        android:layout_marginLeft="@dimen/_8sdp"
         android:text="House &amp; Home"
         android:textColor="@color/colorDarkGray" />
 
@@ -61,14 +68,11 @@
         android:id="@+id/budget"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/view_id"
-        android:layout_marginRight="@dimen/_8sdp"
+        android:layout_alignParentEnd="true"
         android:fontFamily="@font/poppins_medium"
         android:text="@string/budget"
         android:textColor="@color/colorDarkGray"
-        android:textSize="@dimen/_10sdp"
-
+        android:textSize="@dimen/_9sdp"
         />
 
     <TextView
@@ -76,9 +80,8 @@
         style="@style/mediumPopinsRegularStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_below="@+id/budget"
-        android:layout_marginRight="@dimen/_8sdp"
         android:text="$ 60.30"
         android:textColor="@color/colorDarkBlack" />
 
@@ -87,16 +90,16 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@+id/tv_budget"
-        android:layout_margin="@dimen/_8sdp"
-        android:background="@color/colorLightGray" />
+        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_marginBottom="@dimen/_8sdp"
+        android:background="@color/colorExtraLightGray" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/iv_profile_img"
         android:layout_width="@dimen/_35sdp"
         android:layout_height="@dimen/_35sdp"
         android:layout_below="@+id/view1_id"
-        android:layout_marginLeft="@dimen/_8sdp"
-        android:layout_marginRight="@dimen/_8sdp"
+        android:layout_marginEnd="@dimen/_8sdp"
         android:src="@drawable/ic_user"
         app:civ_border_color="@color/colorGreen"
         app:civ_border_width="1dp" />
@@ -106,10 +109,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/view1_id"
-        android:layout_toRightOf="@+id/iv_profile_img"
+        android:layout_toEndOf="@+id/iv_profile_img"
         android:fontFamily="@font/poppins_semibold"
         android:text="Rachel Fallon"
-        android:textSize="@dimen/_10sdp"
+        android:textSize="@dimen/_11sdp"
         android:textColor="@color/colorDarkBlack"
         />
 
@@ -119,7 +122,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_name"
-        android:layout_toRightOf="@+id/iv_profile_img"
+        android:layout_toEndOf="@+id/iv_profile_img"
         android:numStars="5"
         android:progressTint="@color/coloryellow"
         android:rating="3" />
@@ -128,7 +131,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/rating_bar"
-        android:layout_toRightOf="@+id/iv_profile_img">
+        android:layout_toEndOf="@+id/iv_profile_img">
 
         <TextView
             android:id="@+id/tv_distance"
@@ -136,7 +139,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
             android:text="1 km away"
-            android:textSize="@dimen/_10sdp"
+            android:textSize="@dimen/_9sdp"
             android:textColor="@color/colorDarkGray"
             />
 
@@ -144,7 +147,7 @@
             android:layout_width="@dimen/_10sdp"
             android:layout_height="@dimen/_10sdp"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/_3sdp"
+            android:layout_marginStart="@dimen/_3sdp"
             app:srcCompat="@drawable/ic_sent_mail"
 
             />
@@ -156,9 +159,8 @@
         style="@style/smallPopinsRegularStyle"
         android:layout_width="@dimen/_85sdp"
         android:layout_height="@dimen/_25sdp"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_below="@+id/view1_id"
-        android:layout_marginRight="@dimen/_8sdp"
         android:background="@drawable/button_green_bg"
         android:text="@string/send_request"
         android:textAllCaps="false"
@@ -182,10 +184,13 @@
         android:id="@+id/ll_more_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_below="@+id/btn_send_request"
-        android:padding="@dimen/_5sdp"
-        android:layout_margin="@dimen/_3sdp">
+        android:layout_marginTop="@dimen/_5sdp"
+        android:paddingTop="@dimen/_5sdp"
+        android:paddingBottom="@dimen/_5sdp"
+        android:background="?android:attr/selectableItemBackground"
+        >
 
     <TextView
         android:id="@+id/tv_more_info"
@@ -194,7 +199,7 @@
         android:fontFamily="@font/poppins_medium"
         android:text="@string/more_info"
         android:textColor="@color/colorGreen"
-        android:textSize="@dimen/_10sdp"
+        android:textSize="@dimen/_9sdp"
         android:layout_gravity="center"
         />
 
@@ -203,10 +208,10 @@
         android:layout_height="@dimen/_9sdp"
         app:srcCompat="@drawable/ic_right_arrow"
         android:layout_gravity="center"
-        android:layout_marginLeft="@dimen/_3sdp"
+        android:layout_marginStart="@dimen/_3sdp"
         />
     </LinearLayout>
 
-
+    </RelativeLayout>
 
 </RelativeLayout>

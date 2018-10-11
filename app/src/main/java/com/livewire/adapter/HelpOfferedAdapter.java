@@ -76,7 +76,7 @@ public class HelpOfferedAdapter extends RecyclerView.Adapter<HelpOfferedAdapter.
             try {
                 Date newStartDate;
                 newStartDate= sd.parse(start);
-                sd = new SimpleDateFormat("dd MMMM yyyy");
+                sd = new SimpleDateFormat("dd MMM yyyy");
                 start = sd.format(newStartDate);
 
                 holder.tvDate.setText(dateTextColorChange(start));

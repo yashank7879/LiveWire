@@ -20,7 +20,9 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/livelogo"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:largeHeap="true"
+        >
         <activity
             android:name=".ui.activity.SplashActivity"
             android:screenOrientation="portrait"

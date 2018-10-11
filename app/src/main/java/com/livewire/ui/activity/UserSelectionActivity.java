@@ -7,6 +7,7 @@ import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -18,8 +19,8 @@ import com.livewire.utils.Constant;
 import com.loopeer.shadow.ShadowView;
 
 public class UserSelectionActivity extends AppCompatActivity implements View.OnClickListener {
-   private ShadowView wantToHireCardView;
-    private ShadowView wantToWorkCardView;
+   private CardView wantToHireCardView;
+    private CardView wantToWorkCardView;
      private ImageView ivWantToHire;
     private ImageView ivWantToWork;
     private TextView tvWantToWork;
@@ -54,7 +55,7 @@ public class UserSelectionActivity extends AppCompatActivity implements View.OnC
 
 
 
-        liveWireTerms.setPaintFlags(liveWireTerms.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);// to add underline
+       // liveWireTerms.setPaintFlags(liveWireTerms.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);// to add underline
 
         wantToWorkCardView.setOnClickListener(this);
         wantToHireCardView.setOnClickListener(this);
@@ -77,13 +78,17 @@ public class UserSelectionActivity extends AppCompatActivity implements View.OnC
                 intent.putExtra("UserKey","client");
                 startActivity(intent);
 
+                wantToHireCardView.setCardElevation(8);
+                wantToWorkCardView.setCardElevation(2);
+
+
           /*      wantToHireCardView.setCardElevation(3);
                 wantToWorkCardView.setCardElevation(1);*/
 
-                wantToHireCardView.setShadowMargin(5,5,5,5);
+              /*  wantToHireCardView.setShadowMargin(8,10,8,8);
                 wantToHireCardView.setShadowRadius(12);
                 wantToWorkCardView.setShadowMargin(2,2,2,2);
-                wantToWorkCardView.setShadowRadius(5);
+                wantToWorkCardView.setShadowRadius(5);*/
 
                 tvWantToHire.setTextColor(getResources().getColor(R.color.colorGreen));
                 tvHelpNeede.setTextColor(getResources().getColor(R.color.colorGreen));
@@ -100,10 +105,12 @@ public class UserSelectionActivity extends AppCompatActivity implements View.OnC
                 Intent intent1 = new Intent(this,LoginActivity.class);
                 intent1.putExtra("UserKey","worker");
                 startActivity(intent1);
-                wantToHireCardView.setShadowMargin(2,2,2,2);
+                wantToHireCardView.setCardElevation(2);
+                wantToWorkCardView.setCardElevation(8);
+              /*  wantToHireCardView.setShadowMargin(2,2,2,2);
                 wantToHireCardView.setShadowRadius(5);
-                wantToWorkCardView.setShadowMargin(5,5,5,5);
-                wantToWorkCardView.setShadowRadius(12);
+                wantToWorkCardView.setShadowMargin(8,10,8,8);
+                wantToWorkCardView.setShadowRadius(12);*/
 
                 tvHelpNeede.setTextColor(getResources().getColor(R.color.colorLightGray));
                 tvHappyToHelp.setTextColor(getResources().getColor(R.color.colorGreen));

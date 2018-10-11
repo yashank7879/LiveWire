@@ -23,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
@@ -109,6 +110,7 @@ public class ClientMainActivity extends AppCompatActivity implements View.OnClic
         switch (v.getId()) {
             case R.id.btn_logout:
                 PreferenceConnector.clear(ClientMainActivity.this);
+                LoginManager.getInstance().logOut();
                 Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
                         new ResultCallback<Status>() {
                             @Override

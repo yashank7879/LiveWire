@@ -1,5 +1,6 @@
 package com.livewire.utils;
 
+import android.util.Patterns;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -14,6 +15,7 @@ public class Validation {
     private final static String USERNAME_PATTERN = "^[a-z0-9_-]{3,15}$";
     private final static String FULLNAME_PATTERN = "^[\\p{L} .'-]+$";
 
+    private final static String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
 
     private static String getString(TextView textView){
         return textView.getText().toString().trim();
@@ -58,8 +60,19 @@ public class Validation {
 
 
 
-    public static boolean isEmailValid(TextView textView) {
+    /*public static boolean isEmailValid(TextView textView) {
 
         return android.util.Patterns.EMAIL_ADDRESS.matcher(getString(textView)).matches();
+    }*/
+
+    public static boolean isEmailValid(TextView textView) {
+
+        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(getString(textView));
+        /* if (!bool) {
+          //  isValid = true;
+        }*/
+        return matcher.matches();
     }
+
 }

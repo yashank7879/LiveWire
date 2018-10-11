@@ -139,14 +139,14 @@ public class JobDetailWorkerActivity extends AppCompatActivity implements View.O
         tvTime.setText(Constant.getDayDifference(jobDetail.getCrd(), jobDetail.getCurrentTime()));
         Picasso.with(ivProfileImg.getContext()).load(jobDetail.getProfileImage()).fit().into(ivProfileImg);
 
-        //********"2018-07-04" date format converted into "04 july 2018"***********//
+        //********"2018-07-04" date format converted into "04 jul 2018"***********//
         DateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
         String start = jobDetail.getJob_start_date();
 
         try {
             Date newStartDate;
             newStartDate = sd.parse(start);
-            sd = new SimpleDateFormat("dd MMMM yyyy");
+            sd = new SimpleDateFormat("dd MMM yyyy");
             start = sd.format(newStartDate);
 
             tvDate.setText(start.substring(0, 2) + " ");

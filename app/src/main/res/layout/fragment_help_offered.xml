@@ -4,7 +4,7 @@
     android:id="@+id/help_offered_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBlackTransparent"
+    android:background="@color/colorExtraLightGray"
     tools:context="com.livewire.ui.fragments.HelpOfferedFragment">
 
     <RelativeLayout
@@ -60,17 +60,35 @@
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
-    <ImageView
+<!--    <android.support.design.widget.FloatingActionButton
         android:id="@+id/btn_filter"
-        android:layout_width="@dimen/_40sdp"
-        android:layout_height="@dimen/_40sdp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_margin="@dimen/_5sdp"
-        android:background="@drawable/circle_green_bg"
-        android:padding="@dimen/_12sdp"
-        android:tint="@color/colorWhite"
-        app:srcCompat="@drawable/ic_filter" />
+        android:backgroundTint="@color/colorGreen"
+        app:srcCompat="@drawable/ic_filter"
+        app:elevation="6dp"
+        android:scaleType="center"
+        app:fabSize="normal"
+        app:layout_behavior="com.your.package.FabBehaviour"
+        />-->
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btn_filter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_filter"
+        app:backgroundTint="@color/colorGreen"
+        android:layout_margin="@dimen/_8sdp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:scaleType="center"
+        app:elevation="6dp"
+        app:fabSize="normal"
+        app:layout_behavior="com.your.package.FabBehaviour"
+     />
 
     <TextView
         android:id="@+id/tv_no_job_post"

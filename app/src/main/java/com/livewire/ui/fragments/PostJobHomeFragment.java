@@ -45,7 +45,7 @@ public class PostJobHomeFragment extends Fragment {
         view.setClickable(true);
         view.requestFocus();
         viewPager = view.findViewById(R.id.viewpager);
-        FragmentPagerAdpter adapter = new FragmentPagerAdpter(getChildFragmentManager());
+        FragmentPagerAdpter adapter = new FragmentPagerAdpter(getChildFragmentManager(),getActivity());
         viewPager.setAdapter(adapter);
         tabLayout = view.findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);

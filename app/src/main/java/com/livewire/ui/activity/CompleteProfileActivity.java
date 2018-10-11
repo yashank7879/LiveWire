@@ -158,6 +158,7 @@ public class CompleteProfileActivity extends AppCompatActivity implements View.O
         super.onResume();
     }
 
+    //"""""""""""" skills data """""""""""""""""""""//
     private void loadSkillsData() {
         if (Constant.isNetworkAvailable(this, mainLayout)) {
             progressDialog.show();
@@ -290,6 +291,7 @@ public class CompleteProfileActivity extends AppCompatActivity implements View.O
         }
     }
 
+    //"""""""""""  profile validations """"""""""//
     private void profileValidations() {
         if (addedSkillBeans.size() == 0) {
             Constant.snackBar(mainLayout, "please add your skills");
@@ -424,10 +426,10 @@ public class CompleteProfileActivity extends AppCompatActivity implements View.O
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
-                mNotifyManager = (NotificationManager) getApplicationContext()
+             /*   mNotifyManager = (NotificationManager) getApplicationContext()
                         .getSystemService(Context.NOTIFICATION_SERVICE);
                 mBuilder = new Notification.Builder(getApplicationContext());
-                mBuilder.setSmallIcon(R.drawable.livelogo);
+                mBuilder.setSmallIcon(R.drawable.livelogo);*/
 
                 // String path = ImageVideoUtil.generatePath(videoUri, AddVideosActivity.this);
                 File file = new File(finalVideoFilePath);
@@ -440,8 +442,6 @@ public class CompleteProfileActivity extends AppCompatActivity implements View.O
                 long fileSizeInMB = fileSizeInKB / 1024;
 
                 if (fileSizeInMB > 10) {
-
-
                     compressVideo(finalVideoUri, file);
                 } else {
                     videoFile = new ArrayList<>();
@@ -950,16 +950,13 @@ mediaFilesList.remove(0);
             @Override
             public void onErrorResponse(VolleyError error) {
                 progressDialog.dismiss();
-                // pDialog.dismiss();
-                //  progressbar.setVisibility(View.GONE);
                 setResponse(null, error);
             }
         }, new Response.Listener() {
             @Override
             public void onResponse(Object response) {
                 progressDialog.dismiss();
-              /*  progressbar.setVisibility(View.GONE);
-                pDialog.dismiss();*/
+
                 try {
                     Log.e("ADDVECH", "setResponse: " + response.toString());
                     JSONObject result;

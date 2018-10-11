@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/nearyou_layout"
-    android:background="@color/colorBlackTransparent"
+    android:background="@color/colorExtraLightGray"
     tools:context="com.livewire.ui.activity.NearYouClientActivity">
 
 
@@ -55,6 +55,15 @@
 
 
     </android.support.v7.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/tv_no_job_post"
+        style="@style/mediumPopinsRegularStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="No data available"
+        android:visibility="gone" />
 
 
 </RelativeLayout>

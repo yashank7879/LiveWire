@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorWhite">
 
     <LinearLayout
@@ -75,16 +75,14 @@
                 android:layout_marginRight="@dimen/_15sdp"
                 android:orientation="vertical">
 
-                <com.loopeer.shadow.ShadowView
+                <android.support.v7.widget.CardView
                     android:id="@+id/help_need_cardView"
                     android:layout_width="@dimen/_100sdp"
                     android:layout_height="@dimen/_100sdp"
                     android:layout_gravity="center"
-                    app:cornerRadius="@dimen/_5sdp"
-                    app:shadowColor="@color/colorDarkGray"
-                    app:backgroundColor="@color/colorWhite"
-                    app:shadowMargin="1dp"
-                    app:shadowRadius="@dimen/_5sdp"                    >
+                    app:cardBackgroundColor="@color/colorWhite"
+                    app:cardCornerRadius="@dimen/_5sdp"
+                    app:cardUseCompatPadding="true">
 
                     <ImageView
                         android:id="@+id/iv_help_needed"
@@ -92,9 +90,9 @@
                         android:layout_height="match_parent"
                         android:background="?android:attr/selectableItemBackground"
                         android:padding="@dimen/_15sdp"
-                        android:src="@drawable/ic_inactive_hire" />
+                        app:srcCompat="@drawable/ic_inactive_hire" />
 
-                </com.loopeer.shadow.ShadowView>
+                </android.support.v7.widget.CardView>
 
                 <TextView
                     android:id="@+id/tv_want_to_hire"
@@ -130,17 +128,14 @@
                 android:orientation="vertical">
 
 
-                    <com.loopeer.shadow.ShadowView
-                        android:id="@+id/happy_to_help_cardView"
-                        android:layout_width="@dimen/_100sdp"
-                        android:layout_height="@dimen/_100sdp"
-                        android:layout_gravity="center"
-                        app:cornerRadius="@dimen/_5sdp"
-                        app:shadowColor="@color/colorDarkGray"
-                        app:backgroundColor="@color/colorWhite"
-                        app:shadowMargin="1dp"
-                        app:shadowRadius="@dimen/_5sdp"
-                        >
+                <android.support.v7.widget.CardView
+                    android:id="@+id/happy_to_help_cardView"
+                    android:layout_width="@dimen/_100sdp"
+                    android:layout_height="@dimen/_100sdp"
+                    android:layout_gravity="center"
+                    app:cardBackgroundColor="@color/colorWhite"
+                    app:cardCornerRadius="@dimen/_5sdp"
+                    app:cardUseCompatPadding="true">
 
                     <ImageView
                         android:id="@+id/iv_happy_to_help"
@@ -148,9 +143,9 @@
                         android:layout_height="match_parent"
                         android:background="?android:attr/selectableItemBackground"
                         android:padding="@dimen/_15sdp"
-                        android:src="@drawable/ic_inactive_work" />
+                        app:srcCompat="@drawable/ic_inactive_work" />
 
-                    </com.loopeer.shadow.ShadowView>
+                </android.support.v7.widget.CardView>
 
                 <TextView
                     android:id="@+id/tv_want_to_work"
@@ -187,21 +182,34 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_5sdp"
                 android:fontFamily="@font/poppins_light"
                 android:text="@string/more_info_about"
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/_12sdp" />
 
-            <TextView
-                android:id="@+id/tv_lw_tems"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawablePadding="@dimen/_1sdp"
-                android:fontFamily="@font/poppins_regular"
-                android:padding="@dimen/_5sdp"
-                android:text="@string/app_name"
-                android:textColor="@color/colorGreen"
-                android:textSize="@dimen/_12sdp" />
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:id="@+id/tv_lw_tems"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_regular"
+                    android:text="@string/app_name"
+                    android:textColor="@color/colorGreen"
+                    android:textSize="@dimen/_13sdp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorGreen"
+                    android:layout_marginTop="-4dp"
+                    />
+            </LinearLayout>
 
         </LinearLayout>
 

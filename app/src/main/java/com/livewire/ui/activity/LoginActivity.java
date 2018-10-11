@@ -2,8 +2,6 @@ package com.livewire.ui.activity;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
@@ -36,6 +34,7 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
@@ -56,13 +55,6 @@ import com.livewire.utils.Validation;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.Signature;
-import java.util.Arrays;
-
-import cz.msebera.android.httpclient.extras.Base64;
 
 import static com.livewire.utils.ApiCollection.BASE_URL;
 
@@ -262,12 +254,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         model.deviceToken = "";
                         model.socialId = graphObject.getString("id");
                         model.socialType = "fb";
-                        //signUpApiForGoogle(model);
+                        signUpApiForSocial(model);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
-                    Toast.makeText(LoginActivity.this, "Name" + fb_mail, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(LoginActivity.this, "Name" + fb_mail, Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -394,13 +386,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             model.deviceToken = "";
             model.socialId = acct.getId();
             model.socialType = "gmail";
-            signUpApiForGoogle(model);
+            signUpApiForSocial(model);
             Log.e(TAG, "Name: " + personName + ", email: " + email + "social: " + acct.getId());
         }
     }
 
-    //"""""""""signup with google""""""""""""""""""//
-    private void signUpApiForGoogle(UserModel model) {
+    //"""""""""signup with google and fb""""""""""""""""""//
+    private void signUpApiForSocial(UserModel model) {
         if (Constant.isNetworkAvailable(this, mainLayout)) {
             progressDialog.show();
             // progressBar.setVisibility(View.VISIBLE);
@@ -452,6 +444,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             finish();*/
 
                         } else {
+                            if (message.equals("Invalid user type")){
+                                LoginManager.getInstance().logOut();
+                            }
                             Constant.snackBar(mainLayout, message);
                         }
 
@@ -501,6 +496,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
+    //"""""""""" login api """"""""""""""""""//
     private void loginApi(UserModel model) {
         if (Constant.isNetworkAvailable(this, mainLayout)) {
             progressDialog.show();
