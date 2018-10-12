@@ -72,9 +72,38 @@ public class MultiPartRequest extends Request<String> {
         return builder.build();
     }
 
-    public MultiPartRequest(Response.ErrorListener errorListener, Response.Listener listener, ArrayList<File> tmpFile, int size, ArrayList<File> profileImageFileList, int size1, HashMap<String, String> mPram, CompleteProfileActivity activity) {
-        super(Method.POST, BASE_URL+"user/updateWorkerProfile", errorListener);
+   /* public MultiPartRequest(Response.ErrorListener errorListener, Response.Listener listener, ArrayList<File> tmpFile, int size, ArrayList<File> profileImageFileList, int size1, HashMap<String, String> mPram, CompleteProfileActivity activity) {
+        super(Method.POST, "http://dev.mindiii.com/mabwe/service/user/addPost", errorListener);
         mListener = listener;
+        mParams=mPram;
+        mHttpEntity = buildMultipartEntity(tmpFile, size,profileImageFileList,size1);
+        this.activity=activity;
+    }
+
+    private HttpEntity buildMultipartEntity(List<File> file, int numberOffiles,List<File> profileImageFile,int size) {
+        MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+
+        for(int i=0; i < file.size();i++){
+            FileBody fileBody = new FileBody(file.get(i));
+            builder.addPart("video", fileBody);
+        }
+
+        for(int i=0; i < profileImageFile.size();i++){
+            FileBody fileBody = new FileBody(profileImageFile.get(i));
+            builder.addPart("video_thumb", fileBody);
+        }
+
+        for (Map.Entry<String, String> entry : mParams.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            builder.addTextBody(key, value);
+        }
+
+        return builder.build();
+    }*/
+ public MultiPartRequest(Response.ErrorListener errorListener, Response.Listener listener, ArrayList<File> tmpFile, int size, ArrayList<File> profileImageFileList, int size1, HashMap<String, String> mPram, CompleteProfileActivity activity) {
+     super(Method.POST, BASE_URL+"user/updateWorkerProfile", errorListener);
+     mListener = listener;
         mParams=mPram;
         mHttpEntity = buildMultipartEntity(tmpFile, size,profileImageFileList,size1);
         this.activity=activity;
@@ -104,18 +133,25 @@ public class MultiPartRequest extends Request<String> {
 
 
 
-
     @Override
     public String getBodyContentType() {
         return mHttpEntity.getContentType().getValue();
     }
 
+
     @Override
+    public Map<String, String> getHeaders() throws AuthFailureError {
+        Map<String, String> header = new HashMap<>();
+        header.put("authToken", PreferenceConnector.readString(activity,PreferenceConnector.AUTH_TOKEN,""));
+        return header;
+    }
+
+ /*   @Override
     public Map<String, String> getHeaders() throws AuthFailureError {
         Map<String, String> header = new HashMap<>();
         header.put("authToken", PreferenceConnector.readString(activity, PreferenceConnector.AUTH_TOKEN, ""));
         return header;
-    }
+    }*/
 
     @Override
     public byte[] getBody() throws AuthFailureError {

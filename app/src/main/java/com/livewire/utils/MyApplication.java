@@ -19,6 +19,5 @@ public class MyApplication extends Application{
         Fabric.with(this, new Crashlytics());
         AndroidNetworking.initialize(getApplicationContext());
         FacebookSdk.sdkInitialize(getApplicationContext());
-
     }
 }

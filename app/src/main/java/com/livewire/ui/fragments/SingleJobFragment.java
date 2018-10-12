@@ -115,6 +115,9 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
         selectSkillsRl.setOnClickListener(this);
         selectDateRl.setOnClickListener(this);
         view.findViewById(R.id.btn_share).setOnClickListener(this);
+
+
+        Constant.hideSoftKeyBoard(mContext,etBudget);
         loadSkillsData();
     }
 

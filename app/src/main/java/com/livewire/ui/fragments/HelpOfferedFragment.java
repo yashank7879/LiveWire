@@ -138,11 +138,13 @@ public class HelpOfferedFragment extends Fragment implements View.OnClickListene
                 super.onScrolled(recyclerView, dx, dy);
                 if (dy > 0 && btnFilter.getVisibility() == View.VISIBLE) {
                     btnFilter.hide();
+
                 } else if (dy < 0 && btnFilter.getVisibility() != View.VISIBLE) {
                     btnFilter.show();
                 }
             }
         });
+
 
         SubCategoryListApi();
         helpOfferedApi();

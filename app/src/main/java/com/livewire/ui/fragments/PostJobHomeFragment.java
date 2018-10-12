@@ -12,11 +12,13 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.livewire.R;
 import com.livewire.adapter.FragmentPagerAdpter;
+import com.livewire.utils.Constant;
 
 /**
  * Created by mindiii on 9/28/18.
@@ -39,7 +41,7 @@ public class PostJobHomeFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         view.setFocusableInTouchMode(true);
         view.setClickable(true);
@@ -68,20 +70,28 @@ public class PostJobHomeFragment extends Fragment {
             TextView tabTextView = (TextView) tabLayout1.getChildAt(1);
             tabTextView.setTypeface(tf);
         }
-       /* LinearLayout tabLayout1 = (LinearLayout) ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(0);
-        TextView tabTextView = (TextView) tabLayout1.getChildAt(1);
-        tabTextView.setTextSize(22);
-        tabTextView.setTypeface(tf);*/
-        //"""""""" if User select another Top Tab so change fontFamily """""""'//
+
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                Constant.hideSoftKeyBoard(mContext,viewPager);
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                // blank
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            // blank
+            }
+        });
+
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-              /*  for (int i=0;i<tabLayout.getTabCount();i++){
-                        LinearLayout tabLayout1 = (LinearLayout) ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(tab.getPosition());
-                        TextView tabTextView = (TextView) tabLayout1.getChildAt(1);
-                        tabTextView.setTextSize(20);
-                        tabTextView.setTypeface(tf);
-                }*/
+
             }
 
             @Override
@@ -94,6 +104,5 @@ public class PostJobHomeFragment extends Fragment {
             /*this method is not used*/
             }
         });
-       // tabLayout.setupWithViewPager();
     }
 }

@@ -82,6 +82,7 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
@@ -96,6 +97,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+import cz.msebera.android.httpclient.entity.mime.content.FileBody;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.livewire.utils.ApiCollection.BASE_URL;
@@ -138,9 +140,11 @@ public class CompleteProfileActivity extends AppCompatActivity implements View.O
     private ArrayList<File> videoFile;
     private HashMap<String, String> mPram;
     private ProgressDialog progressDialog;
-    private ArrayList<File> profileImageFileList = new ArrayList<>();
+    private ArrayList<File> profileImageFileList;
+
     private Uri finalVideoUri;
     private String finalVideoFilePath;
+    private File imageFile;
 
 
     @Override
@@ -302,7 +306,26 @@ public class CompleteProfileActivity extends AppCompatActivity implements View.O
         } else if (finalVideoUri == null) {
             Constant.snackBar(mainLayout, "please add introvideo");
         } else {
+          profileImageFileList = new ArrayList<>();
+          profileImageFileList.add(imageFile);
             mPram = new HashMap<>();
+
+
+           /* mPram.put("title", "vdffdf");
+            mPram.put("discription", "jdjdgggffff");
+            mPram.put("category","1");
+            mPram.put("lat", "25.12");
+            mPram.put("long", "78.32");
+            mPram.put("relocate", "no");
+            mPram.put("authorised", "no");
+            mPram.put("whilingToship", "no");
+            mPram.put("email","jt");
+            mPram.put("contact", "");
+            mPram.put("tags", "dfggggg");
+            mPram.put("country", "india");
+          *//*  mPram.put("city", city == null ? "" : city);
+            mPram.put("state", state == null ? "" : state);
+            mPram.put("address", address);*/
 
             mPram.put("workerSkillData", getWorkerSkillData());
             mPram.put("latitude", String.valueOf(locationLatLng.latitude));
@@ -588,9 +611,12 @@ public class CompleteProfileActivity extends AppCompatActivity implements View.O
                 try {
                     inactiveUserImg.setVisibility(View.GONE);
                     ivProfileImg.setImageURI(tmpUri);
+                   // Bitmap profileImageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), tmpUri);
+                    //File file = savebitmap(this.getExternalCacheDir(), profileImageBitmap, ".jpg");
+
                     Bitmap profileImageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), tmpUri);
-                    File file = savebitmap(this.getExternalCacheDir(), profileImageBitmap, ".jpg");
-                    profileImageFileList.add(file);
+                    imageFile = savebitmap(this, profileImageBitmap, UUID.randomUUID() + ".jpg");
+
                 } catch (IOException e) {
                     Log.d(TAG, e.getMessage());
                 }
@@ -623,7 +649,7 @@ public class CompleteProfileActivity extends AppCompatActivity implements View.O
                         thumbBitmap = ImageRotator.rotate(thumbBitmap, rotation);
 
 
-                        File thumbFile = savebitmap(this.getExternalCacheDir(), thumbBitmap, UUID.randomUUID() + ".jpg");
+                        File thumbFile = savebitmap(this, thumbBitmap, UUID.randomUUID() + ".jpg");
 // productImages.add(file);
                         IntroVideoModal carsImageBean = new IntroVideoModal();
                         carsImageBean.setmUri(finalVideoUri);
@@ -636,16 +662,14 @@ public class CompleteProfileActivity extends AppCompatActivity implements View.O
 
                         videoImg.setImageBitmap(thumbBitmap);
 
+
+
+                       // profileImageFileList.add(bitmapToFile(thumbBitmap));
+
                         // mediaFilesList.add(1, carsImageBean);
 /*if (mediaFilesList.size() == 5) {
 mediaFilesList.remove(0);
 }*/
-
-                   /* if (mediaFilesList.size() == 5) {
-                        mediaFilesList.remove(null);
-                    } else if (!mediaFilesList.contains(null)) {
-                        mediaFilesList.add(0, null);
-                    }*/
                     } else {
                         Toast.makeText(this, "Please take less than 30 Mb file", Toast.LENGTH_SHORT).show();
                     }
@@ -683,7 +707,7 @@ mediaFilesList.remove(0);
         }
     }
 
-    private File savebitmap(File file, Bitmap thumbBitmap, String s) {
+/*    private File savebitmap(File file, Bitmap thumbBitmap, String s) {
         tmpUri = FileProvider.getUriForFile(this, this.getApplicationContext().getPackageName() + ".fileprovider", file);
 
         try {
@@ -697,6 +721,25 @@ mediaFilesList.remove(0);
             Log.d(TAG, e.getMessage());
         }
         return file;
+    }*/
+
+
+    // from bitmap to file creater"""""""""""
+    public File savebitmap(Context mContext, Bitmap bitmap, String name) {
+        File filesDir = mContext.getApplicationContext().getFilesDir();
+        File imageFile = new File(filesDir, name + ".jpg");
+
+        OutputStream os;
+        try {
+            os = new FileOutputStream(imageFile);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, os);
+            os.flush();
+            os.close();
+            return imageFile;
+        } catch (Exception e) {
+            Log.e(mContext.getClass().getSimpleName(), "Error writing bitmap", e);
+        }
+        return null;
     }
 
     @Override
@@ -708,6 +751,31 @@ mediaFilesList.remove(0);
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+    }
+    private File bitmapToFile(Bitmap bitmap) {
+        try {
+            String name = System.currentTimeMillis() + ".png";
+            File file = new File(getCacheDir(), name);
+
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 60, bos);
+            byte[] bArr = bos.toByteArray();
+            bos.flush();
+            bos.close();
+
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(bArr);
+            fos.flush();
+            fos.close();
+
+            return file;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
@@ -980,7 +1048,7 @@ mediaFilesList.remove(0);
                 }
 
             }
-        }, tmpFile, tmpFile.size()/*,profileImageFileList,profileImageFileList.size()*/, mPram, CompleteProfileActivity.this);
+        }, tmpFile, tmpFile.size(),profileImageFileList,profileImageFileList.size(), mPram, CompleteProfileActivity.this);
 
         mMultiPartRequest.setTag("MultiRequest");
         mMultiPartRequest.setRetryPolicy(new DefaultRetryPolicy(Template.VolleyRetryPolicy.SOCKET_TIMEOUT,

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/_5sdp"
+    android:background="@color/colorWhite">
+
+
+    <TextView
+        android:id="@+id/tv_date"
+        style="@style/mediumPopinsLightStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/_5sdp"
+        android:text="23 Sep 2018"
+        android:textColor="@color/colorDarkBlack" />
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/tv_date"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:text="10 min ago"
+        android:textColor="@color/colorLightGray"
+        android:textSize="@dimen/_10sdp" />
+
+    <View
+        android:id="@+id/view_id"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/tv_date"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:background="@color/colorExtraLightGray" />
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view_id"
+        android:paddingLeft="@dimen/_10sdp"
+        android:paddingRight="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
+        >
+
+
+        <TextView
+            android:id="@+id/tv_category"
+            android:fontFamily="@font/poppins_semibold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cook"
+            android:textSize="@dimen/_12sdp"
+            android:textColor="@color/colorDarkBlack" />
+
+        <TextView
+            android:id="@+id/tv_subcategory"
+            style="@style/smallPopinsRegularStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_category"
+            android:text="House &amp; Home"
+            android:textColor="@color/colorDarkGray" />
+
+        <TextView
+            android:id="@+id/budget"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:fontFamily="@font/poppins_medium"
+            android:text="@string/budget"
+            android:textColor="@color/colorDarkGray"
+            android:textSize="@dimen/_9sdp"
+            />
+
+        <TextView
+            android:id="@+id/tv_budget"
+            style="@style/mediumPopinsRegularStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/budget"
+            android:text="$ 60.30"
+            android:textColor="@color/colorDarkBlack" />
+
+        <View
+            android:id="@+id/view1_id"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/tv_budget"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginBottom="@dimen/_8sdp"
+            android:background="@color/colorExtraLightGray" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_profile_img"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_below="@+id/view1_id"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:src="@drawable/ic_user"
+            app:civ_border_color="@color/colorGreen"
+            app:civ_border_width="1dp"
+            />
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_profile_img"
+            >
+        <TextView
+            android:id="@+id/tv_requested"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="10 member request"
+            android:textSize="@dimen/_11sdp"
+            android:textColor="@color/colorDarkGray"
+            android:layout_centerVertical="true"
+            />
+
+        <LinearLayout
+            android:id="@+id/ll_more_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_5sdp"
+            android:background="?android:attr/selectableItemBackground"
+            >
+
+            <TextView
+                android:id="@+id/tv_more_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/more_info"
+                android:textColor="@color/colorGreen"
+                android:textSize="@dimen/_9sdp"
+                android:layout_gravity="center"
+                />
+
+            <ImageView
+                android:layout_width="@dimen/_9sdp"
+                android:layout_height="@dimen/_9sdp"
+                app:srcCompat="@drawable/ic_right_arrow"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/_3sdp"
+                />
+        </LinearLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

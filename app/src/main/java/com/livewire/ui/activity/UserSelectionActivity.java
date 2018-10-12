@@ -78,7 +78,7 @@ public class UserSelectionActivity extends AppCompatActivity implements View.OnC
                 intent.putExtra("UserKey","client");
                 startActivity(intent);
 
-                wantToHireCardView.setCardElevation(8);
+                wantToHireCardView.setCardElevation(10);
                 wantToWorkCardView.setCardElevation(2);
 
 
@@ -106,7 +106,7 @@ public class UserSelectionActivity extends AppCompatActivity implements View.OnC
                 intent1.putExtra("UserKey","worker");
                 startActivity(intent1);
                 wantToHireCardView.setCardElevation(2);
-                wantToWorkCardView.setCardElevation(8);
+                wantToWorkCardView.setCardElevation(10);
               /*  wantToHireCardView.setShadowMargin(2,2,2,2);
                 wantToHireCardView.setShadowRadius(5);
                 wantToWorkCardView.setShadowMargin(8,10,8,8);

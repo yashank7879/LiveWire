@@ -137,6 +137,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         forgotpassId = findViewById(R.id.forgotpass_id);
         fb_btn = findViewById(R.id.fb_btn);
 
+
         fb_btn.setReadPermissions("email");
 
         if (getIntent().getStringExtra("UserKey") != null) {
@@ -427,7 +428,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     finish();
                                 } else if (userResponce.getData().getCompleteProfile().equals("1")) {// if worker complete own profile
                                     finishAffinity();
-                                    intent = new Intent(LoginActivity.this, WorkerMainActivity.class);
+                                    intent = new Intent(LoginActivity.this, CompleteProfileActivity.class);
                                     startActivity(intent);
                                     finish();
                                 }

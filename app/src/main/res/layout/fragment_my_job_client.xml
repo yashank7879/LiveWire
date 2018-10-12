@@ -2,8 +2,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.livewire.ui.fragments.MyJobClientFragment">
+    android:background="@color/colorExtraLightGray"
+    tools:context="com.livewire.ui.fragments.MyJobClientFragment"
+    android:id="@+id/main_layout"
+    >
 
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_myjob"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </android.support.v7.widget.RecyclerView>
     <!-- TODO: Update blank fragment layout -->
     <Button
         android:id="@+id/btn_near_you"
@@ -16,12 +26,12 @@
         android:visibility="gone"
         />
 
-    <TextView
+   <!-- <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Under devlopment mode"
         android:layout_gravity="center"
-        />
+        />-->
 
     <!--android:elevation="8dp"
             android:translationZ="5dp"

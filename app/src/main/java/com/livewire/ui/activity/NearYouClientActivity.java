@@ -131,7 +131,7 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
 
     private void openRequestDialog() {
 
-       /* final Dialog dialog = new Dialog(this);
+        final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.request_send_client_dialog);
@@ -146,7 +146,7 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
        });
 
         dialog.show();
-        dialog.setCancelable(false);*/
+        dialog.setCancelable(false);
 
     }
 }

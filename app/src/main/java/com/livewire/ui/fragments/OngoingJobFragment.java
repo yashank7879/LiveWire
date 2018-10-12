@@ -139,6 +139,9 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
         weekList.add( new WeekListModel( "Saturday",false));
         weekList.add( new WeekListModel( "Sunday",false));
 
+        Constant.hideSoftKeyBoard(mContext,etDescription);
+
+
         selectSkillsRl.setOnClickListener(this);
         jobStartDateRl.setOnClickListener(this);
         jobEndDateRl.setOnClickListener(this);
