@@ -71,6 +71,8 @@ public class PostJobHomeFragment extends Fragment {
             tabTextView.setTypeface(tf);
         }
 
+
+        /// hide soft keyboard in view pager """""""""//
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

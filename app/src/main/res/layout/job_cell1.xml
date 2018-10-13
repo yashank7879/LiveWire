@@ -40,21 +40,21 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
         android:layout_below="@+id/view_id"
+        android:layout_marginEnd="6dp"
         android:paddingLeft="@dimen/_10sdp"
-        android:paddingRight="@dimen/_10sdp"
-        android:layout_marginBottom="@dimen/_5sdp"
-        >
+        android:paddingRight="@dimen/_10sdp">
 
 
         <TextView
             android:id="@+id/tv_category"
-            android:fontFamily="@font/poppins_semibold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_semibold"
             android:text="Cook"
-            android:textSize="@dimen/_12sdp"
-            android:textColor="@color/colorDarkBlack" />
+            android:textColor="@color/colorDarkBlack"
+            android:textSize="@dimen/_12sdp" />
 
         <TextView
             android:id="@+id/tv_subcategory"
@@ -73,8 +73,7 @@
             android:fontFamily="@font/poppins_medium"
             android:text="@string/budget"
             android:textColor="@color/colorDarkGray"
-            android:textSize="@dimen/_9sdp"
-            />
+            android:textSize="@dimen/_9sdp" />
 
         <TextView
             android:id="@+id/tv_budget"
@@ -91,67 +90,60 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_below="@+id/tv_budget"
-            android:layout_marginTop="@dimen/_8sdp"
             android:layout_marginBottom="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_8sdp"
             android:background="@color/colorExtraLightGray" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
+        <FrameLayout
             android:id="@+id/iv_profile_img"
-            android:layout_width="@dimen/_35sdp"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/_35sdp"
             android:layout_below="@+id/view1_id"
-            android:layout_marginEnd="@dimen/_8sdp"
-            android:src="@drawable/ic_user"
-            app:civ_border_color="@color/colorGreen"
-            app:civ_border_width="1dp"
+
             />
 
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/iv_profile_img"
-            >
-        <TextView
-            android:id="@+id/tv_requested"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_semibold"
-            android:text="10 member request"
-            android:textSize="@dimen/_11sdp"
-            android:textColor="@color/colorDarkGray"
-            android:layout_centerVertical="true"
-            />
-
-        <LinearLayout
-            android:id="@+id/ll_more_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:paddingTop="@dimen/_5sdp"
-            android:paddingBottom="@dimen/_5sdp"
-            android:background="?android:attr/selectableItemBackground"
-            >
+            android:layout_below="@+id/iv_profile_img">
 
             <TextView
-                android:id="@+id/tv_more_info"
+                android:id="@+id/tv_requested"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_medium"
-                android:text="@string/more_info"
-                android:textColor="@color/colorGreen"
-                android:textSize="@dimen/_9sdp"
-                android:layout_gravity="center"
-                />
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="10 member request"
+                android:textColor="@color/colorDarkGray"
+                android:textSize="@dimen/_11sdp" />
 
-            <ImageView
-                android:layout_width="@dimen/_9sdp"
-                android:layout_height="@dimen/_9sdp"
-                app:srcCompat="@drawable/ic_right_arrow"
-                android:layout_gravity="center"
-                android:layout_marginStart="@dimen/_3sdp"
-                />
-        </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_more_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:background="?android:attr/selectableItemBackground"
+                android:paddingBottom="@dimen/_5sdp"
+                android:paddingTop="@dimen/_5sdp">
+
+                <TextView
+                    android:id="@+id/tv_more_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="@string/more_info"
+                    android:textColor="@color/colorGreen"
+                    android:textSize="@dimen/_9sdp" />
+
+                <ImageView
+                    android:layout_width="@dimen/_9sdp"
+                    android:layout_height="@dimen/_9sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/_3sdp"
+                    app:srcCompat="@drawable/ic_right_arrow" />
+            </LinearLayout>
 
         </RelativeLayout>
 

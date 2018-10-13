@@ -77,6 +77,8 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
         nearYouApi();
     }
 
+
+    //"""""""""' near you api at client side""""""""""""""//
     private void nearYouApi() {// help offer api calling
         if (Constant.isNetworkAvailable(this, mainLayout)) {
             progressDialog.show();
@@ -129,6 +131,7 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
         openRequestDialog();
     }
 
+    //""""""""""" open send offer dialog """"""""""""""'//
     private void openRequestDialog() {
 
         final Dialog dialog = new Dialog(this);

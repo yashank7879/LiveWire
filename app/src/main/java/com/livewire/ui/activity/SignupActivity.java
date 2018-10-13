@@ -156,7 +156,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
 
         key = getIntent().getStringExtra("UserTypeKey");
-        if (getIntent().getStringExtra("UserTypeKey").equals("client")) {
+        if (getIntent().getStringExtra("UserTypeKey").equals("client")) {// if client side
             flUserProfile.setVisibility(View.VISIBLE);
             tvTownResidence.setVisibility(View.VISIBLE);
             horizontalLine.setVisibility(View.VISIBLE);
@@ -165,7 +165,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             flUserProfile.setOnClickListener(this);
             btnClientSignup.setOnClickListener(this);
             tvTownResidence.setOnClickListener(this);
-        } else if (getIntent().getStringExtra("UserTypeKey").equals("worker")) {
+        } else if (getIntent().getStringExtra("UserTypeKey").equals("worker")) {// if worker side
             flUserProfile.setVisibility(View.GONE);
             tvTownResidence.setVisibility(View.GONE);
             horizontalLine.setVisibility(View.GONE);
@@ -237,6 +237,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     }
 
 
+    //"""""""" open fb dialog """"""""""//
     private void fbResponce() {
         fb_btn.registerCallback(callBackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -257,12 +258,11 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         });
     }
 
+    //"""""""  fb log in responce """"""""""""//
     private void getUserDtails(final LoginResult loginResult) {
         data_request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
             @Override
             public void onCompleted(JSONObject object, GraphResponse response) {
-
-
                 JSONObject graphObject = response.getJSONObject();
                 if (graphObject.has("email")) {
                     String fb_mail = null;
@@ -342,35 +342,8 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                         String message = response.getString("message");
                         if (status.equals("success")) {
                             SignUpResponce userResponce = new Gson().fromJson(String.valueOf(response), SignUpResponce.class);
-                            Log.d("Responce", userResponce.getData().getUserType());
-                            PreferenceConnector.writeBoolean(SignupActivity.this, PreferenceConnector.IS_LOG_IN, true);
                             PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.USER_INFO_JSON, response.toString());
-                            PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
-                            PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.COMPLETE_PROFILE_STATUS, userResponce.getData().getCompleteProfile());
-                            PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.AUTH_TOKEN, userResponce.getData().getAuthToken());
-                            Log.d("Responce", userResponce.toString());
-                            if (userResponce.getData().getUserType().equals("worker")) {// if user is worker
-                                Intent intent = null;
-                                if (userResponce.getData().getCompleteProfile().equals("0")) { // if worker not complete own profile
-                                    finishAffinity();
-                                    intent = new Intent(SignupActivity.this, CompleteProfileActivity.class);
-                                    intent.putExtra("imageKey", imageUrl);
-                                    startActivity(intent);
-                                    finish();
-                                } else if (userResponce.getData().getCompleteProfile().equals("1")) {// if worker complete own profile
-                                    finishAffinity();
-                                    intent = new Intent(SignupActivity.this, WorkerMainActivity.class);
-                                    startActivity(intent);
-                                    finish();
-                                }
-                            } else { // if user is Client
-                                finishAffinity();
-                                Intent intent = new Intent(SignupActivity.this, ClientMainActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
-                                finish();
-                            }
-
+                            setSocialResponceData(userResponce);
                         /*    Intent intent = new Intent(LoginActivity.this, CompleteProfileActivity.class);
                             startActivity(intent);
                             finish();*/
@@ -395,6 +368,38 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+    ///""""""" set social responce data """"""""""//
+    private void setSocialResponceData(SignUpResponce userResponce) {
+        Log.d("Responce", userResponce.getData().getUserType());
+        PreferenceConnector.writeBoolean(SignupActivity.this, PreferenceConnector.IS_LOG_IN, true);
+        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
+        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.COMPLETE_PROFILE_STATUS, userResponce.getData().getCompleteProfile());
+        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.AUTH_TOKEN, userResponce.getData().getAuthToken());
+        Log.d("Responce", userResponce.toString());
+        if (userResponce.getData().getUserType().equals("worker")) {// if user is worker
+            Intent intent = null;
+            if (userResponce.getData().getCompleteProfile().equals("0")) { // if worker not complete own profile
+                finishAffinity();
+                intent = new Intent(SignupActivity.this, CompleteProfileActivity.class);
+                intent.putExtra("imageKey", imageUrl);
+                startActivity(intent);
+                finish();
+            } else if (userResponce.getData().getCompleteProfile().equals("1")) {// if worker complete own profile
+                finishAffinity();
+                intent = new Intent(SignupActivity.this, WorkerMainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        } else { // if user is Client
+            finishAffinity();
+            Intent intent = new Intent(SignupActivity.this, ClientMainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+        }
+    }
+
+    //"""""" open image dialog """"""""""""//
     private void showSetProfileImageDialog() {
 
         final CharSequence[] options = {"Take Photo", "Choose from Gallery"};
@@ -480,6 +485,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 }
             }
         }
+
         //*********** circle cropping image ********//
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {   // Image Cropper
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
@@ -528,6 +534,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+    //"""""""""" create bitmap to file """"""""//
     public File savebitmap(Context mContext, Bitmap bitmap, String name) {
         File filesDir = mContext.getApplicationContext().getFilesDir();
         File imageFile = new File(filesDir, name + ".jpg");
@@ -545,6 +552,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         return null;
     }
 
+    //"""""' client validations """"""""""""//
     private void etClientValdidations() {
         if (Validation.isEmpty(etFullName)) {
             Constant.snackBar(mainLayout, "Please enter FullName");
@@ -585,6 +593,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+    //"""""""" signup api client """""""""""//
     private void signUpClientApi(UserModel model) {
         if (Constant.isNetworkAvailable(this, mainLayout)) {
             progressDialog.show();
@@ -604,18 +613,9 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                         if (status.equals("success")) {
                             SignUpResponce userResponce = new Gson().fromJson(String.valueOf(response), SignUpResponce.class);
                             Log.e("sign up response", userResponce.getData().toString());
+                            PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.USER_INFO_JSON, response.toString());
+                            setSignUpClientData(userResponce);
 
-                            PreferenceConnector.writeBoolean(SignupActivity.this, PreferenceConnector.IS_LOG_IN, true);
-                            PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.USER_INFO_JSON, response.toString());
-                            PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.AUTH_TOKEN, userResponce.getData().getAuthToken());
-                            PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
-                            /*PreferenceConnector.writeBoolean(SignupActivity.this, PreferenceConnector.IS_LOG_IN, true);
-                            PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.USER_INFO_JSON, response.toString());
-                            PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.AUTH_TOKEN, userResponce.getData().getAuthToken());
-                        */
-                            Intent intent = new Intent(SignupActivity.this, ClientMainActivity.class);
-                            startActivity(intent);
-                            finish();
                         } else {
                             Constant.snackBar(mainLayout, message);
                         }
@@ -633,6 +633,20 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 }
             });
         }
+    }
+
+    //""""""" setSignUpClientData """"""""""""//
+    private void setSignUpClientData(SignUpResponce userResponce) {
+        PreferenceConnector.writeBoolean(SignupActivity.this, PreferenceConnector.IS_LOG_IN, true);
+        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.AUTH_TOKEN, userResponce.getData().getAuthToken());
+        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
+                            /*PreferenceConnector.writeBoolean(SignupActivity.this, PreferenceConnector.IS_LOG_IN, true);
+                            PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.USER_INFO_JSON, response.toString());
+                            PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.AUTH_TOKEN, userResponce.getData().getAuthToken());
+                        */
+        Intent intent = new Intent(SignupActivity.this, ClientMainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     /*******Auto comple place picker***************/
@@ -697,15 +711,8 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                         String message = response.getString("message");
                         if (status.equals("success")) {
                             SignUpResponce userResponce = new Gson().fromJson(String.valueOf(response), SignUpResponce.class);
-                            Log.e("sign up response", userResponce.getData().toString());
-                            PreferenceConnector.writeBoolean(SignupActivity.this, PreferenceConnector.IS_LOG_IN, true);
                             PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.USER_INFO_JSON, response.toString());
-                            PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.AUTH_TOKEN, userResponce.getData().getAuthToken());
-                            PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.COMPLETE_PROFILE_STATUS, userResponce.getData().getCompleteProfile());
-                            PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
-                            Intent intent = new Intent(SignupActivity.this, CompleteProfileActivity.class);
-                            startActivity(intent);
-                            finish();
+                            setSignUpWorkerdata(userResponce);
 
                         } else {
                             Constant.snackBar(mainLayout, message);
@@ -723,6 +730,18 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 }
             });
         }
+    }
+
+    //"""""" set sign up responce """""""""""""//
+    private void setSignUpWorkerdata(SignUpResponce userResponce) {
+        Log.e("sign up response", userResponce.getData().toString());
+        PreferenceConnector.writeBoolean(SignupActivity.this, PreferenceConnector.IS_LOG_IN, true);
+        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.AUTH_TOKEN, userResponce.getData().getAuthToken());
+        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.COMPLETE_PROFILE_STATUS, userResponce.getData().getCompleteProfile());
+        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
+        Intent intent = new Intent(SignupActivity.this, CompleteProfileActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 

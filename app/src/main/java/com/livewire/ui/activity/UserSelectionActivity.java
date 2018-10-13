@@ -81,7 +81,6 @@ public class UserSelectionActivity extends AppCompatActivity implements View.OnC
                 wantToHireCardView.setCardElevation(10);
                 wantToWorkCardView.setCardElevation(2);
 
-
           /*      wantToHireCardView.setCardElevation(3);
                 wantToWorkCardView.setCardElevation(1);*/
 

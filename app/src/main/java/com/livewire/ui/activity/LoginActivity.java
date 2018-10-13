@@ -123,6 +123,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
+        //""' shake fields """"""""//
         shake = AnimationUtils.loadAnimation(this, R.anim.shakeanim);
         TextView tvLiveWire = findViewById(R.id.tv_live_wire);
         TextView btnSignup = findViewById(R.id.btn_signup);

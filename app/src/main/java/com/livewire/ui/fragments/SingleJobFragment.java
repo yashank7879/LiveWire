@@ -140,6 +140,7 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
 
     }
 
+    //"""""""" open date picker """""""""""'//
     private void openDatePicker() {
         final Calendar calendar = Calendar.getInstance();
         int mYear = calendar.get(Calendar.YEAR);
@@ -167,6 +168,7 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
         startDateDialog.show();
     }
 
+    //"""""" load skills data """"""""""//
     private void loadSkillsData() {
         if (Constant.isNetworkAvailable(mContext, mainLayout)) {
             progressDialog.show();
@@ -211,6 +213,7 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
         }
     }
 
+    //""""""""""" open skills data """""""""""//
     private void openSkillDialog() {
         if (Constant.isNetworkAvailable(mContext, mainLayout)) {
             final Dialog dialog = new Dialog(mContext);
@@ -251,6 +254,7 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
         }
     }
 
+    //"""""""" dialog validations """"""""""""""//
     private void skillDialogValidation(Spinner categorySpinner, RelativeLayout addSkillsLayout, Dialog dialog) {
         if (skillsResponce.getData().get(categorySpinner.getSelectedItemPosition()).getCategoryName().equals("Select Category")) {
             Constant.snackBar(addSkillsLayout, "Please Select Category");
@@ -263,6 +267,8 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
         }
     }
 
+
+    ///"""""""""" validations """""""""""""""//
     private void jobValidations() {
         if (Validation.isEmpty(tvSelectSkill)) {
             Constant.snackBar(mainLayout, "Please Select Skill");
@@ -291,6 +297,7 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
 
     }
 
+    //"""""""""""" single job creation """""""""" //
     private void singleJobCreationApi(JobCreationModel model) {
         if (Constant.isNetworkAvailable(mContext, mainLayout)) {
             progressDialog.show();

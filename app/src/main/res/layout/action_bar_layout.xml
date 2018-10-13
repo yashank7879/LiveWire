@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.loopeer.shadow.ShadowView
+        android:id="@+id/sv_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorWhite"
+        app:shadowColor="@color/colorDarkGray"
+        app:shadowMarginBottom="3dp"
+        app:shadowRadius="@dimen/_5sdp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp">
+
+        <TextView
+            android:id="@+id/btn_logout"
+            android:fontFamily="@font/poppins_medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Logout"
+            android:textColor="@color/colorGreen"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/_5sdp"
+            />
+
+        <TextView
+            android:id="@+id/tv_live_wire"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textSize="@dimen/_14sdp"
+            android:fontFamily="@font/poppins_medium"
+            />
+
+            <ImageView
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+
+                />
+
+        </RelativeLayout>
+
+    </com.loopeer.shadow.ShadowView>
+
+</RelativeLayout>

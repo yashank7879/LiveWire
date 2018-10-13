@@ -150,6 +150,7 @@ public class HelpOfferedFragment extends Fragment implements View.OnClickListene
         helpOfferedApi();
     }
 
+    //"""""""""" sub category list api """""""""""""//
     private void SubCategoryListApi() {
         if (Constant.isNetworkAvailable(mContext, mainLayout)) {
             AndroidNetworking.get(BASE_URL + "getSubcategoryList")
@@ -195,6 +196,7 @@ public class HelpOfferedFragment extends Fragment implements View.OnClickListene
         }
     }
 
+    //"""""" help offer list api calling"""""""""""//
     private void helpOfferedApi() {// help offer api calling
         if (Constant.isNetworkAvailable(mContext, mainLayout)) {
             progressDialog.show();
@@ -255,6 +257,7 @@ public class HelpOfferedFragment extends Fragment implements View.OnClickListene
         }
     }
 
+    //"""""""""open filter dialog"""""""""""""""""//
     private void openFilterDialog() {
         if (Constant.isNetworkAvailable(mContext, mainLayout) || subCategoryResponse != null) {
             final Dialog dialog = new Dialog(mContext);
@@ -270,6 +273,7 @@ public class HelpOfferedFragment extends Fragment implements View.OnClickListene
             TextView tvCancel = dialog.findViewById(R.id.tv_cancel);
             final RelativeLayout addSkillsLayout = dialog.findViewById(R.id.filter_layout);
             Button btnApplySkills = dialog.findViewById(R.id.btn_apply_skills);
+
 
             LinearLayoutManager layoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
             recyclerView.setLayoutManager(layoutManager);
@@ -340,6 +344,7 @@ public class HelpOfferedFragment extends Fragment implements View.OnClickListene
 
     }
 
+
     @Override
     public void subCategoryItemOnClick(int pos, CategoryModel categoryModel, String key) {
         if (key.equals("FilterKey")) {
@@ -382,6 +387,7 @@ public class HelpOfferedFragment extends Fragment implements View.OnClickListene
         return skillsStrin;
     }
 
+    //""""""' help offer listener """"""""""//
     @Override
     public void helpOfferItemOnClick(HelpOfferedResponce.DataBean dataBean,String key) {
         if (key.equals(getString(R.string.moreinfo))) {
@@ -390,18 +396,19 @@ public class HelpOfferedFragment extends Fragment implements View.OnClickListene
             startActivity(intent);
 
         }else if (key.equals(getString(R.string.sendrequest))){
-        sendRequestApi(dataBean.getJobId());
+        sendRequestApi(dataBean.getJobId(),dataBean.getUserId());
         }
     }
 
-    //Jobpost/sendRequest
-    private void sendRequestApi(String jobId) {
+    //"""""""" Jobpost/sendRequest  """""""""""""""//
+    private void sendRequestApi(String jobId, String userId) {
         if (Constant.isNetworkAvailable(mContext , mainLayout)){
             progressDialog.show();
             AndroidNetworking.post(BASE_URL + "Jobpost/sendRequest")
                     .addHeaders("authToken", PreferenceConnector.readString(mContext, PreferenceConnector.AUTH_TOKEN, ""))
                     .addBodyParameter("job_id", jobId)
                     .addBodyParameter("request_to", "2")
+                   // .addBodyParameter("request_to", userId)
                     .addBodyParameter("request_status", "0")
                     .setPriority(Priority.MEDIUM)
                     .build().getAsJSONObject(new JSONObjectRequestListener() {

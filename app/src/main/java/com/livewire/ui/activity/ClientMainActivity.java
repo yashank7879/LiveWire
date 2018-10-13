@@ -70,17 +70,17 @@ public class ClientMainActivity extends AppCompatActivity implements View.OnClic
         fm = getSupportFragmentManager();
 
         findViewById(R.id.btn_logout).setOnClickListener(this);
-        tabbar = (LinearLayout) findViewById(R.id.tabbar);
-        myJobLl = (LinearLayout) findViewById(R.id.my_job_ll);
-        ivMyJob = (ImageView) findViewById(R.id.iv_my_job);
-        notificationLl = (LinearLayout) findViewById(R.id.notification_ll);
-        ivNotification = (ImageView) findViewById(R.id.iv_notification);
-        addLl = (LinearLayout) findViewById(R.id.add_ll);
-        addImg = (ImageView) findViewById(R.id.add_img);
-        chatLl = (LinearLayout) findViewById(R.id.chat_ll);
-        ivChat = (ImageView) findViewById(R.id.iv_chat);
-        userSettingLl = (LinearLayout) findViewById(R.id.user_setting_ll);
-        ivUser = (ImageView) findViewById(R.id.iv_user);
+        tabbar =  findViewById(R.id.tabbar);
+        myJobLl =  findViewById(R.id.my_job_ll);
+        ivMyJob =  findViewById(R.id.iv_my_job);
+        notificationLl =  findViewById(R.id.notification_ll);
+        ivNotification =  findViewById(R.id.iv_notification);
+        addLl =  findViewById(R.id.add_ll);
+        addImg = findViewById(R.id.add_img);
+        chatLl =  findViewById(R.id.chat_ll);
+        ivChat =  findViewById(R.id.iv_chat);
+        userSettingLl =  findViewById(R.id.user_setting_ll);
+        ivUser =  findViewById(R.id.iv_user);
         containerId = findViewById(R.id.fl_container);
          tvLiveWire = findViewById(R.id.tv_live_wire);
         tvLiveWire.setText(liveWireText(this));

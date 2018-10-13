@@ -214,7 +214,9 @@ public class CompleteProfileActivity extends AppCompatActivity implements View.O
         }
     }
 
+    //""""""""""""""  intialize view """""""""""
     private void intializeView() {
+        //""""""" all permission """"""""""""
         PermissionAll permissionAll = new PermissionAll();
         permissionAll.RequestMultiplePermission(CompleteProfileActivity.this);
 
@@ -1143,6 +1145,7 @@ mediaFilesList.remove(0);
             String filePath = null;
             try {
 
+                //"""""""  silicon compressor video""""""""""""//
                 filePath = SiliCompressor.with(mContext).compressVideo(strings[0], strings[1]);
 
             } catch (URISyntaxException e) {

@@ -93,6 +93,7 @@ public class MyJobClientFragment extends Fragment {
     }
 
 
+    //""""""""""" My job list api     """"""""""""//
     private void myJobListApi() {// help offer api calling
         if (Constant.isNetworkAvailable(mContext, mainLayout)) {
             progressDialog.show();

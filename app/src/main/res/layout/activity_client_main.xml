@@ -18,8 +18,6 @@
         app:shadowMarginBottom="3dp"
         app:shadowRadius="@dimen/_5sdp">
 
-
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/_40sdp">
@@ -45,7 +43,6 @@
                 />
 
         </RelativeLayout>
-
 
     </com.loopeer.shadow.ShadowView>
 

@@ -55,7 +55,8 @@ public class JobDetailWorkerActivity extends AppCompatActivity implements View.O
     private RelativeLayout mainLayout;
     private ProgressDialog progressDialog;
     private Button btnSendRequest;
-    private String jobId;
+    private String jobId="";
+    private String userId="";
 
 
     @Override
@@ -128,8 +129,10 @@ public class JobDetailWorkerActivity extends AppCompatActivity implements View.O
         }
     }*/
 
+  //"""""""""set job deatil worker response data """""""""""
     private void setWorkerDataResponce(HelpOfferedResponce.DataBean jobDetail) {
         jobId = jobDetail.getJobId();
+        userId = jobDetail.getUserId();
         tvName.setText(jobDetail.getName());
         tvDistance.setText(jobDetail.getDistance_in_km() + " Km away");
         tvCategory.setText(jobDetail.getParentCategoryName());
@@ -176,7 +179,7 @@ public class JobDetailWorkerActivity extends AppCompatActivity implements View.O
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_send_request:
-                sendRequestApi(jobId);
+                sendRequestApi();
                 break;
             case R.id.iv_back:
                 onBackPressed();
@@ -185,13 +188,15 @@ public class JobDetailWorkerActivity extends AppCompatActivity implements View.O
         }
     }
 
-    private void sendRequestApi(String jobId) {
+    //"""""""""""  send request to
+    private void sendRequestApi() {
         if (Constant.isNetworkAvailable(this , mainLayout)){
             progressDialog.show();
             AndroidNetworking.post(BASE_URL + "Jobpost/sendRequest")
                     .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
                     .addBodyParameter("job_id", jobId)
-                    .addBodyParameter("request_to", "2")
+                    .addBodyParameter("request_to", userId)
+                    //.addBodyParameter("request_to", "2")
                     .addBodyParameter("request_status", "0")
                     .setPriority(Priority.MEDIUM)
                     .build().getAsJSONObject(new JSONObjectRequestListener() {

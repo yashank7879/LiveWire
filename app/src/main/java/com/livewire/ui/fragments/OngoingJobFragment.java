@@ -139,8 +139,6 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
         weekList.add( new WeekListModel( "Saturday",false));
         weekList.add( new WeekListModel( "Sunday",false));
 
-        Constant.hideSoftKeyBoard(mContext,etDescription);
-
 
         selectSkillsRl.setOnClickListener(this);
         jobStartDateRl.setOnClickListener(this);
@@ -175,6 +173,7 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
         }
     }
 
+    //""""""""""" open week dialog """""""""""""""//
     private void openWeekDialog() {
         final Dialog dialog = new Dialog(mContext);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -240,6 +239,7 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
         }
     }
 
+    //"""""""""  On going job creation api calling """""""""""//
     private void onGoingJobCreationApi(JobCreationModel model) {
         if (Constant.isNetworkAvailable(mContext, mainLayout)) {
             progressDialog.show();
@@ -381,6 +381,7 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
         }
     }
 
+    //"""""""""" skills dialog category and sub category """""""""""//
     private void openSkillDialog() {
         if (Constant.isNetworkAvailable(mContext, mainLayout)) {
             final Dialog dialog = new Dialog(mContext);
@@ -434,6 +435,7 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
         }
     }
 
+    //""""""""""""  Load category data """"""""""""""//
     private void loadSkillsData() {
         if (Constant.isNetworkAvailable(mContext, mainLayout)) {
             progressDialog.show();

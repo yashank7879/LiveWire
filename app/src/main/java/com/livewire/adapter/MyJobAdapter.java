@@ -13,15 +13,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.livewire.R;
-import com.livewire.responce.HelpOfferedResponce;
 import com.livewire.responce.MyjobResponceClient;
-import com.livewire.ui.fragments.MyJobClientFragment;
 import com.livewire.utils.Constant;
 import com.squareup.picasso.Picasso;
 
@@ -38,9 +38,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 
 public class MyJobAdapter extends RecyclerView.Adapter {
-    private static final int JOBCELL1 =1;
-    private static final int JOBCELL2 =2;
-    private static final int JOBCELL3 =3;
+    private static final int JOBCELL1 = 1;
+    private static final int JOBCELL2 = 2;
+    private static final int JOBCELL3 = 3;
     private Context mContext;
     private List<MyjobResponceClient.DataBean> myJobList;
 
@@ -62,19 +62,20 @@ public class MyJobAdapter extends RecyclerView.Adapter {
             return  JOBCELL3;
 
         }*/
-        }return 0;
+        }
+        return 0;
 
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        switch (viewType){
+        switch (viewType) {
             case JOBCELL1:
                 View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_cell1, parent, false);
                 return new MyViewHolderJob1(v);
 
-            case JOBCELL2 :
+            case JOBCELL2:
                 View v1 = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_cell2, parent, false);
                 return new MyViewHolderJob2(v1);
 
@@ -87,20 +88,20 @@ public class MyJobAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        switch (holder.getItemViewType()){
-            case JOBCELL1 :
+        switch (holder.getItemViewType()) {
+            case JOBCELL1:
                 MyViewHolderJob1 noImageHolder1 = (MyViewHolderJob1) holder;
-                setDataJobCell1(noImageHolder1,position);
+                setDataJobCell1(noImageHolder1, position);
                 break;
-            case JOBCELL2 :
+            case JOBCELL2:
                 MyViewHolderJob2 noImageHolder2 = (MyViewHolderJob2) holder;
-                setDataJobCell2(noImageHolder2,position);
+                setDataJobCell2(noImageHolder2, position);
                 break;
-            case JOBCELL3 :
+            case JOBCELL3:
                 MyViewHolderJob3 noImageHolder3 = (MyViewHolderJob3) holder;
-                setDataJobCell3(noImageHolder3,position);
+                setDataJobCell3(noImageHolder3, position);
                 break;
-                default:
+            default:
 
         }
     }
@@ -142,10 +143,11 @@ public class MyJobAdapter extends RecyclerView.Adapter {
             holder.tvCategory.setText(dataBean.getParent_category());
             holder.tvSubcategory.setText(dataBean.getSub_category());
             holder.tvBudget.setText("$ " + dataBean.getJob_budget());
-          //  holder.tvName.setText(dataBean.getName());
-           // holder.tvDistance.setText(dataBean.getDistance_in_km() + " Km away");
+            //  holder.tvName.setText(dataBean.getName());
+            // holder.tvDistance.setText(dataBean.getDistance_in_km() + " Km away");
             holder.tvTime.setText(Constant.getDayDifference(dataBean.getCrd(), dataBean.getCurrentTime()));
-            Picasso.with(holder.ivProfileImg.getContext()).load(dataBean.getRequestedUserData().get(0).getProfileImage()).fit().into(holder.ivProfileImg);
+
+            //Picasso.with(holder.fl_image.getContext()).load(dataBean.getRequestedUserData().get(0).getProfileImage()).fit().into(holder.fl_image);
 
             //********"2018-07-04" date format converted into "04 july 2018"***********//
             DateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
@@ -162,7 +164,57 @@ public class MyJobAdapter extends RecyclerView.Adapter {
             } catch (ParseException e) {
                 Log.e("k", e.getMessage());
             }
+            int leftMargin = 0;
+            for (int i = 0; i < dataBean.getRequestedUserData().size(); i++) {
+                if (i!=0) {
+                    leftMargin = leftMargin + 35;
+                }
+                addhorizontalTimeView(holder.fl_image, dataBean.getRequestedUserData().get(i).getProfileImage(), leftMargin);
+            }
+           /* LayoutInflater vi = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+           View layout = vi.inflate(R.layout.multiple_image_cell, null);
+         //   mfView = (SingleFingerView) v1.findViewById(R.id.draw);
+            CircleImageView circleImageView = layout.findViewById(R.id.iv_profile);
+            circleImageView.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.livelogo));*/
+     /*      CircleImageView circleImageView=new CircleImageView(mContext);
+           circleImageView.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.livelogo));
+           holder.fl_image.removeAllViews();
+            holder.fl_image.addView(circleImageView);
+            holder.fl_image.addView(circleImageView);
+            holder.fl_image.addView(circleImageView);
+            holder.fl_image.addView(circleImageView);*/
+          /*  for (int i =0 ; i<dataBean.getRequestedUserData().size();i++){
+            CircleImageView circleImageView = layout.findViewById(R.id.iv_profile);
+            RelativeLayout rl_imageview = layout.findViewById(R.id.rl_imageview);
+              //  Picasso.with(circleImageView.getContext()).load(dataBean.getRequestedUserData().get(i).getProfileImage()).fit().into(circleImageView);
+
+                holder.fl_image.addView(circleImageView);
+                }*/
+
         }
+
+
+/*
+// Parent layout
+            FrameLayout parentLayout = (FrameLayout) findViewById(R.id.multiple_image_cell);
+
+// Layout inflater
+            LayoutInflater layoutInflater = getLayoutInflater();
+            View view;
+
+            for (int i = 1; i < 101; i++) {
+                // Add the text layout to the parent layout
+                view = layoutInflater.inflate(R.layout.text_layout, parentLayout, false);
+
+                // In order to get the view we have to use the new view with text_layout in it
+                TextView textView = (TextView) view.findViewById(R.id.text);
+                textView.setText("Row " + i);
+
+                // Add the text view to the parent layout
+                parentLayout.addView(textView);
+            }
+*/
+
 
     }
 
@@ -173,18 +225,18 @@ public class MyJobAdapter extends RecyclerView.Adapter {
     }
 
     public class MyViewHolderJob1 extends RecyclerView.ViewHolder {
-         TextView tvDate;
-         TextView tvTime;
-         View viewId;
-         TextView tvCategory;
-         TextView tvSubcategory;
-         TextView budget;
-         TextView tvBudget;
-         View view1Id;
-         CircleImageView ivProfileImg;
-         TextView tvRequested;
-         LinearLayout llMoreInfo;
-         TextView tvMoreInfo;
+        TextView tvDate;
+        TextView tvTime;
+        View viewId;
+        TextView tvCategory;
+        TextView tvSubcategory;
+        TextView budget;
+        TextView tvBudget;
+        View view1Id;
+        FrameLayout fl_image;
+        TextView tvRequested;
+        LinearLayout llMoreInfo;
+        TextView tvMoreInfo;
 
         public MyViewHolderJob1(View itemView) {
             super(itemView);
@@ -196,10 +248,11 @@ public class MyJobAdapter extends RecyclerView.Adapter {
             budget = (TextView) itemView.findViewById(R.id.budget);
             tvBudget = (TextView) itemView.findViewById(R.id.tv_budget);
             view1Id = (View) itemView.findViewById(R.id.view1_id);
-            ivProfileImg = (CircleImageView) itemView.findViewById(R.id.iv_profile_img);
+            fl_image = itemView.findViewById(R.id.iv_profile_img);
             tvRequested = (TextView) itemView.findViewById(R.id.tv_requested);
             llMoreInfo = (LinearLayout) itemView.findViewById(R.id.ll_more_info);
             tvMoreInfo = (TextView) itemView.findViewById(R.id.tv_more_info);
+
         }
     }
 
@@ -221,25 +274,26 @@ public class MyJobAdapter extends RecyclerView.Adapter {
         private TextView requestPending;
         private LinearLayout llMoreInfo;
         private TextView tvMoreInfo;
+
         public MyViewHolderJob2(View view) {
             super(view);
-            tvDate = (TextView) view.findViewById(R.id.tv_date);
-            tvTime = (TextView) view.findViewById(R.id.tv_time);
-            viewId = (View) view.findViewById(R.id.view_id);
-            tvCategory = (TextView) view.findViewById(R.id.tv_category);
-            tvSubcategory = (TextView) view.findViewById(R.id.tv_subcategory);
-            budget = (TextView) view.findViewById(R.id.budget);
-            tvBudget = (TextView) view.findViewById(R.id.tv_budget);
-            view1Id = (View) view.findViewById(R.id.view1_id);
-            prfileLayout = (RelativeLayout) view.findViewById(R.id.prfile_layout);
-            ivProfileImg = (CircleImageView) view.findViewById(R.id.iv_profile_img);
-            tvName = (TextView) view.findViewById(R.id.tv_name);
-            ratingBar = (RatingBar) view.findViewById(R.id.rating_bar);
-            tvDistance = (TextView) view.findViewById(R.id.tv_distance);
-            tvJobConfirm = (TextView) view.findViewById(R.id.tv_job_confirm);
-            requestPending = (TextView) view.findViewById(R.id.request_pending);
-            llMoreInfo = (LinearLayout) view.findViewById(R.id.ll_more_info);
-            tvMoreInfo = (TextView) view.findViewById(R.id.tv_more_info);
+            tvDate = view.findViewById(R.id.tv_date);
+            tvTime = view.findViewById(R.id.tv_time);
+            viewId = view.findViewById(R.id.view_id);
+            tvCategory = view.findViewById(R.id.tv_category);
+            tvSubcategory = view.findViewById(R.id.tv_subcategory);
+            budget = view.findViewById(R.id.budget);
+            tvBudget = view.findViewById(R.id.tv_budget);
+            view1Id = view.findViewById(R.id.view1_id);
+            prfileLayout = view.findViewById(R.id.prfile_layout);
+            ivProfileImg = view.findViewById(R.id.iv_profile_img);
+            tvName = view.findViewById(R.id.tv_name);
+            ratingBar = view.findViewById(R.id.rating_bar);
+            tvDistance = view.findViewById(R.id.tv_distance);
+            tvJobConfirm = view.findViewById(R.id.tv_job_confirm);
+            requestPending = view.findViewById(R.id.request_pending);
+            llMoreInfo = view.findViewById(R.id.ll_more_info);
+            tvMoreInfo = view.findViewById(R.id.tv_more_info);
         }
     }
 
@@ -248,58 +302,53 @@ public class MyJobAdapter extends RecyclerView.Adapter {
             super(v3);
         }
     }
-    private SpannableStringBuilder dateTextColorChange(String start){
+
+    private SpannableStringBuilder dateTextColorChange(String start) {
         SpannableStringBuilder builder = new SpannableStringBuilder();
-        SpannableString userName = new SpannableString(start.substring(0,2)+" ");
+        SpannableString userName = new SpannableString(start.substring(0, 2) + " ");
         userName.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.colorDarkBlack)), 0, 2, 0);
         userName.setSpan(new StyleSpan(Typeface.BOLD), 0, userName.length(), 0);
         builder.append(userName);
         SpannableString interesString = new SpannableString(start.substring(3));
 //                interesString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.colorDarkBlack)), 3, start.length(), 0);
         builder.append(interesString);
-        return  builder;
+        return builder;
+    }
+
+    void addhorizontalTimeView(FrameLayout linearLayout, String profileImage, int leftMargin) {
+        LayoutInflater layoutInflater;
+        layoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        final View v = layoutInflater.inflate(R.layout.multiple_image_cell, linearLayout, false);
+
+        final ImageView showTime = v.findViewById(R.id.iv_profile);
+
+        Picasso.with(showTime.getContext()).load(profileImage).fit().into(showTime);
+
+        // Get the TextView current LayoutParams
+        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) showTime.getLayoutParams();
+
+        // Set TextView layout margin 25 pixels to all side
+        // Left Top Right Bottom Margin
+        lp.setMargins(leftMargin, 0, 0, 0);
+
+        // Apply the updated layout parameters to TextView
+        showTime.setLayoutParams(lp);
+        // final LinearLayout openCal = (LinearLayout) v.findViewById(R.id.open_cal);
+     /*   openCal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setTimeField(showTime);
+            }
+        });*/
+     /*   MonthlyOrderEntryBean newOrderEntryBean = new MonthlyOrderEntryBean();
+        MonthlyOrderEntryBean.TimeTextView timeTextView = newOrderEntryBean.new TimeTextView();
+        timeTextView.setOrderTimeTextView(showTime);
+        timeTextViewArrayList.add(timeTextView);
+        orderEntryBeanArrayList.get(linearPos).setTimeTextViews(timeTextViewArrayList);*/
+        linearLayout.addView(v);
     }
 }
 
 
-/*
 
-   rotected class ViewHolder {
-        private TextView tvDate;
-    private TextView tvTime;
-    private View viewId;
-    private TextView tvCategory;
-    private TextView tvSubcategory;
-    private TextView budget;
-    private TextView tvBudget;
-    private View view1Id;
-    private RelativeLayout prfileLayout;
-    private CircleImageView ivProfileImg;
-    private TextView tvName;
-    private RatingBar ratingBar;
-    private TextView tvDistance;
-    private TextView tvJobConfirm;
-    private TextView requestPending;
-    private LinearLayout llMoreInfo;
-    private TextView tvMoreInfo;
-
-        public ViewHolder(View view) {
-            tvDate = (TextView) view.findViewById(R.id.tv_date);
-            tvTime = (TextView) view.findViewById(R.id.tv_time);
-            viewId = (View) view.findViewById(R.id.view_id);
-            tvCategory = (TextView) view.findViewById(R.id.tv_category);
-            tvSubcategory = (TextView) view.findViewById(R.id.tv_subcategory);
-            budget = (TextView) view.findViewById(R.id.budget);
-            tvBudget = (TextView) view.findViewById(R.id.tv_budget);
-            view1Id = (View) view.findViewById(R.id.view1_id);
-            prfileLayout = (RelativeLayout) view.findViewById(R.id.prfile_layout);
-            ivProfileImg = (CircleImageView) view.findViewById(R.id.iv_profile_img);
-            tvName = (TextView) view.findViewById(R.id.tv_name);
-            ratingBar = (RatingBar) view.findViewById(R.id.rating_bar);
-            tvDistance = (TextView) view.findViewById(R.id.tv_distance);
-            tvJobConfirm = (TextView) view.findViewById(R.id.tv_job_confirm);
-            requestPending = (TextView) view.findViewById(R.id.request_pending);
-            llMoreInfo = (LinearLayout) view.findViewById(R.id.ll_more_info);
-            tvMoreInfo = (TextView) view.findViewById(R.id.tv_more_info);
-        }
-}*/
