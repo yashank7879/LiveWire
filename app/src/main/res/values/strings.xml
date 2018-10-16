@@ -93,5 +93,15 @@
     <string name="rate_i_can_offer">RATE I CAN OFFER</string>
     <string name="enter_offer_rate_per_hour">Enter Offer Rate (Per hour)</string>
     <string name="job_confirmed">Job Confirmed</string>
+    <string name="my_jobs">MY JOBS</string>
+    <string name="logout">Logout</string>
+    <string name="settings">Settings</string>
+    <string name="single_project_task">Single Project Task</string>
+    <string name="confirm_request">Confirm Request</string>
+    <string name="ongoing_help">OnGoing Help</string>
+    <string name="record_not_found">Record not found</string>
+    <string name="login_with_facebook">Login with Facebook</string>
+    <string name="accept">Accept</string>
+    <string name="request">Request</string>
 
 </resources>

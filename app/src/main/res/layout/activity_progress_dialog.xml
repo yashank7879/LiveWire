@@ -12,6 +12,9 @@
         android:layout_gravity="center"
         android:visibility="visible"
         android:background="@color/colorTransparent"
+        android:indeterminate="true"
+        android:indeterminateTintMode="src_atop"
+        android:indeterminateTint="@color/colorDarkBlack"
         />
 
 </LinearLayout>

@@ -18,11 +18,10 @@
         android:allowBackup="true"
         android:icon="@drawable/livelogo"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:roundIcon="@drawable/livelogo"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:largeHeap="true"
-        >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".ui.activity.SplashActivity"
             android:screenOrientation="portrait"
@@ -88,11 +87,11 @@
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
-
         <activity
             android:name=".ui.activity.NearYouClientActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity android:name=".ui.activity.RequestClientActivity"></activity>
     </application>
 
 </manifest>

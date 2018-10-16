@@ -1,4 +1,4 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,6 +7,15 @@
     android:id="@+id/main_layout"
     >
 
+    <include layout="@layout/action_bar_layout"
+        android:id="@+id/action_bar1"/>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/action_bar1"
+        >
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_myjob"
@@ -14,26 +23,21 @@
         android:layout_height="wrap_content">
 
     </android.support.v7.widget.RecyclerView>
-    <!-- TODO: Update blank fragment layout -->
-    <Button
-        android:id="@+id/btn_near_you"
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+
+    <TextView
+        android:id="@+id/tv_no_record"
+        style="@style/SmallPopinsMediumStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/near_you"
-        android:layout_gravity="center"
-        android:background="@drawable/button_green_bg"
-        android:textColor="@color/colorWhite"
+        android:text="@string/record_not_found"
+        android:layout_centerInParent="true"
         android:visibility="gone"
         />
-
-   <!-- <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Under devlopment mode"
-        android:layout_gravity="center"
-        />-->
 
     <!--android:elevation="8dp"
             android:translationZ="5dp"
             android:background="@drawable/my_react"-->
-</FrameLayout>
+</RelativeLayout>

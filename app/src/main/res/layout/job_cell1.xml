@@ -114,7 +114,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:fontFamily="@font/poppins_semibold"
-                android:text="10 member request"
+                android:text="member request"
                 android:textColor="@color/colorDarkGray"
                 android:textSize="@dimen/_11sdp" />
 

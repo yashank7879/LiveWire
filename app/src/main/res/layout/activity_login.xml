@@ -149,7 +149,7 @@
                         android:id="@+id/iv_cBox"
                         android:layout_width="@dimen/_15sdp"
                         android:layout_height="@dimen/_15sdp"
-                        android:src="@drawable/ic_uncheck" />
+                        app:srcCompat="@drawable/ic_uncheck" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -225,7 +225,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:weightSum="2"
-                >
+                android:baselineAligned="false">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -242,7 +242,7 @@
                         android:layout_height="@dimen/_32sdp"
                         android:src="@drawable/google_icon"
                         android:padding="@dimen/_7sdp"
-                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_marginStart="@dimen/_5sdp"
                         android:background="@drawable/blue_holo_shape" />
 
                     <TextView
@@ -281,10 +281,10 @@
                         android:background="@drawable/fb_btn_shape"
                         android:gravity="center"
                         android:fontFamily="@font/poppins_light"
-                        android:text="Login with Facebook"
+                        android:text="@string/login_with_facebook"
                         android:textColor="@color/colorWhite"
                         android:textSize="@dimen/_10sdp"
-                        android:layout_marginRight="@dimen/_5sdp"
+                        android:layout_marginEnd="@dimen/_5sdp"
                         />
 
                 </LinearLayout>

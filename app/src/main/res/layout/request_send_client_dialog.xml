@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/dialog_bg">
+    android:background="@drawable/dialog_bg"
+    android:id="@+id/c_dialog_main_layout"
+    >
 
     <TextView
         android:id="@+id/heading"
@@ -20,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@+id/heading"
-        android:background="@color/colorLightGray" />
+        android:background="@color/colorExtraLightGray" />
 
     <ImageView
         android:id="@+id/iv_money"
@@ -29,7 +31,7 @@
         android:layout_below="@id/view1_id"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/_10sdp"
-        app:srcCompat="@drawable/ic_user_setting" />
+        app:srcCompat="@drawable/ic_payment" />
 
     <TextView
         android:id="@+id/tv_content"
@@ -55,6 +57,7 @@
         android:textColor="@color/colorDarkBlack" />
 
     <EditText
+        android:id="@+id/et_offer_price"
         style="@style/SmallPopinsLightStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

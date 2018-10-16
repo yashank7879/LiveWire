@@ -59,6 +59,7 @@ public class MyjobResponceClient {
          * crd : 2018-09-23 23:04:47
          * total_request : 2
          * job_confirmed : 0
+         * job_offer: ""/null
          * currentTime : 2018-10-12 03:42:23
          * requestedUserData : [{"userId":"2","name":"shekhar","profileImage":"http://dev.livewire.work/./uploads/profile/thumb/dBhYSx8ZuHcmV0C5.jpg","request_status":"0","distance_in_km":"16.2"},{"userId":"56","name":"Yashu","profileImage":"http://dev.livewire.work/./uploads/profile/thumb/vcyf0PR2Gr3LVgCb.jpeg","request_status":"0","distance_in_km":"4988.9"}]
          */
@@ -80,6 +81,7 @@ public class MyjobResponceClient {
         private String total_request;
         private String job_confirmed;
         private String currentTime;
+        private String job_offer;
         private List<RequestedUserDataBean> requestedUserData;
 
         public String getUserId() {
@@ -226,6 +228,14 @@ public class MyjobResponceClient {
             this.requestedUserData = requestedUserData;
         }
 
+        public String getJob_offer() {
+            return job_offer;
+        }
+
+        public void setJob_offer(String job_offer) {
+            this.job_offer = job_offer;
+        }
+
         public static class RequestedUserDataBean {
             /**
              * userId : 2
@@ -240,6 +250,26 @@ public class MyjobResponceClient {
             private String profileImage;
             private String request_status;
             private String distance_in_km;
+            private String max_rate;
+            private String min_rate;
+
+
+            public String getMax_rate() {
+                return max_rate;
+            }
+
+            public void setMax_rate(String max_rate) {
+                this.max_rate = max_rate;
+            }
+
+            public String getMin_rate() {
+                return min_rate;
+            }
+
+            public void setMin_rate(String min_rate) {
+                this.min_rate = min_rate;
+            }
+
 
             public String getUserId() {
                 return userId;

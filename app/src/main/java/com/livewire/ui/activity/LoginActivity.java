@@ -43,6 +43,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.gson.Gson;
 import com.livewire.R;
 import com.livewire.model.UserModel;
@@ -422,18 +424,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             if (userResponce.getData().getUserType().equals("worker")) {// if user is worker
                                 Intent intent = null;
                                 if (userResponce.getData().getCompleteProfile().equals("0")) { // if worker not complete own profile
+                                    soicialLogOut();
                                     finishAffinity();
                                     intent = new Intent(LoginActivity.this, CompleteProfileActivity.class);
                                     intent.putExtra("imageKey", imageUrl);
                                     startActivity(intent);
                                     finish();
                                 } else if (userResponce.getData().getCompleteProfile().equals("1")) {// if worker complete own profile
+                                    soicialLogOut();
                                     finishAffinity();
-                                    intent = new Intent(LoginActivity.this, CompleteProfileActivity.class);
+                                    intent = new Intent(LoginActivity.this, WorkerMainActivity.class);
                                     startActivity(intent);
                                     finish();
                                 }
                             } else { // if user is Client
+                                soicialLogOut();
                                 finishAffinity();
                                 Intent intent = new Intent(LoginActivity.this, ClientMainActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -447,7 +452,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                         } else {
                             if (message.equals("Invalid user type")){
-                                LoginManager.getInstance().logOut();
+                                soicialLogOut();
                             }
                             Constant.snackBar(mainLayout, message);
                         }
@@ -464,6 +469,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             });
         }
     }
+
+   private void soicialLogOut(){
+       LoginManager.getInstance().logOut();// fb logout
+       Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback( // google logout
+               new ResultCallback<Status>() {
+                   @Override
+                   public void onResult(Status status) {
+                   }
+               });
+   }
 
     //""""""""""registration validations""""""//
     private void fieldValidation() {

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -44,6 +45,7 @@ public class SplashActivity extends AppCompatActivity {
         upperFl = findViewById(R.id.fl_upper);
         image = findViewById(R.id.image_view);
         tvLiveWire = findViewById(R.id.tv_live_wire);
+        Log.e("authToken",PreferenceConnector.readString(this,PreferenceConnector.AUTH_TOKEN,""));
         zoomOut = AnimationUtils.loadAnimation(this, R.anim.zoom_out);
         imageRotatorAndTextColorChange();
          mRunnable = new Runnable() {

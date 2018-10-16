@@ -8,7 +8,7 @@
     android:background="@color/colorWhite"
     >
 
-    <com.loopeer.shadow.ShadowView
+ <!--   <com.loopeer.shadow.ShadowView
         android:id="@+id/sv_action_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -44,14 +44,13 @@
 
         </RelativeLayout>
 
-    </com.loopeer.shadow.ShadowView>
+    </com.loopeer.shadow.ShadowView>-->
 
     <FrameLayout
         android:id="@+id/fl_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/sv_tabbar"
-        android:layout_below="@+id/sv_action_bar"
         />
 
     <!--<TextView
@@ -98,7 +97,9 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="?android:attr/selectableItemBackground"
+                >
 
                 <ImageView
                     android:id="@+id/iv_my_job"
@@ -118,7 +119,9 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="?android:attr/selectableItemBackground"
+                >
 
                 <ImageView
                     android:id="@+id/iv_notification"
@@ -157,7 +160,9 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="?android:attr/selectableItemBackground"
+                >
 
                 <ImageView
                     android:id="@+id/iv_chat"
@@ -178,7 +183,9 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="?android:attr/selectableItemBackground"
+                >
 
                 <ImageView
                     android:id="@+id/iv_user"

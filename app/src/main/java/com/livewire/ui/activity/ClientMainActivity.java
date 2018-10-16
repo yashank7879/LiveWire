@@ -32,6 +32,7 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.livewire.R;
 import com.livewire.ui.fragments.MyJobClientFragment;
+import com.livewire.ui.fragments.MyProfileClientFragment;
 import com.livewire.ui.fragments.PostJobHomeFragment;
 import com.livewire.utils.PreferenceConnector;
 
@@ -69,7 +70,7 @@ public class ClientMainActivity extends AppCompatActivity implements View.OnClic
     private void intializeViews() {
         fm = getSupportFragmentManager();
 
-        findViewById(R.id.btn_logout).setOnClickListener(this);
+//        findViewById(R.id.btn_logout).setOnClickListener(this);
         tabbar =  findViewById(R.id.tabbar);
         myJobLl =  findViewById(R.id.my_job_ll);
         ivMyJob =  findViewById(R.id.iv_my_job);
@@ -82,8 +83,8 @@ public class ClientMainActivity extends AppCompatActivity implements View.OnClic
         userSettingLl =  findViewById(R.id.user_setting_ll);
         ivUser =  findViewById(R.id.iv_user);
         containerId = findViewById(R.id.fl_container);
-         tvLiveWire = findViewById(R.id.tv_live_wire);
-        tvLiveWire.setText(liveWireText(this));
+      //   tvLiveWire = findViewById(R.id.tv_live_wire);
+//        tvLiveWire.setText(liveWireText(this));
 
 
         myJobLl.setOnClickListener(this);
@@ -92,9 +93,18 @@ public class ClientMainActivity extends AppCompatActivity implements View.OnClic
         chatLl.setOnClickListener(this);
         userSettingLl.setOnClickListener(this);
 
-        replaceFragment(new PostJobHomeFragment(), false, R.id.fl_container); // first time replace home fragment
+        if (getIntent().getStringExtra("NearYouKey") != null){//get intent from NearYouClientActivity
+            replaceFragment(new MyJobClientFragment(), false, R.id.fl_container); // first time replace home fragment
+            inActiveTab();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                ivMyJob.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorGreen)));
+            }
+            clickId = R.id.my_job_ll;
+        }else {
+            replaceFragment(new PostJobHomeFragment(), false, R.id.fl_container); // first time replace home fragment
+            clickId = R.id.add_ll;
+        }
 
-        clickId = R.id.add_ll;
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -108,28 +118,14 @@ public class ClientMainActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_logout:
-                PreferenceConnector.clear(ClientMainActivity.this);
-                LoginManager.getInstance().logOut();
-                Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-                        new ResultCallback<Status>() {
-                            @Override
-                            public void onResult(Status status) {
-                            }
-                        });
-                PreferenceConnector.clear(this);
-                Intent intent = new Intent(this, UserSelectionActivity.class);
-                startActivity(intent);
-                finish();
-                break;
             case R.id.my_job_ll:
                 if (clickId != R.id.my_job_ll) {
                     inActiveTab();
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         ivMyJob.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorGreen)));
                     }
-                    tvLiveWire.setText("MY JOBS");
-                    tvLiveWire.setTextColor(ContextCompat.getColor(this,R.color.colorGreen));
+//                    tvLiveWire.setText("MY JOBS");
+                  //  tvLiveWire.setTextColor(ContextCompat.getColor(this,R.color.colorGreen));
                     replaceFragment(new MyJobClientFragment(), false, R.id.fl_container); // first time replace home fragment
 
                     clickId = R.id.my_job_ll;
@@ -146,7 +142,7 @@ public class ClientMainActivity extends AppCompatActivity implements View.OnClic
                 break;
 
             case R.id.add_ll:
-                tvLiveWire.setText(liveWireText(this));
+              //  tvLiveWire.setText(liveWireText(this));
                 replaceFragment(new PostJobHomeFragment(), false, R.id.fl_container);
                 if (clickId != R.id.add_ll) {
                     inActiveTab();
@@ -170,6 +166,7 @@ public class ClientMainActivity extends AppCompatActivity implements View.OnClic
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         ivUser.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorGreen)));
                     }
+                    replaceFragment(new MyProfileClientFragment(),false,R.id.fl_container);
                     clickId = R.id.user_setting_ll;
                 }
                 break;

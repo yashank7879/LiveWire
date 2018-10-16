@@ -4,14 +4,19 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <include layout="@layout/action_bar_layout"
+        android:id="@+id/action_bar"
+        />
+
     <com.loopeer.shadow.ShadowView
         android:id="@+id/sv_action_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         app:shadowColor="@color/colorDarkGray"
         app:shadowMarginBottom="3dp"
-        app:shadowRadius="@dimen/_5sdp">
+        app:shadowRadius="@dimen/_5sdp"
+        android:layout_below="@+id/action_bar"
+        >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -62,6 +67,7 @@
         app:tabSelectedTextColor="@color/colorGreen"
         app:tabMode="fixed"
         app:tabIndicatorColor="@color/colorGreen"
+        android:layout_below="@+id/action_bar"
         />
 
     <android.support.v4.view.ViewPager

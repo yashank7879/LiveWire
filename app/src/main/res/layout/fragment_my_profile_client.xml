@@ -1,0 +1,23 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.livewire.ui.fragments.MyProfileClientFragment">
+
+    <include layout="@layout/action_bar_layout"
+        android:id="@+id/action_bar1"/>
+
+    <Button
+        android:id="@+id/btn_logout"
+        android:layout_width="@dimen/_200sdp"
+        android:layout_height="@dimen/_32sdp"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/_15sdp"
+        android:background="@drawable/button_green_bg"
+        android:fontFamily="@font/poppins_light"
+        android:text="@string/logout"
+        android:textAllCaps="false"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/_14sdp" />
+
+</FrameLayout>

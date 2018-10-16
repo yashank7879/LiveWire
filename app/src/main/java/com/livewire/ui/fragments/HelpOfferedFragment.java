@@ -150,6 +150,12 @@ public class HelpOfferedFragment extends Fragment implements View.OnClickListene
         helpOfferedApi();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        helpOfferedApi();
+    }
+
     //"""""""""" sub category list api """""""""""""//
     private void SubCategoryListApi() {
         if (Constant.isNetworkAvailable(mContext, mainLayout)) {
@@ -404,11 +410,11 @@ public class HelpOfferedFragment extends Fragment implements View.OnClickListene
     private void sendRequestApi(String jobId, String userId) {
         if (Constant.isNetworkAvailable(mContext , mainLayout)){
             progressDialog.show();
-            AndroidNetworking.post(BASE_URL + "Jobpost/sendRequest")
+            AndroidNetworking.post(BASE_URL + "Jobpost/sendRequest2")
                     .addHeaders("authToken", PreferenceConnector.readString(mContext, PreferenceConnector.AUTH_TOKEN, ""))
                     .addBodyParameter("job_id", jobId)
-                    .addBodyParameter("request_to", "2")
-                   // .addBodyParameter("request_to", userId)
+                    //.addBodyParameter("request_to", "2")
+                    .addBodyParameter("request_to", userId)
                     .addBodyParameter("request_status", "0")
                     .setPriority(Priority.MEDIUM)
                     .build().getAsJSONObject(new JSONObjectRequestListener() {

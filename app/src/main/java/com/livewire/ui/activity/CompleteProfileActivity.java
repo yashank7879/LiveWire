@@ -309,7 +309,9 @@ public class CompleteProfileActivity extends AppCompatActivity implements View.O
             Constant.snackBar(mainLayout, "please add introvideo");
         } else {
           profileImageFileList = new ArrayList<>();
-          profileImageFileList.add(imageFile);
+          if (imageFile != null) {
+              profileImageFileList.add(imageFile);
+          }
             mPram = new HashMap<>();
 
 
