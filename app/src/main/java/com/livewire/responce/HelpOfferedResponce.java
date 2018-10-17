@@ -65,23 +65,23 @@ public class HelpOfferedResponce implements Serializable {
          * distance_in_km : 186.1
          */
 
-        private String userId;
-        private String name;
-        private String profileImage;
-        private String jobId;
-        private String category_id;
-        private String job_start_date;
-        private String job_budget;
-        private String job_location;
-        private String job_latitude;
-        private String job_longitude;
-        private String job_description;
-        private String crd;
-        private String parentCategoryName;
-        private String subCategoryName;
-        private String distance_in_km;
-        private String currentTime;
-        private String job_confirmed;
+        private String userId="";
+        private String name="";
+        private String profileImage="";
+        private String jobId="";
+        private String category_id="";
+        private String job_start_date="";
+        private String job_budget="";
+        private String job_location="";
+        private String job_latitude="";
+        private String job_longitude="";
+        private String job_description="";
+        private String crd="";
+        private String parentCategoryName="";
+        private String subCategoryName="";
+        private String distance_in_km="";
+        private String currentTime="";
+        private String job_confirmed="";
 
         public String getUserId() {
             return userId;

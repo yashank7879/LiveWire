@@ -87,7 +87,9 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_45sdp"
             android:orientation="horizontal"
-            android:weightSum="5">
+            android:weightSum="5"
+            android:background="@color/colorWhite"
+            >
 
             <LinearLayout
                 android:id="@+id/my_job_ll"

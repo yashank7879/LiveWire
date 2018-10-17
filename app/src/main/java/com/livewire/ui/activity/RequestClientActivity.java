@@ -30,7 +30,7 @@ import java.util.List;
 
 import static com.livewire.utils.ApiCollection.BASE_URL;
 
-public class RequestClientActivity extends AppCompatActivity {
+public class RequestClientActivity extends AppCompatActivity implements View.OnClickListener {
     private ProgressDialog progressDialog;
     private RelativeLayout mainLayout;
     private List<RequestResponceClient.DataBean> requestList;
@@ -64,6 +64,9 @@ public class RequestClientActivity extends AppCompatActivity {
         header.setText(R.string.request);
         header.setTextColor(ContextCompat.getColor(this, R.color.colorGreen));
         ImageView ivFilter = actionBar.findViewById(R.id.iv_filter);
+        ImageView ivBack = actionBar.findViewById(R.id.iv_back);
+        ivBack.setVisibility(View.VISIBLE);
+        ivBack.setOnClickListener(this);
         ivFilter.setVisibility(View.GONE);
     }
 
@@ -116,4 +119,13 @@ public class RequestClientActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.iv_back:
+                onBackPressed();
+                break;
+        }
+
+    }
 }

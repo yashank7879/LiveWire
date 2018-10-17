@@ -81,7 +81,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_toEndOf="@id/tv_subcategory"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <TextView
                 android:id="@+id/offered_price"
@@ -121,17 +121,23 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_below="@+id/tv_subcategory"
-            android:layout_marginBottom="@dimen/_8sdp"
             android:layout_marginTop="@dimen/_8sdp"
             android:background="@color/colorExtraLightGray" />
 
+        <RelativeLayout
+            android:id="@+id/rl_dat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/view1_id"
+            android:paddingTop="@dimen/_8sdp"
+            android:paddingBottom="@dimen/_8sdp"
+            >
 
         <!--gone-->
         <RelativeLayout
             android:id="@+id/rl_data"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/view1_id"
             android:visibility="gone">
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -201,7 +207,7 @@
                 android:layout_marginTop="@dimen/_2sdp"
                 android:layout_toEndOf="@id/iv_profile_img"
                 android:fontFamily="@font/poppins_medium"
-                android:text=""
+                android:text="@string/pending_request"
                 android:textColor="@color/colorOrange"
                 android:textSize="@dimen/_11sdp" />
 
@@ -212,7 +218,6 @@
             android:id="@+id/rl_range"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/view1_id"
             android:layout_toEndOf="@+id/rl_data"
             android:visibility="gone">
 
@@ -232,7 +237,7 @@
                 style="@style/smallPopinsRegularStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toLeftOf="@+id/hr1"
+                android:layout_toStartOf="@+id/hr1"
                 android:layout_below="@+id/btn_send_request"
                 android:text="$ 400.80 to 700.00/"
                 />
@@ -244,7 +249,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@+id/tv_range_price"
                 android:text="@string/hr"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:textColor="@color/colorDarkBlack"
                 android:textSize="@dimen/_8sdp" />
 
@@ -285,12 +290,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/view1_id"
-            android:paddingBottom="@dimen/_5sdp"
-            android:paddingTop="@dimen/_5sdp"
-            android:text="No Offer request yet"
+            android:layout_centerVertical="true"
+            android:text="@string/no_offer_request_yet"
             android:textSize="@dimen/_10sdp"
-            android:visibility="visible" />
+            android:visibility="visible"
+            android:padding="@dimen/_5sdp"
+            />
+
+        </RelativeLayout>
 
     </RelativeLayout>
 

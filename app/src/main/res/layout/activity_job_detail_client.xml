@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:background="@color/colorWhite"
     android:id="@+id/detail_main_layout"
-    tools:context="com.livewire.ui.activity.JobDetailWorkerActivity">
+   >
 
     <com.loopeer.shadow.ShadowView
         android:id="@+id/action_bar"
@@ -57,23 +57,30 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/_10sdp">
 
             <TextView
                 style="@style/SmallPopinsMediumStyle"
                 android:id="@+id/tv_posted_by"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_8sdp"
-                android:text="@string/posted_by"
+                android:text="Requests"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginBottom="@dimen/_8sdp"
                 android:textColor="@color/colorGreen" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_posted_by"
+                android:id="@+id/rl_user_data"
+                >
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/iv_profile_img"
                 android:layout_width="@dimen/_35sdp"
                 android:layout_height="@dimen/_35sdp"
-                android:layout_below="@+id/tv_posted_by"
-                android:layout_marginStart="@dimen/_8sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:src="@drawable/ic_user"
                 app:civ_border_color="@color/colorGreen"
@@ -81,12 +88,12 @@
 
             <TextView
                 android:id="@+id/tv_name"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/_120sdp"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_posted_by"
                 android:layout_toEndOf="@+id/iv_profile_img"
                 android:fontFamily="@font/poppins_semibold"
                 android:text="Rachel Fallon"
+                android:singleLine="true"
                 android:textColor="@color/colorDarkBlack"
                 android:textSize="@dimen/_12sdp" />
 
@@ -129,6 +136,8 @@
 
             </LinearLayout>
 
+            </RelativeLayout>
+
             <TextView
                 android:id="@+id/tv_time"
                 style="@style/SmallPopinsMediumStyle"
@@ -147,13 +156,15 @@
                 android:textSize="@dimen/_10sdp" />
 
             <LinearLayout
+                android:id="@+id/ll_chat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_below="@+id/tv_time"
                 android:layout_margin="@dimen/_3sdp"
                 android:padding="@dimen/_5sdp"
-                tools:ignore="UseCompoundDrawables">
+                tools:ignore="UseCompoundDrawables"
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="@dimen/_25sdp"
@@ -211,6 +222,22 @@
                 android:text="@string/deatils_of_help_needed"
                 android:textColor="@color/colorGreen"
                 />
+            <TextView
+                android:id="@+id/tv_dotted"
+                style="@style/SmallPopinsMediumStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:paddingStart="@dimen/_15sdp"
+                android:paddingTop="@dimen/_3sdp"
+                android:paddingBottom="@dimen/_3sdp"
+                android:paddingEnd="@dimen/_5sdp"
+                android:layout_marginRight="-5dp"
+                android:background="@drawable/doteted_shape"
+                android:text="10 min agorett"
+                android:textAllCaps="false"
+                android:textColor="@color/colorDarkBlack"
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/tv_category"
@@ -224,7 +251,7 @@
                 android:textColor="@color/colorDarkBlack"
                 android:textSize="@dimen/_12sdp"/>
 
-            <TextView
+       <!--     <TextView
                 android:id="@+id/tv_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -245,7 +272,7 @@
                 android:textSize="@dimen/_10sdp"
                 android:layout_alignBaseline="@id/tv_category"
                 android:text=" sep 2018"
-                />
+                />-->
 
             <TextView
                 android:id="@+id/tv_sub_category"
@@ -283,6 +310,7 @@
                 android:textColor="@color/colorDarkBlack" />
 
 
+
             <View
                 android:id="@+id/view2_id"
                 android:layout_width="match_parent"
@@ -291,12 +319,127 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:background="@color/colorLightGray" />
 
+            <View
+                android:id="@+id/view3_id"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/rl_moredetail"
+                android:background="@color/colorLightGray" />
+
+            <!--gone-->
+            <RelativeLayout
+                android:id="@+id/rl_moredetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/view2_id"
+                android:visibility="visible"
+                android:orientation="vertical"
+                >
+
+
+
+                <TextView
+                    android:id="@+id/tv_more_deatail"
+                    style="@style/SmallPopinsMediumStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="More details"
+                    android:textColor="@color/colorGreen"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    />
+
+                <TextView
+                    android:id="@+id/start_date"
+                    style="@style/SmallPopinsMediumStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:text="Start date"
+                    android:textSize="@dimen/_12sdp"
+                    android:textColor="@color/colorDarkBlack"
+                    android:layout_below="@+id/tv_more_deatail"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_start_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_regular"
+                    android:text="23/09/2018"
+                    android:textColor="@color/colorDarkGray"
+                    android:textSize="@dimen/_12sdp"
+                    android:layout_below="@+id/start_date"
+                    />
+
+                <TextView
+                    android:id="@+id/end_date"
+                    style="@style/SmallPopinsMediumStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="End date"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_alignParentEnd="true"
+                    android:textSize="@dimen/_12sdp"
+                    android:textColor="@color/colorDarkBlack"
+                    android:layout_below="@+id/tv_more_deatail"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_end_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_regular"
+                    android:text="23/09/2018"
+                    android:layout_alignParentEnd="true"
+                    android:textColor="@color/colorDarkGray"
+                    android:textSize="@dimen/_12sdp"
+                    android:layout_below="@+id/end_date"
+                    />
+
+                <TextView
+                    android:id="@+id/week_days"
+                    style="@style/SmallPopinsMediumStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:text="Week Days"
+                    android:textSize="@dimen/_12sdp"
+                    android:textColor="@color/colorDarkBlack"
+                    android:layout_below="@+id/tv_start_date"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_week_days"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_regular"
+                    android:text="monday, tuesday"
+                    android:textColor="@color/colorDarkGray"
+                    android:textSize="@dimen/_12sdp"
+                    android:layout_below="@+id/week_days"
+                    />
+
+                <TextView
+                    android:id="@+id/time_duration"
+                    style="@style/SmallPopinsMediumStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:text="Time Duration"
+                    android:textSize="@dimen/_12sdp"
+                    android:textColor="@color/colorDarkBlack"
+                    android:layout_below="@+id/tv_week_days"
+                    />
+
+            </RelativeLayout>
+
             <TextView
                 android:id="@+id/description"
                 style="@style/SmallPopinsMediumStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/view2_id"
+                android:layout_below="@+id/view3_id"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:text="@string/description"

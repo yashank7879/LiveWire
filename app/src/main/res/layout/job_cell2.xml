@@ -33,7 +33,6 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@+id/tv_date"
-        android:layout_marginBottom="@dimen/_5sdp"
         android:background="@color/colorExtraLightGray" />
 
 
@@ -43,7 +42,8 @@
         android:layout_below="@+id/view_id"
         android:paddingLeft="@dimen/_10sdp"
         android:paddingRight="@dimen/_10sdp"
-        android:layout_marginBottom="@dimen/_10sdp"
+        android:paddingTop="@dimen/_5sdp"
+        android:paddingBottom="@dimen/_10sdp"
         >
 
 
@@ -97,12 +97,17 @@
             android:layout_marginBottom="@dimen/_8sdp"
             android:background="@color/colorExtraLightGray" />
 
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/view1_id"
+            >
 
+        <!--"""""""" gone """""""""-->
         <RelativeLayout
             android:id="@+id/prfile_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/view1_id"
             android:visibility="gone"
             >
         <de.hdodenhof.circleimageview.CircleImageView
@@ -166,14 +171,13 @@
         </RelativeLayout>
 
 
-
+        <!--"""""""" gone """""""""-->
         <TextView
             android:id="@+id/tv_job_confirm"
             style="@style/smallPopinsRegularStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_below="@+id/view1_id"
             android:text="@string/job_confirmed"
             android:textAllCaps="false"
             android:textColor="@color/colorGreen"
@@ -181,14 +185,15 @@
             android:visibility="gone"
             />
 
+        <!--"""""""" gone """""""""-->
         <TextView
             android:id="@+id/request_pending"
             style="@style/smallPopinsRegularStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/view1_id"
-            android:text="No request yet"
+            android:layout_centerVertical="true"
+            android:text="@string/no_request_yet"
             android:visibility="visible"
             android:textSize="@dimen/_10sdp"
             android:layout_alignBaseline="@+id/ll_more_info"
@@ -204,6 +209,7 @@
             android:paddingTop="@dimen/_5sdp"
             android:paddingBottom="@dimen/_5sdp"
             android:background="?android:attr/selectableItemBackground"
+            android:layout_centerVertical="true"
             >
 
             <TextView
@@ -225,7 +231,7 @@
                 android:layout_marginStart="@dimen/_3sdp"
                 />
         </LinearLayout>
-
+        </RelativeLayout>
     </RelativeLayout>
 
 </RelativeLayout>

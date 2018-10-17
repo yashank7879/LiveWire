@@ -69,6 +69,7 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
     private AppCompatCheckBox cbConfirm;
     private TextView tvNoRecord;
     private boolean state;
+    private String tempJobTyp="";
 
     public MyJobClientFragment() {
         // Required empty public constructor
@@ -152,6 +153,7 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
                     .addHeaders("authToken", PreferenceConnector.readString(mContext, PreferenceConnector.AUTH_TOKEN, ""))
                     .addBodyParameter("job_type", jobType)
                     .addBodyParameter("request_status", requestStatus)
+                    .addBodyParameter("limit", "80")
                     .setPriority(Priority.MEDIUM)
                     .build().getAsJSONObject(new JSONObjectRequestListener() {
                 @Override
@@ -171,8 +173,8 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
                             adapter.notifyDataSetChanged();
                             if (myJobList.size() == 0) {
                                 tvNoRecord.setVisibility(View.VISIBLE);
-                            }
-                            Constant.snackBar(mainLayout, message);
+
+                            }else Constant.snackBar(mainLayout, message);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -222,6 +224,7 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
         final TextView tvOngoing;
         Button btnSendRequest;
 
+
         RelativeLayout cDialogMainLayout = (RelativeLayout) dialog.findViewById(R.id.c_dialog_main_layout);
         llOnce = dialog.findViewById(R.id.ll_once);
         ivOnce = dialog.findViewById(R.id.iv_once);
@@ -263,6 +266,7 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
                 if (jobType.equals("")) {
                     jobType = "1";
                 }
+                jobType = tempJobTyp;
                 state= true;
                 myJobListApi();
             }
@@ -272,7 +276,7 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
             @Override
             public void onClick(View v) {
                 inActiveData(ivOnce, ivOngoing, tvOngoing, tvOnce);
-                jobType = "1";
+                tempJobTyp = "1";
                 tvOnce.setTextColor(ContextCompat.getColor(mContext, R.color.colorDarkBlack));
                 ivOnce.setBackground(getResources().getDrawable(R.drawable.active_btn_balck_bg));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -285,7 +289,7 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
             @Override
             public void onClick(View v) {
                 inActiveData(ivOnce, ivOngoing, tvOngoing, tvOnce);
-                jobType = "2";
+                tempJobTyp = "2";
                 tvOngoing.setTextColor(ContextCompat.getColor(mContext, R.color.colorDarkBlack));
                 ivOngoing.setBackground(getResources().getDrawable(R.drawable.active_btn_balck_bg));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

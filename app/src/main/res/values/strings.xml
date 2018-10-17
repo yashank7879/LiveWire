@@ -3,7 +3,7 @@
     <string name="facebook_app_id">2288694548029330</string>
     <string name="fb_login_protocol_scheme">fb2288694548029330</string>
 
-
+    <!--Login and signup-->
     <string name="select_user_type">Select User Type</string>
     <string name="demo_text">Lorem ipsum dolor sit amet, consect adipi elit Donec pretium ipsum erat</string>
     <string name="continue1">Continue</string>
@@ -75,6 +75,8 @@
     <string name="no_job_post_available">No job post available</string>
     <string name="if_you_have_not_joined">If you have not joined our community yet, please sign up.</string>
     <string name="welcome_to_live_wire">WELCOME TO LIVE WIRE</string>
+
+   <!--JobDetailActivity at workers side-->
     <string name="posted_by">Posted By</string>
     <string name="chat">Chat</string>
     <string name="deatils_of_help_needed">Details Of Help Needed</string>
@@ -85,10 +87,13 @@
     <string name="sendrequest">SendRequest</string>
     <string name="pending_request">Pending Request</string>
     <string name="send_request">Send Request</string>
+
+    <!--onGoing fragment at worker side-->
     <string name="done">Done</string>
     <string name="select_days">Select Days</string>
     <string name="near_you">NEAR YOU</string>
     <string name="rate_range">Rate Range</string>
+
     <string name="hr">/hr</string>
     <string name="rate_i_can_offer">RATE I CAN OFFER</string>
     <string name="enter_offer_rate_per_hour">Enter Offer Rate (Per hour)</string>
@@ -96,6 +101,8 @@
     <string name="my_jobs">MY JOBS</string>
     <string name="logout">Logout</string>
     <string name="settings">Settings</string>
+
+    <!--MyjobFragment at client side-->
     <string name="single_project_task">Single Project Task</string>
     <string name="confirm_request">Confirm Request</string>
     <string name="ongoing_help">OnGoing Help</string>
@@ -103,5 +110,7 @@
     <string name="login_with_facebook">Login with Facebook</string>
     <string name="accept">Accept</string>
     <string name="request">Request</string>
+    <string name="no_request_yet">No request yet</string>
+    <string name="no_offer_request_yet">No Offer request yet</string>
 
 </resources>

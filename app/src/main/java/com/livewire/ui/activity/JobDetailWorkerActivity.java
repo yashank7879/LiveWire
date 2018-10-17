@@ -140,6 +140,21 @@ public class JobDetailWorkerActivity extends AppCompatActivity implements View.O
         tvBudgetPrice.setText("$ " + jobDetail.getJob_budget());
         tvDescription.setText(jobDetail.getJob_description());
         tvTime.setText(Constant.getDayDifference(jobDetail.getCrd(), jobDetail.getCurrentTime()));
+
+        if (jobDetail.getJob_confirmed().equals("0")){ // pending request
+            btnSendRequest.setBackground(null);
+          btnSendRequest.setText(R.string.pending_request);
+            btnSendRequest.setTextColor(ContextCompat.getColor(this, R.color.colorOrange));
+            btnSendRequest.setClickable(false);
+   /*        }else if (dataBean.getJob_confirmed().equals("1")){// accepted
+               holder.btnSendRequest.setClickable(false);
+           }else if (dataBean.getJob_confirmed().equals("2")){// job not accepted
+            holder.btnSendRequest.setClickable(false);*/
+        }else if (jobDetail.getJob_confirmed().equals("3")){// job not send
+            btnSendRequest.setBackground(this.getResources().getDrawable(R.drawable.button_green_bg));
+           btnSendRequest.setText(R.string.send_request);
+            btnSendRequest.setTextColor(ContextCompat.getColor(this,R.color.colorWhite));
+        }
         Picasso.with(ivProfileImg.getContext()).load(jobDetail.getProfileImage()).fit().into(ivProfileImg);
 
         //********"2018-07-04" date format converted into "04 jul 2018"***********//

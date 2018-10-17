@@ -12,6 +12,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -139,7 +141,7 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
         weekList.add( new WeekListModel( "Saturday",false));
         weekList.add( new WeekListModel( "Sunday",false));
 
-
+      //  etHourRequierd.addTextChangedListener(watcherClass);
         selectSkillsRl.setOnClickListener(this);
         jobStartDateRl.setOnClickListener(this);
         jobEndDateRl.setOnClickListener(this);
@@ -148,6 +150,34 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
         view.findViewById(R.id.btn_share).setOnClickListener(this);
         loadSkillsData();
     }
+
+/*    TextWatcher watcherClass = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            Log.v("VALUE", "" + s);
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            Log.v("VALUE", "" + s);
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+           String str =  etHourRequierd.getText().toString();
+           if (str.isEmpty()) return;
+
+           if ()
+           *//*  if (str.isEmpty()) return;
+            String str2 = perfectDecimal(yourBidText.getText().toString(), 5, 2);
+            if (!str2.equals(yourBidText.getText().toString())) {
+                yourBidText.setText(str2);
+                int pos = yourBidText.getText().length();
+                yourBidText.setSelection(pos);
+
+            }*//*
+        }
+    };*/
 
     @Override
     public void onClick(View v) {
@@ -216,7 +246,7 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
         } else if (Validation.isEmpty(tvWeekDays)) {
             Constant.snackBar(mainLayout, "Please Select week days");
         } else if (Validation.isEmpty(etHourRequierd)) {
-            Constant.snackBar(mainLayout, "Please enter hour required");
+            Constant.snackBar(mainLayout, "Please enter hour Required per day");
         } else if (Validation.isEmpty(tvLocation)) {
             Constant.snackBar(mainLayout, "Please enter your Location");
         } else if (Validation.isEmpty(etDescription)) {
@@ -261,8 +291,9 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
                             intent.putExtra("JobIdKey",jobId);
                             startActivity(intent);
                            // clientJobId
-                            Constant.snackBar(mainLayout,"Your job successfully post");
+                           // Constant.snackBar(mainLayout,"Your job successfully post");
                         }else {
+
                             Constant.snackBar(mainLayout,message);
                         }
                     }catch (JSONException e){

@@ -209,6 +209,7 @@ public class HelpOfferedFragment extends Fragment implements View.OnClickListene
             AndroidNetworking.post(BASE_URL + "Jobpost/getJobList")
                     .addHeaders("authToken", PreferenceConnector.readString(mContext, PreferenceConnector.AUTH_TOKEN, ""))
                     .addBodyParameter("job_type", "1")
+                    .addBodyParameter("limit", "30")
                     .addBodyParameter("skill", skillsStrin)
                     .setPriority(Priority.MEDIUM)
                     .build().getAsJSONObject(new JSONObjectRequestListener() {
@@ -231,8 +232,7 @@ public class HelpOfferedFragment extends Fragment implements View.OnClickListene
                             offeredAdapter.notifyDataSetChanged();
                             if (offerList.size() == 0) {
                                 tvNoJobPost.setVisibility(View.VISIBLE);
-                            }
-                            Constant.snackBar(mainLayout, message);
+                            }else Constant.snackBar(mainLayout, message);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -257,6 +257,7 @@ public class HelpOfferedFragment extends Fragment implements View.OnClickListene
             case R.id.tv_clear_all:
                 subCategoryList.clear();
                 filterLayout.setVisibility(View.GONE);
+                skillsStrin="";
                 helpOfferedApi();
                 break;
             default:

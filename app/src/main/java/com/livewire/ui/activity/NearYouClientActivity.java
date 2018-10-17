@@ -124,8 +124,9 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
                         } else {
                             if (nearYouList.size() == 0) {
                                 tv_no_job_post.setVisibility(View.VISIBLE);
-                            }
-                            Constant.snackBar(mainLayout, message);
+                            }else
+
+                                Constant.snackBar(mainLayout, message);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -228,8 +229,6 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
-
                 }
 
                 @Override
