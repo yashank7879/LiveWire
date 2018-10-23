@@ -1,12 +1,13 @@
 package com.livewire.responce;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by mindiii on 10/12/18.
  */
 
-public class MyjobResponceClient {
+public class MyjobResponceClient implements Serializable {
     /**
      * status : success
      * message : OK
@@ -41,7 +42,7 @@ public class MyjobResponceClient {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable{
         /**
          * userId : 2
          * name : shekhar
@@ -236,7 +237,7 @@ public class MyjobResponceClient {
             this.job_offer = job_offer;
         }
 
-        public static class RequestedUserDataBean {
+        public static class RequestedUserDataBean implements Serializable{
             /**
              * userId : 2
              * name : shekhar

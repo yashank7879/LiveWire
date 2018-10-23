@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     tools:context="com.livewire.ui.fragments.MyProfileClientFragment">
 
-    <include layout="@layout/action_bar_layout"
+    <include layout="@layout/action_bar_client_layout"
         android:id="@+id/action_bar1"/>
 
     <Button

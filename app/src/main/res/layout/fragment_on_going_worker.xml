@@ -1,11 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/help_offered_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorExtraLightGray"
-    tools:context="com.livewire.ui.fragments.HelpOfferedWorkerFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_layout">
 
     <RelativeLayout
         android:id="@+id/filter_layout"
@@ -16,7 +13,7 @@
         android:paddingTop="@dimen/_10sdp"
         android:paddingEnd="@dimen/_5sdp"
         android:paddingBottom="@dimen/_10sdp"
-       >
+        >
 
         <TextView
             android:id="@+id/tv_clear_all"
@@ -46,20 +43,20 @@
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:layout_below="@+id/filter_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_ongoing"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         >
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
-        </android.support.v7.widget.RecyclerView>
+    </android.support.v7.widget.RecyclerView>
 
     </android.support.v4.widget.SwipeRefreshLayout>
-
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/btn_filter"
@@ -74,7 +71,7 @@
         app:elevation="6dp"
         app:fabSize="normal"
         app:layout_behavior="com.your.package.FabBehaviour"
-     />
+        />
 
     <TextView
         android:id="@+id/tv_no_job_post"

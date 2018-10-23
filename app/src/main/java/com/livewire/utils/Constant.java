@@ -124,7 +124,7 @@ public class Constant {
     }
 
     //*********** day diffrence  *****************//
-    public static String getDayDifference(String departDateTime, String returnDateTime) {
+    public static String getDayDifference(String departDateTime, String curruntTime) {
         String returnDay = "";
         SimpleDateFormat simpleDateFormat =
                 new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -132,7 +132,7 @@ public class Constant {
         try {
 
             Date startDate = simpleDateFormat.parse(departDateTime);
-            Date endDate = simpleDateFormat.parse(returnDateTime);
+            Date endDate = simpleDateFormat.parse(curruntTime);
 
             //milliseconds
             long different = endDate.getTime() - startDate.getTime();

@@ -3,28 +3,29 @@ package com.livewire.ui.activity;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Build;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 import com.livewire.R;
-import com.livewire.ui.fragments.HelpOfferedFragment;
+import com.livewire.ui.fragments.ChatWorkerFragment;
+import com.livewire.ui.fragments.HelpOfferedWorkerFragment;
+import com.livewire.ui.fragments.OnGoingWorkerFragment;
 import com.livewire.utils.PreferenceConnector;
 
 public class WorkerMainActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
@@ -41,8 +42,12 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
     private LinearLayout userSettingLl;
     private ImageView ivUser;
     private GoogleApiClient mGoogleApiClient;
+    private TextView tvHeading;
     private int clickId;
-    private FragmentManager fm;
+    private android.support.v4.app.FragmentManager fm;
+    private boolean doubleBackToExitPressedOnce = false;
+    private Runnable runnable;
+    private ImageView ivNotification;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,13 +82,16 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
         userSettingLl =  findViewById(R.id.user_setting_ll);
         ivUser = findViewById(R.id.iv_user);
 
+        ivNotification = findViewById(R.id.iv_notification);
+        tvHeading = findViewById(R.id.tv_heading);
+
         ongoingJobLl.setOnClickListener(this);
         homeLl.setOnClickListener(this);
         userSettingLl.setOnClickListener(this);
         chatLl.setOnClickListener(this);
         myJobLl.setOnClickListener(this);
 
-        replaceFragment(new HelpOfferedFragment(), false, R.id.fl_container); // first time replace home fragment
+        replaceFragment(new HelpOfferedWorkerFragment(), false, R.id.fl_container); // first time replace home fragment
         clickId = R.id.home_ll;
     }
 
@@ -91,15 +99,6 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_logout:
-                PreferenceConnector.clear(WorkerMainActivity.this);
-                LoginManager.getInstance().logOut();
-                Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-                        new ResultCallback<Status>() {
-                            @Override
-                            public void onResult(Status status) {
-                            }
-                        });
-
                 PreferenceConnector.clear(this);
                 Intent intent = new Intent(this,UserSelectionActivity.class);
                 startActivity(intent);
@@ -108,6 +107,7 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
             case R.id.my_job_ll:
                 if (clickId != R.id.my_job_ll){
                     inActiveTab();
+                    tvHeading.setText(R.string.my_jobs);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         ivMyJobs.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorGreen)));
                     }
@@ -118,10 +118,11 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
             case R.id.ongoing_job_ll:
                 if (clickId != R.id.ongoing_job_ll){
                     inActiveTab();
+                    replaceFragment(new OnGoingWorkerFragment(), false, R.id.fl_container);
+                    tvHeading.setText(R.string.ongoing);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         ivOngoing.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorGreen)));
                     }
-
                     clickId = R.id.ongoing_job_ll;
                 }
                 break;
@@ -129,7 +130,8 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
             case R.id.home_ll:
                 if (clickId != R.id.home_ll){
                     inActiveTab();
-                    replaceFragment(new HelpOfferedFragment(), false, R.id.fl_container);
+                    tvHeading.setText(R.string.help_offered);
+                    replaceFragment(new HelpOfferedWorkerFragment(), false, R.id.fl_container);
                     clickId = R.id.home_ll;
                 }
                 break;
@@ -137,6 +139,8 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
             case R.id.chat_ll:
                 if (clickId != R.id.chat_ll){
                     inActiveTab();
+                    tvHeading.setText(R.string.chat);
+                    replaceFragment(new ChatWorkerFragment(), false, R.id.fl_container);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         ivChat.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorGreen)));
                     }
@@ -191,5 +195,34 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
             transaction.commit();
         }
     }
-
+    @Override
+    public void onBackPressed() {
+        try {
+            if (fm.getBackStackEntryCount() > 0) {
+                int backStackEntryCount = fm.getBackStackEntryCount();
+                Fragment fragment = fm.getFragments().get(backStackEntryCount - 1);
+                if (fragment != null) {
+                    fragment.onResume();
+                }
+                fm.popBackStackImmediate();
+            } else {
+                Handler handler = new Handler();
+                if (!doubleBackToExitPressedOnce) {
+                    this.doubleBackToExitPressedOnce = true;
+                    Toast.makeText(this, "Click again to exit", Toast.LENGTH_SHORT).show();
+                    handler.postDelayed(runnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            doubleBackToExitPressedOnce = false;
+                        }
+                    }, 2000);
+                } else {
+                    handler.removeCallbacks(runnable);
+                    super.onBackPressed();
+                }
+            }
+        } catch (Exception e) {
+            Log.e("TAG", "onBackPressed: " + e.getMessage());
+        }
+    }
 }

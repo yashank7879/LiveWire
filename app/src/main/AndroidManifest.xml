@@ -91,8 +91,20 @@
             android:name=".ui.activity.NearYouClientActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity android:name=".ui.activity.RequestClientActivity" />
-        <activity android:name=".ui.activity.JobDetailClientActivity"></activity>
+
+        <activity android:name=".ui.activity.RequestClientActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+
+        <activity
+            android:name=".ui.activity.MySingleJobDetailClientActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+
+        <activity
+            android:name=".ui.activity.MyOnGoingJobDetailClientActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
     </application>
 
 </manifest>

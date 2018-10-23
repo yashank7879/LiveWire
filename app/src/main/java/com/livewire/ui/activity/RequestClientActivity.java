@@ -1,6 +1,7 @@
 package com.livewire.ui.activity;
 
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -35,6 +36,7 @@ public class RequestClientActivity extends AppCompatActivity implements View.OnC
     private RelativeLayout mainLayout;
     private List<RequestResponceClient.DataBean> requestList;
     private RequestAdapter adapter;
+    private SwipeRefreshLayout swipeRefresh;
 
 
     @Override
@@ -50,11 +52,23 @@ public class RequestClientActivity extends AppCompatActivity implements View.OnC
         requestList = new ArrayList<>();
         progressDialog = new ProgressDialog(this);
         mainLayout = findViewById(R.id.request_main_layout);
+        swipeRefresh = findViewById(R.id.swipe_refresh);
         RecyclerView recyclerView = findViewById(R.id.rv_request);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new RequestAdapter(this,requestList);
         recyclerView.setAdapter(adapter);
+
+
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() { //swipe to refresh rcyclerview data
+                swipeRefresh.setRefreshing(false);
+                if (Constant.isNetworkAvailable(RequestClientActivity.this, mainLayout)) {
+                    loadRequestListData();
+                }
+            }
+        });
 
     }
 
@@ -112,9 +126,6 @@ public class RequestClientActivity extends AppCompatActivity implements View.OnC
 
                         }
                     });
-
-
-
         }
     }
 

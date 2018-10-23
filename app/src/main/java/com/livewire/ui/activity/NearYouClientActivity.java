@@ -1,12 +1,9 @@
 package com.livewire.ui.activity;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,9 +26,8 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.google.gson.Gson;
 import com.livewire.R;
 import com.livewire.adapter.NearYouAdapter;
-import com.livewire.responce.HelpOfferedResponce;
+import com.livewire.pagination.EndlessRecyclerViewScrollListener;
 import com.livewire.responce.NearYouResponce;
-import com.livewire.ui.fragments.MyJobClientFragment;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
 import com.livewire.utils.ProgressDialog;
@@ -54,6 +50,8 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
     private int width;
     private TextView tv_no_job_post;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private int limit = 5;
+    private int start = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,24 +89,39 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
             public void onRefresh() { //swipe to refresh rcyclerview data
                 swipeRefreshLayout.setRefreshing(false);
                 if (Constant.isNetworkAvailable(NearYouClientActivity.this, mainLayout)) {
-                    nearYouApi();
+                    nearYouListApi();
                 }
             }
         });
 
+        //******  Pagination """""""""""""""//
+        EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                limit = limit + 5; //load 5 items in recyclerview
+                if (Constant.isNetworkAvailable(NearYouClientActivity.this, mainLayout)) {
+                    // progressDialog.show();
+                    nearYouListApi();
+                }
+            }
+        };
+
+        recyclerView.addOnScrollListener(scrollListener);
 
         ivBack.setOnClickListener(this);
-        nearYouApi();
+        nearYouListApi();
     }
 
 
     //"""""""""' near you api at client side""""""""""""""//
-    private void nearYouApi() {// help offer api calling
+    private void nearYouListApi() {// help offer api calling
         if (Constant.isNetworkAvailable(this, mainLayout)) {
             progressDialog.show();
             AndroidNetworking.post(BASE_URL + "Jobpost/getNearByWorker")
                     .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
                     .addBodyParameter("job_id", jobId)
+                    .addBodyParameter("limit", ""+limit)
+                    .addBodyParameter("start", ""+start)
                     .setPriority(Priority.MEDIUM)
                     .build().getAsJSONObject(new JSONObjectRequestListener() {
                 @Override

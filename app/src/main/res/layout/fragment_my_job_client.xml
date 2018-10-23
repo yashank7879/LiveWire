@@ -7,7 +7,7 @@
     android:id="@+id/main_layout"
     >
 
-    <include layout="@layout/action_bar_layout"
+    <include layout="@layout/action_bar_client_layout"
         android:id="@+id/action_bar1"/>
 
     <android.support.v4.widget.SwipeRefreshLayout

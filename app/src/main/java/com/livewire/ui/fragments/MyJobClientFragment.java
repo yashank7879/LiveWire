@@ -32,15 +32,13 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInApi;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.gson.Gson;
 import com.livewire.R;
 import com.livewire.adapter.MyJobAdapter;
+import com.livewire.pagination.EndlessRecyclerViewScrollListener;
 import com.livewire.responce.MyjobResponceClient;
-import com.livewire.ui.activity.NearYouClientActivity;
+import com.livewire.ui.activity.MyOnGoingJobDetailClientActivity;
+import com.livewire.ui.activity.MySingleJobDetailClientActivity;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
 import com.livewire.utils.ProgressDialog;
@@ -51,11 +49,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.facebook.FacebookSdk.getApplicationContext;
 import static com.livewire.utils.ApiCollection.BASE_URL;
 
 
-public class MyJobClientFragment extends Fragment implements View.OnClickListener {
+public class MyJobClientFragment extends Fragment implements View.OnClickListener, MyJobAdapter.OnClickMoreInfoListener {
     private Context mContext;
     private ProgressDialog progressDialog;
     private RelativeLayout mainLayout;
@@ -70,6 +67,8 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
     private TextView tvNoRecord;
     private boolean state;
     private String tempJobTyp="";
+    private int limit = 5;
+    private int start = 0;
 
     public MyJobClientFragment() {
         // Required empty public constructor
@@ -113,7 +112,7 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
         myJobList = new ArrayList<>();
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         rvMyjob.setLayoutManager(layoutManager);
-        adapter = new MyJobAdapter(mContext, myJobList);
+        adapter = new MyJobAdapter(mContext, myJobList,this);
         rvMyjob.setAdapter(adapter);
 
 
@@ -126,6 +125,20 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
                 }
             }
         });
+
+        //******  Pagination """""""""""""""//
+        EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                limit = limit + 5; //load 5 items in recyclerview
+                if (Constant.isNetworkAvailable(mContext, mainLayout)) {
+                    // progressDialog.show();
+                    myJobListApi();
+                }
+            }
+        };
+
+        rvMyjob.addOnScrollListener(scrollListener);
 
         actionBarIntialize(view);
         myJobListApi();
@@ -153,7 +166,8 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
                     .addHeaders("authToken", PreferenceConnector.readString(mContext, PreferenceConnector.AUTH_TOKEN, ""))
                     .addBodyParameter("job_type", jobType)
                     .addBodyParameter("request_status", requestStatus)
-                    .addBodyParameter("limit", "80")
+                    .addBodyParameter("limit", ""+limit)
+                    .addBodyParameter("start", ""+start)
                     .setPriority(Priority.MEDIUM)
                     .build().getAsJSONObject(new JSONObjectRequestListener() {
                 @Override
@@ -211,6 +225,7 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
 
 
 
+    // open filter
     private void openFilterDialog() {
         final Dialog dialog = new Dialog(mContext);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -342,5 +357,19 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
         ivOngoing.setBackground(getResources().getDrawable(R.drawable.inactive_btn_gray_bg));
     }
 
+    //"""""""" Click on More Info """"""""""""""//
+    @Override
+    public void moreInfoOnClickClient(MyjobResponceClient.DataBean dataBean) {
+        Intent intent =null;
+        if (dataBean.getJob_type().equals("1")) { // single job
+            intent  = new Intent(mContext, MySingleJobDetailClientActivity.class);
+            intent.putExtra("MyJobDetail", dataBean);
+            startActivity(intent);
+        }else if (dataBean.getJob_type().equals("2")){// ongoing job
+            intent  = new Intent(mContext, MyOnGoingJobDetailClientActivity.class);
+            intent.putExtra("MyJobDetail", dataBean);
+            startActivity(intent);
+        }
+    }
 }
 

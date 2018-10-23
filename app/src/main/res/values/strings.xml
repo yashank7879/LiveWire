@@ -62,7 +62,6 @@
     <string name="help_offered">HELP OFFERED</string>
 
     <!-- filter dialog  -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="apply">Apply</string>
     <string name="filter">Filter</string>
     <string name="sort_by">Sort By</string>
@@ -76,7 +75,7 @@
     <string name="if_you_have_not_joined">If you have not joined our community yet, please sign up.</string>
     <string name="welcome_to_live_wire">WELCOME TO LIVE WIRE</string>
 
-   <!--JobDetailActivity at workers side-->
+    <!--JobDetailActivity at workers side-->
     <string name="posted_by">Posted By</string>
     <string name="chat">Chat</string>
     <string name="deatils_of_help_needed">Details Of Help Needed</string>
@@ -112,5 +111,21 @@
     <string name="request">Request</string>
     <string name="no_request_yet">No request yet</string>
     <string name="no_offer_request_yet">No Offer request yet</string>
+    <string name="under_devlopment_mode">Under Devlopment Mode</string>
+
+    <!-- MyJobDeatail Activity client side -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="ongoing">ONGOING</string>
+    <string name="ignor">Ignore</string>
+    <string name="requests">Requests</string>
+    <string name="n_a">N/A</string>
+    <string name="start_date">Start date</string>
+    <string name="end_date">End date</string>
+    <string name="time_duration">Time Duration</string>
+    <string name="more_details">More details</string>
+    <string name="week_days">Week Days</string>
+    <string name="member_requested"> Members requested</string>
+    <string name="offered_rate">Offered Rate</string>
+    <string name="clear_all">Clear all</string>
 
 </resources>

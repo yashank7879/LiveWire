@@ -38,21 +38,16 @@ import com.livewire.utils.PreferenceConnector;
 
 public class ClientMainActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
 
-    private GoogleApiClient mGoogleApiClient;
+
     private TextView textView;
     private LinearLayout tabbar;
-    private LinearLayout myJobLl;
     private ImageView ivMyJob;
-    private LinearLayout notificationLl;
     private ImageView ivNotification;
-    private LinearLayout addLl;
     private ImageView addImg;
-    private LinearLayout chatLl;
     private ImageView ivChat;
     private LinearLayout userSettingLl;
     private ImageView ivUser;
     private int clickId;
-    private FrameLayout containerId;
     private android.support.v4.app.FragmentManager fm;
     private boolean doubleBackToExitPressedOnce = false;
     private Runnable runnable;
@@ -72,17 +67,17 @@ public class ClientMainActivity extends AppCompatActivity implements View.OnClic
 
 //        findViewById(R.id.btn_logout).setOnClickListener(this);
         tabbar =  findViewById(R.id.tabbar);
-        myJobLl =  findViewById(R.id.my_job_ll);
+        LinearLayout myJobLl = findViewById(R.id.my_job_ll);
         ivMyJob =  findViewById(R.id.iv_my_job);
-        notificationLl =  findViewById(R.id.notification_ll);
+        LinearLayout notificationLl = findViewById(R.id.notification_ll);
         ivNotification =  findViewById(R.id.iv_notification);
-        addLl =  findViewById(R.id.add_ll);
+        LinearLayout addLl = findViewById(R.id.add_ll);
         addImg = findViewById(R.id.add_img);
-        chatLl =  findViewById(R.id.chat_ll);
+        LinearLayout chatLl = findViewById(R.id.chat_ll);
         ivChat =  findViewById(R.id.iv_chat);
         userSettingLl =  findViewById(R.id.user_setting_ll);
         ivUser =  findViewById(R.id.iv_user);
-        containerId = findViewById(R.id.fl_container);
+        FrameLayout containerId = findViewById(R.id.fl_container);
       //   tvLiveWire = findViewById(R.id.tv_live_wire);
 //        tvLiveWire.setText(liveWireText(this));
 
@@ -106,13 +101,6 @@ public class ClientMainActivity extends AppCompatActivity implements View.OnClic
         }
 
 
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
     }
 
     @Override

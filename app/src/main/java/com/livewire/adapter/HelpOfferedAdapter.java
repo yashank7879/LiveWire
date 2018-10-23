@@ -131,7 +131,7 @@ public class HelpOfferedAdapter extends RecyclerView.Adapter<HelpOfferedAdapter.
             viewId = view.findViewById(R.id.view_id);
             tvCategory = view.findViewById(R.id.tv_category);
             tvSubcategory = view.findViewById(R.id.tv_subcategory);
-            tvBudget = view.findViewById(R.id.tv_budget);
+            tvBudget = view.findViewById(R.id.tv_offer_rate);
             llMoreInfo = view.findViewById(R.id.ll_more_info);
 
             ivProfileImg = view.findViewById(R.id.iv_profile_img);

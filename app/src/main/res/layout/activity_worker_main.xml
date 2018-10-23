@@ -30,6 +30,7 @@
             />
 
         <TextView
+            android:id="@+id/tv_heading"
             style="@style/mediumPopinsMediumStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -38,6 +39,7 @@
             android:textColor="@color/colorGreen" />
 
         <ImageView
+            android:id="@+id/iv_notification"
             android:layout_width="@dimen/_25sdp"
             android:layout_height="@dimen/_25sdp"
             android:layout_alignParentRight="true"

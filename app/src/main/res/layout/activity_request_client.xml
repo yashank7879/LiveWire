@@ -1,24 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/request_main_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/request_main_layout"
     tools:context="com.livewire.ui.activity.RequestClientActivity">
 
     <include
         android:id="@+id/action_bar1"
-        layout="@layout/action_bar_layout" />
+        layout="@layout/action_bar_client_layout" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_request"
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/action_bar1">
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_request"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    </android.support.v7.widget.RecyclerView>
 
+        </android.support.v7.widget.RecyclerView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
     <!--<de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/iv_profile_img"
         android:layout_width="@dimen/_35sdp"

@@ -45,10 +45,12 @@ public class MyJobAdapter extends RecyclerView.Adapter {
     private static final int JOBCELL3 = 3;
     private Context mContext;
     private List<MyjobResponceClient.DataBean> myJobList;
+    private OnClickMoreInfoListener listener;
 
-    public MyJobAdapter(Context mCon, List<MyjobResponceClient.DataBean> myJobList) {
+    public MyJobAdapter(Context mCon, List<MyjobResponceClient.DataBean> myJobList, OnClickMoreInfoListener listener) {
         this.mContext = mCon;
         this.myJobList = myJobList;
+        this.listener = listener;
     }
 
     @Override
@@ -282,7 +284,7 @@ public class MyJobAdapter extends RecyclerView.Adapter {
             tvCategory = (TextView) itemView.findViewById(R.id.tv_category);
             tvSubcategory = (TextView) itemView.findViewById(R.id.tv_subcategory);
             budget = (TextView) itemView.findViewById(R.id.budget);
-            tvBudget = (TextView) itemView.findViewById(R.id.tv_budget);
+            tvBudget = (TextView) itemView.findViewById(R.id.tv_offer_rate);
             view1Id = (View) itemView.findViewById(R.id.view1_id);
             fl_image = itemView.findViewById(R.id.iv_profile_img);
             tvRequested = (TextView) itemView.findViewById(R.id.tv_requested);
@@ -294,6 +296,12 @@ public class MyJobAdapter extends RecyclerView.Adapter {
                     Intent intent = new Intent(mContext, RequestClientActivity.class);
                    // intent.putExtra("","");
                     mContext.startActivity(intent);
+                }
+            });
+            llMoreInfo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.moreInfoOnClickClient(myJobList.get(getAdapterPosition()));
                 }
             });
 
@@ -326,7 +334,7 @@ public class MyJobAdapter extends RecyclerView.Adapter {
             tvCategory = (TextView) view.findViewById(R.id.tv_category);
             tvSubcategory = (TextView) view.findViewById(R.id.tv_subcategory);
             budget = (TextView) view.findViewById(R.id.budget);
-            tvBudget = (TextView) view.findViewById(R.id.tv_budget);
+            tvBudget = (TextView) view.findViewById(R.id.tv_offer_rate);
             prfileLayout = (RelativeLayout) view.findViewById(R.id.prfile_layout);
             ivProfileImg = (CircleImageView) view.findViewById(R.id.iv_profile_img);
             tvName = (TextView) view.findViewById(R.id.tv_name);
@@ -336,6 +344,12 @@ public class MyJobAdapter extends RecyclerView.Adapter {
             requestPending = (TextView) view.findViewById(R.id.request_pending);
             llMoreInfo = (LinearLayout) view.findViewById(R.id.ll_more_info);
             tvMoreInfo = (TextView) view.findViewById(R.id.tv_more_info);
+            llMoreInfo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.moreInfoOnClickClient(myJobList.get(getAdapterPosition()));
+                }
+            });
         }
     }
 
@@ -390,6 +404,12 @@ public class MyJobAdapter extends RecyclerView.Adapter {
             tvMoreInfo = (TextView) view3.findViewById(R.id.tv_more_info);
             tvOfferRequest = (TextView) view3.findViewById(R.id.tv_offer_request);
             rlOfferRange = view3.findViewById(R.id.rl_offer_range);
+            llMoreInfo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.moreInfoOnClickClient(myJobList.get(getAdapterPosition()));
+                }
+            });
         }
     }
 
@@ -424,6 +444,10 @@ public class MyJobAdapter extends RecyclerView.Adapter {
         showTime.setLayoutParams(lp);
 
         linearLayout.addView(v);
+    }
+
+    public interface OnClickMoreInfoListener {
+        void moreInfoOnClickClient(MyjobResponceClient.DataBean dataBean);
     }
 }
 

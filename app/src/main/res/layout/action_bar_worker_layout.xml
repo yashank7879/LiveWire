@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorWhite">
+
+    <com.loopeer.shadow.ShadowView
+        android:id="@+id/sv_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorWhite"
+        app:shadowColor="@color/colorDarkGray"
+        app:shadowMarginBottom="3dp"
+        app:shadowRadius="@dimen/_5sdp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp">
+
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="@dimen/_35sdp"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:padding="@dimen/_8sdp"
+                app:srcCompat="@drawable/ic_left_arrow"
+                android:background="?android:attr/selectableItemBackground"
+                android:visibility="gone"
+                android:tint="@color/colorDarkBlack"
+                />
+
+
+            <TextView
+                android:id="@+id/tv_live_wire"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="@dimen/_14sdp" />
+
+            <ImageView
+                android:id="@+id/iv_filter"
+                android:layout_width="@dimen/_35sdp"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:padding="@dimen/_7sdp"
+                android:src="@drawable/filter_level"
+                android:background="?android:attr/selectableItemBackground"
+                android:visibility="gone"
+                />
+
+        </RelativeLayout>
+
+    </com.loopeer.shadow.ShadowView>
+
+</RelativeLayout>
