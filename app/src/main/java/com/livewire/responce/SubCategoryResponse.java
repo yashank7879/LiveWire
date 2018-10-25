@@ -64,8 +64,8 @@ public class SubCategoryResponse {
          * categoryName : Babysitting
          */
 
-        private String categoryId;
-        private String categoryName;
+        private String categoryId="";
+        private String categoryName="";
         private int position;
 
         public int getPosition() {

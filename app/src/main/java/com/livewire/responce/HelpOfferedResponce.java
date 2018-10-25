@@ -80,7 +80,7 @@ public class HelpOfferedResponce implements Serializable {
         private String parentCategoryName="";
         private String subCategoryName="";
         private String distance_in_km="";
-        private String currentTime="";
+        private String currentDateTime ="";
         private String job_confirmed="";
 
         public String getUserId() {
@@ -203,12 +203,12 @@ public class HelpOfferedResponce implements Serializable {
             this.distance_in_km = distance_in_km;
         }
 
-        public String getCurrentTime() {
-            return currentTime;
+        public String getCurrentDateTime() {
+            return currentDateTime;
         }
 
-        public void setCurrentTime(String currentTime) {
-            this.currentTime = currentTime;
+        public void setCurrentDateTime(String currentDateTime) {
+            this.currentDateTime = currentDateTime;
         }
 
         public String getJob_confirmed() {

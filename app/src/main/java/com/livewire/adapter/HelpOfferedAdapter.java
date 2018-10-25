@@ -66,7 +66,7 @@ public class HelpOfferedAdapter extends RecyclerView.Adapter<HelpOfferedAdapter.
             holder.tvBudget.setText("$ "+dataBean.getJob_budget());
             holder.tvName.setText(dataBean.getName());
             holder.tvDistance.setText(dataBean.getDistance_in_km()+" Km away");
-            holder.tvTime.setText(Constant.getDayDifference(dataBean.getCrd(),dataBean.getCurrentTime()));
+            holder.tvTime.setText(Constant.getDayDifference(dataBean.getCrd(),dataBean.getCurrentDateTime()));
             Picasso.with(holder.ivProfileImg.getContext()).load(dataBean.getProfileImage()).fit().into(holder.ivProfileImg);
 
             //********"2018-07-04" date format converted into "04 july 2018"***********//
@@ -144,20 +144,20 @@ public class HelpOfferedAdapter extends RecyclerView.Adapter<HelpOfferedAdapter.
             llMoreInfo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.helpOfferItemOnClick(dataBeanList.get(getAdapterPosition()),mContext.getString(R.string.moreinfo));
+                    listener.helpOfferItemOnClick(dataBeanList.get(getAdapterPosition()),mContext.getString(R.string.moreinfo),getAdapterPosition());
                 }
             });
 
             btnSendRequest.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    listener.helpOfferItemOnClick(dataBeanList.get(getAdapterPosition()), mContext.getString(R.string.sendrequest),getAdapterPosition());
                     if (Constant.isNetworkAvailable(mContext,manLayout)) {
                         btnSendRequest.setBackground(null);
                         btnSendRequest.setText(R.string.pending_request);
                         btnSendRequest.setTextColor(ContextCompat.getColor(mContext, R.color.colorOrange));
                         //   btnSendRequest.setVisibility(View.GONE);
                         btnSendRequest.setClickable(false);
-                        listener.helpOfferItemOnClick(dataBeanList.get(getAdapterPosition()), mContext.getString(R.string.sendrequest));
                     }
                 }
             });
@@ -189,7 +189,7 @@ public class HelpOfferedAdapter extends RecyclerView.Adapter<HelpOfferedAdapter.
     }*/
 
     public interface HelpOfferItemListener{
-        void helpOfferItemOnClick(HelpOfferedResponce.DataBean dataBean,String helpoffer);
+        void helpOfferItemOnClick(HelpOfferedResponce.DataBean dataBean,String helpoffer, int pos);
 
     }
 }

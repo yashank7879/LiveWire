@@ -37,6 +37,7 @@ public class RequestClientActivity extends AppCompatActivity implements View.OnC
     private List<RequestResponceClient.DataBean> requestList;
     private RequestAdapter adapter;
     private SwipeRefreshLayout swipeRefresh;
+    private String jobId;
 
 
     @Override
@@ -45,7 +46,12 @@ public class RequestClientActivity extends AppCompatActivity implements View.OnC
         setContentView(R.layout.activity_request_client);
         intializeViews();
         actionBarIntialize();
-        loadRequestListData();
+
+        if (getIntent().getStringExtra("JobId")!= null){
+             jobId = getIntent().getStringExtra("JobId");
+            loadRequestListData();
+        }
+
     }
 
     private void intializeViews() {
@@ -89,6 +95,7 @@ public class RequestClientActivity extends AppCompatActivity implements View.OnC
             progressDialog.show();
             AndroidNetworking.post(BASE_URL + "Jobpost/getMyJobRequestList")
                     .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
+                    .addBodyParameter("job_id",jobId)
                     .setPriority(Priority.MEDIUM)
                     .build()
                     .getAsJSONObject(new JSONObjectRequestListener() {

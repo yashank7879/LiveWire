@@ -108,7 +108,7 @@ public class MySingleJobDetailClientActivity extends AppCompatActivity implement
             tvSubCategory.setText(dataBean.getSub_category());
             tvBudgetPrice.setText("$ "+dataBean.getJob_budget());
             tvDescription.setText(dataBean.getJob_description());
-            tvTime.setText(Constant.getDayDifference(dataBean.getCrd(),dataBean.getCurrentTime()));
+            tvTime.setText(Constant.getDayDifference(dataBean.getCrd(),dataBean.getCurrentDateTime()));
         }
     }
 

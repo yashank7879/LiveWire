@@ -31,5 +31,8 @@ public class WeekListModel {
         isWeekDay = weekDay;
     }
 
-
+    @Override
+    public String toString() {
+        return weekDays;
+    }
 }

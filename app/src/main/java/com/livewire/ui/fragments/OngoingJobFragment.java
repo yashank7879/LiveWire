@@ -13,6 +13,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -137,6 +138,7 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
         weekList.add(new WeekListModel("Monday",false));
         weekList.add( new WeekListModel( "Tuesday",false));
         weekList.add( new WeekListModel( "Wednesday",false));
+        weekList.add( new WeekListModel( "Thursday",false));
         weekList.add( new WeekListModel( "Friday",false));
         weekList.add( new WeekListModel( "Saturday",false));
         weekList.add( new WeekListModel( "Sunday",false));
@@ -220,14 +222,19 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
 
         final StringBuffer sb = new StringBuffer();
         btnDone.setOnClickListener(new View.OnClickListener() {
+             String ss;
+
             @Override
             public void onClick(View v) {
                 for (int i=0 ; i<weekList.size();i++){
                     if (weekList.get(i).isWeekDay()){
+
+                         ss = TextUtils.join(",",weekList);
                         sb.append(weekList.get(i).getWeekDays());
                             sb.append(",");
                     }
                 }
+                Log.e( "week list ss: ",ss );
                 tvWeekDays.setText(sb);
                 dialog.dismiss();
             }
@@ -254,16 +261,16 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
         } else {
             JobCreationModel model = new JobCreationModel();
             model.skill = skillId;
-            model.job_start_date = tvStartDate.getText().toString();
-            model.job_end_date = tvEndDate.getText().toString();
+            model.job_start_date = tvStartDate.getText().toString().trim();
+            model.job_end_date = tvEndDate.getText().toString().trim();
             model.job_location = locationPlace;
             model.job_latitude = String.valueOf(locationLatLng.latitude);
             model.job_longitude = String.valueOf(locationLatLng.longitude);
-            model.job_time_duration  = etHourRequierd.getText().toString();
-            model.job_week_days = tvWeekDays.getText().toString();
+            model.job_time_duration  = etHourRequierd.getText().toString().trim();
+            model.job_week_days = tvWeekDays.getText().toString().trim();
             model.job_type = "2";
             model.job_title = "test";
-            model.job_description = etDescription.getText().toString();
+            model.job_description = etDescription.getText().toString().trim();
 
             onGoingJobCreationApi(model);
         }

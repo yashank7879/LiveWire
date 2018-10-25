@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:background="@color/colorWhite"
     android:id="@+id/detail_main_layout"
-    tools:context="com.livewire.ui.activity.JobDetailWorkerActivity">
+    tools:context="com.livewire.ui.activity.JobHelpOfferedDetailWorkerActivity">
 
     <com.loopeer.shadow.ShadowView
         android:id="@+id/action_bar"
@@ -86,7 +86,7 @@
                 android:layout_below="@+id/tv_posted_by"
                 android:layout_toEndOf="@+id/iv_profile_img"
                 android:fontFamily="@font/poppins_semibold"
-                android:text="Rachel Fallon"
+                android:text="@string/n_a"
                 android:textColor="@color/colorDarkBlack"
                 android:textSize="@dimen/_12sdp" />
 
@@ -141,7 +141,7 @@
                 android:paddingBottom="@dimen/_3sdp"
                 android:paddingEnd="@dimen/_5sdp"
                 android:background="@drawable/time_shape"
-                android:text="10 min ago"
+                android:text="@string/n_a"
                 android:textAllCaps="false"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/_10sdp" />
@@ -220,7 +220,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:fontFamily="@font/poppins_semibold"
-                android:text="Cook"
+                android:text="@string/n_a"
                 android:textColor="@color/colorDarkBlack"
                 android:textSize="@dimen/_12sdp"/>
 
@@ -230,7 +230,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toStartOf="@+id/tv_date_month"
                 android:layout_alignBaseline="@id/tv_category"
-                android:text="23"
+                android:text="@string/n_a"
                 style="@style/mediumPopinsRegularStyle"
                 android:textColor="@color/colorDarkBlack"
                 />
@@ -244,7 +244,7 @@
                 android:textColor="@color/colorDarkBlack"
                 android:textSize="@dimen/_10sdp"
                 android:layout_alignBaseline="@id/tv_category"
-                android:text=" sep 2018"
+                android:text="@string/n_a"
                 />
 
             <TextView
@@ -254,7 +254,7 @@
                 android:layout_below="@+id/tv_category"
                 android:layout_gravity="center"
                 android:fontFamily="@font/poppins_regular"
-                android:text="@string/house_amp_needed"
+                android:text="@string/n_a"
                 android:textColor="@color/colorDarkGray"
                 android:textSize="@dimen/_12sdp"
                 />
@@ -279,7 +279,7 @@
                 android:textSize="@dimen/_12sdp"
                 android:layout_alignBaseline="@id/tv_offer_rate"
                 android:layout_toEndOf="@id/tv_offer_rate"
-                android:text="$ 6.99"
+                android:text="@string/n_a"
                 android:textColor="@color/colorDarkBlack" />
 
 
@@ -310,7 +310,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/description"
-                android:text="@string/demo_text"
+                android:text="@string/n_a"
                 android:textSize="@dimen/_10sdp"
                 />
 

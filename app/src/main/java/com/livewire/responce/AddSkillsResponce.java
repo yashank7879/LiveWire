@@ -53,9 +53,9 @@ public class AddSkillsResponce {
          * ,{"categoryId":"10","categoryName":"Counselling","parent_id":"1"}]
          */
 
-        private String categoryId;
-        private String categoryName;
-        private String parent_id;
+        private String categoryId="";
+        private String categoryName="";
+        private String parent_id="";
         private List<SubcatBean> subcat;
 
         public String getCategoryId() {
@@ -102,9 +102,9 @@ public class AddSkillsResponce {
              * parent_id : 1
              */
 
-            private String categoryId;
-            private String categoryName;
-            private String parent_id;
+            private String categoryId="";
+            private String categoryName="";
+            private String parent_id="";
 
             public String getCategoryId() {
                 return categoryId;

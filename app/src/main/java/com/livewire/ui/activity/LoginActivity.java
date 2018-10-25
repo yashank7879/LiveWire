@@ -2,6 +2,8 @@ package com.livewire.ui.activity;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
@@ -58,6 +60,11 @@ import com.livewire.utils.Validation;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+import cz.msebera.android.httpclient.extras.Base64;
+
 import static com.livewire.utils.ApiCollection.BASE_URL;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
@@ -87,11 +94,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         initializeView();
-        // printHashKey();
+         printHashKey();
     }
 
 
- /*   public void printHashKey() {
+    public void printHashKey() {
         try {
             PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
             for (android.content.pm.Signature signature : info.signatures) {
@@ -105,7 +112,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         } catch (Exception e) {
             Log.e(TAG, "printHashKey()", e);
         }
-    }*/
+    }
 
     private void initializeView() {
         DisplayMetrics displaymetrics = new DisplayMetrics();
@@ -221,12 +228,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 loginResult.getAccessToken();
                 getUserDtails(loginResult);
             }
-
             @Override
             public void onCancel() {
             //noting
             }
-
             @Override
             public void onError(FacebookException error) {
                 Log.d("Facebook error", error.getMessage());
@@ -451,9 +456,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             finish();*/
 
                         } else {
-                            if (message.equals("Invalid user type")){
-                                soicialLogOut();
-                            }
+                            soicialLogOut();
                             Constant.snackBar(mainLayout, message);
                         }
 

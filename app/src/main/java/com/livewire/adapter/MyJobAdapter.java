@@ -132,15 +132,30 @@ public class MyJobAdapter extends RecyclerView.Adapter {
                 holder.tvOfferPrice.setText("$ "+dataBean.getJob_offer());
                 holder.tvName.setText(dataBean.getRequestedUserData().get(0).getName());
                 holder.tvDistance.setText(dataBean.getRequestedUserData().get(0).getDistance_in_km()+" Km away");
-                Picasso.with(holder.ivProfileImg.getContext()).load(dataBean.getRequestedUserData().get(0).getProfileImage()).fit().into(holder.ivProfileImg);
+                Picasso.with(holder.ivProfileImg.getContext()).load(dataBean.getRequestedUserData().get(0).getProfileImage()).error(R.drawable.ic_user).fit().into(holder.ivProfileImg);
 
-                if (dataBean.getRequestedUserData().get(0).getRequest_status().equals("0")){
-                    holder.tvPendingRequest.setText("Request Pending");
-                    holder.tvPendingRequest.setTextColor(ContextCompat.getColor(mContext,R.color.colorOrange));
+                switch (dataBean.getJob_confirmed()) {
+                    case "0": // request zero
+                        if (dataBean.getRequestedUserData().get(0).getRequest_status().equals("0")) {// request pending job
+                            holder.tvPendingRequest.setText(R.string.request_pending);
+                            holder.tvPendingRequest.setTextColor(ContextCompat.getColor(mContext, R.color.colorOrange));
 
-                }else{
-                    holder.tvPendingRequest.setText("Request Confirmed");
-                    holder.tvPendingRequest.setTextColor(ContextCompat.getColor(mContext,R.color.colorGreen));
+                        } else if (dataBean.getRequestedUserData().get(0).getRequest_status().equals("2")) {// request cancel by worker
+                            holder.tvPendingRequest.setText(R.string.request_cancel);
+                            holder.tvPendingRequest.setTextColor(ContextCompat.getColor(mContext, R.color.colorDarkBlack));
+                        }
+
+                        break;
+                    case "1":  //request_confirmed job
+                        if (dataBean.getRequestedUserData().get(0).getRequest_status().equals("1")) {
+                            holder.tvPendingRequest.setText(R.string.request_confirmed);
+                            holder.tvPendingRequest.setTextColor(ContextCompat.getColor(mContext, R.color.colorGreen));
+                        }
+
+                        break;
+                    default: // in progress job
+                        holder.tvPendingRequest.setTextColor(ContextCompat.getColor(mContext, R.color.colorDarkBlack));
+                        break;
                 }
 
                 SpannableStringBuilder builder = new SpannableStringBuilder();
@@ -160,7 +175,7 @@ public class MyJobAdapter extends RecyclerView.Adapter {
                 holder.tvRangePrice.setText(builder);
             }
 
-            holder.tvTime.setText(Constant.getDayDifference(dataBean.getCrd(), dataBean.getCurrentTime()));
+            holder.tvTime.setText(Constant.getDayDifference(dataBean.getCrd(), dataBean.getCurrentDateTime()));
             //********"2018-07-04" date format converted into "04 july 2018"***********//
             DateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
             String start = dataBean.getJob_start_date();
@@ -198,7 +213,7 @@ public class MyJobAdapter extends RecyclerView.Adapter {
             holder.tvCategory.setText(dataBean.getParent_category());
             holder.tvSubcategory.setText(dataBean.getSub_category());
             holder.tvBudget.setText("$ " + dataBean.getJob_budget());
-            holder.tvTime.setText(Constant.getDayDifference(dataBean.getCrd(), dataBean.getCurrentTime()));
+            holder.tvTime.setText(Constant.getDayDifference(dataBean.getCrd(), dataBean.getCurrentDateTime()));
 
             DateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
             String start = dataBean.getJob_start_date();
@@ -226,7 +241,7 @@ public class MyJobAdapter extends RecyclerView.Adapter {
             holder.tvSubcategory.setText(dataBean.getSub_category());
             holder.tvBudget.setText("$ " + dataBean.getJob_budget());
             holder.tvRequested.setText(""+dataBean.getTotal_request()+" Members Requested");
-            holder.tvTime.setText(Constant.getDayDifference(dataBean.getCrd(), dataBean.getCurrentTime()));
+            holder.tvTime.setText(Constant.getDayDifference(dataBean.getCrd(), dataBean.getCurrentDateTime()));
 
 
             //********"2018-07-04" date format converted into "04 july 2018"***********//
@@ -294,7 +309,7 @@ public class MyJobAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(mContext, RequestClientActivity.class);
-                   // intent.putExtra("","");
+                    intent.putExtra("JobId",myJobList.get(getAdapterPosition()).getJobId());
                     mContext.startActivity(intent);
                 }
             });

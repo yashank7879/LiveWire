@@ -21,6 +21,7 @@ import com.livewire.R;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 import static com.livewire.utils.ImageRotator.decodeBitmap;
 
@@ -46,7 +47,7 @@ public class Constant {
     public static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 12;
 
     //"""""""its used for live wire text""""""""//
-   public static SpannableStringBuilder liveWireText(Context mContext) {
+    public static SpannableStringBuilder liveWireText(Context mContext) {
         SpannableStringBuilder builder = new SpannableStringBuilder();
         SpannableString Name1 = new SpannableString("Live");
         Name1.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.colorGreen)), 0, Name1.length(), 0);
@@ -74,12 +75,12 @@ public class Constant {
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
 
         // Check for network connections
-        if (activeNetworkInfo!=null) {
+        if (activeNetworkInfo != null) {
 
             // if connected with internet
             return true;
 
-        } else if (activeNetworkInfo==null) {
+        } else if (activeNetworkInfo == null) {
 
             Snackbar snackbar = Snackbar
                     .make(coordinatorLayout, "No internet connection!", Snackbar.LENGTH_SHORT)
@@ -172,8 +173,18 @@ public class Constant {
                 returnDay = elapsedDays + " days ago";
             }
         } catch (ParseException e) {
-            Log.d("day diffrence",e.getMessage());
+            Log.d("day diffrence", e.getMessage());
         }
         return returnDay;
+    }
+
+    public static String currentUtcTime() {
+        String utcTime = null;
+        String format = "yyyy-MM-dd HH:mm:ss";
+        final SimpleDateFormat sdf = new SimpleDateFormat(format);
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        utcTime = sdf.format(new Date());
+
+        return utcTime;
     }
 }

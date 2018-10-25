@@ -1,5 +1,6 @@
 package com.livewire.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,7 @@ import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -74,6 +76,7 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
     private TextView tvDescription;
     private ProgressDialog progressDialog;
     private ScrollView detailMainLayout;
+    private Button btnSendOffer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,6 +128,7 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
         tvTimeDuration = (TextView) findViewById(R.id.tv_time_duration);
         description = (TextView) findViewById(R.id.description);
         tvDescription = (TextView) findViewById(R.id.tv_description);
+        btnSendOffer = findViewById(R.id.btn_send_offer);
 
         if (getIntent().getSerializableExtra("MyJobDetail") != null){
             MyjobResponceClient.DataBean dataBean = (MyjobResponceClient.DataBean) getIntent().getSerializableExtra("MyJobDetail");
@@ -133,31 +137,84 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
             tvSubCategory.setText(dataBean.getSub_category());
             tvOfferPrice.setText("$ "+dataBean.getJob_offer());
             tvStartDate.setText(dataBean.getJob_start_date());
-            tvEndDate.setText(dataBean.getJob_start_date());
+            tvEndDate.setText(dataBean.getJob_end_date());
+            tvWeekDays.setText(dataBean.getJob_week_days());
             tvDescription.setText(dataBean.getJob_description());
-            tvTime.setText(Constant.getDayDifference(dataBean.getCrd(),dataBean.getCurrentTime()));
+            tvTimeDuration.setText(dataBean.getJob_time_duration()+" hr");
+            tvTime.setText(Constant.getDayDifference(dataBean.getCrd(),dataBean.getCurrentDateTime()));
         }
     }
 
-    private void setMyJobDetails(MyjobResponceClient.DataBean dataBean) {
+    private void setMyJobDetails(final MyjobResponceClient.DataBean dataBean) {
       if (dataBean.getJob_type().equals("2")){///"""""""""" ONGOING JOB
             if (dataBean.getTotal_request().equals("0")){  // NO OFFER SEND YET
-                rlUserData.setVisibility(View.GONE);
+                btnSendOffer.setVisibility(View.VISIBLE);
                 rlMoredetail.setVisibility(View.VISIBLE);
-                tvNoRequest.setText(R.string.no_offer_request_yet);
                 tvNoRequest.setVisibility(View.VISIBLE);
+                tvJobStatus.setVisibility(View.GONE);
+                llChat.setVisibility(View.GONE);
+                rlUserData.setVisibility(View.GONE);
+                rlRange.setVisibility(View.GONE);
+
+                tvNoRequest.setText(R.string.no_offer_request_yet);
+
+                btnSendOffer.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String jobId = dataBean.getJobId();
+                        Intent intent = new Intent(MyOnGoingJobDetailClientActivity.this, NearYouClientActivity.class);
+                        intent.putExtra("JobIdKey",jobId);
+                        startActivity(intent);
+                    }
+                });
 
             }else if (dataBean.getTotal_request().equals("1")) {
                 // JOB CONFIRM OR PENDING REQUEST OR IN PROGRESS
+
+                switch (dataBean.getJob_confirmed()) {
+                    case "0": // request pending job
+                        if (dataBean.getRequestedUserData().get(0).getRequest_status().equals("0")) {
+                            tvJobStatus.setText(R.string.request_pending);
+                            tvJobStatus.setBackground(getResources().getDrawable(R.drawable.doteted_orange_shape));
+                            tvJobStatus.setTextColor(ContextCompat.getColor(this, R.color.colorOrange));
+
+                        } else if (dataBean.getRequestedUserData().get(0).getRequest_status().equals("2")) {
+                            tvJobStatus.setText(R.string.request_cancel);
+                            tvJobStatus.setBackground(getResources().getDrawable(R.drawable.doteted_balck_shape));
+                            tvJobStatus.setTextColor(ContextCompat.getColor(this, R.color.colorDarkBlack));
+                        }
+
+                        break;
+                    case "1":  //request_confirmed job
+                        if (dataBean.getRequestedUserData().get(0).getRequest_status().equals("1")) {
+                            tvJobStatus.setText(R.string.request_confirmed);
+                            tvJobStatus.setBackground(getResources().getDrawable(R.drawable.doteted_green_shape));
+                            tvJobStatus.setTextColor(ContextCompat.getColor(this, R.color.colorGreen));
+                        }
+
+                        break;
+                    default: // in progress job
+                        tvJobStatus.setBackground(getResources().getDrawable(R.drawable.doteted_green_shape));
+                        tvJobStatus.setTextColor(ContextCompat.getColor(this, R.color.colorDarkBlack));
+                        break;
+                }
+
+                rlRange.setVisibility(View.VISIBLE);
+                llChat.setVisibility(View.VISIBLE);
                 rlUserData.setVisibility(View.VISIBLE);
                 rlMoredetail.setVisibility(View.VISIBLE);
                 tvNoRequest.setVisibility(View.GONE);
+                btnSendOffer.setVisibility(View.GONE);
+
+
                 tvName.setText(dataBean.getName());
+
                 tvDistance.setText(dataBean.getRequestedUserData().get(0).getDistance_in_km()+" Km away");
 
                 Picasso.with(ivProfileImg.getContext())
                         .load(dataBean.getRequestedUserData()
                                 .get(0).getProfileImage()).fit().into(ivProfileImg);
+
 
 
                 SpannableStringBuilder builder = new SpannableStringBuilder();
@@ -188,6 +245,7 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
             case R.id.iv_back:
                 onBackPressed();
                 break;
+
                 default:
         }
     }

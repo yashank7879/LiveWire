@@ -36,11 +36,13 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 
 public class OngoingAdapter extends RecyclerView.Adapter<OngoingAdapter.MyViewHolder> {
+    private OnGoingItemOnClick listener;
     private Context mContext;
     private List<OnGoingWorkerResponce.DataBean> ongoingList;
-    public OngoingAdapter(Context mContext, List<OnGoingWorkerResponce.DataBean> ongoingList) {
+    public OngoingAdapter(Context mContext, List<OnGoingWorkerResponce.DataBean> ongoingList,OnGoingItemOnClick listener) {
         this.mContext = mContext;
         this.ongoingList = ongoingList;
+        this.listener = listener;
 
     }
 
@@ -60,7 +62,8 @@ public class OngoingAdapter extends RecyclerView.Adapter<OngoingAdapter.MyViewHo
             holder.tvOfferPrice.setText(dataBean.getJob_offer_rate());
             holder.tvName.setText(dataBean.getName());
             holder.tvDistance.setText(dataBean.getDistance_in_km()+" Km away");
-            holder.tvTime.setText(Constant.getDayDifference(dataBean.getCrd(),dataBean.getCurrentTime()));
+            holder.tvTime.setText(Constant.getDayDifference(dataBean.getCrd(),dataBean.getCurrentDateTime()));
+
             //********"2018-07-04" date format converted into "04 july 2018"***********//
             DateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
             String start = dataBean.getJob_start_date();
@@ -127,10 +130,30 @@ public class OngoingAdapter extends RecyclerView.Adapter<OngoingAdapter.MyViewHo
             llKmAway = (LinearLayout) itemView.findViewById(R.id.ll_km_away);
             tvDistance = (TextView) itemView.findViewById(R.id.tv_distance);
             rlRange = (RelativeLayout) itemView.findViewById(R.id.rl_range);
-            btnIgnore = itemView.findViewById(R.id.btn_ignore);
+           btnIgnore = itemView.findViewById(R.id.btn_ignore);
             btnAccept = itemView.findViewById(R.id.btn_accept);
             llMoreInfo = (LinearLayout) itemView.findViewById(R.id.ll_more_info);
             tvMoreInfo = (TextView) itemView.findViewById(R.id.tv_more_info);
+            llMoreInfo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClickListner(ongoingList.get(getAdapterPosition()),"MoreInfo");
+                }
+            });
+            btnAccept.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClickListner(ongoingList.get(getAdapterPosition()), "Accept");
+                }
+            });
+
+            btnIgnore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClickListner(ongoingList.get(getAdapterPosition()), "Reject");
+                }
+            });
+
         }
     }
     private SpannableStringBuilder dateTextColorChange(String start) {
@@ -145,5 +168,8 @@ public class OngoingAdapter extends RecyclerView.Adapter<OngoingAdapter.MyViewHo
         return builder;
     }
 
+    public interface OnGoingItemOnClick{
+        void onItemClickListner(OnGoingWorkerResponce.DataBean dataBean, String moreInfo);
+    }
 }
 

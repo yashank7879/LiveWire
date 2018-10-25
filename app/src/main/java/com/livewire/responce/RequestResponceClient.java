@@ -50,11 +50,11 @@ public class RequestResponceClient {
          * profileImage : http://dev.livewire.work/./uploads/profile/thumb/vcyf0PR2Gr3LVgCb.jpeg
          */
 
-        private String userId;
-        private String name;
-        private String distance_in_km;
-        private String request_status;
-        private String profileImage;
+        private String userId="";
+        private String name="";
+        private String distance_in_km="";
+        private String request_status="";
+        private String profileImage="";
 
         public String getUserId() {
             return userId;

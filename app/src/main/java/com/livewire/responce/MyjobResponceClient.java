@@ -8,10 +8,11 @@ import java.util.List;
  */
 
 public class MyjobResponceClient implements Serializable {
+
     /**
      * status : success
      * message : OK
-     * data : [{"userId":"2","name":"shekhar","jobId":"1","category_id":"8","job_start_date":"2018-10-25","job_budget":"1000","job_location":"indore","job_latitude":"1.02136","job_longitude":"1.3256","job_type":"1","job_description":"test demo","parent_category":"family","sub_category":"Tuition / Extra lessons","crd":"2018-09-23 23:04:47","total_request":"2","job_confirmed":"0","currentTime":"2018-10-12 03:42:23","requestedUserData":[{"userId":"2","name":"shekhar","profileImage":"http://dev.livewire.work/./uploads/profile/thumb/dBhYSx8ZuHcmV0C5.jpg","request_status":"0","distance_in_km":"16.2"},{"userId":"56","name":"Yashu","profileImage":"http://dev.livewire.work/./uploads/profile/thumb/vcyf0PR2Gr3LVgCb.jpeg","request_status":"0","distance_in_km":"4988.9"}]},{"userId":"2","name":"shekhar","jobId":"2","category_id":"9","job_start_date":"2018-10-25","job_budget":"","job_location":"Malviya Nagar, Indore, Madhya Pradesh, India","job_latitude":"22.7426158","job_longitude":"75.89660030000005","job_type":"2","job_description":"test demo","parent_category":"family","sub_category":"Transport","crd":"2018-09-23 23:08:21","total_request":"0","job_confirmed":"0","currentTime":"2018-10-12 03:42:23"},{"userId":"2","name":"shekhar","jobId":"5","category_id":"9","job_start_date":"2018-10-25","job_budget":"","job_location":"Malviya Nagar, Indore, Madhya Pradesh, India","job_latitude":"22.7426158","job_longitude":"75.89660030000005","job_type":"2","job_description":"test demo","parent_category":"family","sub_category":"Transport","crd":"2018-10-01 02:24:35","total_request":"0","job_confirmed":"0","currentTime":"2018-10-12 03:42:23"},{"userId":"2","name":"shekhar","jobId":"6","category_id":"9","job_start_date":"2018-10-25","job_budget":"","job_location":"Malviya Nagar, Indore, Madhya Pradesh, India","job_latitude":"22.7426158","job_longitude":"75.89660030000005","job_type":"2","job_description":"test demo","parent_category":"family","sub_category":"Transport","crd":"2018-10-01 02:24:40","total_request":"0","job_confirmed":"0","currentTime":"2018-10-12 03:42:23"},{"userId":"2","name":"shekhar","jobId":"7","category_id":"9","job_start_date":"2018-10-25","job_budget":"","job_location":"Malviya Nagar, Indore, Madhya Pradesh, India","job_latitude":"22.7426158","job_longitude":"75.89660030000005","job_type":"2","job_description":"test demo","parent_category":"family","sub_category":"Transport","crd":"2018-10-01 03:11:48","total_request":"0","job_confirmed":"0","currentTime":"2018-10-12 03:42:23"},{"userId":"2","name":"shekhar","jobId":"8","category_id":"9","job_start_date":"2018-10-25","job_budget":"12","job_location":"Malviya Nagar, Indore, Madhya Pradesh, India","job_latitude":"22.7426158","job_longitude":"75.89660030000005","job_type":"1","job_description":"test demo","parent_category":"family","sub_category":"Transport","crd":"2018-10-01 03:25:03","total_request":"2","job_confirmed":"0","currentTime":"2018-10-12 03:42:23","requestedUserData":[{"userId":"27","name":"purva","profileImage":"http://dev.livewire.work/./uploads/profile/default.png","request_status":"0","distance_in_km":"246.6"},{"userId":"56","name":"Yashu","profileImage":"http://dev.livewire.work/./uploads/profile/thumb/vcyf0PR2Gr3LVgCb.jpeg","request_status":"0","distance_in_km":"325.9"}]},{"userId":"2","name":"shekhar","jobId":"9","category_id":"9","job_start_date":"2018-10-25","job_budget":"12","job_location":"Malviya Nagar, Indore, Madhya Pradesh, India","job_latitude":"22.7426158","job_longitude":"75.89660030000005","job_type":"1","job_description":"test demo","parent_category":"family","sub_category":"Transport","crd":"2018-10-01 03:26:41","total_request":"2","job_confirmed":"0","currentTime":"2018-10-12 03:42:23","requestedUserData":[{"userId":"27","name":"purva","profileImage":"http://dev.livewire.work/./uploads/profile/default.png","request_status":"0","distance_in_km":"246.6"},{"userId":"56","name":"Yashu","profileImage":"http://dev.livewire.work/./uploads/profile/thumb/vcyf0PR2Gr3LVgCb.jpeg","request_status":"0","distance_in_km":"325.9"}]},{"userId":"2","name":"shekhar","jobId":"34","category_id":"9","job_start_date":"2018-10-25","job_budget":"","job_location":"Malviya Nagar, Indore, Madhya Pradesh, India","job_latitude":"22.7426158","job_longitude":"75.89660030000005","job_type":"2","job_description":"test demo","parent_category":"family","sub_category":"Transport","crd":"2018-10-10 04:20:52","total_request":"0","job_confirmed":"0","currentTime":"2018-10-12 03:42:23"},{"userId":"2","name":"shekhar","jobId":"35","category_id":"9","job_start_date":"2018-10-25","job_budget":"","job_location":"Malviya Nagar, Indore, Madhya Pradesh, India","job_latitude":"22.7426158","job_longitude":"75.89660030000005","job_type":"2","job_description":"test demo","parent_category":"family","sub_category":"Transport","crd":"2018-10-10 04:21:07","total_request":"0","job_confirmed":"0","currentTime":"2018-10-12 03:42:23"}]
+     * data : [{"userId":"25","name":"gsjs","jobId":"150","category_id":"8","job_start_date":"2018-10-22","job_end_date":"0000-00-00","job_budget":"80","job_location":"Indore, Madhya Pradesh, India","job_latitude":"22.719568699999996","job_longitude":"75.8577258","job_type":"1","job_description":"hello i want tutor","parent_category":"family","sub_category":"Tuition / Extra lessons","crd":"2018-10-18 07:20:25","job_offer":"","total_request":"3","job_confirmed":"0","job_week_days":null,"job_time_duration":null,"currentDateTime":"2018-10-25 05:03:44","total_record":9,"requestedUserData":[{"userId":"27","userType":"worker","name":"purva","profileImage":"http://dev.livewire.work/./uploads/profile/default.png","request_status":"0","distance_in_km":"247.7","max_rate":"10","min_rate":"5"},{"userId":"111","userType":"worker","name":"Ravi","profileImage":"http://dev.livewire.work/./uploads/profile/default.png","request_status":"0","distance_in_km":"7933.6","max_rate":"10","min_rate":"5"},{"userId":"127","userType":"worker","name":"Reena","profileImage":"http://dev.livewire.work/./uploads/profile/thumb/7xt83IVSeM2iYXUu.jpeg","request_status":"0","distance_in_km":"1847.8","max_rate":"23","min_rate":"22"}]},{"userId":"25","name":"gsjs","jobId":"160","category_id":"13","job_start_date":"2018-10-23","job_end_date":"0000-00-00","job_budget":"700","job_location":"Indore, Madhya Pradesh, India","job_latitude":"22.719568699999996","job_longitude":"75.8577258","job_type":"1","job_description":"fsguksksk","parent_category":"hous & home","sub_category":"Cooking / Baking","crd":"2018-08-01 07:20:20","job_offer":"","total_request":"2","job_confirmed":"0","job_week_days":null,"job_time_duration":null,"currentDateTime":"2018-10-25 05:03:44","total_record":9,"requestedUserData":[{"userId":"27","userType":"worker","name":"purva","profileImage":"http://dev.livewire.work/./uploads/profile/default.png","request_status":"0","distance_in_km":"247.7","max_rate":"10","min_rate":"5"},{"userId":"127","userType":"worker","name":"Reena","profileImage":"http://dev.livewire.work/./uploads/profile/thumb/7xt83IVSeM2iYXUu.jpeg","request_status":"0","distance_in_km":"1847.8","max_rate":"23","min_rate":"22"}]},{"userId":"25","name":"gsjs","jobId":"163","category_id":"11","job_start_date":"2018-10-27","job_end_date":"0000-00-00","job_budget":"600","job_location":"Indore, Madhya Pradesh, India","job_latitude":"22.719568699999996","job_longitude":"75.8577258","job_type":"1","job_description":"hello","parent_category":"hous & home","sub_category":"DIY / home maintenance","crd":"2018-10-23 06:54:50","job_offer":null,"total_request":"0","job_confirmed":"0","job_week_days":null,"job_time_duration":null,"currentDateTime":"2018-10-25 05:03:44","total_record":9},{"userId":"25","name":"gsjs","jobId":"164","category_id":"14","job_start_date":"2018-10-23","job_end_date":"2018-11-10","job_budget":"","job_location":"Indore, Madhya Pradesh, India","job_latitude":"22.719568699999996","job_longitude":"75.8577258","job_type":"2","job_description":"I will send you the details","parent_category":"hous & home","sub_category":"Pet Care","crd":"2018-10-23 07:05:27","job_offer":null,"total_request":"0","job_confirmed":"0","job_week_days":"Monday,Tuesday,Wednesday,","job_time_duration":"5","currentDateTime":"2018-10-25 05:03:44","total_record":9},{"userId":"25","name":"gsjs","jobId":"165","category_id":"11","job_start_date":"2018-10-23","job_end_date":"2018-11-30","job_budget":"","job_location":"Indore, Madhya Pradesh, India","job_latitude":"22.719568699999996","job_longitude":"75.8577258","job_type":"2","job_description":"dhjhgj","parent_category":"hous & home","sub_category":"DIY / home maintenance","crd":"2018-10-23 07:42:36","job_offer":"400","total_request":"1","job_confirmed":"0","job_week_days":"Tuesday,Wednesday,Friday,","job_time_duration":"5","currentDateTime":"2018-10-25 05:03:44","total_record":9,"requestedUserData":[{"userId":"1","userType":"worker","name":"tushar","profileImage":"http://dev.livewire.work/./uploads/profile/thumb/sVDeObLXf9UBmwEY.png","request_status":"0","distance_in_km":"0.0","max_rate":"100","min_rate":"50"}]},{"userId":"25","name":"gsjs","jobId":"168","category_id":"8","job_start_date":"2018-10-24","job_end_date":"2018-11-30","job_budget":"","job_location":"Indore, Madhya Pradesh, India","job_latitude":"22.719568699999996","job_longitude":"75.8577258","job_type":"2","job_description":"hello I hope you are feeling better today","parent_category":"family","sub_category":"Tuition / Extra lessons","crd":"2018-10-24 06:51:48","job_offer":"10","total_request":"1","job_confirmed":"0","job_week_days":"Wednesday,Friday,Sunday,","job_time_duration":"1000","currentDateTime":"2018-10-25 05:03:44","total_record":9,"requestedUserData":[{"userId":"120","userType":"worker","name":"sachin","profileImage":"http://dev.livewire.work/./uploads/profile/thumb/mTao4qIkC9POhV0X.jpg","request_status":"0","distance_in_km":"0.0","max_rate":"700","min_rate":"50"}]},{"userId":"25","name":"gsjs","jobId":"172","category_id":"7","job_start_date":"2018-10-24","job_end_date":"2018-11-23","job_budget":"","job_location":"Indore, Madhya Pradesh, India","job_latitude":"22.719568699999996","job_longitude":"75.8577258","job_type":"2","job_description":"gsjksksjshdjs hdjdjdn vdhdj vdjdjdjjd hsjsj hsjsj jdjdjdj hjd.  sjjskskeks hjdskso\n","parent_category":"family","sub_category":"Babysitting","crd":"2018-10-24 13:59:24","job_offer":"","total_request":"1","job_confirmed":"1","job_week_days":"Monday,Friday,Saturday,Sunday,","job_time_duration":"5","currentDateTime":"2018-10-25 05:03:44","total_record":9,"requestedUserData":{"userId":"27","userType":"worker","name":"purva","profileImage":"","request_status":"1","max_rate":"10","min_rate":"5"}},{"userId":"25","name":"gsjs","jobId":"173","category_id":"7","job_start_date":"2018-10-24","job_end_date":"2018-11-30","job_budget":"","job_location":"Indore, Madhya Pradesh, India","job_latitude":"22.719568699999996","job_longitude":"75.8577258","job_type":"2","job_description":"gsjjsks","parent_category":"family","sub_category":"Babysitting","crd":"2018-10-24 14:04:10","job_offer":null,"total_request":"0","job_confirmed":"0","job_week_days":"Wednesday,Saturday,Sunday,","job_time_duration":"6","currentDateTime":"2018-10-25 05:03:44","total_record":9},{"userId":"25","name":"gsjs","jobId":"174","category_id":"7","job_start_date":"2018-10-24","job_end_date":"2019-05-17","job_budget":"","job_location":"Indore, Madhya Pradesh, India","job_latitude":"22.719568699999996","job_longitude":"75.8577258","job_type":"2","job_description":"gshsjsjsjsjd hdjjdkd\n","parent_category":"family","sub_category":"Babysitting","crd":"2018-10-24 14:05:34","job_offer":"","total_request":"1","job_confirmed":"0","job_week_days":"Wednesday,Saturday,Sunday,","job_time_duration":"6","currentDateTime":"2018-10-25 05:03:44","total_record":9,"requestedUserData":[{"userId":"27","userType":"worker","name":"purva","profileImage":"http://dev.livewire.work/./uploads/profile/default.png","request_status":"2","distance_in_km":"247.7","max_rate":"10","min_rate":"5"}]}]
      */
 
     private String status;
@@ -42,47 +43,55 @@ public class MyjobResponceClient implements Serializable {
         this.data = data;
     }
 
-    public static class DataBean implements Serializable{
+    public static class DataBean implements Serializable {
         /**
-         * userId : 2
-         * name : shekhar
-         * jobId : 1
+         * userId : 25
+         * name : gsjs
+         * jobId : 150
          * category_id : 8
-         * job_start_date : 2018-10-25
-         * job_budget : 1000
-         * job_location : indore
-         * job_latitude : 1.02136
-         * job_longitude : 1.3256
+         * job_start_date : 2018-10-22
+         * job_end_date : 0000-00-00
+         * job_budget : 80
+         * job_location : Indore, Madhya Pradesh, India
+         * job_latitude : 22.719568699999996
+         * job_longitude : 75.8577258
          * job_type : 1
-         * job_description : test demo
+         * job_description : hello i want tutor
          * parent_category : family
          * sub_category : Tuition / Extra lessons
-         * crd : 2018-09-23 23:04:47
-         * total_request : 2
+         * crd : 2018-10-18 07:20:25
+         * job_offer :
+         * total_request : 3
          * job_confirmed : 0
-         * job_offer: ""/null
-         * currentTime : 2018-10-12 03:42:23
-         * requestedUserData : [{"userId":"2","name":"shekhar","profileImage":"http://dev.livewire.work/./uploads/profile/thumb/dBhYSx8ZuHcmV0C5.jpg","request_status":"0","distance_in_km":"16.2"},{"userId":"56","name":"Yashu","profileImage":"http://dev.livewire.work/./uploads/profile/thumb/vcyf0PR2Gr3LVgCb.jpeg","request_status":"0","distance_in_km":"4988.9"}]
+         * job_week_days : null
+         * job_time_duration : null
+         * currentDateTime : 2018-10-25 05:03:44
+         * total_record : 9
+         * requestedUserData : [{"userId":"27","userType":"worker","name":"purva","profileImage":"http://dev.livewire.work/./uploads/profile/default.png","request_status":"0","distance_in_km":"247.7","max_rate":"10","min_rate":"5"},{"userId":"111","userType":"worker","name":"Ravi","profileImage":"http://dev.livewire.work/./uploads/profile/default.png","request_status":"0","distance_in_km":"7933.6","max_rate":"10","min_rate":"5"},{"userId":"127","userType":"worker","name":"Reena","profileImage":"http://dev.livewire.work/./uploads/profile/thumb/7xt83IVSeM2iYXUu.jpeg","request_status":"0","distance_in_km":"1847.8","max_rate":"23","min_rate":"22"}]
          */
 
-        private String userId;
-        private String name;
-        private String jobId;
-        private String category_id;
-        private String job_start_date;
-        private String job_budget;
-        private String job_location;
-        private String job_latitude;
-        private String job_longitude;
-        private String job_type;
-        private String job_description;
-        private String parent_category;
-        private String sub_category;
-        private String crd;
-        private String total_request;
-        private String job_confirmed;
-        private String currentTime;
-        private String job_offer;
+        private String userId="";
+        private String name="";
+        private String jobId="";
+        private String category_id="";
+        private String job_start_date="";
+        private String job_end_date="";
+        private String job_budget="";
+        private String job_location="";
+        private String job_latitude="";
+        private String job_longitude="";
+        private String job_type="";
+        private String job_description="";
+        private String parent_category="";
+        private String sub_category="";
+        private String crd="";
+        private String job_offer="";
+        private String total_request="";
+        private String job_confirmed="";
+        private String job_week_days="";
+        private String  job_time_duration="";
+        private String currentDateTime="";
+        private int total_record;
         private List<RequestedUserDataBean> requestedUserData;
 
         public String getUserId() {
@@ -123,6 +132,14 @@ public class MyjobResponceClient implements Serializable {
 
         public void setJob_start_date(String job_start_date) {
             this.job_start_date = job_start_date;
+        }
+
+        public String getJob_end_date() {
+            return job_end_date;
+        }
+
+        public void setJob_end_date(String job_end_date) {
+            this.job_end_date = job_end_date;
         }
 
         public String getJob_budget() {
@@ -197,6 +214,14 @@ public class MyjobResponceClient implements Serializable {
             this.crd = crd;
         }
 
+        public String getJob_offer() {
+            return job_offer;
+        }
+
+        public void setJob_offer(String job_offer) {
+            this.job_offer = job_offer;
+        }
+
         public String getTotal_request() {
             return total_request;
         }
@@ -213,12 +238,36 @@ public class MyjobResponceClient implements Serializable {
             this.job_confirmed = job_confirmed;
         }
 
-        public String getCurrentTime() {
-            return currentTime;
+        public String getJob_week_days() {
+            return job_week_days;
         }
 
-        public void setCurrentTime(String currentTime) {
-            this.currentTime = currentTime;
+        public void setJob_week_days(String job_week_days) {
+            this.job_week_days = job_week_days;
+        }
+
+        public String  getJob_time_duration() {
+            return job_time_duration;
+        }
+
+        public void setJob_time_duration(String job_time_duration) {
+            this.job_time_duration = job_time_duration;
+        }
+
+        public String getCurrentDateTime() {
+            return currentDateTime;
+        }
+
+        public void setCurrentDateTime(String currentDateTime) {
+            this.currentDateTime = currentDateTime;
+        }
+
+        public int getTotal_record() {
+            return total_record;
+        }
+
+        public void setTotal_record(int total_record) {
+            this.total_record = total_record;
         }
 
         public List<RequestedUserDataBean> getRequestedUserData() {
@@ -229,48 +278,26 @@ public class MyjobResponceClient implements Serializable {
             this.requestedUserData = requestedUserData;
         }
 
-        public String getJob_offer() {
-            return job_offer;
-        }
-
-        public void setJob_offer(String job_offer) {
-            this.job_offer = job_offer;
-        }
-
-        public static class RequestedUserDataBean implements Serializable{
+        public static class RequestedUserDataBean implements Serializable {
             /**
-             * userId : 2
-             * name : shekhar
-             * profileImage : http://dev.livewire.work/./uploads/profile/thumb/dBhYSx8ZuHcmV0C5.jpg
+             * userId : 27
+             * userType : worker
+             * name : purva
+             * profileImage : http://dev.livewire.work/./uploads/profile/default.png
              * request_status : 0
-             * distance_in_km : 16.2
+             * distance_in_km : 247.7
+             * max_rate : 10
+             * min_rate : 5
              */
 
-            private String userId;
-            private String name;
-            private String profileImage;
-            private String request_status;
-            private String distance_in_km;
-            private String max_rate;
-            private String min_rate;
-
-
-            public String getMax_rate() {
-                return max_rate;
-            }
-
-            public void setMax_rate(String max_rate) {
-                this.max_rate = max_rate;
-            }
-
-            public String getMin_rate() {
-                return min_rate;
-            }
-
-            public void setMin_rate(String min_rate) {
-                this.min_rate = min_rate;
-            }
-
+            private String userId="";
+            private String userType="";
+            private String name="";
+            private String profileImage="";
+            private String request_status="";
+            private String distance_in_km="";
+            private String max_rate="";
+            private String min_rate="";
 
             public String getUserId() {
                 return userId;
@@ -278,6 +305,14 @@ public class MyjobResponceClient implements Serializable {
 
             public void setUserId(String userId) {
                 this.userId = userId;
+            }
+
+            public String getUserType() {
+                return userType;
+            }
+
+            public void setUserType(String userType) {
+                this.userType = userType;
             }
 
             public String getName() {
@@ -310,6 +345,22 @@ public class MyjobResponceClient implements Serializable {
 
             public void setDistance_in_km(String distance_in_km) {
                 this.distance_in_km = distance_in_km;
+            }
+
+            public String getMax_rate() {
+                return max_rate;
+            }
+
+            public void setMax_rate(String max_rate) {
+                this.max_rate = max_rate;
+            }
+
+            public String getMin_rate() {
+                return min_rate;
+            }
+
+            public void setMin_rate(String min_rate) {
+                this.min_rate = min_rate;
             }
         }
     }

@@ -54,14 +54,14 @@ public class NearYouResponce {
          * job_confirmed : 3
          */
 
-        private String userId;
-        private String name;
-        private String profileImage;
-        private String category_name;
-        private String parent_category;
-        private String max_rate;
-        private String min_rate;
-        private String distance_in_km;
+        private String userId="";
+        private String name="";
+        private String profileImage="";
+        private String category_name="";
+        private String parent_category="";
+        private String max_rate="";
+        private String min_rate="";
+        private String distance_in_km="";
         private int job_confirmed;
 
         public String getUserId() {

@@ -15,16 +15,16 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -41,7 +41,7 @@ import com.livewire.model.CategoryModel;
 import com.livewire.pagination.EndlessRecyclerViewScrollListener;
 import com.livewire.responce.HelpOfferedResponce;
 import com.livewire.responce.SubCategoryResponse;
-import com.livewire.ui.activity.JobDetailWorkerActivity;
+import com.livewire.ui.activity.JobHelpOfferedDetailWorkerActivity;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
 import com.livewire.utils.ProgressDialog;
@@ -51,6 +51,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import static com.facebook.FacebookSdk.getApplicationContext;
 import static com.livewire.utils.ApiCollection.BASE_URL;
 
 
@@ -78,6 +79,7 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
 
     private int limit = 5;
     private int start = 0;
+    private Animation mLoadAnimation;
 
     @Override
     public void onAttach(Context context) {
@@ -110,6 +112,10 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
         filterLayout = view.findViewById(R.id.filter_layout);
         tvClearAll = view.findViewById(R.id.tv_clear_all);
         rvFilter = view.findViewById(R.id.rv_filter_list);
+
+
+         mLoadAnimation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in);
+        mLoadAnimation.setDuration(1000);
 
 
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
@@ -186,6 +192,7 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
                         @Override
                         public void onResponse(JSONObject response) {
                             progressDialog.dismiss();
+                        //    mainLayout.startAnimation(mLoadAnimation);
                             String status = null;
                             try {
                                 status = response.getString("status");
@@ -376,8 +383,8 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
     @Override
     public void subCategoryItemOnClick(int pos, CategoryModel categoryModel, String key) {
         if (key.equals("FilterKey")) {
-            subCategoryList.remove(pos);
-            subCategoryAdapterList.notifyDataSetChanged();
+            addItemsInSubTempList(categoryModel,pos);
+
             if (subCategoryList.size() != 0) {
                 skillsString();
                 helpOfferedApi();
@@ -387,7 +394,8 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
                 filterLayout.setVisibility(View.GONE);
             }
         } else {
-            SubCategoryResponse.DataBean dataBean = new SubCategoryResponse.DataBean();
+            addItemsInSubTempList(categoryModel,pos);
+         /*   SubCategoryResponse.DataBean dataBean = new SubCategoryResponse.DataBean();
             dataBean.setCategoryName(categoryModel.getCategoryName());
             dataBean.setCategoryId(categoryModel.getCategoryId());
             dataBean.setPosition(categoryModel.getPosition());
@@ -399,9 +407,26 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
             }
             subCategoryList.remove(pos);
             subCategoryAdapterList.notifyDataSetChanged();
-            subCategoryAdapter.notifyDataSetChanged();
+            subCategoryAdapter.notifyDataSetChanged();*/
             //  subCategoryTempList.add()
         }
+    }
+
+    // add item in subCategoryTempList when remove from recyclerview
+    private void addItemsInSubTempList(CategoryModel categoryModel, int pos) {
+        SubCategoryResponse.DataBean dataBean = new SubCategoryResponse.DataBean();
+        dataBean.setCategoryName(categoryModel.getCategoryName());
+        dataBean.setCategoryId(categoryModel.getCategoryId());
+        dataBean.setPosition(categoryModel.getPosition());
+
+        if (subCategoryTempList.size() > categoryModel.getPosition()) {
+            subCategoryTempList.add(categoryModel.getPosition(), dataBean);
+        } else {
+            subCategoryTempList.add(subCategoryTempList.size(), dataBean);
+        }
+        subCategoryList.remove(pos);
+        subCategoryAdapterList.notifyDataSetChanged();
+        subCategoryAdapter.notifyDataSetChanged();
     }
 
     private String skillsString() {
@@ -417,19 +442,19 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
 
     //""""""' help offer listener """"""""""//
     @Override
-    public void helpOfferItemOnClick(HelpOfferedResponce.DataBean dataBean, String key) {
+    public void helpOfferItemOnClick(HelpOfferedResponce.DataBean dataBean, String key,int pos) {
         if (key.equals(getString(R.string.moreinfo))) {
-            Intent intent = new Intent(mContext, JobDetailWorkerActivity.class);
+            Intent intent = new Intent(mContext, JobHelpOfferedDetailWorkerActivity.class);
             intent.putExtra("JobIdKey", dataBean);
             startActivity(intent);
 
         } else if (key.equals(getString(R.string.sendrequest))) {
-            sendRequestApi(dataBean.getJobId(), dataBean.getUserId());
+            sendRequestApi(dataBean.getJobId(), dataBean.getUserId(),pos);
         }
     }
 
     //"""""""" Jobpost/sendRequest  """""""""""""""//
-    private void sendRequestApi(String jobId, String userId) {
+    private void sendRequestApi(String jobId, String userId, final int pos) {
         if (Constant.isNetworkAvailable(mContext, mainLayout)) {
             progressDialog.show();
             AndroidNetworking.post(BASE_URL + "Jobpost/sendRequest2")
@@ -447,7 +472,26 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
                         String status = response.getString("status");
                         String message = response.getString("message");
                         if (status.equals("success")) {
+
                             Constant.snackBar(mainLayout, message);
+                          /*  HelpOfferedResponce.DataBean dataBean = new HelpOfferedResponce.DataBean();
+                           dataBean.setUserId(offerList.get(pos).getUserId());
+                           dataBean.setName(offerList.get(pos).getName());
+                           dataBean.setProfileImage(offerList.get(pos).getProfileImage());
+                           dataBean.setJobId(offerList.get(pos).getJobId());
+                           dataBean.setCategory_id(offerList.get(pos).getCategory_id());
+                           dataBean.setJob_start_date(offerList.get(pos).getJob_start_date());
+                           dataBean.setJob_budget(offerList.get(pos).getJob_budget());
+                           dataBean.setJob_location(offerList.get(pos).getJob_location());
+                           dataBean.setJob_description(offerList.get(pos).getJob_description());
+                           dataBean.setCrd(offerList.get(pos).getCrd());
+                           dataBean.setParentCategoryName(offerList.get(pos).getParentCategoryName());
+                           dataBean.setDistance_in_km(offerList.get(pos).getDistance_in_km());
+                           dataBean.setJob_confirmed("3");
+
+                            offerList.set(pos,dataBean);*/
+
+
                         } else {
                             Constant.snackBar(mainLayout, message);
                         }

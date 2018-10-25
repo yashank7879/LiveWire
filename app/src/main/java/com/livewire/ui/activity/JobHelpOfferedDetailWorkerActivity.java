@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -16,14 +15,11 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
-import com.google.gson.Gson;
 import com.livewire.R;
 import com.livewire.responce.HelpOfferedResponce;
-import com.livewire.responce.JobDetailWorkerResponce;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
 import com.livewire.utils.ProgressDialog;
-import com.loopeer.shadow.ShadowView;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -38,7 +34,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.livewire.utils.ApiCollection.BASE_URL;
 
-public class JobDetailWorkerActivity extends AppCompatActivity implements View.OnClickListener {
+public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implements View.OnClickListener {
     private ImageView ivBack;
     private CircleImageView ivProfileImg;
     private TextView tvName;
@@ -139,7 +135,7 @@ public class JobDetailWorkerActivity extends AppCompatActivity implements View.O
         tvSubCategory.setText(jobDetail.getSubCategoryName());
         tvBudgetPrice.setText("$ " + jobDetail.getJob_budget());
         tvDescription.setText(jobDetail.getJob_description());
-        tvTime.setText(Constant.getDayDifference(jobDetail.getCrd(), jobDetail.getCurrentTime()));
+        tvTime.setText(Constant.getDayDifference(jobDetail.getCrd(), jobDetail.getCurrentDateTime()));
 
         if (jobDetail.getJob_confirmed().equals("0")){ // pending request
             btnSendRequest.setBackground(null);
@@ -186,8 +182,8 @@ public class JobDetailWorkerActivity extends AppCompatActivity implements View.O
         } else if (jobDetail.getJob_confirmed().equals("3")) {// job not send
 
         }
-        // tvDate.setText(Constant.getDayDifference(workerResponce.getData().get(0).getCrd(),workerResponce.getData().get(0).getCurrentTime()) );
-        // tvDateMonth.setText(Constant.getDayDifference(workerResponce.getData().get(0).getCrd(),workerResponce.getData().get(0).getCurrentTime()) );
+        // tvDate.setText(Constant.getDayDifference(workerResponce.getData().get(0).getCrd(),workerResponce.getData().get(0).getCurrentDateTime()) );
+        // tvDateMonth.setText(Constant.getDayDifference(workerResponce.getData().get(0).getCrd(),workerResponce.getData().get(0).getCurrentDateTime()) );
     }
 
     @Override
@@ -224,7 +220,7 @@ public class JobDetailWorkerActivity extends AppCompatActivity implements View.O
                         if (status.equals("success")) {
                             btnSendRequest.setBackground(null);
                             btnSendRequest.setText(R.string.pending_request);
-                            btnSendRequest.setTextColor(ContextCompat.getColor(JobDetailWorkerActivity.this, R.color.colorOrange));
+                            btnSendRequest.setTextColor(ContextCompat.getColor(JobHelpOfferedDetailWorkerActivity.this, R.color.colorOrange));
                             btnSendRequest.setClickable(false);
                             Constant.snackBar(mainLayout, message);
                         } else {

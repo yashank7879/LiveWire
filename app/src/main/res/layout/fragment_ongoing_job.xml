@@ -276,8 +276,7 @@
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:hint="@string/description"
-                android:maxLines="3"
-                android:imeOptions="actionNext"
+                android:imeOptions="actionGo"
                 android:textColor="@color/colorDarkBlack"
                 android:textColorHint="@color/colorLightGray"
                 />

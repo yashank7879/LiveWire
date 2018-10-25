@@ -62,21 +62,21 @@ public class JobDetailWorkerResponce {
          * requestedUserData : [{"userId":"56","name":"Yashu","profileImage":"http://dev.livewire.work/./uploads/profile/thumb/vcyf0PR2Gr3LVgCb.jpeg","request_status":"0","distance_in_km":"325.9"}]
          */
 
-        private String userId;
-        private String jobId;
-        private String category_id;
-        private String job_start_date;
-        private String job_budget;
-        private String job_latitude;
-        private String job_longitude;
-        private String job_description;
-        private String crd;
-        private String parent_category;
-        private String sub_category;
-        private String distance_in_km;
-        private String total_request;
-        private String job_confirmed;
-        private String currentTime;
+        private String userId="";
+        private String jobId="";
+        private String category_id="";
+        private String job_start_date="";
+        private String job_budget="";
+        private String job_latitude="";
+        private String job_longitude="";
+        private String job_description="";
+        private String crd="";
+        private String parent_category="";
+        private String sub_category="";
+        private String distance_in_km="";
+        private String total_request="";
+        private String job_confirmed="";
+        private String currentTime="";
         private List<RequestedUserDataBean> requestedUserData;
 
         public String getUserId() {
@@ -216,11 +216,11 @@ public class JobDetailWorkerResponce {
              * distance_in_km : 325.9
              */
 
-            private String userId;
-            private String name;
-            private String profileImage;
-            private String request_status;
-            private String distance_in_km;
+            private String userId="";
+            private String name="";
+            private String profileImage="";
+            private String request_status="";
+            private String distance_in_km="";
 
             public String getUserId() {
                 return userId;

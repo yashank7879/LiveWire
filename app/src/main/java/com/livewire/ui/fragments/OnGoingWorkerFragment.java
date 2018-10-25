@@ -2,6 +2,7 @@ package com.livewire.ui.fragments;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -37,6 +38,8 @@ import com.livewire.model.CategoryModel;
 import com.livewire.pagination.EndlessRecyclerViewScrollListener;
 import com.livewire.responce.OnGoingWorkerResponce;
 import com.livewire.responce.SubCategoryResponse;
+import com.livewire.ui.activity.JobHelpOfferedDetailWorkerActivity;
+import com.livewire.ui.activity.JobOnGoingDetailWorkerActivity;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
 import com.livewire.utils.ProgressDialog;
@@ -50,7 +53,7 @@ import java.util.List;
 import static com.livewire.utils.ApiCollection.BASE_URL;
 
 
-public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapter.SubCategoryLisner, AdapterView.OnItemSelectedListener,View.OnClickListener{
+public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapter.SubCategoryLisner, AdapterView.OnItemSelectedListener,View.OnClickListener,OngoingAdapter.OnGoingItemOnClick {
     private Context mContext;
     private SwipeRefreshLayout swipeRefresh;
     private RelativeLayout mainLayout;
@@ -106,9 +109,10 @@ public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapte
         RecyclerView rvOngoing = (RecyclerView) view.findViewById(R.id.rv_ongoing);
         mainLayout = view.findViewById(R.id.main_layout);
         tvNoJobPost = view.findViewById(R.id.tv_no_job_post);
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         rvOngoing.setLayoutManager(layoutManager);
-        adapter = new OngoingAdapter(mContext,ongoingList);
+        adapter = new OngoingAdapter(mContext,ongoingList,this);
         rvOngoing.setAdapter(adapter);
 
         LinearLayoutManager layoutManager1 = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
@@ -170,7 +174,7 @@ public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapte
                     .addBodyParameter("job_type", "2")
                     .addBodyParameter("limit", ""+limit)
                     .addBodyParameter("start", ""+start)
-                    // .addBodyParameter("skill", skillsStrin)
+                     .addBodyParameter("skill", skillsStrin)
                     .setPriority(Priority.MEDIUM)
                     .build().getAsJSONObject(new JSONObjectRequestListener() {
                 @Override
@@ -185,7 +189,7 @@ public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapte
                             OnGoingWorkerResponce workerResponce = new Gson().fromJson(String.valueOf(response), OnGoingWorkerResponce.class);
                             ongoingList.addAll(workerResponce.getData());
                             adapter.notifyDataSetChanged();
-
+                            subCategoryAdapterList.notifyDataSetChanged();
                         } else {
                             ongoingList.clear();
                             adapter.notifyDataSetChanged();
@@ -255,37 +259,6 @@ public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapte
 
                         }
                     });
-        }
-    }
-
-    @Override
-    public void subCategoryItemOnClick(int pos, CategoryModel categoryModel, String key) {
-        if (key.equals("FilterKey")) {
-            subCategoryList.remove(pos);
-            subCategoryAdapterList.notifyDataSetChanged();
-            if (subCategoryList.size() != 0) {
-                skillsString();
-                ongoingListApi();
-            } else {
-                skillsString();
-                ongoingListApi();
-                filterLayout.setVisibility(View.GONE);
-            }
-        } else {
-            SubCategoryResponse.DataBean dataBean = new SubCategoryResponse.DataBean();
-            dataBean.setCategoryName(categoryModel.getCategoryName());
-            dataBean.setCategoryId(categoryModel.getCategoryId());
-            dataBean.setPosition(categoryModel.getPosition());
-
-            if (subCategoryTempList.size() > categoryModel.getPosition()) {
-                subCategoryTempList.add(categoryModel.getPosition(), dataBean);
-            } else {
-                subCategoryTempList.add(subCategoryTempList.size(), dataBean);
-            }
-            subCategoryList.remove(pos);
-            subCategoryAdapterList.notifyDataSetChanged();
-            subCategoryAdapter.notifyDataSetChanged();
-            //  subCategoryTempList.add()
         }
     }
 
@@ -403,8 +376,112 @@ public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapte
             default:
         }
     }
-}
-/*
 
-        swipeRefresh = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
-                rvOngoing = (RecyclerView) findViewById(R.id.rv_ongoing);*/
+    @Override
+    public void subCategoryItemOnClick(int pos, CategoryModel categoryModel, String key) {
+        if (key.equals("FilterKey")) {
+            addItemsInSubTempList(categoryModel,pos);
+            subCategoryAdapterList.notifyDataSetChanged();
+            if (subCategoryList.size() != 0) {
+                skillsString();
+                ongoingListApi();
+            } else {
+                skillsString();
+                ongoingListApi();
+                filterLayout.setVisibility(View.GONE);
+            }
+        } else {
+            addItemsInSubTempList(categoryModel,pos);
+         /*   SubCategoryResponse.DataBean dataBean = new SubCategoryResponse.DataBean();
+            dataBean.setCategoryName(categoryModel.getCategoryName());
+            dataBean.setCategoryId(categoryModel.getCategoryId());
+            dataBean.setPosition(categoryModel.getPosition());
+
+            if (subCategoryTempList.size() > categoryModel.getPosition()) {
+                subCategoryTempList.add(categoryModel.getPosition(), dataBean);
+            } else {
+                subCategoryTempList.add(subCategoryTempList.size(), dataBean);
+            }
+            subCategoryList.remove(pos);
+            subCategoryAdapterList.notifyDataSetChanged();
+            subCategoryAdapter.notifyDataSetChanged();*/
+            //  subCategoryTempList.add()
+        }
+    }
+
+    private void addItemsInSubTempList(CategoryModel categoryModel, int pos) {
+        subCategoryList.remove(pos);
+        subCategoryAdapterList.notifyDataSetChanged();
+        subCategoryAdapter.notifyDataSetChanged();
+        SubCategoryResponse.DataBean dataBean = new SubCategoryResponse.DataBean();
+        dataBean.setCategoryName(categoryModel.getCategoryName());
+        dataBean.setCategoryId(categoryModel.getCategoryId());
+        dataBean.setPosition(categoryModel.getPosition());
+
+        if (subCategoryTempList.size() > categoryModel.getPosition()) {
+            subCategoryTempList.add(categoryModel.getPosition(), dataBean);
+        } else {
+            subCategoryTempList.add(subCategoryTempList.size(), dataBean);
+        }
+
+    }
+
+    @Override
+    public void onItemClickListner(OnGoingWorkerResponce.DataBean dataBean, String key) {
+        switch (key) {
+            case "MoreInfo":
+                Intent intent = new Intent(mContext, JobOnGoingDetailWorkerActivity.class);
+                intent.putExtra("JobDetail",dataBean);
+                startActivity(intent);
+                break;
+            case "Accept":
+                acceptRejectrequestApi(dataBean.getUserId(),dataBean.getJobId(),"1");
+                break;
+            case "Reject":
+                acceptRejectrequestApi(dataBean.getUserId(),dataBean.getJobId(),"2");
+                break;
+                default:
+        }
+    }
+
+    private void acceptRejectrequestApi(String userId, String jobId, String requestStatus) {
+    if (Constant.isNetworkAvailable(mContext,mainLayout)){
+        progressDialog.show();
+        AndroidNetworking.post(BASE_URL + "Jobpost/sendRequest2")
+                .addHeaders("authToken", PreferenceConnector.readString(mContext, PreferenceConnector.AUTH_TOKEN, ""))
+                .addBodyParameter("job_id",jobId)
+                .addBodyParameter("request_by", userId)
+                .addBodyParameter("request_status", requestStatus)
+                .setPriority(Priority.MEDIUM)
+                .build().getAsJSONObject(new JSONObjectRequestListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                progressDialog.dismiss();
+                String status = null;
+                try {
+                    status = response.getString("status");
+                    String message = response.getString("message");
+                    if (status.equals("success")) {
+                        Constant.snackBar(mainLayout, message);
+                        //"""""' if user successfully created on going post """""""""""//
+
+                        // first time replace home fragment
+
+                    } else {
+                        Constant.snackBar(mainLayout, message);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(ANError anError) {
+                progressDialog.dismiss();
+
+            }
+        });
+    }
+    }
+}
+

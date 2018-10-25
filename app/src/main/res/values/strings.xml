@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Live Wire</string>
-    <string name="facebook_app_id">2288694548029330</string>
-    <string name="fb_login_protocol_scheme">fb2288694548029330</string>
+    <string name="facebook_app_id">238182020387506</string>
+    <string name="fb_login_protocol_scheme">fb238182020387506</string>
 
     <!--Login and signup-->
     <string name="select_user_type">Select User Type</string>
@@ -127,5 +127,9 @@
     <string name="member_requested"> Members requested</string>
     <string name="offered_rate">Offered Rate</string>
     <string name="clear_all">Clear all</string>
+    <string name="request_pending">Request Pending</string>
+    <string name="request_confirmed">Request Confirmed</string>
+    <string name="request_cancel">Request Cancel</string>
+    <string name="send_offer">Send Offer</string>
 
 </resources>
