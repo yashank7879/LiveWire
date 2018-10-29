@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+
+        <variable
+            name="dataBean"
+            type="com.livewire.responce.MyjobResponceClient.DataBean"/>
+    </data>
+<ScrollView
     android:id="@+id/detail_main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -97,7 +104,7 @@
                         android:layout_toEndOf="@+id/iv_profile_img"
                         android:fontFamily="@font/poppins_semibold"
                         android:singleLine="true"
-                        android:text="@string/n_a"
+                        android:text='@string/n_a'
                         android:textColor="@color/colorDarkBlack"
                         android:textSize="@dimen/_12sdp" />
 
@@ -282,8 +289,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:fontFamily="@font/poppins_semibold"
-                    android:text="@string/n_a"
-                    android:textColor="@color/colorDarkBlack"
+                    android:text='@{dataBean.parent_category, default = "N/A"}'                    android:textColor="@color/colorDarkBlack"
                     android:textSize="@dimen/_12sdp" />
 
                 <!--     <TextView
@@ -316,8 +322,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_category"
                     android:layout_gravity="center"
-                    android:text="@string/n_a"
-                    android:textColor="@color/colorDarkGray" />
+                    android:text='@{dataBean.sub_category, default = "N/A"}'                    android:textColor="@color/colorDarkGray" />
 
                 <!--gone-->
                 <RelativeLayout
@@ -343,9 +348,20 @@
                         android:layout_alignBaseline="@id/tv_offer_rate"
                         android:layout_toEndOf="@id/tv_offer_rate"
                         android:fontFamily="@font/poppins_semibold"
-                        android:text="@string/n_a"
+                        android:text='@{"$ "+dataBean.job_offer, default = "N/A"}'
                         android:textColor="@color/colorDarkBlack"
                         android:textSize="@dimen/_12sdp" />
+
+                    <TextView
+                        android:id="@+id/hr2"
+                        style="@style/SmallPopinsLightStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@+id/tv_offer_price"
+                        android:layout_toEndOf="@+id/tv_offer_price"
+                        android:text="@string/hr"
+                        android:textColor="@color/colorDarkBlack"
+                        android:textSize="@dimen/_8sdp" />
 
                     <TextView
                         android:id="@+id/rate_range"
@@ -459,7 +475,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/start_date"
-                        android:text="@string/n_a"
+                        android:text='@{dataBean.job_start_date, default = "N/A"}'
                         android:textColor="@color/colorDarkGray" />
 
                     <TextView
@@ -483,8 +499,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_below="@+id/end_date"
                         android:layout_marginEnd="@dimen/_8sdp"
-                        android:text="@string/n_a"
-                        android:textColor="@color/colorDarkGray" />
+                        android:text='@{dataBean.job_end_date, default = "N/A"}'                        android:textColor="@color/colorDarkGray" />
 
                     <TextView
                         android:id="@+id/week_days"
@@ -503,8 +518,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/week_days"
-                        android:text="@string/n_a"
-                        android:textColor="@color/colorDarkGray" />
+                        android:text='@{dataBean.job_week_days, default = "N/A"}'                        android:textColor="@color/colorDarkGray" />
 
                     <TextView
                         android:id="@+id/time_duration"
@@ -524,8 +538,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/time_duration"
                         android:layout_marginBottom="@dimen/_5sdp"
-                        android:text="@string/n_a"
-                        android:textColor="@color/colorDarkGray" />
+                        android:text='@{dataBean.job_time_duration+" hr", default = "N/A"}'                        android:textColor="@color/colorDarkGray" />
 
                 </RelativeLayout>
 
@@ -548,8 +561,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/description"
                     android:layout_marginEnd="@dimen/_8sdp"
-                    android:text="@string/n_a"
-                    android:textSize="@dimen/_10sdp" />
+                    android:text='@{"$ "+dataBean.job_description, default = "N/A"}'                    android:textSize="@dimen/_10sdp" />
 
                 <!--          <Button
                               android:id="@+id/btn_send_request"
@@ -573,3 +585,4 @@
 
     </RelativeLayout>
 </ScrollView>
+</layout>

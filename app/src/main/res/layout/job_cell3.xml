@@ -129,173 +129,170 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/view1_id"
-            android:paddingTop="@dimen/_8sdp"
             android:paddingBottom="@dimen/_8sdp"
-            >
+            android:paddingTop="@dimen/_8sdp">
 
-        <!--gone-->
-        <RelativeLayout
-            android:id="@+id/rl_data"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/iv_profile_img"
-                android:layout_width="@dimen/_35sdp"
-                android:layout_height="@dimen/_35sdp"
-                android:layout_marginEnd="@dimen/_8sdp"
-                android:src="@drawable/ic_user"
-                app:civ_border_color="@color/colorGreen"
-                app:civ_border_width="1dp" />
-
-            <TextView
-                android:id="@+id/tv_name"
-                android:layout_width="@dimen/_120sdp"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/iv_profile_img"
-                android:fontFamily="@font/poppins_semibold"
-                android:singleLine="true"
-                android:text="Rachel Fallon"
-                android:textColor="@color/colorDarkBlack"
-                android:textSize="@dimen/_11sdp" />
-
-            <RatingBar
-                android:id="@+id/rating_bar"
-                style="@style/Widget.AppCompat.RatingBar.Small"
+            <!--gone-->
+            <RelativeLayout
+                android:id="@+id/rl_data"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_name"
-                android:layout_toEndOf="@+id/iv_profile_img"
-                android:numStars="5"
-                android:progressTint="@color/coloryellow"
-                android:rating="3" />
+                android:visibility="gone">
 
-            <LinearLayout
-                android:id="@+id/ll_km_away"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/rating_bar"
-                android:layout_toEndOf="@+id/iv_profile_img">
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/iv_profile_img"
+                    android:layout_width="@dimen/_35sdp"
+                    android:layout_height="@dimen/_35sdp"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:src="@drawable/ic_user"
+                    app:civ_border_color="@color/colorGreen"
+                    app:civ_border_width="1dp" />
 
                 <TextView
-                    android:id="@+id/tv_distance"
+                    android:id="@+id/tv_name"
+                    android:layout_width="@dimen/_120sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/iv_profile_img"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:singleLine="true"
+                    android:text="Rachel Fallon"
+                    android:textColor="@color/colorDarkBlack"
+                    android:textSize="@dimen/_11sdp" />
+
+                <RatingBar
+                    android:id="@+id/rating_bar"
+                    style="@style/Widget.AppCompat.RatingBar.Small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_name"
+                    android:layout_toEndOf="@+id/iv_profile_img"
+                    android:numStars="5"
+                    android:progressTint="@color/coloryellow"
+                    android:rating="3" />
+
+                <LinearLayout
+                    android:id="@+id/ll_km_away"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rating_bar"
+                    android:layout_toEndOf="@+id/iv_profile_img">
+
+                    <TextView
+                        android:id="@+id/tv_distance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="1 km away"
+                        android:textColor="@color/colorDarkGray"
+                        android:textSize="@dimen/_9sdp" />
+
+                    <ImageView
+                        android:layout_width="@dimen/_10sdp"
+                        android:layout_height="@dimen/_10sdp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/_3sdp"
+                        app:srcCompat="@drawable/ic_sent_mail"
+
+                        />
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/tv_pending_request"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ll_km_away"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_toEndOf="@id/iv_profile_img"
                     android:fontFamily="@font/poppins_medium"
-                    android:text="1 km away"
+                    android:text="@string/pending_request"
+                    android:textColor="@color/colorOrange"
+                    android:textSize="@dimen/_11sdp" />
+
+            </RelativeLayout>
+
+            <!--gone-->
+            <RelativeLayout
+                android:id="@+id/rl_range"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/rl_data"
+                android:visibility="gone">
+
+
+                <TextView
+                    android:id="@+id/btn_send_request"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="@string/rate_range"
                     android:textColor="@color/colorDarkGray"
                     android:textSize="@dimen/_9sdp" />
 
-                <ImageView
-                    android:layout_width="@dimen/_10sdp"
-                    android:layout_height="@dimen/_10sdp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="@dimen/_3sdp"
-                    app:srcCompat="@drawable/ic_sent_mail"
+                <TextView
+                    android:id="@+id/tv_range_price"
+                    style="@style/smallPopinsRegularStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/btn_send_request"
+                    android:layout_toStartOf="@+id/hr1"
+                    android:text="$ 400.80 to 700.00/" />
 
-                    />
+                <TextView
+                    android:id="@+id/hr1"
+                    style="@style/SmallPopinsLightStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/tv_range_price"
+                    android:layout_alignParentEnd="true"
+                    android:text="@string/hr"
+                    android:textColor="@color/colorDarkBlack"
+                    android:textSize="@dimen/_8sdp" />
 
-            </LinearLayout>
+            </RelativeLayout>
 
-
-            <TextView
-                android:id="@+id/tv_pending_request"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/ll_km_away"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:layout_toEndOf="@id/iv_profile_img"
-                android:fontFamily="@font/poppins_medium"
-                android:text="@string/pending_request"
-                android:textColor="@color/colorOrange"
-                android:textSize="@dimen/_11sdp" />
-
-        </RelativeLayout>
-
-        <!--gone-->
-        <RelativeLayout
-            android:id="@+id/rl_range"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/rl_data"
-            android:visibility="gone">
-
-
-            <TextView
-                android:id="@+id/btn_send_request"
+            <LinearLayout
+                android:id="@+id/ll_more_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:fontFamily="@font/poppins_medium"
-                android:text="@string/rate_range"
-                android:textColor="@color/colorDarkGray"
-                android:textSize="@dimen/_9sdp" />
+                android:layout_below="@+id/rl_range"
+                android:layout_centerVertical="true"
+                android:background="?android:attr/selectableItemBackground"
+                android:paddingBottom="@dimen/_5sdp"
+                android:paddingTop="@dimen/_5sdp">
+
+                <TextView
+                    android:id="@+id/tv_more_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="@string/more_info"
+                    android:textColor="@color/colorGreen"
+                    android:textSize="@dimen/_9sdp" />
+
+                <ImageView
+                    android:layout_width="@dimen/_9sdp"
+                    android:layout_height="@dimen/_9sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/_3sdp"
+                    app:srcCompat="@drawable/ic_right_arrow_copy" />
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/tv_range_price"
+                android:id="@+id/tv_offer_request"
                 style="@style/smallPopinsRegularStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toStartOf="@+id/hr1"
-                android:layout_below="@+id/btn_send_request"
-                android:text="$ 400.80 to 700.00/"
-                />
-
-            <TextView
-                android:id="@+id/hr1"
-                style="@style/SmallPopinsLightStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/tv_range_price"
-                android:text="@string/hr"
-                android:layout_alignParentEnd="true"
-                android:textColor="@color/colorDarkBlack"
-                android:textSize="@dimen/_8sdp" />
-
-        </RelativeLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_more_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_below="@+id/rl_range"
-            android:layout_centerVertical="true"
-            android:background="?android:attr/selectableItemBackground"
-            android:paddingBottom="@dimen/_5sdp"
-            android:paddingTop="@dimen/_5sdp">
-
-            <TextView
-                android:id="@+id/tv_more_info"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:fontFamily="@font/poppins_medium"
-                android:text="@string/more_info"
-                android:textColor="@color/colorGreen"
-                android:textSize="@dimen/_9sdp" />
-
-            <ImageView
-                android:layout_width="@dimen/_9sdp"
-                android:layout_height="@dimen/_9sdp"
-                android:layout_gravity="center"
-                android:layout_marginStart="@dimen/_3sdp"
-                app:srcCompat="@drawable/ic_right_arrow" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/tv_offer_request"
-            style="@style/smallPopinsRegularStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:text="@string/no_offer_request_yet"
-            android:textSize="@dimen/_10sdp"
-            android:visibility="visible"
-            android:padding="@dimen/_5sdp"
-            />
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/_5sdp"
+                android:text="@string/no_offer_request_yet"
+                android:textSize="@dimen/_10sdp"
+                android:visibility="visible" />
 
         </RelativeLayout>
 

@@ -1,17 +1,14 @@
 package com.livewire.ui.activity;
 
-import android.animation.ObjectAnimator;
-import android.animation.PropertyValuesHolder;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.FrameLayout;
@@ -37,8 +34,8 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
 
         setContentView(R.layout.activity_splash);
         upperLl = findViewById(R.id.upper_ll);
@@ -46,8 +43,8 @@ public class SplashActivity extends AppCompatActivity {
         image = findViewById(R.id.image_view);
         tvLiveWire = findViewById(R.id.tv_live_wire);
         Log.e("authToken",PreferenceConnector.readString(this,PreferenceConnector.AUTH_TOKEN,""));
-        zoomOut = AnimationUtils.loadAnimation(this, R.anim.zoom_out);
-        imageRotatorAndTextColorChange();
+       // zoomOut = AnimationUtils.loadAnimation(this, R.anim.zoom_out);
+
          mRunnable = new Runnable() {
             @Override
             public void run() {
@@ -70,7 +67,14 @@ public class SplashActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
-        };mHandlers.postDelayed(mRunnable,2000);
+        };
+         mHandlers.postDelayed(mRunnable,2000);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        imageRotatorAndTextColorChange();
     }
 
     private void imageRotatorAndTextColorChange() {

@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -45,6 +46,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.livewire.R;
 import com.livewire.adapter.SelectWeekAdapter;
+import com.livewire.databinding.FragmentOngoingJobBinding;
 import com.livewire.model.JobCreationModel;
 import com.livewire.model.WeekListModel;
 import com.livewire.responce.AddSkillsResponce;
@@ -71,6 +73,8 @@ import static com.livewire.utils.ApiCollection.BASE_URL;
  */
 
 public class OngoingJobFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+    FragmentOngoingJobBinding binding;
+
     private static final String TAG = OngoingJobFragment.class.getName();
     private TextView tvSelectedSkill;
     private TextView tvStartDate;
@@ -100,7 +104,11 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_ongoing_job, container, false);
+        binding = DataBindingUtil.inflate(inflater,
+                R.layout.fragment_ongoing_job, container, false);
+
+        return binding.getRoot();
+      //  return inflater.inflate(R.layout.fragment_ongoing_job, container, false);
     }
 
     @Override

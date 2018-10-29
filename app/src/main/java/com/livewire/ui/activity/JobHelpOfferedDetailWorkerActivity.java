@@ -1,5 +1,6 @@
 package com.livewire.ui.activity;
 
+import android.databinding.DataBindingUtil;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.livewire.R;
+import com.livewire.databinding.ActivityJobHelpOfferedDetailWorkerBinding;
 import com.livewire.responce.HelpOfferedResponce;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
@@ -35,41 +37,28 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import static com.livewire.utils.ApiCollection.BASE_URL;
 
 public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implements View.OnClickListener {
-    private ImageView ivBack;
-    private CircleImageView ivProfileImg;
-    private TextView tvName;
-    private RatingBar ratingBar;
-    private TextView tvDistance;
-    private TextView tvTime;
-    private TextView tvMoreInfo;
-    private TextView tvCategory;
-    private TextView tvDate;
-    private TextView tvDateMonth;
-    private TextView tvSubCategory;
-    private TextView tvBudgetPrice;
-    private TextView tvDescription;
-    private RelativeLayout mainLayout;
+    ActivityJobHelpOfferedDetailWorkerBinding binding;
     private ProgressDialog progressDialog;
-    private Button btnSendRequest;
-    private String jobId="";
-    private String userId="";
+    private String jobId = "";
+    private String userId = "";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_job_detail_worker);
+      binding =  DataBindingUtil.setContentView(this, R.layout.activity_job_help_offered_detail_worker);
         intializeViews();
 
         if (getIntent().getSerializableExtra("JobIdKey") != null) {
             HelpOfferedResponce.DataBean jobDetail = (HelpOfferedResponce.DataBean) getIntent().getSerializableExtra("JobIdKey");
             setWorkerDataResponce(jobDetail);
+            binding.setJobDetail(jobDetail);
         }
     }
 
     private void intializeViews() {
         progressDialog = new ProgressDialog(this);
-        ivProfileImg = findViewById(R.id.iv_profile_img);
+    /*    binding.ivProfileImg = findViewById(R.id.iv_profile_img);
         tvName = findViewById(R.id.tv_name);
         ratingBar = findViewById(R.id.rating_bar);
         tvDistance = findViewById(R.id.tv_distance);
@@ -82,8 +71,8 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
         tvBudgetPrice = findViewById(R.id.tv_budget_price);
         tvDescription = findViewById(R.id.tv_description);
         mainLayout = findViewById(R.id.detail_main_layout);
-        btnSendRequest = findViewById(R.id.btn_send_request);
-        btnSendRequest.setOnClickListener(this);
+        btnSendRequest = findViewById(R.id.btn_send_request);*/
+        binding.btnSendRequest.setOnClickListener(this);
         findViewById(R.id.iv_back).setOnClickListener(this);
 
     }
@@ -125,33 +114,31 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
         }
     }*/
 
-  //"""""""""set job deatil worker response data """""""""""
+    //"""""""""set job deatil worker response data """""""""""
     private void setWorkerDataResponce(HelpOfferedResponce.DataBean jobDetail) {
         jobId = jobDetail.getJobId();
         userId = jobDetail.getUserId();
-        tvName.setText(jobDetail.getName());
-        tvDistance.setText(jobDetail.getDistance_in_km() + " Km away");
-        tvCategory.setText(jobDetail.getParentCategoryName());
-        tvSubCategory.setText(jobDetail.getSubCategoryName());
-        tvBudgetPrice.setText("$ " + jobDetail.getJob_budget());
-        tvDescription.setText(jobDetail.getJob_description());
-        tvTime.setText(Constant.getDayDifference(jobDetail.getCrd(), jobDetail.getCurrentDateTime()));
+        binding.tvDistance.setText(jobDetail.getDistance_in_km() + " Km away");
 
-        if (jobDetail.getJob_confirmed().equals("0")){ // pending request
-            btnSendRequest.setBackground(null);
-          btnSendRequest.setText(R.string.pending_request);
-            btnSendRequest.setTextColor(ContextCompat.getColor(this, R.color.colorOrange));
-            btnSendRequest.setClickable(false);
+        binding.tvTime.setText(Constant.getDayDifference(jobDetail.getCrd(), jobDetail.getCurrentDateTime()));
+
+        if (jobDetail.getJob_confirmed().equals("0")) { // pending request
+            binding.btnSendRequest.setBackground(null);
+            binding.btnSendRequest.setText(R.string.pending_request);
+            binding.btnSendRequest.setTextColor(ContextCompat.getColor(this, R.color.colorOrange));
+            binding.btnSendRequest.setClickable(false);
    /*        }else if (dataBean.getJob_confirmed().equals("1")){// accepted
                holder.btnSendRequest.setClickable(false);
            }else if (dataBean.getJob_confirmed().equals("2")){// job not accepted
             holder.btnSendRequest.setClickable(false);*/
-        }else if (jobDetail.getJob_confirmed().equals("3")){// job not send
-            btnSendRequest.setBackground(this.getResources().getDrawable(R.drawable.button_green_bg));
-           btnSendRequest.setText(R.string.send_request);
-            btnSendRequest.setTextColor(ContextCompat.getColor(this,R.color.colorWhite));
+        } else if (jobDetail.getJob_confirmed().equals("3")) {// job not send
+            binding.btnSendRequest.setBackground(this.getResources().getDrawable(R.drawable.button_green_bg));
+            binding.btnSendRequest.setText(R.string.send_request);
+            binding.btnSendRequest.setTextColor(ContextCompat.getColor(this, R.color.colorWhite));
         }
-        Picasso.with(ivProfileImg.getContext()).load(jobDetail.getProfileImage()).fit().into(ivProfileImg);
+        Picasso.with(binding.ivProfileImg.getContext())
+                .load(jobDetail.getProfileImage())
+                .fit().into(binding.ivProfileImg);
 
         //********"2018-07-04" date format converted into "04 jul 2018"***********//
         DateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
@@ -163,18 +150,18 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
             sd = new SimpleDateFormat("dd MMM yyyy");
             start = sd.format(newStartDate);
 
-            tvDate.setText(start.substring(0, 2) + " ");
-            tvDateMonth.setText(start.substring(3));
+            binding.tvDate.setText(start.substring(0, 2) + " ");
+            binding.tvDateMonth.setText(start.substring(3));
             // holder.tvDate.setText(start);
         } catch (ParseException e) {
             Log.e("Tag", e.getMessage());
         }
 
         if (jobDetail.getJob_confirmed().equals("0")) { // pending request
-            btnSendRequest.setBackground(null);
-            btnSendRequest.setText(R.string.pending_request);
-            btnSendRequest.setTextColor(ContextCompat.getColor(this, R.color.colorOrange));
-            btnSendRequest.setClickable(false);
+            binding.btnSendRequest.setBackground(null);
+            binding.btnSendRequest.setText(R.string.pending_request);
+            binding.btnSendRequest.setTextColor(ContextCompat.getColor(this, R.color.colorOrange));
+            binding.btnSendRequest.setClickable(false);
      /*   } else if (jobDetail.getJob_confirmed().equals("1")) {// accepted
             btnSendRequest.setClickable(false);
         } else if (jobDetail.getJob_confirmed().equals("2")) {// job not accepted
@@ -201,13 +188,12 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
 
     //"""""""""""  send request to
     private void sendRequestApi() {
-        if (Constant.isNetworkAvailable(this , mainLayout)){
+        if (Constant.isNetworkAvailable(this, binding.detailMainLayout)) {
             progressDialog.show();
-            AndroidNetworking.post(BASE_URL + "Jobpost/sendRequest")
+            AndroidNetworking.post(BASE_URL + "Jobpost/sendRequest2")
                     .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
                     .addBodyParameter("job_id", jobId)
                     .addBodyParameter("request_to", userId)
-                    //.addBodyParameter("request_to", "2")
                     .addBodyParameter("request_status", "0")
                     .setPriority(Priority.MEDIUM)
                     .build().getAsJSONObject(new JSONObjectRequestListener() {
@@ -218,13 +204,13 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
                         String status = response.getString("status");
                         String message = response.getString("message");
                         if (status.equals("success")) {
-                            btnSendRequest.setBackground(null);
-                            btnSendRequest.setText(R.string.pending_request);
-                            btnSendRequest.setTextColor(ContextCompat.getColor(JobHelpOfferedDetailWorkerActivity.this, R.color.colorOrange));
-                            btnSendRequest.setClickable(false);
-                            Constant.snackBar(mainLayout, message);
+                            binding.btnSendRequest.setBackground(null);
+                            binding.btnSendRequest.setText(R.string.pending_request);
+                            binding.btnSendRequest.setTextColor(ContextCompat.getColor(JobHelpOfferedDetailWorkerActivity.this, R.color.colorOrange));
+                            binding.btnSendRequest.setClickable(false);
+                            Constant.snackBar(binding.detailMainLayout, message);
                         } else {
-                            Constant.snackBar(mainLayout, message);
+                            Constant.snackBar(binding.detailMainLayout, message);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

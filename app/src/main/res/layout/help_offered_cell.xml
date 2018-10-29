@@ -1,217 +1,219 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/_5sdp"
-    android:background="@color/colorWhite">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
-    <TextView
-        android:id="@+id/tv_date"
-        style="@style/mediumPopinsLightStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="@dimen/_5sdp"
-        android:text="23 Sep 2018"
-        android:textColor="@color/colorDarkBlack" />
-
-    <TextView
-        android:id="@+id/tv_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/tv_date"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="@dimen/_10sdp"
-        android:text="10 min ago"
-        android:textColor="@color/colorLightGray"
-        android:textSize="@dimen/_10sdp" />
-
-    <View
-        android:id="@+id/view_id"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/tv_date"
-        android:layout_marginBottom="@dimen/_5sdp"
-        android:background="@color/colorExtraLightGray" />
-
+    <data>
+        <variable
+            name="dataBean"
+            type="com.livewire.responce.HelpOfferedResponce.DataBean" />
+    </data>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/view_id"
-        android:paddingLeft="@dimen/_10sdp"
-        android:paddingRight="@dimen/_10sdp"
-        >
+        android:layout_marginTop="@dimen/_5sdp"
+        android:background="@color/colorWhite">
 
-
-    <TextView
-        android:id="@+id/tv_category"
-        android:fontFamily="@font/poppins_semibold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Cook"
-        android:textSize="@dimen/_12sdp"
-        android:textColor="@color/colorDarkBlack" />
-
-    <TextView
-        android:id="@+id/tv_subcategory"
-        style="@style/smallPopinsRegularStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_category"
-        android:text="House &amp; Home"
-        android:textColor="@color/colorDarkGray" />
-
-    <TextView
-        android:id="@+id/budget"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:fontFamily="@font/poppins_medium"
-        android:text="@string/budget"
-        android:textColor="@color/colorDarkGray"
-        android:textSize="@dimen/_9sdp"
-        />
-
-    <TextView
-        android:id="@+id/tv_offer_rate"
-        style="@style/mediumPopinsRegularStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/budget"
-        android:text="$ 60.30"
-        android:textColor="@color/colorDarkBlack" />
-
-    <View
-        android:id="@+id/view1_id"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/tv_offer_rate"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:layout_marginBottom="@dimen/_8sdp"
-        android:background="@color/colorExtraLightGray" />
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/iv_profile_img"
-        android:layout_width="@dimen/_35sdp"
-        android:layout_height="@dimen/_35sdp"
-        android:layout_below="@+id/view1_id"
-        android:layout_marginEnd="@dimen/_8sdp"
-        android:src="@drawable/ic_user"
-        app:civ_border_color="@color/colorGreen"
-        app:civ_border_width="1dp" />
-
-    <TextView
-        android:id="@+id/tv_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/view1_id"
-        android:layout_toEndOf="@+id/iv_profile_img"
-        android:fontFamily="@font/poppins_semibold"
-        android:text="Rachel Fallon"
-        android:textSize="@dimen/_11sdp"
-        android:textColor="@color/colorDarkBlack"
-        />
-
-    <RatingBar
-        android:id="@+id/rating_bar"
-        style="@style/Widget.AppCompat.RatingBar.Small"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_name"
-        android:layout_toEndOf="@+id/iv_profile_img"
-        android:numStars="5"
-        android:progressTint="@color/coloryellow"
-        android:rating="3" />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/rating_bar"
-        android:layout_toEndOf="@+id/iv_profile_img">
 
         <TextView
-            android:id="@+id/tv_distance"
+            android:id="@+id/tv_date"
+            style="@style/mediumPopinsLightStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_medium"
-            android:text="1 km away"
-            android:textSize="@dimen/_9sdp"
-            android:textColor="@color/colorDarkGray"
-            />
+            android:layout_centerHorizontal="true"
+            android:layout_margin="@dimen/_5sdp"
+            android:text="23 Sep 2018"
+            android:textColor="@color/colorDarkBlack" />
 
-        <ImageView
-            android:layout_width="@dimen/_10sdp"
-            android:layout_height="@dimen/_10sdp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/_3sdp"
-            app:srcCompat="@drawable/ic_sent_mail"
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/tv_date"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:text="10 min ago"
+            android:textColor="@color/colorLightGray"
+            android:textSize="@dimen/_10sdp" />
 
-            />
+        <View
+            android:id="@+id/view_id"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/tv_date"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:background="@color/colorExtraLightGray" />
 
-    </LinearLayout>
 
-    <Button
-        android:id="@+id/btn_send_request"
-        style="@style/smallPopinsRegularStyle"
-        android:layout_width="@dimen/_85sdp"
-        android:layout_height="@dimen/_25sdp"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/view1_id"
-        android:background="@drawable/button_green_bg"
-        android:text="@string/send_request"
-        android:textAllCaps="false"
-        android:textColor="@color/colorWhite"
-        android:textSize="@dimen/_10sdp"
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/view_id"
+            android:paddingLeft="@dimen/_10sdp"
+            android:paddingRight="@dimen/_10sdp">
 
-        />
 
-   <!-- <TextView
-        android:id="@+id/request_pending"
-        style="@style/smallPopinsRegularStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Request Pending"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/view1_id"
-        android:layout_marginRight="@dimen/_8sdp"
-        />-->
+            <TextView
+                android:id="@+id/tv_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_semibold"
+                android:text='@{dataBean.parentCategoryName, default = "N/A"}'
+                android:textColor="@color/colorDarkBlack"
+                android:textSize="@dimen/_12sdp" />
 
-    <LinearLayout
-        android:id="@+id/ll_more_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/btn_send_request"
-        android:layout_marginTop="@dimen/_5sdp"
-        android:paddingTop="@dimen/_5sdp"
-        android:paddingBottom="@dimen/_5sdp"
-        android:background="?android:attr/selectableItemBackground"
-        >
+            <TextView
+                android:id="@+id/tv_subcategory"
+                style="@style/smallPopinsRegularStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_category"
+                android:text='@{dataBean.subCategoryName, default = "N/A"}'
+                android:textColor="@color/colorDarkGray" />
 
-    <TextView
-        android:id="@+id/tv_more_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_medium"
-        android:text="@string/more_info"
-        android:textColor="@color/colorGreen"
-        android:textSize="@dimen/_9sdp"
-        android:layout_gravity="center"
-        />
+            <TextView
+                android:id="@+id/budget"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/budget"
+                android:textColor="@color/colorDarkGray"
+                android:textSize="@dimen/_9sdp" />
 
-    <ImageView
-        android:layout_width="@dimen/_9sdp"
-        android:layout_height="@dimen/_9sdp"
-        app:srcCompat="@drawable/ic_right_arrow"
-        android:layout_gravity="center"
-        android:layout_marginStart="@dimen/_3sdp"
-        />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/tv_offer_rate"
+                style="@style/mediumPopinsRegularStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/budget"
+                android:text='@{"$ " + dataBean.job_budget,default = "N/A"}'
+                android:textColor="@color/colorDarkBlack" />
+
+            <View
+                android:id="@+id/view1_id"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/tv_offer_rate"
+                android:layout_marginBottom="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@color/colorExtraLightGray" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_profile_img"
+                android:layout_width="@dimen/_35sdp"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_below="@+id/view1_id"
+                android:layout_marginEnd="@dimen/_8sdp"
+                android:src="@drawable/ic_user"
+                app:civ_border_color="@color/colorGreen"
+                app:civ_border_width="1dp" />
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/view1_id"
+                android:layout_toEndOf="@+id/iv_profile_img"
+                android:fontFamily="@font/poppins_semibold"
+                android:text='@{dataBean.name,default = "N/A"}'
+                android:textColor="@color/colorDarkBlack"
+                android:textSize="@dimen/_11sdp" />
+
+            <RatingBar
+                android:id="@+id/rating_bar"
+                style="@style/Widget.AppCompat.RatingBar.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_name"
+                android:layout_toEndOf="@+id/iv_profile_img"
+                android:numStars="5"
+                android:progressTint="@color/coloryellow"
+                android:rating="3" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rating_bar"
+                android:layout_toEndOf="@+id/iv_profile_img">
+
+                <TextView
+                    android:id="@+id/tv_distance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text='@{dataBean.distance_in_km +" 1 km away",default = "N/A"}'
+                    android:textColor="@color/colorDarkGray"
+                    android:textSize="@dimen/_9sdp" />
+
+                <ImageView
+                    android:layout_width="@dimen/_10sdp"
+                    android:layout_height="@dimen/_10sdp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/_3sdp"
+                    app:srcCompat="@drawable/ic_sent_mail"
+
+                    />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_send_request"
+                style="@style/smallPopinsRegularStyle"
+                android:layout_width="@dimen/_85sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/view1_id"
+                android:background="@drawable/button_green_bg"
+                android:text="@string/send_request"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_10sdp"
+                />
+
+            <!-- <TextView
+                 android:id="@+id/request_pending"
+                 style="@style/smallPopinsRegularStyle"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:text="Request Pending"
+                 android:layout_alignParentRight="true"
+                 android:layout_below="@+id/view1_id"
+                 android:layout_marginRight="@dimen/_8sdp"
+                 />-->
+
+            <LinearLayout
+                android:id="@+id/ll_more_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/btn_send_request"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:background="?android:attr/selectableItemBackground"
+                android:paddingBottom="@dimen/_5sdp"
+                android:paddingTop="@dimen/_5sdp">
+
+                <TextView
+                    android:id="@+id/tv_more_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="@string/more_info"
+                    android:textColor="@color/colorGreen"
+                    android:textSize="@dimen/_9sdp" />
+
+                <ImageView
+                    android:layout_width="@dimen/_9sdp"
+                    android:layout_height="@dimen/_9sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/_3sdp"
+                    app:srcCompat="@drawable/ic_right_arrow" />
+            </LinearLayout>
+
+        </RelativeLayout>
 
     </RelativeLayout>
 
-</RelativeLayout>
+</layout>

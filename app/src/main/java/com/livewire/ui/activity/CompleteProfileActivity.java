@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -24,6 +25,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -63,6 +65,7 @@ import com.livewire.R;
 import com.livewire.adapter.CategaryAdapter;
 import com.livewire.cropper.CropImage;
 import com.livewire.cropper.CropImageView;
+import com.livewire.databinding.ActivityCompleteProfileBinding;
 import com.livewire.model.AddedSkillBean;
 import com.livewire.model.CategoryModel;
 import com.livewire.model.IntroVideoModal;
@@ -107,24 +110,22 @@ import static com.livewire.utils.Constant.RECORD_AUDIO;
 
 public class CompleteProfileActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener, AdapterView.OnItemClickListener,
         AdapterView.OnItemSelectedListener {
+    ActivityCompleteProfileBinding binding;
     private static final String TAG = CompleteProfileActivity.class.getName();
     private Uri tmpUri;
-    private CircleImageView ivProfileImg;
-    private ImageView inactiveUserImg;
     private int width;
     private List<CategoryModel> category = new ArrayList<>();
     private AddSkillsResponce skillsResponce;
     private ArrayAdapter categoryAdapter;
     private Spinner subCategorySpinner;
     private ArrayAdapter<AddSkillsResponce.DataBean.SubcatBean> subCateoryAdapter;
-    private RecyclerView recyclerView;
-    private ImageView videoImg;
+
     //private Uri VideoUri;
     //private String videoFilePath;
     private ArrayList<AddedSkillBean> addedSkillBeans = new ArrayList<>();
     private ArrayList<SubCategoryModel> subCategoryModelList = new ArrayList<>();
     private CategaryAdapter addSkillsAdapter;
-    private TextView tvLocation;
+
     public static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
     private String locationPlace;
     private Notification.Builder mBuilder;
@@ -134,9 +135,7 @@ public class CompleteProfileActivity extends AppCompatActivity implements View.O
     private static int ID = 100;
     private LatLng locationLatLng;
     private File profileImagefile;
-    private Button btnSave;
-    private ScrollView mainLayout;
-    private RelativeLayout mainLayout1;
+
     private ArrayList<File> videoFile;
     private HashMap<String, String> mPram;
     private ProgressDialog progressDialog;
@@ -150,9 +149,20 @@ public class CompleteProfileActivity extends AppCompatActivity implements View.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_complete_profile);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_complete_profile);
 
         Log.e("Auth token", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""));
+        if (getIntent().getStringExtra("EditProfileKey") != null){ // if user come from profile setting
+            binding.tvCompleteProfile.setVisibility(View.GONE);
+            binding.tvContent.setVisibility(View.GONE);
+            binding.actionBar2.setVisibility(View.VISIBLE);
+        }else { // if user from signup page
+            binding.tvCompleteProfile.setVisibility(View.VISIBLE);
+            binding.tvContent.setVisibility(View.VISIBLE);
+            binding.actionBar2.setVisibility(View.GONE);
+
+        }
+
         intializeView();
         loadSkillsData();
     }
@@ -164,7 +174,7 @@ public class CompleteProfileActivity extends AppCompatActivity implements View.O
 
     //"""""""""""" skills data """""""""""""""""""""//
     private void loadSkillsData() {
-        if (Constant.isNetworkAvailable(this, mainLayout)) {
+        if (Constant.isNetworkAvailable(this, binding.mainLayout)) {
             progressDialog.show();
             AndroidNetworking.get(BASE_URL + "getCategoryList")
                     .setPriority(Priority.MEDIUM)
@@ -198,7 +208,7 @@ public class CompleteProfileActivity extends AppCompatActivity implements View.O
                             dataBean.getSubcat().add(subcatBean);
                             skillsResponce.getData().add(0, dataBean);
                         } else {
-                            Constant.snackBar(mainLayout, message);
+                            Constant.snackBar(binding.mainLayout, message);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -226,37 +236,29 @@ public class CompleteProfileActivity extends AppCompatActivity implements View.O
 
 
         progressDialog = new ProgressDialog(this);
-        mainLayout = findViewById(R.id.main_layout);
-        TextView tvSkip = findViewById(R.id.tv_skip);
-        FrameLayout flProfileImg = findViewById(R.id.fl_user_profile);
-        ivProfileImg = findViewById(R.id.iv_profile_img);
-        inactiveUserImg = findViewById(R.id.inactive_user_img);
-        RelativeLayout addSkillsLayout = findViewById(R.id.add_skills_rl);
-        recyclerView = findViewById(R.id.recycler_view);
-        tvLocation = findViewById(R.id.tv_location);
-        btnSave = findViewById(R.id.btn_save);
-        mainLayout1 = findViewById(R.id.complete_rl);
 
-
+        ImageView ivBack = binding.actionBar2.findViewById(R.id.iv_back);
+        TextView tvHeading = binding.actionBar2.findViewById(R.id.tv_live_wire);
+        tvHeading.setText(R.string.edit_profile);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        videoImg = findViewById(R.id.video_img);
+        binding.recyclerView.setLayoutManager(layoutManager);
         addSkillsAdapter = new CategaryAdapter(this, addedSkillBeans);
-        recyclerView.setAdapter(addSkillsAdapter);
+        binding.recyclerView.setAdapter(addSkillsAdapter);
 
 
-        tvSkip.setOnClickListener(this);
-        tvLocation.setOnClickListener(this);
-        videoImg.setOnClickListener(this);
-        addSkillsLayout.setOnClickListener(this);
-        flProfileImg.setOnClickListener(this);
-        btnSave.setOnClickListener(this);
+        binding.tvSkip.setOnClickListener(this);
+        binding.tvLocation.setOnClickListener(this);
+        binding.videoImg.setOnClickListener(this);
+        binding.addSkillsRl.setOnClickListener(this);
+        binding.flUserProfile.setOnClickListener(this);
+        binding.btnSave.setOnClickListener(this);
+        ivBack.setOnClickListener(this);
 
 
         if (getIntent().hasExtra("imageKey")) {
             if (getIntent().getStringExtra("imageKey") != null) {
-                inactiveUserImg.setVisibility(View.GONE);
-                Picasso.with(ivProfileImg.getContext()).load(getIntent().getStringExtra("imageKey")).placeholder(R.drawable.ic_user).fit().into(ivProfileImg);
+                binding.inactiveUserImg.setVisibility(View.GONE);
+                Picasso.with(binding.ivProfileImg.getContext()).load(getIntent().getStringExtra("imageKey")).placeholder(R.drawable.ic_user).fit().into(binding.ivProfileImg);
             }
         }
 
@@ -293,6 +295,10 @@ public class CompleteProfileActivity extends AppCompatActivity implements View.O
                 Intent intent1 = new Intent(CompleteProfileActivity.this, WorkerMainActivity.class);
                 startActivity(intent1);
                 finish();
+            case R.id.iv_back:
+                onBackPressed();
+                break;
+
             default:
         }
     }
@@ -300,36 +306,19 @@ public class CompleteProfileActivity extends AppCompatActivity implements View.O
     //"""""""""""  profile validations """"""""""//
     private void profileValidations() {
         if (addedSkillBeans.size() == 0) {
-            Constant.snackBar(mainLayout, "please add your skills");
+            Constant.snackBar(binding.mainLayout, "please add your skills");
         } else if (subCategoryModelList.size() == 0) {
-            Constant.snackBar(mainLayout, "please add your Sub category ");
+            Constant.snackBar(binding.mainLayout, "please add your Sub category ");
         } else if (locationLatLng == null) {
-            Constant.snackBar(mainLayout, "please enter loation");
+            Constant.snackBar(binding.mainLayout, "please enter loation");
         } else if (finalVideoUri == null) {
-            Constant.snackBar(mainLayout, "please add introvideo");
+            Constant.snackBar(binding.mainLayout, "please add introvideo");
         } else {
-          profileImageFileList = new ArrayList<>();
-          if (imageFile != null) {
-              profileImageFileList.add(imageFile);
-          }
+            profileImageFileList = new ArrayList<>();
+            if (imageFile != null) {
+                profileImageFileList.add(imageFile);
+            }
             mPram = new HashMap<>();
-
-
-           /* mPram.put("title", "vdffdf");
-            mPram.put("discription", "jdjdgggffff");
-            mPram.put("category","1");
-            mPram.put("lat", "25.12");
-            mPram.put("long", "78.32");
-            mPram.put("relocate", "no");
-            mPram.put("authorised", "no");
-            mPram.put("whilingToship", "no");
-            mPram.put("email","jt");
-            mPram.put("contact", "");
-            mPram.put("tags", "dfggggg");
-            mPram.put("country", "india");
-          *//*  mPram.put("city", city == null ? "" : city);
-            mPram.put("state", state == null ? "" : state);
-            mPram.put("address", address);*/
 
             mPram.put("workerSkillData", getWorkerSkillData());
             mPram.put("latitude", String.valueOf(locationLatLng.latitude));
@@ -342,7 +331,7 @@ public class CompleteProfileActivity extends AppCompatActivity implements View.O
 
     //"""""""""show dialog for add skills""""""""""""""""//
     private void showAddSkillsDialog() {
-        if (Constant.isNetworkAvailable(this, mainLayout) && skillsResponce != null) {
+        if (Constant.isNetworkAvailable(this, binding.mainLayout) && skillsResponce != null) {
             final Dialog dialog = new Dialog(this);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -613,9 +602,9 @@ public class CompleteProfileActivity extends AppCompatActivity implements View.O
             if (result != null) {
                 tmpUri = result.getUri();
                 try {
-                    inactiveUserImg.setVisibility(View.GONE);
-                    ivProfileImg.setImageURI(tmpUri);
-                   // Bitmap profileImageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), tmpUri);
+                    binding.inactiveUserImg.setVisibility(View.GONE);
+                    binding.ivProfileImg.setImageURI(tmpUri);
+                    // Bitmap profileImageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), tmpUri);
                     //File file = savebitmap(this.getExternalCacheDir(), profileImageBitmap, ".jpg");
 
                     Bitmap profileImageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), tmpUri);
@@ -664,11 +653,10 @@ public class CompleteProfileActivity extends AppCompatActivity implements View.O
                         File file = new File("");
                         carsImageBean.setThumbFile((thumbFile == null) ? file : thumbFile);
 
-                        videoImg.setImageBitmap(thumbBitmap);
+                        binding.videoImg.setImageBitmap(thumbBitmap);
 
 
-
-                       // profileImageFileList.add(bitmapToFile(thumbBitmap));
+                        // profileImageFileList.add(bitmapToFile(thumbBitmap));
 
                         // mediaFilesList.add(1, carsImageBean);
 /*if (mediaFilesList.size() == 5) {
@@ -694,7 +682,7 @@ mediaFilesList.remove(0);
                 assert data != null;
                 Place place = PlaceAutocomplete.getPlace(this, data);
 
-                tvLocation.setText(place.getAddress());
+                binding.tvLocation.setText(place.getAddress());
                 locationPlace = place.getAddress().toString();
                 locationLatLng = place.getLatLng();
                 Log.e(TAG, "Place: " + place.getName());
@@ -706,7 +694,7 @@ mediaFilesList.remove(0);
 
             } else if (resultCode == RESULT_CANCELED) {
 
-                Constant.hideSoftKeyBoard(CompleteProfileActivity.this, tvLocation);
+                Constant.hideSoftKeyBoard(CompleteProfileActivity.this, binding.tvLocation);
             }
         }
     }
@@ -756,6 +744,7 @@ mediaFilesList.remove(0);
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
     }
+
     private File bitmapToFile(Bitmap bitmap) {
         try {
             String name = System.currentTimeMillis() + ".png";
@@ -1004,7 +993,7 @@ mediaFilesList.remove(0);
 */
 
     private void compressVideo(Uri uri, final File tmpFile) {
-       File f = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/videos");
+        File f = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/videos");
         if (f.mkdirs() || f.isDirectory())
             //compress and output new video specs
             new VideoCompressAsyncTask(this).execute(finalVideoFilePath, f.getPath());
@@ -1038,21 +1027,21 @@ mediaFilesList.remove(0);
                     String message = result.getString("message");
                     if (status.equalsIgnoreCase("success")) {
                         //*************sucess fully add car status**************//
-                        Constant.snackBar(mainLayout, message);
+                        Constant.snackBar(binding.mainLayout, message);
                         PreferenceConnector.writeString(CompleteProfileActivity.this, PreferenceConnector.COMPLETE_PROFILE_STATUS, "1");
                         Intent intent = new Intent(CompleteProfileActivity.this, WorkerMainActivity.class);
                         startActivity(intent);
                         finish();
                     } else {
 
-                        Constant.snackBar(mainLayout, message);
+                        Constant.snackBar(binding.mainLayout, message);
                     }
                 } catch (JSONException e) {
                     Log.d(TAG, e.getMessage());
                 }
 
             }
-        }, tmpFile, tmpFile.size(),profileImageFileList,profileImageFileList.size(), mPram, CompleteProfileActivity.this);
+        }, tmpFile, tmpFile.size(), profileImageFileList, profileImageFileList.size(), mPram, CompleteProfileActivity.this);
 
         mMultiPartRequest.setTag("MultiRequest");
         mMultiPartRequest.setRetryPolicy(new DefaultRetryPolicy(Template.VolleyRetryPolicy.SOCKET_TIMEOUT,
@@ -1167,17 +1156,17 @@ mediaFilesList.remove(0);
             long fileSizeInMB = fileSizeInKB / 1024;
             Log.e("Compresss Video size", String.valueOf(((videoFil.length() / 1024) / 1024)));
 
-            if (fileSizeInMB < 10 ){
+            if (fileSizeInMB < 10) {
                 Uri compressUri = Uri.fromFile(videoFil);
                 //FileProvider.getUriForFile(mContext, mContext.getApplicationContext().getPackageName()+ FILE_PROVIDER_EXTENTION, imageFile);
                 videoFile = new ArrayList<>();
                 videoFile.add(videoFil);
                 apiCallForUploadVideo(videoFile);
-            }else {
+            } else {
                 progressDialog.dismiss();
                 finalVideoFilePath = "";
                 finalVideoUri = null;
-                Constant.snackBar(mainLayout,"Please select another video");
+                Constant.snackBar(binding.mainLayout, "Please select another video");
             }
         }
     }

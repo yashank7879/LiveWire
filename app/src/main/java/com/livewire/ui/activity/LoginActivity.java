@@ -506,8 +506,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         } else {
             Constant.hideSoftKeyBoard(this, etMail);
             UserModel model = new UserModel();
-            model.email = etMail.getText().toString();
-            model.password = etPass.getText().toString();
+            model.email = etMail.getText().toString().trim();
+            model.password = etPass.getText().toString().trim();
             model.userType = key;
             model.deviceType = "2";
             model.deviceToken = "";

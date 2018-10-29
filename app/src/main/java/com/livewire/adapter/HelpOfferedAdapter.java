@@ -1,6 +1,9 @@
 package com.livewire.adapter;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
+
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -19,6 +22,8 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+
+import com.livewire.BR;
 import com.livewire.R;
 import com.livewire.responce.HelpOfferedResponce;
 import com.livewire.utils.Constant;
@@ -36,6 +41,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 
 public class HelpOfferedAdapter extends RecyclerView.Adapter<HelpOfferedAdapter.MyViewHolder> {
+
     private static final String TAG = HelpOfferedAdapter.class.getName();
     private Context mContext;
     private  List<HelpOfferedResponce.DataBean> dataBeanList;
@@ -61,11 +67,9 @@ public class HelpOfferedAdapter extends RecyclerView.Adapter<HelpOfferedAdapter.
 
         if (dataBeanList.size() != 0){
             HelpOfferedResponce.DataBean dataBean = dataBeanList.get(position);
-            holder.tvCategory.setText(dataBean.getParentCategoryName());
-            holder.tvSubcategory.setText(dataBean.getSubCategoryName());
-            holder.tvBudget.setText("$ "+dataBean.getJob_budget());
-            holder.tvName.setText(dataBean.getName());
-            holder.tvDistance.setText(dataBean.getDistance_in_km()+" Km away");
+            holder.getBinding().setVariable(BR.dataBean,dataBean);
+            holder.getBinding().executePendingBindings();
+
             holder.tvTime.setText(Constant.getDayDifference(dataBean.getCrd(),dataBean.getCurrentDateTime()));
             Picasso.with(holder.ivProfileImg.getContext()).load(dataBean.getProfileImage()).fit().into(holder.ivProfileImg);
 
@@ -110,9 +114,10 @@ public class HelpOfferedAdapter extends RecyclerView.Adapter<HelpOfferedAdapter.
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
+        private final ViewDataBinding binding;
         private TextView tvDate;
         private TextView tvTime;
-        private View viewId;
+
         private TextView tvCategory;
         private TextView tvSubcategory;
         private TextView tvBudget;
@@ -126,9 +131,11 @@ public class HelpOfferedAdapter extends RecyclerView.Adapter<HelpOfferedAdapter.
         private LinearLayout llMoreInfo;
         public MyViewHolder(View view) {
             super(view);
+            binding = DataBindingUtil.bind(view);
+
             tvDate = view.findViewById(R.id.tv_date);
             tvTime = view.findViewById(R.id.tv_time);
-            viewId = view.findViewById(R.id.view_id);
+            //viewId = view.findViewById(R.id.view_id);
             tvCategory = view.findViewById(R.id.tv_category);
             tvSubcategory = view.findViewById(R.id.tv_subcategory);
             tvBudget = view.findViewById(R.id.tv_offer_rate);
@@ -161,6 +168,11 @@ public class HelpOfferedAdapter extends RecyclerView.Adapter<HelpOfferedAdapter.
                     }
                 }
             });
+
+        }
+        public ViewDataBinding getBinding() {
+
+            return binding;
 
         }
     }

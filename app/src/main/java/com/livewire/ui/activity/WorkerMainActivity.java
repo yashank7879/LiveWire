@@ -2,6 +2,7 @@ package com.livewire.ui.activity;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -25,25 +26,16 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.livewire.R;
+import com.livewire.databinding.ActivityWorkerMainBinding;
 import com.livewire.ui.fragments.ChatWorkerFragment;
 import com.livewire.ui.fragments.HelpOfferedWorkerFragment;
+import com.livewire.ui.fragments.MyProfileWorkerFragment;
 import com.livewire.ui.fragments.OnGoingWorkerFragment;
 import com.livewire.utils.PreferenceConnector;
 
 public class WorkerMainActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
-    private TextView textView;
-    private LinearLayout tabbar;
-    private LinearLayout myJobLl;
-    private ImageView ivMyJobs;
-    private LinearLayout ongoingJobLl;
-    private ImageView ivOngoing;
-    private LinearLayout homeLl;
-    private ImageView interestImg;
-    private LinearLayout chatLl;
-    private ImageView ivChat;
-    private LinearLayout userSettingLl;
-    private ImageView ivUser;
-    private GoogleApiClient mGoogleApiClient;
+   ActivityWorkerMainBinding binding;
+
     private TextView tvHeading;
     private int clickId;
     private android.support.v4.app.FragmentManager fm;
@@ -54,13 +46,13 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_worker_main);
+      binding = DataBindingUtil.setContentView(this ,R.layout.activity_worker_main);
 
         intializeViews();
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
+        GoogleApiClient mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
@@ -70,28 +62,13 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
     private void intializeViews() {
         fm = getSupportFragmentManager();
 
-        findViewById(R.id.btn_logout).setOnClickListener(this);
-        FrameLayout container = findViewById(R.id.fl_container);
-        tabbar =  findViewById(R.id.tabbar);
-        myJobLl =  findViewById(R.id.my_job_ll);
-        ivMyJobs =  findViewById(R.id.iv_my_jobs);
-        ongoingJobLl = findViewById(R.id.ongoing_job_ll);
-        ivOngoing = findViewById(R.id.iv_ongoing);
-        homeLl = findViewById(R.id.home_ll);
-        interestImg =  findViewById(R.id.interest_img);
-        chatLl = findViewById(R.id.chat_ll);
-        ivChat = findViewById(R.id.iv_chat);
-        userSettingLl =  findViewById(R.id.user_setting_ll);
-        ivUser = findViewById(R.id.iv_user);
-
-        ivNotification = findViewById(R.id.iv_notification);
-        tvHeading = findViewById(R.id.tv_heading);
-
-        ongoingJobLl.setOnClickListener(this);
-        homeLl.setOnClickListener(this);
-        userSettingLl.setOnClickListener(this);
-        chatLl.setOnClickListener(this);
-        myJobLl.setOnClickListener(this);
+        binding.btnLogout.setOnClickListener(this);
+        binding.ongoingJobLl.setOnClickListener(this);
+        binding.homeLl.setOnClickListener(this);
+        binding.userSettingLl.setOnClickListener(this);
+        binding.chatLl.setOnClickListener(this);
+        binding.myJobLl.setOnClickListener(this);
+        binding.ivSetting.setOnClickListener(this);
 
         replaceFragment(new HelpOfferedWorkerFragment(), false, R.id.fl_container); // first time replace home fragment
         clickId = R.id.home_ll;
@@ -100,19 +77,20 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onClick(View v) {
+        Intent intent=null;
         switch (v.getId()){
             case R.id.btn_logout:
                 PreferenceConnector.clear(this);
-                Intent intent = new Intent(this,UserSelectionActivity.class);
+                 intent = new Intent(this,UserSelectionActivity.class);
                 startActivity(intent);
                 finish();
                 break;
             case R.id.my_job_ll:
                 if (clickId != R.id.my_job_ll){
                     inActiveTab();
-                    tvHeading.setText(R.string.my_jobs);
+                    binding.tvHeading.setText(R.string.my_jobs);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        ivMyJobs.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorGreen)));
+                        binding.ivMyJobs.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorGreen)));
                     }
 
                     clickId = R.id.my_job_ll;
@@ -122,9 +100,9 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
                 if (clickId != R.id.ongoing_job_ll){
                     inActiveTab();
                     replaceFragment(new OnGoingWorkerFragment(), false, R.id.fl_container);
-                    tvHeading.setText(R.string.ongoing);
+                    binding.tvHeading.setText(R.string.ongoing);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        ivOngoing.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorGreen)));
+                        binding.ivOngoing.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorGreen)));
                     }
                     clickId = R.id.ongoing_job_ll;
                 }
@@ -133,7 +111,7 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
             case R.id.home_ll:
                 if (clickId != R.id.home_ll){
                     inActiveTab();
-                    tvHeading.setText(R.string.help_offered);
+                    binding.tvHeading.setText(R.string.help_offered);
                     replaceFragment(new HelpOfferedWorkerFragment(), false, R.id.fl_container);
                     clickId = R.id.home_ll;
                 }
@@ -142,10 +120,10 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
             case R.id.chat_ll:
                 if (clickId != R.id.chat_ll){
                     inActiveTab();
-                    tvHeading.setText(R.string.chat);
+                    binding.tvHeading.setText(R.string.chat);
                     replaceFragment(new ChatWorkerFragment(), false, R.id.fl_container);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        ivChat.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorGreen)));
+                        binding.ivChat.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorGreen)));
                     }
                     clickId = R.id.chat_ll;
                 }
@@ -154,24 +132,29 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
             case R.id.user_setting_ll:
                 if (clickId != R.id.user_setting_ll){
                     inActiveTab();
+                    binding.ivSetting.setVisibility(View.VISIBLE);
+                    binding.tvHeading.setText(R.string.my_profile);
+                    replaceFragment(new MyProfileWorkerFragment(), false, R.id.fl_container);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        ivUser.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorGreen)));
+                        binding.ivUser.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorGreen)));
                     }
                     clickId = R.id.user_setting_ll;
                 }
                 break;
-
+            case R.id.iv_setting:
+                 intent = new Intent(this,SettingActivity.class);
+                 startActivity(intent);
                 default:
         }
     }
 
     private void inActiveTab() {
-
+        binding.ivSetting.setVisibility(View.GONE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            ivMyJobs.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorLightGray)));
-            ivOngoing.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorLightGray)));
-            ivChat.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorLightGray)));
-            ivUser.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorLightGray)));
+            binding.ivMyJobs.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorLightGray)));
+            binding.ivOngoing.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorLightGray)));
+            binding.ivChat.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorLightGray)));
+            binding.ivUser.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorLightGray)));
         }
          }
 

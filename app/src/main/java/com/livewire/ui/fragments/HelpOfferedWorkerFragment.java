@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
@@ -114,7 +115,7 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
         rvFilter = view.findViewById(R.id.rv_filter_list);
 
 
-         mLoadAnimation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in);
+        mLoadAnimation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in);
         mLoadAnimation.setDuration(1000);
 
 
@@ -123,6 +124,8 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
         recyclerView.setLayoutManager(layoutManager);
         offeredAdapter = new HelpOfferedAdapter(mContext, offerList, this, mainLayout);
         recyclerView.setAdapter(offeredAdapter);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+
         btnFilter.setOnClickListener(this);
         tvClearAll.setOnClickListener(this);
 
@@ -149,8 +152,10 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 limit = limit + 5; //load 5 items in recyclerview
                 if (Constant.isNetworkAvailable(mContext, mainLayout)) {
-                    // progressDialog.show();
-                    helpOfferedApi();
+                    if (page != 1) {
+                        // progressDialog.show();
+                        helpOfferedApi();
+                    }
                 }
             }
         };
@@ -171,7 +176,7 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
             }
         });
 
-
+        mainLayout.startAnimation(mLoadAnimation);
         SubCategoryListApi();
         helpOfferedApi();
     }
@@ -179,7 +184,7 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
     @Override
     public void onResume() {
         super.onResume();
-        helpOfferedApi();
+        // helpOfferedApi();
     }
 
     //"""""""""" sub category list api """""""""""""//
@@ -192,7 +197,7 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
                         @Override
                         public void onResponse(JSONObject response) {
                             progressDialog.dismiss();
-                        //    mainLayout.startAnimation(mLoadAnimation);
+                            //    mainLayout.startAnimation(mLoadAnimation);
                             String status = null;
                             try {
                                 status = response.getString("status");
@@ -229,6 +234,12 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
         }
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+    }
+
     //"""""" help offer list api calling"""""""""""//
     private void helpOfferedApi() {// help offer api calling
         if (Constant.isNetworkAvailable(mContext, mainLayout)) {
@@ -236,8 +247,8 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
             AndroidNetworking.post(BASE_URL + "Jobpost/getJobList")
                     .addHeaders("authToken", PreferenceConnector.readString(mContext, PreferenceConnector.AUTH_TOKEN, ""))
                     .addBodyParameter("job_type", "1")
-                    .addBodyParameter("limit", ""+limit)
-                    .addBodyParameter("start", ""+start)
+                    .addBodyParameter("limit", "" + limit)
+                    .addBodyParameter("start", "" + start)
                     .addBodyParameter("skill", skillsStrin)
                     .setPriority(Priority.MEDIUM)
                     .build().getAsJSONObject(new JSONObjectRequestListener() {
@@ -383,7 +394,7 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
     @Override
     public void subCategoryItemOnClick(int pos, CategoryModel categoryModel, String key) {
         if (key.equals("FilterKey")) {
-            addItemsInSubTempList(categoryModel,pos);
+            addItemsInSubTempList(categoryModel, pos);
 
             if (subCategoryList.size() != 0) {
                 skillsString();
@@ -394,7 +405,7 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
                 filterLayout.setVisibility(View.GONE);
             }
         } else {
-            addItemsInSubTempList(categoryModel,pos);
+            addItemsInSubTempList(categoryModel, pos);
          /*   SubCategoryResponse.DataBean dataBean = new SubCategoryResponse.DataBean();
             dataBean.setCategoryName(categoryModel.getCategoryName());
             dataBean.setCategoryId(categoryModel.getCategoryId());
@@ -442,14 +453,14 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
 
     //""""""' help offer listener """"""""""//
     @Override
-    public void helpOfferItemOnClick(HelpOfferedResponce.DataBean dataBean, String key,int pos) {
+    public void helpOfferItemOnClick(HelpOfferedResponce.DataBean dataBean, String key, int pos) {
         if (key.equals(getString(R.string.moreinfo))) {
             Intent intent = new Intent(mContext, JobHelpOfferedDetailWorkerActivity.class);
             intent.putExtra("JobIdKey", dataBean);
             startActivity(intent);
 
         } else if (key.equals(getString(R.string.sendrequest))) {
-            sendRequestApi(dataBean.getJobId(), dataBean.getUserId(),pos);
+            sendRequestApi(dataBean.getJobId(), dataBean.getUserId(), pos);
         }
     }
 
@@ -460,7 +471,6 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
             AndroidNetworking.post(BASE_URL + "Jobpost/sendRequest2")
                     .addHeaders("authToken", PreferenceConnector.readString(mContext, PreferenceConnector.AUTH_TOKEN, ""))
                     .addBodyParameter("job_id", jobId)
-                    //.addBodyParameter("request_to", "2")
                     .addBodyParameter("request_to", userId)
                     .addBodyParameter("request_status", "0")
                     .setPriority(Priority.MEDIUM)
