@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -375,6 +374,8 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.COMPLETE_PROFILE_STATUS, userResponce.getData().getCompleteProfile());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.AUTH_TOKEN, userResponce.getData().getAuthToken());
+        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.SOCIAL_LOGIN, userResponce.getData().getSocialType());
+
         Log.d("Responce", userResponce.toString());
         if (userResponce.getData().getUserType().equals("worker")) {// if user is worker
             Intent intent = null;
@@ -640,6 +641,8 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         PreferenceConnector.writeBoolean(SignupActivity.this, PreferenceConnector.IS_LOG_IN, true);
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.AUTH_TOKEN, userResponce.getData().getAuthToken());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
+        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.PASS_WORD, etPass.getText().toString());
+
                             /*PreferenceConnector.writeBoolean(SignupActivity.this, PreferenceConnector.IS_LOG_IN, true);
                             PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.USER_INFO_JSON, response.toString());
                             PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.AUTH_TOKEN, userResponce.getData().getAuthToken());
@@ -739,6 +742,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.AUTH_TOKEN, userResponce.getData().getAuthToken());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.COMPLETE_PROFILE_STATUS, userResponce.getData().getCompleteProfile());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
+        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.PASS_WORD, etPass.getText().toString());
         Intent intent = new Intent(SignupActivity.this, CompleteProfileActivity.class);
         startActivity(intent);
         finish();

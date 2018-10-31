@@ -15,6 +15,8 @@ public class PreferenceConnector {
     public static final String IS_LOG_IN = "IsLogIN";
     public static final String PROFILE_IMG = "ProfileImg";
     public static final String COMPLETE_PROFILE_STATUS = "CompleteProfile";
+    public static final String PASS_WORD = "Password";
+    public static final String SOCIAL_LOGIN = "Social";
 
     //----UserInfo
     public static final String AUTH_TOKEN = "AuthToken1";

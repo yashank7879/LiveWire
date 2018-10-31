@@ -149,5 +149,13 @@
     <string name="save">Save</string>
     <string name="add_skill">Add Skill</string>
     <string name="edit_profile">EDIT PROFILE</string>
+    <string name="new_password">New password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="current_password">Current Password</string>
+    <string name="save_and_update">Save and Update</string>
+    <string name="total_expense">Total Expense</string>
+    <string name="completed_jobs">Completed Jobs</string>
+    <string name="manage_credit_cards">Manage Credit Cards</string>
+    <string name="notifications">NOTIFICATIONS</string>
 
 </resources>

@@ -94,7 +94,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         initializeView();
-         printHashKey();
+        printHashKey();
     }
 
 
@@ -146,7 +146,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         fbLogInBtn = findViewById(R.id.btn_fb_sign_in);
         forgotpassId = findViewById(R.id.forgotpass_id);
         fb_btn = findViewById(R.id.fb_btn);
-
 
         fb_btn.setReadPermissions("email");
 
@@ -228,10 +227,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 loginResult.getAccessToken();
                 getUserDtails(loginResult);
             }
+
             @Override
             public void onCancel() {
-            //noting
+                //noting
             }
+
             @Override
             public void onError(FacebookException error) {
                 Log.d("Facebook error", error.getMessage());
@@ -252,7 +253,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         fb_mail = graphObject.getString("email");
                         String fbId = graphObject.getString("id");
                         if (graphObject.getString("picture") != null) {
-                            imageUrl =object.getJSONObject("picture").getJSONObject("data").getString("url");;
+                            imageUrl = object.getJSONObject("picture").getJSONObject("data").getString("url");
+                            ;
                         }
                         UserModel model = new UserModel();
                         model.name = graphObject.getString("name");
@@ -411,7 +413,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     build().getAsJSONObject(new JSONObjectRequestListener() {
                 @Override
                 public void onResponse(JSONObject response) {
-
                     try {
                         progressDialog.dismiss();
                         //progressBar.setVisibility(View.GONE);
@@ -425,7 +426,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
                             PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.COMPLETE_PROFILE_STATUS, userResponce.getData().getCompleteProfile());
                             PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.AUTH_TOKEN, userResponce.getData().getAuthToken());
-                            Log.d("Responce", userResponce.toString());
+                            PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.SOCIAL_LOGIN, userResponce.getData().getSocialType());
                             if (userResponce.getData().getUserType().equals("worker")) {// if user is worker
                                 Intent intent = null;
                                 if (userResponce.getData().getCompleteProfile().equals("0")) { // if worker not complete own profile
@@ -473,15 +474,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-   private void soicialLogOut(){
-       LoginManager.getInstance().logOut();// fb logout
-       Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback( // google logout
-               new ResultCallback<Status>() {
-                   @Override
-                   public void onResult(Status status) {
-                   }
-               });
-   }
+    private void soicialLogOut() {
+        LoginManager.getInstance().logOut();// fb logout
+        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback( // google logout
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+                    }
+                });
+    }
 
     //""""""""""registration validations""""""//
     private void fieldValidation() {
@@ -541,7 +542,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.AUTH_TOKEN, userResponce.getData().getAuthToken());
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.COMPLETE_PROFILE_STATUS, userResponce.getData().getCompleteProfile());
-
+                                    PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.PASS_WORD, etPass.getText().toString());
 
                                     if (isremember) {// if remember email and password
                                         if (userResponce.getData().getUserType().equals("worker")) {

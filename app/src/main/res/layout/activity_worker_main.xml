@@ -14,7 +14,8 @@
             android:layout_height="wrap_content"
             app:shadowColor="#666666"
             app:shadowMarginBottom="3dp"
-            app:shadowRadius="@dimen/_5sdp">
+            app:shadowRadius="@dimen/_5sdp"
+            >
 
             <RelativeLayout
                 android:layout_width="match_parent"

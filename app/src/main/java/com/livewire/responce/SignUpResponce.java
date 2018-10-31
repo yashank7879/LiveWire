@@ -81,6 +81,10 @@ public class SignUpResponce {
         private String status = "";
         private String crd = "";
         private String upd = "";
+        private String user_intro_vodeo = "";
+        private String thumbImage = "";
+        private String town = "";
+        private String totalIncome ="";
 
         public String getUserId() {
             return userId;
@@ -208,6 +212,38 @@ public class SignUpResponce {
 
         public void setUpd(String upd) {
             this.upd = upd;
+        }
+
+        public String getUser_intro_vodeo() {
+            return user_intro_vodeo;
+        }
+
+        public void setUser_intro_vodeo(String user_intro_vodeo) {
+            this.user_intro_vodeo = user_intro_vodeo;
+        }
+
+        public String getThumbImage() {
+            return thumbImage;
+        }
+
+        public void setThumbImage(String thumbImage) {
+            this.thumbImage = thumbImage;
+        }
+
+        public String getTown() {
+            return town;
+        }
+
+        public void setTown(String town) {
+            this.town = town;
+        }
+
+        public String getTotalIncome() {
+            return totalIncome;
+        }
+
+        public void setTotalIncome(String totalIncome) {
+            this.totalIncome = totalIncome;
         }
     }
 }

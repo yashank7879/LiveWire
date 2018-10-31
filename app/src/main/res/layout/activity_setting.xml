@@ -16,7 +16,8 @@
             android:layout_height="wrap_content"
             app:shadowColor="@color/colorLightGray"
             app:shadowMarginBottom="3dp"
-            app:shadowRadius="@dimen/_5sdp">
+            app:shadowRadius="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_10sdp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -37,9 +38,11 @@
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="@dimen/_5sdp"
-                    android:padding="@dimen/_4sdp"
+                    android:padding="@dimen/_5sdp"
                     android:tint="@color/colorDarkBlack"
-                    app:srcCompat="@drawable/ic_left_arrow" />
+                    app:srcCompat="@drawable/ic_left_arrow"
+                    android:background="?android:attr/selectableItemBackground"
+                    />
 
 
             </RelativeLayout>
@@ -47,18 +50,21 @@
         </com.loopeer.shadow.ShadowView>
 
         <RelativeLayout
+            android:id="@+id/rl_available"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_30sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:background="@color/colorExtraLightGray">
+            android:layout_height="@dimen/_32sdp"
+            android:background="@color/colorExtraLightGray"
+            android:visibility="gone">
 
             <TextView
+                style="@style/smallPopinsRegularStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/_15sdp"
                 android:text="@string/availability"
-                android:textColor="@color/colorDarkBlack" />
+                android:textColor="@color/colorDarkBlack"
+                />
 
             <Switch
                 android:id="@+id/btn_switch"
@@ -88,12 +94,15 @@
                 app:srcCompat="@drawable/ic_lock1" />
 
             <TextView
+                style="@style/SmallPopinsLightStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginStart="@dimen/_5sdp"
                 android:text="@string/change_password"
-                android:textColor="@color/colorDarkGray" />
+                android:textColor="@color/colorDarkGray"
+                android:textSize="@dimen/_10sdp"
+                />
 
             <Space
                 android:layout_width="0dp"
@@ -122,23 +131,67 @@
             android:layout_height="@dimen/_30sdp"
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
-            android:background="?android:attr/selectableItemBackground">
+            android:background="?android:attr/selectableItemBackground"
+            android:visibility="gone"
+            >
 
             <ImageView
                 android:layout_width="@dimen/_25sdp"
                 android:layout_height="@dimen/_25sdp"
                 android:layout_gravity="center"
                 android:padding="@dimen/_5sdp"
-                app:srcCompat="@drawable/ic_user" />
+                app:srcCompat="@drawable/ic_add_bank" />
 
             <TextView
+                style="@style/SmallPopinsLightStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginStart="@dimen/_5sdp"
                 android:text="@string/add_bank_account"
                 android:textColor="@color/colorDarkGray"
+                android:textSize="@dimen/_10sdp"
+                />
 
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_gravity="center"
+                android:padding="@dimen/_5sdp"
+                app:srcCompat="@drawable/ic_right_arrow" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_add_credit_card"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:background="?android:attr/selectableItemBackground"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_gravity="center"
+                android:padding="@dimen/_5sdp"
+                app:srcCompat="@drawable/ic_card"/>
+
+            <TextView
+                style="@style/SmallPopinsLightStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:text="@string/manage_credit_cards"
+                android:textColor="@color/colorDarkGray"
+                android:textSize="@dimen/_10sdp"
                 />
 
             <Space
@@ -162,6 +215,7 @@
             android:layout_marginRight="@dimen/_5sdp"
             android:background="@color/colorExtraLightGray" />
 
+
         <LinearLayout
             android:id="@+id/ll_about_us"
             android:layout_width="match_parent"
@@ -178,12 +232,15 @@
                 app:srcCompat="@drawable/ic_info" />
 
             <TextView
+                style="@style/SmallPopinsLightStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginStart="@dimen/_5sdp"
                 android:text="@string/about_us"
-                android:textColor="@color/colorDarkGray" />
+                android:textColor="@color/colorDarkGray"
+                android:textSize="@dimen/_10sdp"
+                />
 
             <Space
                 android:layout_width="0dp"
@@ -222,13 +279,14 @@
                 app:srcCompat="@drawable/ic_terms_cond" />
 
             <TextView
+                style="@style/SmallPopinsLightStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginStart="@dimen/_5sdp"
                 android:text="@string/terms_amp_condition"
                 android:textColor="@color/colorDarkGray"
-
+                android:textSize="@dimen/_10sdp"
                 />
 
             <Space
@@ -268,12 +326,15 @@
                 app:srcCompat="@drawable/ic_form" />
 
             <TextView
+                style="@style/SmallPopinsLightStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginStart="@dimen/_5sdp"
                 android:text="@string/privacy_policy"
-                android:textColor="@color/colorDarkGray" />
+                android:textColor="@color/colorDarkGray"
+                android:textSize="@dimen/_10sdp"
+                />
 
             <Space
                 android:layout_width="0dp"
@@ -297,7 +358,7 @@
         <LinearLayout
             android:id="@+id/ll_logout"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_30sdp"
+            android:layout_height="@dimen/_32sdp"
             android:background="@color/colorExtraLightGray"
             android:paddingStart="@dimen/_5sdp">
 
@@ -309,12 +370,14 @@
                 app:srcCompat="@drawable/ic_logout" />
 
             <TextView
+                style="@style/smallPopinsRegularStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginStart="@dimen/_5sdp"
                 android:text="@string/logout"
-                android:textColor="@color/colorDarkBlack" />
+                android:textColor="@color/colorDarkBlack"
+                />
 
         </LinearLayout>
 

@@ -34,7 +34,7 @@ import com.livewire.ui.fragments.OnGoingWorkerFragment;
 import com.livewire.utils.PreferenceConnector;
 
 public class WorkerMainActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
-   ActivityWorkerMainBinding binding;
+    ActivityWorkerMainBinding binding;
 
     private TextView tvHeading;
     private int clickId;
@@ -46,7 +46,7 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-      binding = DataBindingUtil.setContentView(this ,R.layout.activity_worker_main);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_worker_main);
 
         intializeViews();
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -77,16 +77,16 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onClick(View v) {
-        Intent intent=null;
-        switch (v.getId()){
+        Intent intent = null;
+        switch (v.getId()) {
             case R.id.btn_logout:
                 PreferenceConnector.clear(this);
-                 intent = new Intent(this,UserSelectionActivity.class);
+                intent = new Intent(this, UserSelectionActivity.class);
                 startActivity(intent);
                 finish();
                 break;
             case R.id.my_job_ll:
-                if (clickId != R.id.my_job_ll){
+                if (clickId != R.id.my_job_ll) {
                     inActiveTab();
                     binding.tvHeading.setText(R.string.my_jobs);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -97,7 +97,7 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
                 }
                 break;
             case R.id.ongoing_job_ll:
-                if (clickId != R.id.ongoing_job_ll){
+                if (clickId != R.id.ongoing_job_ll) {
                     inActiveTab();
                     replaceFragment(new OnGoingWorkerFragment(), false, R.id.fl_container);
                     binding.tvHeading.setText(R.string.ongoing);
@@ -109,7 +109,7 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
                 break;
 
             case R.id.home_ll:
-                if (clickId != R.id.home_ll){
+                if (clickId != R.id.home_ll) {
                     inActiveTab();
                     binding.tvHeading.setText(R.string.help_offered);
                     replaceFragment(new HelpOfferedWorkerFragment(), false, R.id.fl_container);
@@ -118,9 +118,10 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
                 break;
 
             case R.id.chat_ll:
-                if (clickId != R.id.chat_ll){
+                if (clickId != R.id.chat_ll) {
                     inActiveTab();
                     binding.tvHeading.setText(R.string.chat);
+                    binding.tvHeading.setAllCaps(true);
                     replaceFragment(new ChatWorkerFragment(), false, R.id.fl_container);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         binding.ivChat.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorGreen)));
@@ -130,9 +131,9 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
                 break;
 
             case R.id.user_setting_ll:
-                if (clickId != R.id.user_setting_ll){
+                if (clickId != R.id.user_setting_ll) {
                     inActiveTab();
-                    binding.ivSetting.setVisibility(View.VISIBLE);
+                    binding.actionBar.setVisibility(View.GONE);
                     binding.tvHeading.setText(R.string.my_profile);
                     replaceFragment(new MyProfileWorkerFragment(), false, R.id.fl_container);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -142,21 +143,21 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
                 }
                 break;
             case R.id.iv_setting:
-                 intent = new Intent(this,SettingActivity.class);
-                 startActivity(intent);
-                default:
+                intent = new Intent(this, SettingActivity.class);
+                startActivity(intent);
+            default:
         }
     }
 
     private void inActiveTab() {
-        binding.ivSetting.setVisibility(View.GONE);
+        binding.actionBar.setVisibility(View.VISIBLE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             binding.ivMyJobs.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorLightGray)));
             binding.ivOngoing.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorLightGray)));
             binding.ivChat.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorLightGray)));
             binding.ivUser.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorLightGray)));
         }
-         }
+    }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
@@ -181,6 +182,7 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
             transaction.commit();
         }
     }
+
     @Override
     public void onBackPressed() {
         try {

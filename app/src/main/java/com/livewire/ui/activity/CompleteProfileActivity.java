@@ -155,12 +155,18 @@ public class CompleteProfileActivity extends AppCompatActivity implements View.O
         if (getIntent().getStringExtra("EditProfileKey") != null){ // if user come from profile setting
             binding.tvCompleteProfile.setVisibility(View.GONE);
             binding.tvContent.setVisibility(View.GONE);
+            binding.btnSave.setVisibility(View.GONE);
             binding.actionBar2.setVisibility(View.VISIBLE);
+            binding.llNameEmail.setVisibility(View.VISIBLE);
+            binding.btnSaveAndUpdate.setVisibility(View.VISIBLE);
+
         }else { // if user from signup page
             binding.tvCompleteProfile.setVisibility(View.VISIBLE);
             binding.tvContent.setVisibility(View.VISIBLE);
+            binding.btnSave.setVisibility(View.VISIBLE);
             binding.actionBar2.setVisibility(View.GONE);
-
+            binding.llNameEmail.setVisibility(View.GONE);
+            binding.btnSaveAndUpdate.setVisibility(View.GONE);
         }
 
         intializeView();
@@ -253,7 +259,6 @@ public class CompleteProfileActivity extends AppCompatActivity implements View.O
         binding.flUserProfile.setOnClickListener(this);
         binding.btnSave.setOnClickListener(this);
         ivBack.setOnClickListener(this);
-
 
         if (getIntent().hasExtra("imageKey")) {
             if (getIntent().getStringExtra("imageKey") != null) {

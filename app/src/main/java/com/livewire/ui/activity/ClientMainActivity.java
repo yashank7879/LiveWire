@@ -31,8 +31,11 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.livewire.R;
+import com.livewire.ui.fragments.ChatClientFragment;
+import com.livewire.ui.fragments.ChatWorkerFragment;
 import com.livewire.ui.fragments.MyJobClientFragment;
 import com.livewire.ui.fragments.MyProfileClientFragment;
+import com.livewire.ui.fragments.NotificationClientFragment;
 import com.livewire.ui.fragments.PostJobHomeFragment;
 import com.livewire.utils.PreferenceConnector;
 
@@ -125,6 +128,7 @@ public class ClientMainActivity extends AppCompatActivity implements View.OnClic
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         ivNotification.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorGreen)));
                     }
+                    replaceFragment(new NotificationClientFragment(),false,R.id.fl_container);
                     clickId = R.id.notification_ll;
                 }
                 break;
@@ -144,6 +148,8 @@ public class ClientMainActivity extends AppCompatActivity implements View.OnClic
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         ivChat.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorGreen)));
                     }
+                    replaceFragment(new ChatClientFragment(),false,R.id.fl_container);
+
                     clickId = R.id.chat_ll;
                 }
                 break;

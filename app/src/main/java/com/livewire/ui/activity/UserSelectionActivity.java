@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.livewire.R;
 import com.livewire.utils.Constant;
-import com.loopeer.shadow.ShadowView;
+
 
 public class UserSelectionActivity extends AppCompatActivity implements View.OnClickListener {
    private CardView wantToHireCardView;

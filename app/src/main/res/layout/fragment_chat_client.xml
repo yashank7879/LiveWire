@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <com.loopeer.shadow.ShadowView
+            android:id="@+id/action_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:shadowColor="#666666"
+            app:shadowMarginBottom="3dp"
+            app:shadowRadius="@dimen/_5sdp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp">
+
+                <TextView
+                    style="@style/mediumPopinsMediumStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="@string/chat"
+                    android:textAllCaps="true"
+                    android:textColor="@color/colorGreen" />
+
+               <!-- <ImageView
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:padding="@dimen/_4sdp"
+                    app:srcCompat="@drawable/ic_left_arrow"
+                    android:tint="@color/colorDarkBlack"
+                    android:id="@+id/iv_back"
+                    />-->
+
+
+            </RelativeLayout>
+
+        </com.loopeer.shadow.ShadowView>
+
+
+
+        <TextView
+            style="@style/mediumPopinsMediumStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/under_devlopment_mode" />
+
+    </RelativeLayout>
+</layout>

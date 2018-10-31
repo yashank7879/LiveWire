@@ -19,11 +19,14 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.google.gson.Gson;
 import com.livewire.R;
 import com.livewire.databinding.FragmentMyProfileWorkerBinding;
-import com.livewire.responce.NearYouResponce;
+import com.livewire.responce.SignUpResponce;
 import com.livewire.ui.activity.CompleteProfileActivity;
+import com.livewire.ui.activity.PlayVideoActivity;
+import com.livewire.ui.activity.SettingActivity;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
 import com.livewire.utils.ProgressDialog;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,6 +38,7 @@ public class MyProfileWorkerFragment extends Fragment implements View.OnClickLis
     FragmentMyProfileWorkerBinding binding;
     private Context mContext;
     private ProgressDialog progressDialog;
+    private String videoUrl;
 
     public MyProfileWorkerFragment() {
         // Required empty public constructor
@@ -58,8 +62,10 @@ public class MyProfileWorkerFragment extends Fragment implements View.OnClickLis
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         progressDialog = new ProgressDialog(mContext);
-        binding.btnEdit.setOnClickListener(this);
-     //   myProfileApi();
+       binding.btnEdit.setOnClickListener(this);
+       binding.ivSetting.setOnClickListener(this);
+       binding.rlVideoImg.setOnClickListener(this);
+        myProfileApi();
 
     }
 
@@ -69,15 +75,15 @@ public class MyProfileWorkerFragment extends Fragment implements View.OnClickLis
         this.mContext = context;
     }
 
-    //"""""""""' near you api at client side""""""""""""""//
+    //"""""""""' my profile worker side""""""""""""""//
     private void myProfileApi() {// help offer api calling
         if (Constant.isNetworkAvailable(mContext, binding.svProfile)) {
             progressDialog.show();
-            AndroidNetworking.post(BASE_URL + "Jobpost/getNearByWorker")
+            AndroidNetworking.get(BASE_URL + "user/getMyProfile")
                     .addHeaders("authToken", PreferenceConnector.readString(mContext, PreferenceConnector.AUTH_TOKEN, ""))
-
                     .setPriority(Priority.MEDIUM)
-                    .build().getAsJSONObject(new JSONObjectRequestListener() {
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
                 @Override
                 public void onResponse(JSONObject response) {
                     try {
@@ -85,8 +91,12 @@ public class MyProfileWorkerFragment extends Fragment implements View.OnClickLis
                         String status = response.getString("status");
                         String message = response.getString("message");
                         if (status.equals("success")) {
-                            /*NearYouResponce helpOfferedResponce = new Gson().fromJson(String.valueOf(response), NearYouResponce.class);
-                            nearYouList.addAll(helpOfferedResponce.getData());*/
+                            SignUpResponce userResponce = new Gson().fromJson(String.valueOf(response), SignUpResponce.class);
+                           videoUrl = userResponce.getData().getUser_intro_vodeo();
+                            Picasso.with(binding.ivProfile.getContext()).load(userResponce.getData().getThumbImage())
+                                  .fit().into(binding.ivProfile);
+                            binding.ivPlaceholder.setVisibility(View.GONE);
+                            binding.setUserResponce(userResponce.getData());
                         } else {
                             Constant.snackBar(binding.svProfile, message);
                         }
@@ -111,6 +121,17 @@ public class MyProfileWorkerFragment extends Fragment implements View.OnClickLis
                 intent = new Intent(mContext, CompleteProfileActivity.class);
                 intent.putExtra("EditProfileKey","EditProfile");
                 startActivity(intent);
+                break;
+            case R.id.rl_video_img:
+                if (Constant.isNetworkAvailable(mContext,binding.svProfile)) {
+                    intent = new Intent(mContext, PlayVideoActivity.class);
+                    intent.putExtra("VideoUrlKey", videoUrl);
+                    startActivity(intent);
+                }
+                break;
+            case R.id.iv_setting:
+                    intent = new Intent(mContext, SettingActivity.class);
+                    startActivity(intent);
                 break;
             default:
         }
