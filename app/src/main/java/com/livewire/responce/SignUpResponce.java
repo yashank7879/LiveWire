@@ -85,6 +85,7 @@ public class SignUpResponce {
         private String thumbImage = "";
         private String town = "";
         private String totalIncome ="";
+        private String profileImage ="";
 
         public String getUserId() {
             return userId;
@@ -244,6 +245,14 @@ public class SignUpResponce {
 
         public void setTotalIncome(String totalIncome) {
             this.totalIncome = totalIncome;
+        }
+
+        public String getProfileImage() {
+            return profileImage;
+        }
+
+        public void setProfileImage(String profileImage) {
+            this.profileImage = profileImage;
         }
     }
 }

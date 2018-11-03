@@ -7,10 +7,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-     <!--   <include
+        <include
             android:id="@+id/action_bar2"
             layout="@layout/action_bar_worker_layout"
-            android:visibility="gone" />-->
+            android:visibility="visible" />
 
         <ScrollView
             android:id="@+id/main_layout"
@@ -37,29 +37,6 @@
                     android:textSize="@dimen/_12sdp"
                     android:visibility="gone" />
 
-                <TextView
-                    android:id="@+id/tv_complete_profile"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:fontFamily="@font/poppins_medium"
-                    android:text="@string/complete_your_profile"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/_16sdp" />
-
-                <TextView
-                    android:id="@+id/tv_content"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_20sdp"
-                    android:layout_marginRight="@dimen/_20sdp"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:fontFamily="@font/poppins_regular"
-                    android:gravity="center_horizontal"
-                    android:text="@string/demo_text"
-                    android:textColor="@color/colorLightGray"
-                    android:textSize="@dimen/_12sdp" />
 
                 <FrameLayout
                     android:id="@+id/fl_user_profile"
@@ -97,6 +74,60 @@
 
                 </FrameLayout>
 
+                <LinearLayout
+                    android:id="@+id/ll_name_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="@dimen/_20sdp"
+                    android:layout_marginRight="@dimen/_20sdp"
+                    android:visibility="visible"
+                    >
+
+                    <EditText
+                        android:id="@+id/et_full_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:background="@null"
+                        android:fontFamily="@font/poppins_light"
+                        android:hint="@string/full_name"
+                        android:inputType="text"
+                        android:singleLine="true"
+                        android:textSize="@dimen/_12sdp"
+                        android:textColor="@color/colorDarkBlack"
+                        />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_1sdp"
+                        android:layout_marginBottom="@dimen/_15sdp"
+
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="@color/colorLightGray" />
+
+                    <EditText
+                        android:id="@+id/et_email1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:fontFamily="@font/poppins_light"
+                        android:hint="@string/email_id"
+                        android:inputType="textEmailAddress"
+                        android:singleLine="true"
+                        android:textSize="@dimen/_12sdp"
+                        android:textColor="@color/colorDarkBlack"
+                        />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_1sdp"
+                        android:layout_marginBottom="@dimen/_15sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="@color/colorLightGray" />
+
+
+                </LinearLayout>
 
                 <RelativeLayout
                     android:id="@+id/add_skills_rl"
@@ -105,7 +136,7 @@
                     android:layout_marginBottom="@dimen/_5sdp"
                     android:layout_marginLeft="@dimen/_20sdp"
                     android:layout_marginRight="@dimen/_20sdp"
-                   >
+                    >
 
                     <android.support.v7.widget.AppCompatImageView
                         android:layout_width="@dimen/_20sdp"
@@ -195,29 +226,29 @@
 
 
 
-                <FrameLayout
-                    android:layout_width="@dimen/_51sdp"
-                    android:layout_height="@dimen/_51sdp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/rounder_corner_rectangle">
-
-
-                    <com.makeramen.roundedimageview.RoundedImageView
-                        android:id="@+id/video_img"
-                        android:layout_width="@dimen/_50sdp"
-                        android:layout_height="@dimen/_50sdp"
+                    <FrameLayout
+                        android:layout_width="@dimen/_51sdp"
+                        android:layout_height="@dimen/_51sdp"
                         android:layout_gravity="center"
-                        android:background="?android:attr/selectableItemBackground"
-                        app:riv_corner_radius="@dimen/_5sdp" />
+                        android:background="@drawable/rounder_corner_rectangle">
 
-                    <ImageView
-                        android:layout_width="@dimen/_40sdp"
-                        android:layout_height="@dimen/_40sdp"
-                        android:layout_gravity="center"
-                        android:padding="@dimen/_8sdp"
-                        app:srcCompat="@drawable/ic_video_camera" />
 
-                </FrameLayout>
+                        <com.makeramen.roundedimageview.RoundedImageView
+                            android:id="@+id/video_img"
+                            android:layout_width="@dimen/_50sdp"
+                            android:layout_height="@dimen/_50sdp"
+                            android:layout_gravity="center"
+                            android:background="?android:attr/selectableItemBackground"
+                            app:riv_corner_radius="@dimen/_5sdp" />
+
+                        <ImageView
+                            android:layout_width="@dimen/_40sdp"
+                            android:layout_height="@dimen/_40sdp"
+                            android:layout_gravity="center"
+                            android:padding="@dimen/_8sdp"
+                            app:srcCompat="@drawable/ic_video_camera" />
+
+                    </FrameLayout>
 
                     <ImageView
                         android:id="@+id/iv_remove_video"
@@ -228,24 +259,26 @@
                         app:srcCompat="@drawable/ic_close_black"
                         android:tint="@color/colorWhite"
                         android:padding="@dimen/_2sdp"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         />
 
                 </FrameLayout>
 
+
                 <Button
-                    android:id="@+id/btn_save"
+                    android:id="@+id/btn_save_and_update"
                     android:layout_width="@dimen/_200sdp"
                     android:layout_height="@dimen/_32sdp"
                     android:layout_gravity="center"
                     android:layout_margin="@dimen/_20sdp"
                     android:background="@drawable/button_green_bg"
                     android:fontFamily="@font/poppins_light"
-                    android:text="@string/save"
+                    android:text="@string/save_and_update"
                     android:textAllCaps="false"
                     android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/_14sdp" />
-
+                    android:textSize="@dimen/_14sdp"
+                    android:visibility="visible"
+                    />
 
             </LinearLayout>
 

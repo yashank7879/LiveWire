@@ -29,6 +29,7 @@ import com.livewire.R;
 import com.livewire.databinding.ActivityWorkerMainBinding;
 import com.livewire.ui.fragments.ChatWorkerFragment;
 import com.livewire.ui.fragments.HelpOfferedWorkerFragment;
+import com.livewire.ui.fragments.MyJobsWorkerFragment;
 import com.livewire.ui.fragments.MyProfileWorkerFragment;
 import com.livewire.ui.fragments.OnGoingWorkerFragment;
 import com.livewire.utils.PreferenceConnector;
@@ -92,7 +93,7 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         binding.ivMyJobs.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorGreen)));
                     }
-
+                    replaceFragment(new MyJobsWorkerFragment(), false, R.id.fl_container);
                     clickId = R.id.my_job_ll;
                 }
                 break;

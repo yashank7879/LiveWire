@@ -39,7 +39,9 @@
                     android:layout_toEndOf="@+id/iv_setting"
                     android:background="@null"
                     android:text="@string/logout"
-                    android:textColor="@color/colorGreen" />
+                    android:textColor="@color/colorGreen"
+                    android:visibility="gone"
+                    />
 
                 <TextView
                     android:id="@+id/tv_heading"

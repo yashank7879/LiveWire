@@ -14,7 +14,7 @@ public interface Template {
         String INTRO_VIDEO_KEY = "intro_video";
         String IMAGE_KEY = "profileImage";
 
-        String KEY_DIRECTORY = "directory";
+        String VIDEO_THUMB_IMAGE = "video_thumb";
         String VALUE_DIRECTORY = "Uploads";
         String KEY_CODE = "kode";
         String KEY_MESSAGE = "pesan";

@@ -7,6 +7,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.MediaController;
 
@@ -31,7 +32,9 @@ public class PlayVideoActivity extends AppCompatActivity {
 
         if (Constant.isNetworkAvailable(this, binding.playvideoLayout)) {
             if (getIntent().getStringExtra("VideoUrlKey") != null) {
-                Uri uri = Uri.parse(getIntent().getStringExtra("VideoUrlKey"));
+                Log.i( "Video url98789: ",getIntent().getStringExtra("VideoUrlKey") );
+               Uri uri = Uri.parse(getIntent().getStringExtra("VideoUrlKey"));
+               // Uri uri = Uri.parse("https://livewire.work//uploads//introVideo//phRqVEZGj4gyxOe8.mp4");
                 binding.videoView1.setVideoURI(uri);
                 binding.videoView1.start();
                 ctlr = new MediaController(this);

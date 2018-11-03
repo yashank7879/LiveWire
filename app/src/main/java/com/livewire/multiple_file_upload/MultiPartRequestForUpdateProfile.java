@@ -8,6 +8,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyLog;
 import com.livewire.ui.activity.CompleteProfileActivity;
+import com.livewire.ui.activity.EditProfileWorkerActivity;
 import com.livewire.utils.PreferenceConnector;
 
 import java.io.ByteArrayOutputStream;
@@ -29,16 +30,16 @@ import static com.livewire.utils.ApiCollection.BASE_URL;
  * Created by Chiranjib Ganguly on 12-Feb-18.
  */
 
-public class MultiPartRequest extends Request<String> {
+public class MultiPartRequestForUpdateProfile extends Request<String> {
 
     private Response.Listener<String> mListener;
     private HttpEntity mHttpEntity;
     private Map<String, String> mParams;
-    private CompleteProfileActivity activity;
+    private EditProfileWorkerActivity activity;
 
 
-    public MultiPartRequest(Response.ErrorListener errorListener, Response.Listener listener, List<File> file, int numberOfFiles, Map<String, String> params, CompleteProfileActivity activity) {
-        super(Method.POST, BASE_URL+"user/updateWorkerProfile", errorListener);
+    public MultiPartRequestForUpdateProfile(Response.ErrorListener errorListener, Response.Listener listener, List<File> file, int numberOfFiles, Map<String, String> params, EditProfileWorkerActivity activity) {
+        super(Method.POST, BASE_URL+"user/updateUserProfile", errorListener);
         mListener = listener;
         mParams=params;
         mHttpEntity = buildMultipartEntity(file, numberOfFiles);
@@ -101,7 +102,7 @@ public class MultiPartRequest extends Request<String> {
 
         return builder.build();
     }*/
- public MultiPartRequest(Response.ErrorListener errorListener, Response.Listener listener, ArrayList<File> tmpFile, int size, ArrayList<File> profileImageFileList, int size1,List<File> videoThumb, HashMap<String, String> mPram, CompleteProfileActivity activity) {
+ public MultiPartRequestForUpdateProfile(Response.ErrorListener errorListener, Response.Listener listener, ArrayList<File> tmpFile, int size, ArrayList<File> profileImageFileList, int size1, List<File> videoThumb, HashMap<String, String> mPram, EditProfileWorkerActivity activity) {
      super(Method.POST, BASE_URL+"user/updateWorkerProfile", errorListener);
      mListener = listener;
         mParams=mPram;

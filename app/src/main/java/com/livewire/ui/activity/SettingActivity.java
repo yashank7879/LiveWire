@@ -1,28 +1,43 @@
 package com.livewire.ui.activity;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.livewire.R;
 import com.livewire.databinding.ActivitySettingBinding;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
 import com.livewire.utils.ProgressDialog;
 import com.livewire.utils.Validation;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import static com.livewire.utils.ApiCollection.BASE_URL;
 
 public class SettingActivity extends AppCompatActivity implements View.OnClickListener {
     ActivitySettingBinding binding;
@@ -59,14 +74,22 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         } else {
             binding.llChangePass.setVisibility(View.VISIBLE);
         }
+
+        binding.btnSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b){// user available
+                    availablityUser("1");
+                }else {// user unavailable
+                    availablityUser("0");
+                }
+            }
+        });
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.btn_switch:
-                break;
-
             case R.id.ll_change_pass:
                 openChnagePassDialog();
                 break;
@@ -84,6 +107,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 break;
 
             case R.id.ll_logout:
+                showDialogforLogout();
 
                 break;
 
@@ -95,6 +119,26 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    //""""""""""""""  Log out Dialog """"""""""""//
+    private void showDialogforLogout() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Logout");
+        builder.setMessage("Do you want to logout?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                PreferenceConnector.clear(SettingActivity.this);
+                Intent intent = new Intent(SettingActivity.this, UserSelectionActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).show();
+    }
     private void openChnagePassDialog() {
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -157,11 +201,86 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             etNewPass.requestFocus();
             etNewPass.startAnimation(shake);
         } else {
-            newPassApiCalling(dialog);
+            newPassApiCalling(dialog, dilogParentLayout, etCurrentPass, etNewPass, etConfirmPass);
         }
     }
 
-    private void newPassApiCalling(Dialog dialog) {
-        dialog.dismiss();
+    private void newPassApiCalling(final Dialog dialog, final RelativeLayout dilogParentLayout, EditText etCurrentPass, final EditText etNewPass, EditText etConfirmPass) {
+        if (Constant.isNetworkAvailable(this, dilogParentLayout)) {
+            progressDialog.show();
+            AndroidNetworking.post(BASE_URL + "user/changePassword")
+                    .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
+                    .addBodyParameter("oldPassword", etCurrentPass.getText().toString().trim())
+                    .addBodyParameter("newPassword", etNewPass.getText().toString().trim())
+                    //.addBodyParameter("confirmPassword", etConfirmPass.getText().toString().trim())
+                    .setPriority(Priority.MEDIUM)
+                    .build().getAsJSONObject(new JSONObjectRequestListener() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    progressDialog.dismiss();
+                    try {
+                        String status = response.getString("status");
+                        String message = response.getString("message");
+                        if (status.equals("success")) {
+                            Toast.makeText(SettingActivity.this, "Your Password Successfully Changed", Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
+                            PreferenceConnector.writeString(SettingActivity.this, PreferenceConnector.PASS_WORD, etNewPass.getText().toString());
+                            // clientJobId
+                            // Constant.snackBar(mainLayout,"Your job successfully post");
+                        } else {
+
+                            Constant.snackBar(dilogParentLayout, message);
+                        }
+                    } catch (JSONException e) {
+                        Log.d("Exception", e.getMessage());
+                    }
+                }
+
+                @Override
+                public void onError(ANError anError) {
+                    Log.d("EXception", anError.getErrorDetail());
+                    progressDialog.dismiss();
+                }
+            });
+        }
+
+
     }
+
+    private void availablityUser(String s) {
+        if (Constant.isNetworkAvailable(this, binding.settingMainLayout)) {
+            progressDialog.show();
+            AndroidNetworking.post(BASE_URL + "user/availability")
+                    .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
+                    .addBodyParameter("availability",s)
+                    .setPriority(Priority.MEDIUM)
+                    .build().getAsJSONObject(new JSONObjectRequestListener() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    progressDialog.dismiss();
+                    try {
+                        String status = response.getString("status");
+                        String message = response.getString("message");
+                        if (status.equals("success")) {
+
+                            Toast.makeText(SettingActivity.this, message, Toast.LENGTH_SHORT).show();
+
+                        } else {
+
+                            Constant.snackBar(binding.settingMainLayout, message);
+                        }
+                    } catch (JSONException e) {
+                        Log.d("Exception", e.getMessage());
+                    }
+                }
+
+                @Override
+                public void onError(ANError anError) {
+                    Log.d("EXception", anError.getErrorDetail());
+                    progressDialog.dismiss();
+                }
+            });
+        }
+    }
+
 }

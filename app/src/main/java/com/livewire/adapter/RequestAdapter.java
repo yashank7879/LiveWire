@@ -27,10 +27,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.MyViewHolder> {
     private Context mContext;
     private List<RequestResponceClient.DataBean> requestList;
+    private RequestAcceptIgnorListner listner;
 
-    public RequestAdapter(Context mContext, List<RequestResponceClient.DataBean> requestList) {
+    public RequestAdapter(Context mContext, List<RequestResponceClient.DataBean> requestList,RequestAcceptIgnorListner listner) {
         this.mContext = mContext;
         this.requestList = requestList;
+        this.listner = listner;
     }
 
     @NonNull
@@ -74,6 +76,24 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.MyViewHo
             tvDistance = (TextView) itemView.findViewById(R.id.tv_distance);
             btnIgnore = (Button) itemView.findViewById(R.id.btn_ignore);
             btnAccept = (Button) itemView.findViewById(R.id.btn_accept);
+            btnAccept.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                  listner.OnClickRequestAccept("1",requestList.get(getAdapterPosition()).getUserId());
+
+                  requestList.remove(getAdapterPosition());
+                }
+            });
+            btnIgnore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                  listner.OnClickRequestAccept("2", requestList.get(getAdapterPosition()).getUserId());
+                    requestList.remove(getAdapterPosition());
+                }
+            });
         }
+    }
+   public interface RequestAcceptIgnorListner{
+        void OnClickRequestAccept(String s, String userId);
     }
 }

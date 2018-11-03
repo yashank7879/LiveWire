@@ -31,13 +31,15 @@ import java.util.List;
 
 import static com.livewire.utils.ApiCollection.BASE_URL;
 
-public class RequestClientActivity extends AppCompatActivity implements View.OnClickListener {
+public class RequestClientActivity extends AppCompatActivity implements View.OnClickListener , RequestAdapter.RequestAcceptIgnorListner{
+
     private ProgressDialog progressDialog;
     private RelativeLayout mainLayout;
     private List<RequestResponceClient.DataBean> requestList;
     private RequestAdapter adapter;
     private SwipeRefreshLayout swipeRefresh;
     private String jobId;
+
 
 
     @Override
@@ -49,6 +51,7 @@ public class RequestClientActivity extends AppCompatActivity implements View.OnC
 
         if (getIntent().getStringExtra("JobId")!= null){
              jobId = getIntent().getStringExtra("JobId");
+
             loadRequestListData();
         }
 
@@ -62,7 +65,7 @@ public class RequestClientActivity extends AppCompatActivity implements View.OnC
         RecyclerView recyclerView = findViewById(R.id.rv_request);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new RequestAdapter(this,requestList);
+        adapter = new RequestAdapter(this,requestList,this);
         recyclerView.setAdapter(adapter);
 
 
@@ -145,5 +148,51 @@ public class RequestClientActivity extends AppCompatActivity implements View.OnC
                 break;
         }
 
+    }
+
+    //""""""" accept ignore request """"""""""//
+    private void acceptRejectrequestApi( String requestStatus,String userId) {
+        if (Constant.isNetworkAvailable(this,mainLayout)){
+            progressDialog.show();
+            AndroidNetworking.post(BASE_URL + "Jobpost/sendRequest2")
+                    .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
+                    .addBodyParameter("job_id",jobId)
+                    .addBodyParameter("request_by", userId)
+                    .addBodyParameter("request_status", requestStatus)
+                    .setPriority(Priority.MEDIUM)
+                    .build().getAsJSONObject(new JSONObjectRequestListener() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    progressDialog.dismiss();
+                    String status = null;
+                    try {
+                        status = response.getString("status");
+                        String message = response.getString("message");
+                        if (status.equals("success")) {
+                            Constant.snackBar(mainLayout, message);
+                            //"""""' if user successfully created on going post """""""""""//
+
+                            // first time replace home fragment
+
+                        } else {
+                            Constant.snackBar(mainLayout, message);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onError(ANError anError) {
+                    progressDialog.dismiss();
+
+                }
+            });
+        }
+    }
+
+    @Override
+    public void OnClickRequestAccept(String status, String userId) {
+        acceptRejectrequestApi(status,userId);
     }
 }

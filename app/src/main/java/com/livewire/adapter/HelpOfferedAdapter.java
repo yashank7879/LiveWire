@@ -74,7 +74,9 @@ public class HelpOfferedAdapter extends RecyclerView.Adapter<HelpOfferedAdapter.
             Picasso.with(holder.ivProfileImg.getContext()).load(dataBean.getProfileImage()).fit().into(holder.ivProfileImg);
 
             //********"2018-07-04" date format converted into "04 july 2018"***********//
-            DateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
+            holder.tvDate.setText(Constant.dateTextColorChange(mContext,Constant.DateFomatChange(dataBean.getJob_start_date())));
+
+          /*  DateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
             String start= dataBean.getJob_start_date();
 
             try {
@@ -87,7 +89,7 @@ public class HelpOfferedAdapter extends RecyclerView.Adapter<HelpOfferedAdapter.
                 // holder.tvDate.setText(start);
             } catch (ParseException e) {
                 Log.e(TAG, e.getMessage());
-            }
+            }*/
 
            if (dataBean.getJob_confirmed().equals("0")){ // pending request
                holder.btnSendRequest.setBackground(null);
@@ -202,8 +204,8 @@ public class HelpOfferedAdapter extends RecyclerView.Adapter<HelpOfferedAdapter.
 
     public interface HelpOfferItemListener{
         void helpOfferItemOnClick(HelpOfferedResponce.DataBean dataBean,String helpoffer, int pos);
-
     }
+
 }
 
 

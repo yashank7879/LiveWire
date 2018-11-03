@@ -158,6 +158,12 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
         ivFilter.setOnClickListener(this);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        myJobListApi();
+
+    }
 
     //""""""""""" My job list api     """"""""""""//
     private void myJobListApi() {// help offer api calling

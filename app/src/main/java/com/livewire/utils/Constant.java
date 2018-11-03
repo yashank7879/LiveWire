@@ -3,6 +3,7 @@ package com.livewire.utils;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -11,13 +12,18 @@ import android.support.v4.content.ContextCompat;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.livewire.R;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -32,6 +38,7 @@ import static com.livewire.utils.ImageRotator.decodeBitmap;
 public class Constant {
     private static final int DEFAULT_MIN_WIDTH_QUALITY = 400;        // min pixels
     private static final int DEFAULT_MIN_HEIGHT_QUALITY = 400;
+    private static final String TAG = Constant.class.getName();
     private static int minWidthQuality = DEFAULT_MIN_WIDTH_QUALITY;
     private static int minHeightQuality = DEFAULT_MIN_HEIGHT_QUALITY;
     public static final int MY_PERMISSIONS_REQUEST_CAMERA = 1;
@@ -186,5 +193,68 @@ public class Constant {
         utcTime = sdf.format(new Date());
 
         return utcTime;
+    }
+
+
+    ////""""""""  increase height at run time  """"""//
+    public static void setListViewHeightBasedOnChildren(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null) {
+            // pre-condition
+            return;
+        }
+
+        int totalHeight = 0;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        if (listAdapter.getCount() % 2 == 0) {
+            params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        } else {
+            params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1)) + 20;
+        }
+        listView.setLayoutParams(params);
+        listView.requestLayout();
+    }
+
+
+    public static  String DateFomatChange(String startDate) {
+
+
+    DateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
+    String start = startDate;
+
+            try
+
+    {
+        Date newStartDate;
+        newStartDate = sd.parse(start);
+        sd = new SimpleDateFormat("dd MMM yyyy");
+        start = sd.format(newStartDate);
+
+       // holder.tvDate.setText(dateTextColorChange(start));
+
+    } catch(
+    ParseException e)
+
+    {
+        Log.e(TAG, e.getMessage());
+    }
+    return start;
+}
+    public static SpannableStringBuilder dateTextColorChange(Context mContext, String start){
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+        SpannableString userName = new SpannableString(start.substring(0,2)+" ");
+        userName.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.colorDarkBlack)), 0, 2, 0);
+        userName.setSpan(new StyleSpan(Typeface.BOLD), 0, userName.length(), 0);
+        builder.append(userName);
+        SpannableString interesString = new SpannableString(start.substring(3));
+//                interesString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.colorDarkBlack)), 3, start.length(), 0);
+        builder.append(interesString);
+        return  builder;
     }
 }

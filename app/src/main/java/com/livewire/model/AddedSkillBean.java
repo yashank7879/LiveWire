@@ -14,7 +14,7 @@ public class AddedSkillBean {
     private String name;
     private ArrayList<SubCatagory> subCatagories;
     private boolean isVisible = false;
-        private float min_rate;
+    private float min_rate;
     private float max_rate;
 
     public String getCatageryId() {

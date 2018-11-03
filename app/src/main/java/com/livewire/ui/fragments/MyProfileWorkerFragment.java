@@ -3,14 +3,16 @@ package com.livewire.ui.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -18,9 +20,13 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.google.gson.Gson;
 import com.livewire.R;
+import com.livewire.adapter.ShowSkillsAdapter;
+
 import com.livewire.databinding.FragmentMyProfileWorkerBinding;
-import com.livewire.responce.SignUpResponce;
+import com.livewire.model.CategoryBean;
+import com.livewire.responce.MyProfileResponce;
 import com.livewire.ui.activity.CompleteProfileActivity;
+import com.livewire.ui.activity.EditProfileWorkerActivity;
 import com.livewire.ui.activity.PlayVideoActivity;
 import com.livewire.ui.activity.SettingActivity;
 import com.livewire.utils.Constant;
@@ -31,6 +37,10 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.livewire.utils.ApiCollection.BASE_URL;
 
 
@@ -39,6 +49,11 @@ public class MyProfileWorkerFragment extends Fragment implements View.OnClickLis
     private Context mContext;
     private ProgressDialog progressDialog;
     private String videoUrl;
+    private ArrayList<MyProfileResponce.DataBean.CategoryBean> showSkillBeans = new ArrayList<>();
+    private ShowSkillsAdapter showSkillsAdapter;
+    private List<CategoryBean.SubcatBean> subcatBeanList;
+    private MyProfileResponce userResponce;
+
 
     public MyProfileWorkerFragment() {
         // Required empty public constructor
@@ -62,11 +77,24 @@ public class MyProfileWorkerFragment extends Fragment implements View.OnClickLis
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         progressDialog = new ProgressDialog(mContext);
-       binding.btnEdit.setOnClickListener(this);
-       binding.ivSetting.setOnClickListener(this);
-       binding.rlVideoImg.setOnClickListener(this);
+        subcatBeanList = new ArrayList<>();
+        LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
+        binding.rvSkillData.setLayoutManager(layoutManager);
+        showSkillsAdapter = new ShowSkillsAdapter(mContext, showSkillBeans);
+        binding.rvSkillData.setAdapter(showSkillsAdapter);
+
+        binding.btnEdit.setOnClickListener(this);
+        binding.ivSetting.setOnClickListener(this);
+        binding.rlVideoImg.setOnClickListener(this);
+
         myProfileApi();
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        myProfileApi();
     }
 
     @Override
@@ -84,32 +112,66 @@ public class MyProfileWorkerFragment extends Fragment implements View.OnClickLis
                     .setPriority(Priority.MEDIUM)
                     .build()
                     .getAsJSONObject(new JSONObjectRequestListener() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    try {
-                        progressDialog.dismiss();
-                        String status = response.getString("status");
-                        String message = response.getString("message");
-                        if (status.equals("success")) {
-                            SignUpResponce userResponce = new Gson().fromJson(String.valueOf(response), SignUpResponce.class);
-                           videoUrl = userResponce.getData().getUser_intro_vodeo();
-                            Picasso.with(binding.ivProfile.getContext()).load(userResponce.getData().getThumbImage())
-                                  .fit().into(binding.ivProfile);
-                            binding.ivPlaceholder.setVisibility(View.GONE);
-                            binding.setUserResponce(userResponce.getData());
-                        } else {
-                            Constant.snackBar(binding.svProfile, message);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                progressDialog.dismiss();
+                                String status = response.getString("status");
+                                String message = response.getString("message");
+                                if (status.equals("success")) {
+                                    userResponce = new Gson().fromJson(String.valueOf(response), MyProfileResponce.class);
+                                    videoUrl = userResponce.getData().getIntro_video();
+                                    if (!userResponce.getData().getVideo_thumb().isEmpty()){
 
-                @Override
-                public void onError(ANError anError) {
-                    progressDialog.dismiss();
-                }
-            });
+                                        Picasso.with(binding.videoThumbImg.getContext()).load(userResponce.getData().getVideo_thumb()).fit()
+                                                .error(R.color.colorWhite)
+                                                .into(binding.videoThumbImg);
+                                  }
+
+                                  /*  for (MyProfileResponce.DataBean.CategoryBean categoryBean : userResponce.getData().getCategory()) {
+
+                                        CategoryBean catgoryData = new CategoryBean();
+                                        catgoryData.setCategoryName(categoryBean.getCategoryName());
+                                        catgoryData.setParent_id(categoryBean.getParent_id());
+                                        catgoryData.setParentCategoryId(categoryBean.getParentCategoryId());
+
+                                        for (int i = 0; i < categoryBean.getSubcat().size(); i++) {
+                                            CategoryBean.SubcatBean subcatBean = new CategoryBean.SubcatBean();
+                                            subcatBean.setCategoryId(categoryBean.getSubcat().get(i).getCategoryId());
+                                            subcatBean.setCategoryName(categoryBean.getSubcat().get(i).getCategoryName());
+                                            subcatBean.setParent_id(categoryBean.getSubcat().get(i).getParent_id());
+                                            subcatBean.setMax_rate(categoryBean.getSubcat().get(i).getMax_rate());
+                                            subcatBean.setMin_rate(categoryBean.getSubcat().get(i).getMin_rate());
+                                            subcatBeanList.add(subcatBean);
+                                            catgoryData.setSubcat(subcatBeanList);
+
+                                        }
+
+                                    }*/
+                                  showSkillBeans.clear();
+                                    showSkillBeans.addAll(userResponce.getData().getCategory());
+                                    showSkillsAdapter.notifyDataSetChanged();
+
+                                    if (!userResponce.getData().getProfileImage().isEmpty()) {
+                                        Picasso.with(binding.ivProfile.getContext())
+                                                .load(userResponce.getData().getProfileImage())
+                                                .fit().into(binding.ivProfile);
+                                    }
+                                    binding.ivPlaceholder.setVisibility(View.GONE);
+                                    binding.setUserResponce(userResponce.getData());
+                                } else {
+                                    Constant.snackBar(binding.svProfile, message);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void onError(ANError anError) {
+                            progressDialog.dismiss();
+                        }
+                    });
         }
     }
 
@@ -118,20 +180,23 @@ public class MyProfileWorkerFragment extends Fragment implements View.OnClickLis
         Intent intent = null;
         switch (view.getId()) {
             case R.id.btn_edit:
-                intent = new Intent(mContext, CompleteProfileActivity.class);
-                intent.putExtra("EditProfileKey","EditProfile");
+              //  Toast.makeText(mContext, R.string.under_devlopment_mode, Toast.LENGTH_SHORT).show();
+                intent = new Intent(mContext, EditProfileWorkerActivity.class);
+                intent.putExtra("EditProfileKey", "EditProfile");
+              //  intent.putExtra("MyProfileKey",userResponce.getData());
+                intent.putExtra("CategoryListKey",userResponce);
                 startActivity(intent);
                 break;
             case R.id.rl_video_img:
-                if (Constant.isNetworkAvailable(mContext,binding.svProfile)) {
+                if (Constant.isNetworkAvailable(mContext, binding.svProfile)) {
                     intent = new Intent(mContext, PlayVideoActivity.class);
                     intent.putExtra("VideoUrlKey", videoUrl);
                     startActivity(intent);
                 }
                 break;
             case R.id.iv_setting:
-                    intent = new Intent(mContext, SettingActivity.class);
-                    startActivity(intent);
+                intent = new Intent(mContext, SettingActivity.class);
+                startActivity(intent);
                 break;
             default:
         }

@@ -116,7 +116,9 @@
                 android:fontFamily="@font/poppins_semibold"
                 android:text="member request"
                 android:textColor="@color/colorDarkGray"
-                android:textSize="@dimen/_11sdp" />
+                android:textSize="@dimen/_11sdp"
+                android:visibility="visible"
+                />
 
             <LinearLayout
                 android:id="@+id/ll_more_info"

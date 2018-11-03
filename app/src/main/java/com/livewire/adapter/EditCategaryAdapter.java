@@ -1,14 +1,11 @@
 package com.livewire.adapter;
 
 import android.content.Context;
-import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -20,34 +17,36 @@ import java.util.ArrayList;
 import static com.livewire.utils.Constant.setListViewHeightBasedOnChildren;
 
 /**
- * Created by mindiii on 9/20/18.
+ * Created by mindiii on 11/3/18.
  */
 
-public class CategaryAdapter extends RecyclerView.Adapter<CategaryAdapter.MyViewHolder> {
+public class EditCategaryAdapter extends RecyclerView.Adapter<EditCategaryAdapter.MyViewHolder> {
 
     private ArrayList<AddedSkillBean> categaryList;
     private Context mContext;
     private boolean expand = false;
 
-    public CategaryAdapter(Context context, ArrayList<AddedSkillBean> categaryList) {
+    public EditCategaryAdapter(Context context, ArrayList<AddedSkillBean> categaryList) {
         this.categaryList = categaryList;
         this.mContext = context;
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public EditCategaryAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.category_cell, parent, false);
 
-        return new MyViewHolder(itemView);
+        return new EditCategaryAdapter.MyViewHolder(itemView);
     }
+
+
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         AddedSkillBean addedSkillBean = categaryList.get(position);
         addedSkillBean.getSubCatagories();
         holder.tv_category.setText(addedSkillBean.getName());
-        holder.listView.setAdapter(new MySubCetAdapter(mContext, addedSkillBean.getSubCatagories(), new MySubCetAdapter.SubCategoryListner() {
+        holder.listView.setAdapter(new EditMySubCetAdapter(mContext, addedSkillBean.getSubCatagories(), new MySubCetAdapter.SubCategoryListner() {
             @Override
             public void subCategoryOnClickListener(int pos) {
                 AddedSkillBean data = categaryList.get(holder.getAdapterPosition());

@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -103,8 +104,9 @@ public class MyProfileClientFragment extends Fragment implements View.OnClickLis
                 startActivity(intent);
                 break;
             case R.id.btn_edit:
-                intent = new Intent(mContext,EditProfileClientActivity.class);
-                startActivity(intent);
+                Toast.makeText(mContext, R.string.under_devlopment_mode, Toast.LENGTH_SHORT).show();
+              /*  intent = new Intent(mContext,EditProfileClientActivity.class);
+                startActivity(intent);*/
                 break;
             default:
         }
@@ -127,7 +129,8 @@ public class MyProfileClientFragment extends Fragment implements View.OnClickLis
                                 String message = response.getString("message");
                                 if (status.equals("success")) {
                                     SignUpResponce userResponce = new Gson().fromJson(String.valueOf(response), SignUpResponce.class);
-                                    Picasso.with(binding.ivProfile.getContext()).load(userResponce.getData().getThumbImage())
+
+                                    Picasso.with(binding.ivProfile.getContext()).load(userResponce.getData().getProfileImage())
                                             .fit().into(binding.ivProfile);
                                     binding.ivPlaceholder.setVisibility(View.GONE);
                                     binding.setUserResponce(userResponce.getData());

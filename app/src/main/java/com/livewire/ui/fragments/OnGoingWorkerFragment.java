@@ -444,6 +444,7 @@ public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapte
         }
     }
 
+    //""""""" accept ignore request """"""""""//
     private void acceptRejectrequestApi(String userId, String jobId, String requestStatus) {
     if (Constant.isNetworkAvailable(mContext,mainLayout)){
         progressDialog.show();
