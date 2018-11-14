@@ -128,11 +128,11 @@ public class RequestClientActivity extends AppCompatActivity implements View.OnC
                                 e.printStackTrace();
                             }
 
-
                         }
 
                         @Override
                         public void onError(ANError anError) {
+                            Constant.errorHandle(anError,RequestClientActivity.this);
 
                         }
                     });
@@ -170,6 +170,7 @@ public class RequestClientActivity extends AppCompatActivity implements View.OnC
                         String message = response.getString("message");
                         if (status.equals("success")) {
                             Constant.snackBar(mainLayout, message);
+                            adapter.notifyDataSetChanged();
                             //"""""' if user successfully created on going post """""""""""//
 
                             // first time replace home fragment
@@ -184,8 +185,8 @@ public class RequestClientActivity extends AppCompatActivity implements View.OnC
 
                 @Override
                 public void onError(ANError anError) {
+                    Constant.errorHandle(anError,RequestClientActivity.this);
                     progressDialog.dismiss();
-
                 }
             });
         }

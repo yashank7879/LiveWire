@@ -44,9 +44,8 @@ public class EditCategaryAdapter extends RecyclerView.Adapter<EditCategaryAdapte
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         AddedSkillBean addedSkillBean = categaryList.get(position);
-        addedSkillBean.getSubCatagories();
         holder.tv_category.setText(addedSkillBean.getName());
-        holder.listView.setAdapter(new EditMySubCetAdapter(mContext, addedSkillBean.getSubCatagories(), new MySubCetAdapter.SubCategoryListner() {
+        holder.listView.setAdapter(new EditMySubCetAdapter(mContext, addedSkillBean.getSubCatagories(), new EditMySubCetAdapter.SubCategoryListner() {
             @Override
             public void subCategoryOnClickListener(int pos) {
                 AddedSkillBean data = categaryList.get(holder.getAdapterPosition());

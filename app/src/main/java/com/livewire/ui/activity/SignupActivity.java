@@ -51,6 +51,7 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.livewire.R;
 import com.livewire.cropper.CropImage;
@@ -314,7 +315,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             // model.profileImage = acct.getPhotoUrl();
             model.userType = key;
             model.deviceType = "2";
-            model.deviceToken = "";
+            model.deviceToken = FirebaseInstanceId.getInstance().getToken();
             model.socialId = acct.getId();
             model.socialType = "gmail";
             signUpApiForSocial(model);
@@ -589,7 +590,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             model.town = locationPlace;
             model.userType = "client";
             model.deviceType = "2";
-            model.deviceToken = "";
+            model.deviceToken = FirebaseInstanceId.getInstance().getToken();
             signUpClientApi(model);
         }
     }
@@ -692,7 +693,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             model.password = etPass.getText().toString();
             model.userType = "worker";
             model.deviceType = "2";
-            model.deviceToken = "";
+            model.deviceToken = FirebaseInstanceId.getInstance().getToken();
             signUpWorkerApi(model);
         }
     }

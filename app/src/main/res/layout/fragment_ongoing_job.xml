@@ -1,313 +1,309 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout  xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
         <!--<variable
             name=""
             type=""-->
     </data>
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/sv_ongoing_job"
-    >
 
-    <LinearLayout
+    <ScrollView
+        android:id="@+id/sv_ongoing_job"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
+        android:layout_height="match_parent">
 
-
-        <RelativeLayout
-            android:id="@+id/select_skills_rl"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_5sdp"
-            android:layout_marginLeft="@dimen/_20sdp"
-            android:layout_marginRight="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_30sdp">
+            android:orientation="vertical">
 
-            <android.support.v7.widget.AppCompatImageView
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                app:srcCompat="@drawable/ic_arrow_drop_down_black"
-                tools:ignore="VectorDrawableCompat" />
 
-            <TextView
-                android:id="@+id/tv_selected_skill"
-                style="@style/SmallPopinsLightStyle"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:id="@+id/select_skills_rl"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/select_skill"
-                android:textColor="@color/colorDarkBlack"
-                android:textColorHint="@color/colorLightGray"
-                />
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginRight="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_30sdp">
 
-        </RelativeLayout>
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    app:srcCompat="@drawable/ic_arrow_drop_down_black"
+                    tools:ignore="VectorDrawableCompat" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_1sdp"
-            android:layout_marginBottom="@dimen/_5sdp"
-            android:layout_marginLeft="@dimen/_20sdp"
-            android:layout_marginRight="@dimen/_20sdp"
-            android:background="@color/colorLightGray" />
+                <TextView
+                    android:id="@+id/tv_selected_skill"
+                    style="@style/SmallPopinsLightStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/select_skill"
+                    android:textColor="@color/colorDarkBlack"
+                    android:textColorHint="@color/colorLightGray" />
 
-        <RelativeLayout
-            android:id="@+id/job_start_date_rl"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_5sdp"
-            android:layout_marginLeft="@dimen/_20sdp"
-            android:layout_marginRight="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_20sdp">
+            </RelativeLayout>
 
-            <android.support.v7.widget.AppCompatImageView
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                app:srcCompat="@drawable/ic_arrow_drop_down_black"
-                tools:ignore="VectorDrawableCompat" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginRight="@dimen/_20sdp"
+                android:background="@color/colorLightGray" />
 
-            <TextView
-                android:id="@+id/tv_start_date"
-                style="@style/SmallPopinsLightStyle"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:id="@+id/job_start_date_rl"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_regular"
-                android:hint="@string/select_job_start_date"
-                android:textColor="@color/colorDarkBlack"
-                android:textColorHint="@color/colorLightGray"
-                />
-            <!-- <Spinner
-                 android:id="@+id/language_spinner"
-                 android:layout_width="@dimen/_220sdp"
-                 android:layout_height="wrap_content"
-                 android:layout_gravity="center"
-                 android:background="@color/colorBlackTransparent"
-                 android:clickable="true"
-                 android:dropDownVerticalOffset="@dimen/_30sdp"
-                 android:dropDownWidth="@dimen/_240sdp"
-                 android:focusable="true"
-                 android:focusableInTouchMode="true"
-                 android:fontFamily="@font/poppins_regular"
-                 android:gravity="center"
-                 android:spinnerMode="dropdown"
-                 />-->
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginRight="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_20sdp">
 
-        </RelativeLayout>
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    app:srcCompat="@drawable/ic_arrow_drop_down_black"
+                    tools:ignore="VectorDrawableCompat" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_1sdp"
-            android:layout_marginBottom="@dimen/_5sdp"
-            android:layout_marginLeft="@dimen/_20sdp"
-            android:layout_marginRight="@dimen/_20sdp"
-            android:background="@color/colorLightGray" />
+                <TextView
+                    android:id="@+id/tv_start_date"
+                    style="@style/SmallPopinsLightStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_regular"
+                    android:hint="@string/select_job_start_date"
+                    android:textColor="@color/colorDarkBlack"
+                    android:textColorHint="@color/colorLightGray" />
+                <!-- <Spinner
+                     android:id="@+id/language_spinner"
+                     android:layout_width="@dimen/_220sdp"
+                     android:layout_height="wrap_content"
+                     android:layout_gravity="center"
+                     android:background="@color/colorBlackTransparent"
+                     android:clickable="true"
+                     android:dropDownVerticalOffset="@dimen/_30sdp"
+                     android:dropDownWidth="@dimen/_240sdp"
+                     android:focusable="true"
+                     android:focusableInTouchMode="true"
+                     android:fontFamily="@font/poppins_regular"
+                     android:gravity="center"
+                     android:spinnerMode="dropdown"
+                     />-->
 
-        <RelativeLayout
-            android:id="@+id/job_end_date_rl"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_5sdp"
-            android:layout_marginLeft="@dimen/_20sdp"
-            android:layout_marginRight="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_20sdp">
+            </RelativeLayout>
 
-            <android.support.v7.widget.AppCompatImageView
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                app:srcCompat="@drawable/ic_arrow_drop_down_black"
-                tools:ignore="VectorDrawableCompat" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginRight="@dimen/_20sdp"
+                android:background="@color/colorLightGray" />
 
-            <TextView
-                android:id="@+id/tv_end_date"
-                style="@style/SmallPopinsLightStyle"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:id="@+id/job_end_date_rl"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_regular"
-                android:hint="@string/select_job_end_date"
-                android:textColor="@color/colorDarkBlack"
-                android:textColorHint="@color/colorLightGray"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginRight="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_20sdp">
 
-                />
-            <!-- <Spinner
-                 android:id="@+id/language_spinner"
-                 android:layout_width="@dimen/_220sdp"
-                 android:layout_height="wrap_content"
-                 android:layout_gravity="center"
-                 android:background="@color/colorBlackTransparent"
-                 android:clickable="true"
-                 android:dropDownVerticalOffset="@dimen/_30sdp"
-                 android:dropDownWidth="@dimen/_240sdp"
-                 android:focusable="true"
-                 android:focusableInTouchMode="true"
-                 android:fontFamily="@font/poppins_regular"
-                 android:gravity="center"
-                 android:spinnerMode="dropdown"
-                 />-->
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    app:srcCompat="@drawable/ic_arrow_drop_down_black"
+                    tools:ignore="VectorDrawableCompat" />
 
-        </RelativeLayout>
+                <TextView
+                    android:id="@+id/tv_end_date"
+                    style="@style/SmallPopinsLightStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_regular"
+                    android:hint="@string/select_job_end_date"
+                    android:textColor="@color/colorDarkBlack"
+                    android:textColorHint="@color/colorLightGray"
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_1sdp"
-            android:layout_marginBottom="@dimen/_5sdp"
-            android:layout_marginLeft="@dimen/_20sdp"
-            android:layout_marginRight="@dimen/_20sdp"
-            android:background="@color/colorLightGray" />
+                    />
+                <!-- <Spinner
+                     android:id="@+id/language_spinner"
+                     android:layout_width="@dimen/_220sdp"
+                     android:layout_height="wrap_content"
+                     android:layout_gravity="center"
+                     android:background="@color/colorBlackTransparent"
+                     android:clickable="true"
+                     android:dropDownVerticalOffset="@dimen/_30sdp"
+                     android:dropDownWidth="@dimen/_240sdp"
+                     android:focusable="true"
+                     android:focusableInTouchMode="true"
+                     android:fontFamily="@font/poppins_regular"
+                     android:gravity="center"
+                     android:spinnerMode="dropdown"
+                     />-->
 
-        <RelativeLayout
-            android:id="@+id/week_days_rl"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_5sdp"
-            android:layout_marginLeft="@dimen/_20sdp"
-            android:layout_marginRight="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_20sdp">
+            </RelativeLayout>
 
-            <android.support.v7.widget.AppCompatImageView
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginRight="@dimen/_20sdp"
+                android:background="@color/colorLightGray" />
 
-            <TextView
-                android:id="@+id/tv_week_days"
-                style="@style/SmallPopinsLightStyle"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:id="@+id/week_days_rl"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/select_week_days"
-                android:textColor="@color/colorDarkBlack"
-                android:singleLine="true"
-                android:textColorHint="@color/colorLightGray"/>
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginRight="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_20sdp">
 
-        </RelativeLayout>
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:padding="@dimen/_2sdp"
+                    app:srcCompat="@drawable/ic_calender" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_1sdp"
-            android:layout_marginBottom="@dimen/_5sdp"
-            android:layout_marginLeft="@dimen/_20sdp"
-            android:layout_marginRight="@dimen/_20sdp"
-            android:background="@color/colorLightGray" />
+                <TextView
+                    android:id="@+id/tv_week_days"
+                    style="@style/SmallPopinsLightStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/select_week_days"
+                    android:singleLine="true"
+                    android:textColor="@color/colorDarkBlack"
+                    android:textColorHint="@color/colorLightGray" />
 
-        <EditText
-            android:id="@+id/et_hour_requierd"
-            style="@style/SmallPopinsLightStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_5sdp"
-            android:layout_marginLeft="@dimen/_20sdp"
-            android:layout_marginRight="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:hint="@string/hour_required_per_day"
-            android:inputType="number"
-            android:textColor="@color/colorDarkBlack"
-            android:background="@null"
-            android:textColorHint="@color/colorLightGray"
-            android:singleLine="true"
-            />
+            </RelativeLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_1sdp"
-            android:layout_marginBottom="@dimen/_5sdp"
-            android:layout_marginLeft="@dimen/_20sdp"
-            android:layout_marginRight="@dimen/_20sdp"
-            android:background="@color/colorLightGray" />
-
-        <RelativeLayout
-            android:id="@+id/location_rl"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_5sdp"
-            android:layout_marginLeft="@dimen/_20sdp"
-            android:layout_marginRight="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_20sdp">
-
-            <android.support.v7.widget.AppCompatImageView
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true" />
-
-            <TextView
-                android:id="@+id/tv_location"
-                style="@style/SmallPopinsLightStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="@string/location"
-                android:textColor="@color/colorDarkBlack"
-                android:textColorHint="@color/colorLightGray" />
-
-        </RelativeLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_1sdp"
-            android:layout_marginBottom="@dimen/_5sdp"
-            android:layout_marginLeft="@dimen/_20sdp"
-            android:layout_marginRight="@dimen/_20sdp"
-            android:background="@color/colorLightGray" />
-
-        <RelativeLayout
-            android:id="@+id/description_rl"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_5sdp"
-            android:layout_marginLeft="@dimen/_20sdp"
-            android:layout_marginRight="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_20sdp">
-
-            <android.support.v7.widget.AppCompatImageView
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginRight="@dimen/_20sdp"
+                android:background="@color/colorLightGray" />
 
             <EditText
-                android:id="@+id/description_tv"
+                android:id="@+id/et_hour_requierd"
                 style="@style/SmallPopinsLightStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginRight="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_20sdp"
                 android:background="@null"
-                android:hint="@string/description"
-                android:imeOptions="actionGo"
+                android:hint="@string/hour_required_per_day"
+                android:inputType="number"
+                android:singleLine="true"
                 android:textColor="@color/colorDarkBlack"
-                android:textColorHint="@color/colorLightGray"
-                />
+                android:textColorHint="@color/colorLightGray" />
 
-        </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginRight="@dimen/_20sdp"
+                android:background="@color/colorLightGray" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_1sdp"
-            android:layout_marginLeft="@dimen/_20sdp"
-            android:layout_marginRight="@dimen/_20sdp"
-            android:background="@color/colorLightGray" />
+            <RelativeLayout
+                android:id="@+id/location_rl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginRight="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_20sdp">
 
-        <Button
-            android:id="@+id/btn_share"
-            android:layout_width="@dimen/_200sdp"
-            android:layout_height="@dimen/_32sdp"
-            android:layout_gravity="center"
-            android:layout_margin="@dimen/_20sdp"
-            android:background="@drawable/button_green_bg"
-            android:fontFamily="@font/poppins_light"
-            android:text="@string/share_on_live_wire"
-            android:textAllCaps="false"
-            android:textColor="@color/colorWhite"
-            android:textSize="@dimen/_14sdp" />
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:padding="@dimen/_2sdp"
+                    app:srcCompat="@drawable/ic_location_frm" />
 
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/tv_location"
+                    style="@style/SmallPopinsLightStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/location"
+                    android:textColor="@color/colorDarkBlack"
+                    android:textColorHint="@color/colorLightGray" />
 
-</ScrollView>
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginRight="@dimen/_20sdp"
+                android:background="@color/colorLightGray" />
+
+            <RelativeLayout
+                android:id="@+id/description_rl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginRight="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_20sdp">
+
+
+                <EditText
+                    android:id="@+id/et_description"
+                    style="@style/SmallPopinsLightStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:hint="@string/description"
+                    android:imeOptions="actionGo"
+                    android:maxLength="120"
+                    android:textColor="@color/colorDarkBlack"
+                    android:textColorHint="@color/colorLightGray" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginRight="@dimen/_20sdp"
+                android:background="@color/colorLightGray" />
+
+            <Button
+                android:id="@+id/btn_share"
+                android:layout_width="@dimen/_200sdp"
+                android:layout_height="@dimen/_32sdp"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/_20sdp"
+                android:background="@drawable/button_green_bg"
+                android:fontFamily="@font/poppins_light"
+                android:text="@string/share_on_live_wire"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_14sdp" />
+
+        </LinearLayout>
+
+    </ScrollView>
 </layout>

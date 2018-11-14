@@ -47,6 +47,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.livewire.R;
 import com.livewire.model.UserModel;
@@ -262,7 +263,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         // model.profileImage = acct.getPhotoUrl();
                         model.userType = key;
                         model.deviceType = "2";
-                        model.deviceToken = "";
+                        model.deviceToken = FirebaseInstanceId.getInstance().getToken();
                         model.socialId = graphObject.getString("id");
                         model.socialType = "fb";
                         signUpApiForSocial(model);
@@ -511,7 +512,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             model.password = etPass.getText().toString().trim();
             model.userType = key;
             model.deviceType = "2";
-            model.deviceToken = "";
+            model.deviceToken = FirebaseInstanceId.getInstance().getToken();
             loginApi(model);
         }
 

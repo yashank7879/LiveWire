@@ -367,7 +367,7 @@ public class CompleteProfileActivity extends AppCompatActivity implements View.O
         if (addedSkillBeans.size() == 0) {
             Constant.snackBar(binding.mainLayout, "please add your skills");
         } else if (subCategoryModelList.size() == 0) {
-            Constant.snackBar(binding.mainLayout, "please add your Sub category ");
+            Constant.snackBar(binding.mainLayout, "please add your Sub category");
         } else if (locationLatLng == null) {
             Constant.snackBar(binding.mainLayout, "please enter loation");
         } else if (finalVideoUri == null) {

@@ -206,6 +206,7 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
 
                 @Override
                 public void onError(ANError anError) {
+
                     progressDialog.dismiss();
                     Log.e(TAG, anError.getErrorDetail());
                 }
@@ -324,6 +325,7 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
 
                 @Override
                 public void onError(ANError anError) {
+                    Constant.errorHandle(anError,getActivity());
                     Log.d(TAG,anError.getErrorDetail());
                     progressDialog.dismiss();
                 }

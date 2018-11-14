@@ -60,13 +60,13 @@ public class MyJobAdapter extends RecyclerView.Adapter {
             int jobType = Integer.parseInt(dataBean.getJob_type());
             int request = Integer.parseInt(dataBean.getTotal_request());
             int confirm = Integer.parseInt(dataBean.getJob_confirmed());
-            if (jobType == 1 && confirm == 0 && request>0) {
+            if (jobType == 1 && confirm == 0 && request > 0) {
                 return JOBCELL1;
-            } else if (jobType == 2 ) {
+            } else if (jobType == 2) {
                 return JOBCELL3;
-            }else if (jobType == 1 && confirm == 1 || request == 0){
-            return  JOBCELL2;
-        }
+            } else if (jobType == 1 && confirm == 1 || request == 0) {
+                return JOBCELL2;
+            }
         }
         return 0;
 
@@ -203,14 +203,21 @@ public class MyJobAdapter extends RecyclerView.Adapter {
         if (myJobList.size() != 0) {
             MyjobResponceClient.DataBean dataBean = myJobList.get(position);
 
-            if ( dataBean.getTotal_request().equals("0")) {
+            if (dataBean.getTotal_request().equals("0")) {
                 holder.prfileLayout.setVisibility(View.GONE);
                 holder.tvJobConfirm.setVisibility(View.GONE);
                 holder.requestPending.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 holder.prfileLayout.setVisibility(View.VISIBLE);
                 holder.tvJobConfirm.setVisibility(View.VISIBLE);
                 holder.requestPending.setVisibility(View.GONE);
+
+                holder.tvName.setText(dataBean.getRequestedUserData().get(0).getName());
+                holder.tvDistance.setText(dataBean.getRequestedUserData().get(0).getDistance_in_km() + " Km away");
+                Picasso.with(holder.ivProfileImg.getContext())
+                        .load(dataBean.getRequestedUserData().get(0).getProfileImage())
+                        .fit()
+                        .into(holder.ivProfileImg);
             }
 
 
@@ -273,7 +280,7 @@ public class MyJobAdapter extends RecyclerView.Adapter {
                 }
 
             }
-        }else {
+        } else {
 
         }
 
@@ -317,8 +324,8 @@ public class MyJobAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(mContext, RequestClientActivity.class);
-                    intent.putExtra("UserId",myJobList.get(getAdapterPosition()).getUserId());
-                    intent.putExtra("JobId",myJobList.get(getAdapterPosition()).getJobId());
+                    intent.putExtra("UserId", myJobList.get(getAdapterPosition()).getUserId());
+                    intent.putExtra("JobId", myJobList.get(getAdapterPosition()).getJobId());
                     mContext.startActivity(intent);
                 }
             });
@@ -402,6 +409,7 @@ public class MyJobAdapter extends RecyclerView.Adapter {
         private LinearLayout llMoreInfo;
         private TextView tvMoreInfo;
         private TextView tvOfferRequest;
+
         public MyViewHolderJob3(View view3) {
             super(view3);
             tvStartFrom = (TextView) view3.findViewById(R.id.tv_start_from);

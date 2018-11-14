@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.livewire.R;
@@ -45,11 +46,13 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.MyViewHo
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         if (requestList.size() != 0){
-            RequestResponceClient.DataBean dataBean = requestList.get(position);
-
-            holder.tvName.setText(dataBean.getName());
-            holder.tvDistance.setText(dataBean.getDistance_in_km()+" Km away");
-            Picasso.with(holder.ivProfileImg.getContext()).load(dataBean.getProfileImage()).fit().into(holder.ivProfileImg);
+            if (requestList.get(position).getJob_confirmed().equals("0")) {
+                holder.rlRequest.setVisibility(View.VISIBLE);
+                RequestResponceClient.DataBean dataBean = requestList.get(position);
+                holder.tvName.setText(dataBean.getName());
+                holder.tvDistance.setText(dataBean.getDistance_in_km() + " Km away");
+                Picasso.with(holder.ivProfileImg.getContext()).load(dataBean.getProfileImage()).fit().into(holder.ivProfileImg);
+            }
         }
     }
 
@@ -67,6 +70,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.MyViewHo
         private TextView tvDistance;
         private Button btnIgnore;
         private Button btnAccept;
+        private RelativeLayout rlRequest;
         public MyViewHolder(View itemView) {
             super(itemView);
             ivProfileImg = (CircleImageView) itemView.findViewById(R.id.iv_profile_img);
@@ -76,11 +80,11 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.MyViewHo
             tvDistance = (TextView) itemView.findViewById(R.id.tv_distance);
             btnIgnore = (Button) itemView.findViewById(R.id.btn_ignore);
             btnAccept = (Button) itemView.findViewById(R.id.btn_accept);
+            rlRequest =  itemView.findViewById(R.id.rl_request);
             btnAccept.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                   listner.OnClickRequestAccept("1",requestList.get(getAdapterPosition()).getUserId());
-
                   requestList.remove(getAdapterPosition());
                 }
             });

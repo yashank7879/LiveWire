@@ -59,7 +59,7 @@ public class MultiPartRequestForUpdateProfile extends Request<String> {
 
         for(int i=0; i < file.size();i++){
             FileBody fileBody = new FileBody(file.get(i));
-            builder.addPart(Template.Query.INTRO_VIDEO_KEY, fileBody);
+            builder.addPart(Template.Query.IMAGE_KEY, fileBody);
         }
 
 
@@ -103,7 +103,7 @@ public class MultiPartRequestForUpdateProfile extends Request<String> {
         return builder.build();
     }*/
  public MultiPartRequestForUpdateProfile(Response.ErrorListener errorListener, Response.Listener listener, ArrayList<File> tmpFile, int size, ArrayList<File> profileImageFileList, int size1, List<File> videoThumb, HashMap<String, String> mPram, EditProfileWorkerActivity activity) {
-     super(Method.POST, BASE_URL+"user/updateWorkerProfile", errorListener);
+     super(Method.POST, BASE_URL+"user/updateUserProfile", errorListener);
      mListener = listener;
         mParams=mPram;
         mHttpEntity = buildMultipartEntity(tmpFile, size,profileImageFileList,size1, videoThumb);
@@ -124,7 +124,7 @@ public class MultiPartRequestForUpdateProfile extends Request<String> {
         }
         for(int i=0; i < videoThumb.size();i++){
             FileBody fileBody = new FileBody(videoThumb.get(i));
-            builder.addPart(Template.Query.VIDEO_THUMB_IMAGE, fileBody);
+             builder.addPart(Template.Query.VIDEO_THUMB_IMAGE, fileBody);
         }
 
 

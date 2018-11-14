@@ -141,8 +141,6 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
                 if (Constant.isNetworkAvailable(mContext, mainLayout)) {
                     helpOfferedApi();
                 }
-
-
             }
         });
 
@@ -280,6 +278,7 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
 
                 @Override
                 public void onError(ANError anError) {
+                    Constant.errorHandle(anError,getActivity());
                     progressDialog.dismiss();
                 }
             });

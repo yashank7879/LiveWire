@@ -3,7 +3,7 @@ package com.livewire.ui.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.net.Uri;
+
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,7 +12,6 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -105,8 +104,8 @@ public class MyProfileClientFragment extends Fragment implements View.OnClickLis
                 break;
             case R.id.btn_edit:
                 Toast.makeText(mContext, R.string.under_devlopment_mode, Toast.LENGTH_SHORT).show();
-              /*  intent = new Intent(mContext,EditProfileClientActivity.class);
-                startActivity(intent);*/
+                intent = new Intent(mContext,EditProfileClientActivity.class);
+                startActivity(intent);
                 break;
             default:
         }
@@ -144,6 +143,7 @@ public class MyProfileClientFragment extends Fragment implements View.OnClickLis
 
                         @Override
                         public void onError(ANError anError) {
+                            Constant.errorHandle(anError,getActivity());
                             progressDialog.dismiss();
                         }
                     });

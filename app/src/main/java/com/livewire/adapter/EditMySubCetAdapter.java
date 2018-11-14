@@ -24,9 +24,9 @@ class EditMySubCetAdapter extends BaseAdapter {
     private List<AddedSkillBean.SubCatagory> objects = new ArrayList<>();
     private Context context;
     private LayoutInflater layoutInflater;
-    private MySubCetAdapter.SubCategoryListner listner;
+    private SubCategoryListner listner;
 
-    public EditMySubCetAdapter(Context context, List<AddedSkillBean.SubCatagory> subService, MySubCetAdapter.SubCategoryListner lister) {
+    public EditMySubCetAdapter(Context context, List<AddedSkillBean.SubCatagory> subService, SubCategoryListner lister) {
         this.context = context;
         this.layoutInflater = LayoutInflater.from(context);
         this.objects = subService;
@@ -67,13 +67,13 @@ class EditMySubCetAdapter extends BaseAdapter {
             holder.subCategoryText.setText(object.getSubName());
             String price= "$"+object.getMin_rate()+" - $"+object.getMax_rate();
             holder.tvPrice.setText(price);
-            /*holder.ivCancel.setOnClickListener(new View.OnClickListener() {
+            holder.ivCancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                    objects.remove(position);
                    notifyDataSetChanged();
                 }
-            });*/
+            });
             // holder.subItemText.setText(object.getName());
         }
     }
@@ -95,7 +95,7 @@ class EditMySubCetAdapter extends BaseAdapter {
             ivCancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                   // listner.subCategoryOnClickListener((Integer) subCategoryText.getTag());
+                    listner.subCategoryOnClickListener((Integer) subCategoryText.getTag());
                 }
             });
         }

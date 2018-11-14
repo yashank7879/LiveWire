@@ -77,11 +77,12 @@ public class UserSelectionActivity extends AppCompatActivity implements View.OnC
                 Intent intent = new Intent(this,LoginActivity.class);
                 intent.putExtra("UserKey","client");
                 startActivity(intent);
+                //UserSelectionActivity.this.overridePendingTransition(R.anim.slide_right_out, R.anim.slide_right_in);
 
                 wantToHireCardView.setCardElevation(10);
                 wantToWorkCardView.setCardElevation(2);
 
-          /*      wantToHireCardView.setCardElevation(3);
+          /*    wantToHireCardView.setCardElevation(3);
                 wantToWorkCardView.setCardElevation(1);*/
 
               /*  wantToHireCardView.setShadowMargin(8,10,8,8);
@@ -99,11 +100,14 @@ public class UserSelectionActivity extends AppCompatActivity implements View.OnC
                     ivWantToWork.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorLightGray)));
                 }
                 break;
+
             case R.id.happy_to_help_cardView:
 
                 Intent intent1 = new Intent(this,LoginActivity.class);
                 intent1.putExtra("UserKey","worker");
                 startActivity(intent1);
+               // UserSelectionActivity.this.overridePendingTransition(R.anim.slide_right_out, R.anim.slide_right_in);
+
                 wantToHireCardView.setCardElevation(2);
                 wantToWorkCardView.setCardElevation(10);
               /*  wantToHireCardView.setShadowMargin(2,2,2,2);

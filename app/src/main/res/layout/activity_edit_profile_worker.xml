@@ -2,7 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+<data>
 
+    <variable
+        name="userData"
+        type="com.livewire.responce.MyProfileResponce.DataBean"/>
+</data>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -54,7 +59,8 @@
                         android:src="@color/colorExtraLightGray"
                         app:civ_border_color="@color/colorGreen"
                         app:civ_border_overlay="true"
-                        app:civ_border_width="1dp" />
+                        app:civ_border_width="1dp"
+                       />
 
                     <ImageView
                         android:id="@+id/inactive_user_img"
@@ -69,7 +75,8 @@
                         android:layout_gravity="bottom|end"
                         android:background="@drawable/circle_green_bg"
                         android:padding="@dimen/_5sdp"
-                        app:srcCompat="@drawable/ic_camera" />
+                        app:srcCompat="@drawable/ic_camera"
+                         />
 
 
                 </FrameLayout>
@@ -95,6 +102,7 @@
                         android:inputType="text"
                         android:singleLine="true"
                         android:textSize="@dimen/_12sdp"
+                        android:text='@{userData.name}'
                         android:textColor="@color/colorDarkBlack"
                         />
 
@@ -116,6 +124,7 @@
                         android:inputType="textEmailAddress"
                         android:singleLine="true"
                         android:textSize="@dimen/_12sdp"
+                        android:text='@{userData.email}'
                         android:textColor="@color/colorDarkBlack"
                         />
 
@@ -200,7 +209,9 @@
                     android:layout_marginRight="@dimen/_20sdp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:hint="@string/town_of_residence"
-                    android:textColor="@color/colorDarkBlack" />
+                    android:textColor="@color/colorDarkBlack"
+                    android:text='@{userData.town}'
+                    />
 
                 <View
                     android:layout_width="match_parent"

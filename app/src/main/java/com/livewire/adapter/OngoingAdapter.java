@@ -39,7 +39,8 @@ public class OngoingAdapter extends RecyclerView.Adapter<OngoingAdapter.MyViewHo
     private OnGoingItemOnClick listener;
     private Context mContext;
     private List<OnGoingWorkerResponce.DataBean> ongoingList;
-    public OngoingAdapter(Context mContext, List<OnGoingWorkerResponce.DataBean> ongoingList,OnGoingItemOnClick listener) {
+
+    public OngoingAdapter(Context mContext, List<OnGoingWorkerResponce.DataBean> ongoingList, OnGoingItemOnClick listener) {
         this.mContext = mContext;
         this.ongoingList = ongoingList;
         this.listener = listener;
@@ -55,14 +56,14 @@ public class OngoingAdapter extends RecyclerView.Adapter<OngoingAdapter.MyViewHo
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        if (ongoingList.size() != 0){
-            OnGoingWorkerResponce.DataBean dataBean  = ongoingList.get(position);
+        if (ongoingList.size() != 0) {
+            OnGoingWorkerResponce.DataBean dataBean = ongoingList.get(position);
             holder.tvCategory.setText(dataBean.getParentCategoryName());
             holder.tvSubcategory.setText(dataBean.getSubCategoryName());
             holder.tvOfferPrice.setText(dataBean.getJob_offer_rate());
             holder.tvName.setText(dataBean.getName());
-            holder.tvDistance.setText(dataBean.getDistance_in_km()+" Km away");
-            holder.tvTime.setText(Constant.getDayDifference(dataBean.getCrd(),dataBean.getCurrentDateTime()));
+            holder.tvDistance.setText(dataBean.getDistance_in_km() + " Km away");
+            holder.tvTime.setText(Constant.getDayDifference(dataBean.getCrd(), dataBean.getCurrentDateTime()));
 
             //********"2018-07-04" date format converted into "04 july 2018"***********//
             DateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
@@ -130,20 +131,21 @@ public class OngoingAdapter extends RecyclerView.Adapter<OngoingAdapter.MyViewHo
             llKmAway = (LinearLayout) itemView.findViewById(R.id.ll_km_away);
             tvDistance = (TextView) itemView.findViewById(R.id.tv_distance);
             rlRange = (RelativeLayout) itemView.findViewById(R.id.rl_range);
-           btnIgnore = itemView.findViewById(R.id.btn_ignore);
+            btnIgnore = itemView.findViewById(R.id.btn_ignore);
             btnAccept = itemView.findViewById(R.id.btn_accept);
             llMoreInfo = (LinearLayout) itemView.findViewById(R.id.ll_more_info);
             tvMoreInfo = (TextView) itemView.findViewById(R.id.tv_more_info);
             llMoreInfo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onItemClickListner(ongoingList.get(getAdapterPosition()),"MoreInfo");
+                    listener.onItemClickListner(ongoingList.get(getAdapterPosition()), "MoreInfo");
                 }
             });
             btnAccept.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     listener.onItemClickListner(ongoingList.get(getAdapterPosition()), "Accept");
+                    ongoingList.remove(getAdapterPosition());
                 }
             });
 
@@ -151,11 +153,13 @@ public class OngoingAdapter extends RecyclerView.Adapter<OngoingAdapter.MyViewHo
                 @Override
                 public void onClick(View v) {
                     listener.onItemClickListner(ongoingList.get(getAdapterPosition()), "Reject");
+                    ongoingList.remove(getAdapterPosition());
                 }
             });
 
         }
     }
+
     private SpannableStringBuilder dateTextColorChange(String start) {
         SpannableStringBuilder builder = new SpannableStringBuilder();
         SpannableString userName = new SpannableString(start.substring(0, 2) + " ");
@@ -168,7 +172,7 @@ public class OngoingAdapter extends RecyclerView.Adapter<OngoingAdapter.MyViewHo
         return builder;
     }
 
-    public interface OnGoingItemOnClick{
+    public interface OnGoingItemOnClick {
         void onItemClickListner(OnGoingWorkerResponce.DataBean dataBean, String moreInfo);
     }
 }

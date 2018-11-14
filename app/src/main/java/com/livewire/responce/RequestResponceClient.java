@@ -55,6 +55,7 @@ public class RequestResponceClient {
         private String distance_in_km="";
         private String request_status="";
         private String profileImage="";
+        private String job_confirmed="";
 
         public String getUserId() {
             return userId;
@@ -94,6 +95,14 @@ public class RequestResponceClient {
 
         public void setProfileImage(String profileImage) {
             this.profileImage = profileImage;
+        }
+
+        public String getJob_confirmed() {
+            return job_confirmed;
+        }
+
+        public void setJob_confirmed(String job_confirmed) {
+            this.job_confirmed = job_confirmed;
         }
     }
 }

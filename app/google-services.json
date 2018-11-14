@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "386254959445",
-    "firebase_url": "https://advance-honor-216806.firebaseio.com",
-    "project_id": "advance-honor-216806",
-    "storage_bucket": "advance-honor-216806.appspot.com"
+    "project_number": "284708269414",
+    "firebase_url": "https://livewire-216807.firebaseio.com",
+    "project_id": "livewire-216807",
+    "storage_bucket": "livewire-216807.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:386254959445:android:a9469a204d522532",
+        "mobilesdk_app_id": "1:284708269414:android:a9469a204d522532",
         "android_client_info": {
           "package_name": "com.livewire"
         }
       },
       "oauth_client": [
         {
-          "client_id": "386254959445-74l1vg217b1hpt0v2pm9hgik99rb9ktf.apps.googleusercontent.com",
+          "client_id": "284708269414-kp15cjr3m75rulp8qiv20m9t76neo5mo.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.livewire",
@@ -23,13 +23,13 @@
           }
         },
         {
-          "client_id": "386254959445-ku2nftvhirpj5i5h82cr06p0rlsnkir5.apps.googleusercontent.com",
+          "client_id": "284708269414-8nviufui2jitrpg6l21c8aog7idgk55a.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC_CHm3xpNwlYSItonXroQl28FiMyizeww"
+          "current_key": "AIzaSyBXpnvpXkyQzRem7Rr9hcjpiS24AYdMTnA"
         }
       ],
       "services": {
@@ -40,8 +40,15 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "386254959445-ku2nftvhirpj5i5h82cr06p0rlsnkir5.apps.googleusercontent.com",
+              "client_id": "284708269414-8nviufui2jitrpg6l21c8aog7idgk55a.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "284708269414-0q26umn54ba4uv91nrr5ui6vbju3v8qq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "mindiii.com.LiveWire"
+              }
             }
           ]
         },

@@ -157,5 +157,6 @@
     <string name="completed_jobs">Completed Jobs</string>
     <string name="manage_credit_cards">Manage Credit Cards</string>
     <string name="notifications">NOTIFICATIONS</string>
+    <string name="help_needed">(Help needed)</string>
 
 </resources>

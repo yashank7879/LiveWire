@@ -1,6 +1,10 @@
 package com.livewire.utils;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -21,7 +25,17 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.volley.NetworkResponse;
+import com.android.volley.NoConnectionError;
+import com.android.volley.TimeoutError;
+import com.android.volley.VolleyError;
+import com.androidnetworking.error.ANError;
 import com.livewire.R;
+import com.livewire.ui.activity.LoginActivity;
+import com.livewire.ui.activity.UserSelectionActivity;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -256,5 +270,75 @@ public class Constant {
 //                interesString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.colorDarkBlack)), 3, start.length(), 0);
         builder.append(interesString);
         return  builder;
+    }
+
+    public static void errorHandle(ANError error, Activity activity) {
+      //  NetworkResponse networkResponse = error.networkResponse;
+        String errorMessage = "Unknown error";
+            String result = new String(error.getErrorBody());
+            try {
+                JSONObject response = new JSONObject(result);
+
+                String status = response.getString("responseCode");
+                String message = response.getString("message");
+
+                if (status.equals("300")) {
+                    if (activity != null) {
+                        showAlertDialog(activity,"Please Login Again","Session Expired","LogOut");
+                    }
+                }
+
+                Log.e("Error Status", "" + status);
+                Log.e("Error Message", message);
+
+                if (status.equals("404")) {
+                    errorMessage = "Resource not found";
+                } else if (status.equals("401")) {
+                    errorMessage = message + " Please login again";
+                } else if (status.equals("400")) {
+                    errorMessage = message + " Check your inputs";
+                } else if (status.equals("500")) {
+                    errorMessage = message + " Something is getting wrong";
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                if (activity != null) {
+
+                }
+            }
+        }
+
+
+    public static void showAlertDialog(final Activity con, String msg, String title, String ok){
+
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(con);
+        builder1.setTitle(title);
+        builder1.setMessage(msg);
+        builder1.setCancelable(false);
+        builder1.setPositiveButton(ok,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                        logout(con);
+                    }
+                });
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
+    }
+    private static void logout(Activity con) {
+        PreferenceConnector.writeBoolean(con, PreferenceConnector.IS_LOG_IN, false);
+        PreferenceConnector.writeString(con, PreferenceConnector.USER_INFO_JSON, "");
+        PreferenceConnector.writeString(con, PreferenceConnector.AUTH_TOKEN, "");
+        PreferenceConnector.writeString(con, PreferenceConnector.USER_TYPE, "");
+        PreferenceConnector.writeString(con, PreferenceConnector.COMPLETE_PROFILE_STATUS, "");
+        PreferenceConnector.writeString(con, PreferenceConnector.PASS_WORD, "");
+        PreferenceConnector.writeString(con, PreferenceConnector.SOCIAL_LOGIN, "");
+        Intent intent = new Intent(con, UserSelectionActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        con.startActivity(intent);
+        con.finish();
+       con.overridePendingTransition(R.anim.slide_right_out, R.anim.slide_right_in);
     }
 }

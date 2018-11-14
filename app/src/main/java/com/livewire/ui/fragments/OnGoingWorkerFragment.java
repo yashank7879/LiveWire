@@ -22,6 +22,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -204,6 +205,7 @@ public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapte
 
                 @Override
                 public void onError(ANError anError) {
+                    Constant.errorHandle(anError,getActivity());
                     progressDialog.dismiss();
                 }
             });
@@ -274,6 +276,9 @@ public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapte
             TextView tvAllJobs = dialog.findViewById(R.id.tv_all_jobs);
             TextView tvNewJobs = dialog.findViewById(R.id.tv_new_jobs);
             TextView tvPendingRequest = dialog.findViewById(R.id.tv_pending_request);
+            LinearLayout llSortBy = dialog.findViewById(R.id.ll_sort_by);
+
+            llSortBy.setVisibility(View.GONE);
             subCategorySpinner = dialog.findViewById(R.id.sub_category_spinner);
             recyclerView = dialog.findViewById(R.id.recycler_view);
             TextView tvCancel = dialog.findViewById(R.id.tv_cancel);
@@ -464,6 +469,7 @@ public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapte
                     String message = response.getString("message");
                     if (status.equals("success")) {
                         Constant.snackBar(mainLayout, message);
+                        adapter.notifyDataSetChanged();
                         //"""""' if user successfully created on going post """""""""""//
 
                         // first time replace home fragment
@@ -478,6 +484,7 @@ public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapte
 
             @Override
             public void onError(ANError anError) {
+                Constant.errorHandle(anError,getActivity());
                 progressDialog.dismiss();
 
             }

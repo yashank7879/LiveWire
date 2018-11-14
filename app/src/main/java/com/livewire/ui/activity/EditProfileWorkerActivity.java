@@ -154,6 +154,7 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_edit_profile_worker);
+
         removeVideoImg = findViewById(R.id.iv_remove_video);
         Log.e("Auth token", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""));
         if (getIntent().getStringExtra("EditProfileKey") != null) { // if user come from profile setting
@@ -178,16 +179,20 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
                     subcatBean.setMin_rate(Float.parseFloat(categoryBean.getSubcat().get(i).getMin_rate()));
                     subcatBean.setMax_rate(Float.parseFloat(categoryBean.getSubcat().get(i).getMax_rate()));
 
+
                     addedCatagory.getSubCatagories().add(subcatBean);
 
                 }
                 addedSkillBeans.add(addedCatagory);
             }
 
-            binding.etFullName.setText(userData.getData().getName());
+         /*   binding.etFullName.setText(userData.getData().getName());
             binding.etEmail1.setText(userData.getData().getEmail());
-            binding.tvLocation.setText(userData.getData().getTown());
+            binding.tvLocation.setText(userData.getData().getTown());*/
+            binding.setUserData(userData.getData());
+
             locationPlace = userData.getData().getTown();
+
             placeLatitude = userData.getData().getLatitude();
             placeLongitude = userData.getData().getLongitude();
 
@@ -370,8 +375,10 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
         if (Validation.isEmpty(binding.etFullName)) {
             Constant.snackBar(binding.mainLayout, "please enter your Name");
         } else if (Validation.isEmpty(binding.etEmail1)) {
-            Constant.snackBar(binding.mainLayout, "please add Email Id");
-        } else if (addedSkillBeans.size() == 0) {
+            Constant.snackBar(binding.mainLayout, "please enter Email Id");
+        }  else if (!Validation.isEmailValid(binding.etEmail1)) {
+            Constant.snackBar(binding.mainLayout, "please enter valid Email Id");
+        }else if (subCategoryModelList.size() == 0) {
             Constant.snackBar(binding.mainLayout, "please add your skills");
         } else if (placeLongitude == null) {
             Constant.snackBar(binding.mainLayout, "please enter loation");
@@ -389,9 +396,6 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
                 profileImageFileList.add(imageFile);
             }
             mPram = new HashMap<>();
-
-
-
 
             mPram.put("workerSkillData", getWorkerSkillData());
             mPram.put("latitude", placeLatitude);
@@ -734,6 +738,7 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
                         finalVideoUri = videoUri;
                         finalVideoFilePath = videoFilePath;
                         thumbBitmap = ImageVideoUtils.getVidioThumbnail(finalVideoFilePath); //ImageVideoUtil.getCompressBitmap();
+                        thumbBitmap = ImageVideoUtils.getVidioThumbnail(finalVideoFilePath);
                         //thumbBitmap = ImageVideoUtils.getVideoToThumbnil(videoFilePath, this);
 
                         int rotation = ImageRotator.getRotation(this, finalVideoUri, true);
@@ -819,7 +824,7 @@ mediaFilesList.remove(0);
     // from bitmap to file creater"""""""""""
     public File savebitmap(Context mContext, Bitmap bitmap, String name) {
         File filesDir = mContext.getApplicationContext().getFilesDir();
-        File imageFile = new File(filesDir, name + ".jpg");
+        File imageFile = new File(filesDir, name);
 
         OutputStream os;
         try {

@@ -204,6 +204,7 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
 
                 @Override
                 public void onError(ANError anError) {
+                    Constant.errorHandle(anError,getActivity());
                     progressDialog.dismiss();
                 }
             });

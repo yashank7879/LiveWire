@@ -76,15 +76,7 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
     FragmentOngoingJobBinding binding;
 
     private static final String TAG = OngoingJobFragment.class.getName();
-    private TextView tvSelectedSkill;
-    private TextView tvStartDate;
-    private TextView tvEndDate;
-    private TextView tvWeekDays;
-    private TextView etHourRequierd;
-    private TextView tvLocation;
-    private EditText etDescription;
     private Context mContext;
-    private ScrollView mainLayout;
     private String locationPlace;
     private LatLng locationLatLng;
     private int width;
@@ -96,8 +88,8 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
     private int mMonth;
     private int mDay;
     private Calendar startDateTime;
-    private String startDateString="";
-    private String endDateString="";
+    private String startDateString = "";
+    private String endDateString = "";
     private Calendar endDateTime;
     private ArrayList<WeekListModel> weekList;
 
@@ -108,7 +100,7 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
                 R.layout.fragment_ongoing_job, container, false);
 
         return binding.getRoot();
-      //  return inflater.inflate(R.layout.fragment_ongoing_job, container, false);
+        //  return inflater.inflate(R.layout.fragment_ongoing_job, container, false);
     }
 
     @Override
@@ -127,37 +119,25 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
         progressDialog = new ProgressDialog(mContext);
         progressDialog.setCancelable(false);
 
-        RelativeLayout selectSkillsRl = view.findViewById(R.id.select_skills_rl);
-        tvSelectedSkill = view.findViewById(R.id.tv_selected_skill);
-        RelativeLayout jobStartDateRl =  view.findViewById(R.id.job_start_date_rl);
-        tvStartDate =  view.findViewById(R.id.tv_start_date);
-        RelativeLayout jobEndDateRl =  view.findViewById(R.id.job_end_date_rl);
-        tvEndDate = view.findViewById(R.id.tv_end_date);
-        RelativeLayout weekDaysRl = view.findViewById(R.id.week_days_rl);
-        tvWeekDays =  view.findViewById(R.id.tv_week_days);
-        etHourRequierd = view.findViewById(R.id.et_hour_requierd);
-        RelativeLayout locationRl = view.findViewById(R.id.location_rl);
-        tvLocation = view.findViewById(R.id.tv_location);
-        RelativeLayout descriptionRl = view.findViewById(R.id.description_rl);
-        etDescription = view.findViewById(R.id.description_tv);
-        mainLayout = view.findViewById(R.id.sv_ongoing_job);
+
+
 
         weekList = new ArrayList<>();
-        weekList.add(new WeekListModel("Monday",false));
-        weekList.add( new WeekListModel( "Tuesday",false));
-        weekList.add( new WeekListModel( "Wednesday",false));
-        weekList.add( new WeekListModel( "Thursday",false));
-        weekList.add( new WeekListModel( "Friday",false));
-        weekList.add( new WeekListModel( "Saturday",false));
-        weekList.add( new WeekListModel( "Sunday",false));
+        weekList.add(new WeekListModel("Monday", false));
+        weekList.add(new WeekListModel("Tuesday", false));
+        weekList.add(new WeekListModel("Wednesday", false));
+        weekList.add(new WeekListModel("Thursday", false));
+        weekList.add(new WeekListModel("Friday", false));
+        weekList.add(new WeekListModel("Saturday", false));
+        weekList.add(new WeekListModel("Sunday", false));
 
-      //  etHourRequierd.addTextChangedListener(watcherClass);
-        selectSkillsRl.setOnClickListener(this);
-        jobStartDateRl.setOnClickListener(this);
-        jobEndDateRl.setOnClickListener(this);
-        weekDaysRl.setOnClickListener(this);
-        locationRl.setOnClickListener(this);
-        view.findViewById(R.id.btn_share).setOnClickListener(this);
+        //  etHourRequierd.addTextChangedListener(watcherClass);
+        binding.selectSkillsRl.setOnClickListener(this);
+        binding.jobStartDateRl.setOnClickListener(this);
+        binding.jobEndDateRl.setOnClickListener(this);
+        binding.weekDaysRl.setOnClickListener(this);
+        binding.locationRl.setOnClickListener(this);
+        binding.btnShare.setOnClickListener(this);
         loadSkillsData();
     }
 
@@ -230,20 +210,20 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
 
         final StringBuffer sb = new StringBuffer();
         btnDone.setOnClickListener(new View.OnClickListener() {
-             String ss;
+            String ss;
 
             @Override
             public void onClick(View v) {
-                for (int i=0 ; i<weekList.size();i++){
-                    if (weekList.get(i).isWeekDay()){
+                for (int i = 0; i < weekList.size(); i++) {
+                    if (weekList.get(i).isWeekDay()) {
 
-                         ss = TextUtils.join(",",weekList);
+                        ss = TextUtils.join(",", weekList);
                         sb.append(weekList.get(i).getWeekDays());
-                            sb.append(",");
+                        sb.append(",");
                     }
                 }
-                Log.e( "week list ss: ",ss );
-                tvWeekDays.setText(sb);
+                Log.e("week list ss: ", ss);
+                binding.tvWeekDays.setText(sb);
                 dialog.dismiss();
             }
         });
@@ -252,33 +232,33 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
     }
 
     private void jobValidations() {
-        if (Validation.isEmpty(tvSelectedSkill)) {
-            Constant.snackBar(mainLayout, "Please Select Skill");
-        } else if (Validation.isEmpty(tvStartDate)) {
-            Constant.snackBar(mainLayout, "Please enter Start date");
-        } else if (Validation.isEmpty(tvEndDate)) {
-            Constant.snackBar(mainLayout, "Please enter End date");
-        } else if (Validation.isEmpty(tvWeekDays)) {
-            Constant.snackBar(mainLayout, "Please Select week days");
-        } else if (Validation.isEmpty(etHourRequierd)) {
-            Constant.snackBar(mainLayout, "Please enter hour Required per day");
-        } else if (Validation.isEmpty(tvLocation)) {
-            Constant.snackBar(mainLayout, "Please enter your Location");
-        } else if (Validation.isEmpty(etDescription)) {
-            Constant.snackBar(mainLayout, "Please enter job Description");
+        if (Validation.isEmpty(binding.tvSelectedSkill)) {
+            Constant.snackBar(binding.svOngoingJob, "Please Select Skill");
+        } else if (Validation.isEmpty(binding.tvStartDate)) {
+            Constant.snackBar(binding.svOngoingJob, "Please enter Start date");
+        } else if (Validation.isEmpty(binding.tvEndDate)) {
+            Constant.snackBar(binding.svOngoingJob, "Please enter End date");
+        } else if (Validation.isEmpty(binding.tvWeekDays)) {
+            Constant.snackBar(binding.svOngoingJob, "Please Select week days");
+        } else if (Validation.isEmpty(binding.etHourRequierd)) {
+            Constant.snackBar(binding.svOngoingJob, "Please enter hour Required per day");
+        } else if (Validation.isEmpty(binding.tvLocation)) {
+            Constant.snackBar(binding.svOngoingJob, "Please enter your Location");
+        } else if (Validation.isEmpty(binding.etDescription)) {
+            Constant.snackBar(binding.svOngoingJob, "Please enter job Description");
         } else {
             JobCreationModel model = new JobCreationModel();
             model.skill = skillId;
-            model.job_start_date = tvStartDate.getText().toString().trim();
-            model.job_end_date = tvEndDate.getText().toString().trim();
+            model.job_start_date = binding.tvStartDate.getText().toString().trim();
+            model.job_end_date = binding.tvEndDate.getText().toString().trim();
             model.job_location = locationPlace;
             model.job_latitude = String.valueOf(locationLatLng.latitude);
             model.job_longitude = String.valueOf(locationLatLng.longitude);
-            model.job_time_duration  = etHourRequierd.getText().toString().trim();
-            model.job_week_days = tvWeekDays.getText().toString().trim();
+            model.job_time_duration = binding.etHourRequierd.getText().toString().trim();
+            model.job_week_days = binding.tvWeekDays.getText().toString().trim();
             model.job_type = "2";
             model.job_title = "test";
-            model.job_description = etDescription.getText().toString().trim();
+            model.job_description = binding.etDescription.getText().toString().trim();
 
             onGoingJobCreationApi(model);
         }
@@ -286,7 +266,7 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
 
     //"""""""""  On going job creation api calling """""""""""//
     private void onGoingJobCreationApi(JobCreationModel model) {
-        if (Constant.isNetworkAvailable(mContext, mainLayout)) {
+        if (Constant.isNetworkAvailable(mContext, binding.svOngoingJob)) {
             progressDialog.show();
             AndroidNetworking.post(BASE_URL + "Jobpost/clientJobPost")
                     .addHeaders("authToken", PreferenceConnector.readString(mContext, PreferenceConnector.AUTH_TOKEN, ""))
@@ -303,22 +283,23 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
 
                             String jobId = response.getString("clientJobId");
                             Intent intent = new Intent(mContext, NearYouClientActivity.class);
-                            intent.putExtra("JobIdKey",jobId);
+                            intent.putExtra("JobIdKey", jobId);
                             startActivity(intent);
-                           // clientJobId
-                           // Constant.snackBar(mainLayout,"Your job successfully post");
-                        }else {
+                            // clientJobId
+                            // Constant.snackBar(mainLayout,"Your job successfully post");
+                        } else {
 
-                            Constant.snackBar(mainLayout,message);
+                            Constant.snackBar(binding.svOngoingJob, message);
                         }
-                    }catch (JSONException e){
-                        Log.d(TAG,e.getMessage());
+                    } catch (JSONException e) {
+                        Log.d(TAG, e.getMessage());
                     }
                 }
 
                 @Override
                 public void onError(ANError anError) {
-                    Log.d(TAG,anError.getErrorDetail());
+                    Log.d(TAG, anError.getErrorDetail());
+                    Constant.errorHandle(anError, getActivity());
                     progressDialog.dismiss();
                 }
             });
@@ -332,7 +313,7 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
             mYear = calendar.get(Calendar.YEAR);
             mMonth = calendar.get(Calendar.MONTH);
             mDay = calendar.get(Calendar.DAY_OF_MONTH);
-            Constant.hideSoftKeyBoard(mContext, etDescription);
+            Constant.hideSoftKeyBoard(mContext, binding.etDescription);
             DatePickerDialog endDateDialog = new DatePickerDialog(mContext, new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -344,7 +325,7 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
 
                     //********Date time Format**************//
                     SimpleDateFormat sdf2 = new SimpleDateFormat("dd-MM-yyyy ");
-                    tvEndDate.setText(sdf2.format(endDateTime.getTime()));
+                    binding.tvEndDate.setText(sdf2.format(endDateTime.getTime()));
                     endDateString = sdf2.format(endDateTime.getTime());
                 }
 
@@ -352,7 +333,7 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
             endDateDialog.getDatePicker().setMinDate(startDateTime.getTimeInMillis()); //set min date
             endDateDialog.show();
         } else {
-            Constant.snackBar(mainLayout, "Please select start date first");
+            Constant.snackBar(binding.svOngoingJob, "Please select start date first");
         }
     }
 
@@ -362,7 +343,7 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
         mYear = calendar.get(Calendar.YEAR);
         mMonth = calendar.get(Calendar.MONTH);
         mDay = calendar.get(Calendar.DAY_OF_MONTH);
-        Constant.hideSoftKeyBoard(mContext, etDescription);
+        Constant.hideSoftKeyBoard(mContext, binding.etDescription);
         final DatePickerDialog startDateDialog = new DatePickerDialog(mContext, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -373,7 +354,7 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
                 startDateTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 //********Date time Format**************//
                 SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy ");
-                tvStartDate.setText(sdf1.format(startDateTime.getTime()));
+                binding.tvStartDate.setText(sdf1.format(startDateTime.getTime()));
                 startDateString = sdf1.format(startDateTime.getTime());
 
             }
@@ -382,7 +363,7 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
             startDateDialog.getDatePicker().setMinDate(System.currentTimeMillis());
         } else {
             startDateDialog.getDatePicker().setMinDate(System.currentTimeMillis());
-            tvEndDate.setText("");
+            binding.tvEndDate.setText("");
             endDateTime.clear();
         }
         startDateDialog.show();
@@ -410,7 +391,7 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
                 assert data != null;
                 Place place = PlaceAutocomplete.getPlace(mContext, data);
 
-                tvLocation.setText(place.getAddress());
+                binding.tvLocation.setText(place.getAddress());
                 locationPlace = place.getAddress().toString();
                 locationLatLng = place.getLatLng();
                 Log.e(TAG, "Place: " + place.getName());
@@ -422,14 +403,14 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
 
             } else if (resultCode == RESULT_CANCELED) {
 
-                Constant.hideSoftKeyBoard(mContext, tvLocation);
+                Constant.hideSoftKeyBoard(mContext, binding.tvLocation);
             }
         }
     }
 
     //"""""""""" skills dialog category and sub category """""""""""//
     private void openSkillDialog() {
-        if (Constant.isNetworkAvailable(mContext, mainLayout)) {
+        if (Constant.isNetworkAvailable(mContext, binding.svOngoingJob)) {
             final Dialog dialog = new Dialog(mContext);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -459,7 +440,7 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
                 @Override
                 public void onClick(View v) {
 
-                    skillDialogValidation(categorySpinner, addSkillsLayout,dialog);
+                    skillDialogValidation(categorySpinner, addSkillsLayout, dialog);
                 }
             });
 
@@ -475,7 +456,7 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
             Constant.snackBar(addSkillsLayout, "Please Select Subcategory");
         } else {
             dialog.dismiss();
-            tvSelectedSkill.setText(skillsResponce.getData().get(categorySpinner.getSelectedItemPosition()).getSubcat().get(subCategorySpinner.getSelectedItemPosition()).getCategoryName());
+            binding.tvSelectedSkill.setText(skillsResponce.getData().get(categorySpinner.getSelectedItemPosition()).getSubcat().get(subCategorySpinner.getSelectedItemPosition()).getCategoryName());
             skillId = skillsResponce.getData().get(categorySpinner.getSelectedItemPosition()).getSubcat().get(subCategorySpinner.getSelectedItemPosition()).getCategoryId();
             Log.e("openSkillDialog: ", skillsResponce.getData().get(categorySpinner.getSelectedItemPosition()).getSubcat().get(subCategorySpinner.getSelectedItemPosition()).getCategoryName());
         }
@@ -483,7 +464,7 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
 
     //""""""""""""  Load category data """"""""""""""//
     private void loadSkillsData() {
-        if (Constant.isNetworkAvailable(mContext, mainLayout)) {
+        if (Constant.isNetworkAvailable(mContext, binding.svOngoingJob)) {
             progressDialog.show();
             AndroidNetworking.get(BASE_URL + "getCategoryList")
                     .setPriority(Priority.MEDIUM)
@@ -510,7 +491,7 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
                             dataBean.getSubcat().add(subcatBean);
                             skillsResponce.getData().add(0, dataBean);
                         } else {
-                            Constant.snackBar(mainLayout, message);
+                            Constant.snackBar(binding.svOngoingJob, message);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

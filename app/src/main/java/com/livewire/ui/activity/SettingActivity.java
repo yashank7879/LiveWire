@@ -131,6 +131,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 Intent intent = new Intent(SettingActivity.this, UserSelectionActivity.class);
                 startActivity(intent);
                 finish();
+                SettingActivity.this.overridePendingTransition(R.anim.slide_right_out, R.anim.slide_right_in);
             }
         }).setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
