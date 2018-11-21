@@ -24,6 +24,7 @@ import com.google.gson.Gson;
 import com.livewire.R;
 import com.livewire.databinding.FragmentMyProfileClientBinding;
 import com.livewire.responce.SignUpResponce;
+import com.livewire.ui.activity.CompletedJobClientActivity;
 import com.livewire.ui.activity.EditProfileClientActivity;
 import com.livewire.ui.activity.SettingActivity;
 import com.livewire.ui.activity.UserSelectionActivity;
@@ -43,6 +44,7 @@ public class MyProfileClientFragment extends Fragment implements View.OnClickLis
     FragmentMyProfileClientBinding binding;
     private Context mContext;
     private ProgressDialog progressDialog;
+    private SignUpResponce userResponce;
 
     public MyProfileClientFragment() {
         // Required empty public constructor
@@ -61,10 +63,11 @@ public class MyProfileClientFragment extends Fragment implements View.OnClickLis
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         actionBarIntialize(view);
-        progressDialog =  new ProgressDialog(mContext);
+        progressDialog = new ProgressDialog(mContext);
         myProfileApi();
         binding.btnLogout.setOnClickListener(this);
         binding.btnEdit.setOnClickListener(this);
+        binding.cvCompleteJob.setOnClickListener(this);
     }
 
     @Override
@@ -89,6 +92,12 @@ public class MyProfileClientFragment extends Fragment implements View.OnClickLis
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        myProfileApi();
+    }
+
+    @Override
     public void onClick(View v) {
         Intent intent = null;
         switch (v.getId()) {
@@ -103,8 +112,14 @@ public class MyProfileClientFragment extends Fragment implements View.OnClickLis
                 startActivity(intent);
                 break;
             case R.id.btn_edit:
-                Toast.makeText(mContext, R.string.under_devlopment_mode, Toast.LENGTH_SHORT).show();
-                intent = new Intent(mContext,EditProfileClientActivity.class);
+                if (Constant.isNetworkAvailable(mContext, binding.svProfile)) {
+                    intent = new Intent(mContext, EditProfileClientActivity.class);
+                    intent.putExtra("ClientProfileInfo", userResponce);
+                    startActivity(intent);
+                }
+                break;
+            case R.id.cv_complete_job:
+                intent = new Intent(mContext, CompletedJobClientActivity.class);
                 startActivity(intent);
                 break;
             default:
@@ -127,7 +142,7 @@ public class MyProfileClientFragment extends Fragment implements View.OnClickLis
                                 String status = response.getString("status");
                                 String message = response.getString("message");
                                 if (status.equals("success")) {
-                                    SignUpResponce userResponce = new Gson().fromJson(String.valueOf(response), SignUpResponce.class);
+                                    userResponce = new Gson().fromJson(String.valueOf(response), SignUpResponce.class);
 
                                     Picasso.with(binding.ivProfile.getContext()).load(userResponce.getData().getProfileImage())
                                             .fit().into(binding.ivProfile);
@@ -143,7 +158,7 @@ public class MyProfileClientFragment extends Fragment implements View.OnClickLis
 
                         @Override
                         public void onError(ANError anError) {
-                            Constant.errorHandle(anError,getActivity());
+                            Constant.errorHandle(anError, getActivity());
                             progressDialog.dismiss();
                         }
                     });

@@ -32,8 +32,8 @@ import com.google.gson.Gson;
 import com.livewire.R;
 import com.livewire.cropper.CropImage;
 import com.livewire.cropper.CropImageView;
+
 import com.livewire.databinding.ActivityEditProfileClientBinding;
-import com.livewire.databinding.ActivityEditProfileWorkerBinding;
 import com.livewire.model.UserModel;
 import com.livewire.responce.SignUpResponce;
 import com.livewire.utils.Constant;
@@ -41,6 +41,7 @@ import com.livewire.utils.ImageRotator;
 import com.livewire.utils.PreferenceConnector;
 import com.livewire.utils.ProgressDialog;
 import com.livewire.utils.Validation;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,32 +55,45 @@ import java.util.Date;
 import java.util.UUID;
 
 import static com.livewire.utils.ApiCollection.BASE_URL;
+import static com.livewire.utils.ApiCollection.UPDATE_CLIENT_PROFILE_API;
 
 public class EditProfileClientActivity extends AppCompatActivity implements View.OnClickListener {
-    private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
     ActivityEditProfileClientBinding binding;
     private static final String TAG = EditProfileClientActivity.class.getName();
+    private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
     private String locationPlace="";
     private Uri tmpUri;
     private LatLng locationLatLng;
     private Bitmap profileImageBitmap;
-    private File userImageFile;
     private ProgressDialog progressDialog;
+    private double locationLat;
+    private double locationLng;
+    private File userImageFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
        binding = DataBindingUtil.setContentView(this,R.layout.activity_edit_profile_client);
 
-       intializeView();
+        SignUpResponce userResponce= (SignUpResponce) getIntent().getSerializableExtra("ClientProfileInfo");
+        binding.setUserInfo(userResponce.getData());
+
+        locationLat = Double.parseDouble(userResponce.getData().getLatitude());
+        locationLng = Double.parseDouble(userResponce.getData().getLongitude());
+        locationPlace = userResponce.getData().getTown();
+        Picasso.with(binding.ivProfileImg.getContext())
+                .load(userResponce.getData().getProfileImage())
+                .into(binding.ivProfileImg);
+        binding.inactiveUserImg.setVisibility(View.GONE);
+
+        intializeView();
     }
 
     private void intializeView() {
         progressDialog = new ProgressDialog(this);
-        ImageView ivBack = binding.actionBarWorker.findViewById(R.id.iv_back);
-        TextView tvHeading = binding.actionBarWorker.findViewById(R.id.tv_live_wire);
-        tvHeading.setText(R.string.edit_profile);
-        ivBack.setOnClickListener(this);
+       binding.actionBarWorker.ivBack.setOnClickListener(this);
+        binding.actionBarWorker.tvLiveWire.setText(R.string.edit_profile);
+
         binding.btnSaveAndUpdate.setOnClickListener(this);
         binding.flUserProfile.setOnClickListener(this);
         binding.tvTownResident.setOnClickListener(this);
@@ -230,6 +244,8 @@ public class EditProfileClientActivity extends AppCompatActivity implements View
                 binding.tvTownResident.setText(place.getAddress());
                 locationPlace = place.getAddress().toString();
                 locationLatLng = place.getLatLng();
+                locationLat = place.getLatLng().latitude;
+                locationLng = place.getLatLng().longitude;
                 Log.e(TAG, "Place: " + place.getName());
 
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
@@ -302,8 +318,8 @@ public class EditProfileClientActivity extends AppCompatActivity implements View
             UserModel model = new UserModel();
             model.name = binding.etFullName.getText().toString();
             model.email = binding.etEmail1.getText().toString();
-            model.latitude = String.valueOf(locationLatLng.latitude);
-            model.longitude = String.valueOf(locationLatLng.longitude);
+            model.latitude = String.valueOf(locationLat);
+            model.longitude = String.valueOf(locationLng);
             model.town = locationPlace;
             updateProfileInfoApi(model);
         }
@@ -313,9 +329,11 @@ public class EditProfileClientActivity extends AppCompatActivity implements View
             if (Constant.isNetworkAvailable(this, binding.editProfileLayout)) {
                 progressDialog.show();
                 // progressBar.setVisibility(View.VISIBLE);
-                AndroidNetworking.post(BASE_URL+"")
-                        .addHeaders("authToken"+PreferenceConnector.readString(this,PreferenceConnector.AUTH_TOKEN,""))
-                        .addBodyParameter(model)
+                AndroidNetworking.upload(BASE_URL+UPDATE_CLIENT_PROFILE_API)
+                        .addHeaders("authToken",PreferenceConnector.readString(this,PreferenceConnector.AUTH_TOKEN,""))
+                       .addMultipartFile("profileImage",userImageFile)
+                        .addMultipartParameter(model)
+
                         .setPriority(Priority.MEDIUM).
                         build().getAsJSONObject(new JSONObjectRequestListener() {
                     @Override
@@ -326,8 +344,7 @@ public class EditProfileClientActivity extends AppCompatActivity implements View
                             String status = response.getString("status");
                             String message = response.getString("message");
                             if (status.equals("success")) {
-                                SignUpResponce userResponce = new Gson().fromJson(String.valueOf(response), SignUpResponce.class);
-                                PreferenceConnector.writeString(EditProfileClientActivity.this, PreferenceConnector.USER_INFO_JSON, response.toString());
+                                finish();
                                // setSignUpWorkerdata(userResponce);
 
                             } else {

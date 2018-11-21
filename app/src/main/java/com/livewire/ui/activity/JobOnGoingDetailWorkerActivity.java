@@ -16,8 +16,10 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.google.gson.Gson;
 import com.livewire.R;
 import com.livewire.databinding.ActivityJobOngoingDetailWorkerBinding;
+import com.livewire.responce.JobDetailWorkerResponce;
 import com.livewire.responce.OnGoingWorkerResponce;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
@@ -28,6 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import static com.livewire.utils.ApiCollection.BASE_URL;
+import static com.livewire.utils.ApiCollection.JOBPOSTSEND_REQUEST_2_API;
 
 public class JobOnGoingDetailWorkerActivity extends AppCompatActivity implements View.OnClickListener {
     ActivityJobOngoingDetailWorkerBinding binding;
@@ -55,10 +58,51 @@ public class JobOnGoingDetailWorkerActivity extends AppCompatActivity implements
 
         if (getIntent().getSerializableExtra("JobDetail") != null) {
             workerResponcd = (OnGoingWorkerResponce.DataBean) getIntent().getSerializableExtra("JobDetail");
+
             setJobDetailData(workerResponcd);
             binding.setWorkerResponcd(workerResponcd);
-        }
+        }/*else if (getIntent().getStringExtra("Ongoing_job_request") != null){
+            getJobDetailApi(getIntent().getStringExtra("reference_id"));
+        }*/
     }
+
+   /* private void getJobDetailApi(String jobId) {
+
+        if (Constant.isNetworkAvailable(this,binding.detailMainLayout)){
+            progressDialog.show();
+            AndroidNetworking.post(BASE_URL+"Jobpost/getJobDetail")
+                    .addBodyParameter("job_id",jobId)
+                    .addBodyParameter("job_type","2")
+                    .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
+                    .setPriority(Priority.MEDIUM)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            progressDialog.dismiss();
+                            String status = null;
+                            try {
+                                status = response.getString("status");
+                                String message = response.getString("message");
+                                if (status.equals("success")) {
+                                    JobDetailWorkerResponce workerResponce = new Gson().fromJson(String.valueOf(response),JobDetailWorkerResponce.class);
+                                    binding.setWorkerInfo(workerResponce.getData());
+                                }else {
+                                    Constant.snackBar(binding.detailMainLayout,message);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void onError(ANError anError) {
+                        progressDialog.dismiss();
+                        }
+                    });
+        }
+
+    }*/
 
     @Override
     public void onClick(View v) {
@@ -105,7 +149,7 @@ public class JobOnGoingDetailWorkerActivity extends AppCompatActivity implements
     private void acceptRejectrequestApi(String userId, String jobId, String requestStatus) {
         if (Constant.isNetworkAvailable(this, detailMainLayout)) {
             progressDialog.show();
-            AndroidNetworking.post(BASE_URL + "Jobpost/sendRequest2")
+            AndroidNetworking.post(BASE_URL + JOBPOSTSEND_REQUEST_2_API)
                     .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
                     .addBodyParameter("job_id", jobId)
                     .addBodyParameter("request_by", userId)

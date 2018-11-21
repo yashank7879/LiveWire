@@ -18,7 +18,6 @@ import com.squareup.picasso.Picasso;
 
 public class PlayVideoActivity extends AppCompatActivity {
     ActivityPlayVideoBinding binding;
-    private MediaController ctlr;
     private com.livewire.utils.ProgressDialog progressDialog;
 
     @Override
@@ -32,12 +31,16 @@ public class PlayVideoActivity extends AppCompatActivity {
 
         if (Constant.isNetworkAvailable(this, binding.playvideoLayout)) {
             if (getIntent().getStringExtra("VideoUrlKey") != null) {
-                Log.i( "Video url98789: ",getIntent().getStringExtra("VideoUrlKey") );
-               Uri uri = Uri.parse(getIntent().getStringExtra("VideoUrlKey"));
-               // Uri uri = Uri.parse("https://livewire.work//uploads//introVideo//phRqVEZGj4gyxOe8.mp4");
-                binding.videoView1.setVideoURI(uri);
+                Log.e("Video url98789: ", getIntent().getStringExtra("VideoUrlKey"));
+                String url = getIntent().getStringExtra("VideoUrlKey");
+
+                Uri uri = Uri.parse(getIntent().getStringExtra("VideoUrlKey"));
+
+                // Uri uri = Uri.parse("https://livewire.work//uploads//introVideo//phRqVEZGj4gyxOe8.mp4");
+                binding.videoView1.setVideoPath(getIntent().getStringExtra("VideoUrlKey"));
+                binding.videoView1.requestFocus();
                 binding.videoView1.start();
-                ctlr = new MediaController(this);
+                MediaController ctlr = new MediaController(this);
                 ctlr.setMediaPlayer(binding.videoView1);
                 binding.videoView1.setMediaController(ctlr);
                 binding.videoView1.requestFocus();

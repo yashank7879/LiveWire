@@ -101,6 +101,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.livewire.utils.ApiCollection.BASE_URL;
+import static com.livewire.utils.ApiCollection.GET_CATEGORY_LIST_API;
 import static com.livewire.utils.Constant.MY_PERMISSIONS_REQUEST_CAMERA;
 import static com.livewire.utils.Constant.MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE;
 import static com.livewire.utils.Constant.RECORD_AUDIO;
@@ -211,7 +212,7 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
             }
             binding.inactiveUserImg.setVisibility(View.GONE);
 
-            binding.actionBar2.setVisibility(View.VISIBLE);
+
             binding.llNameEmail.setVisibility(View.VISIBLE);
             binding.btnSaveAndUpdate.setVisibility(View.VISIBLE);
             removeVideoImg.setVisibility(View.VISIBLE);
@@ -234,7 +235,7 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
     private void loadSkillsData() {
         if (Constant.isNetworkAvailable(this, binding.mainLayout)) {
             progressDialog.show();
-            AndroidNetworking.get(BASE_URL + "getCategoryList")
+            AndroidNetworking.get(BASE_URL + GET_CATEGORY_LIST_API)
                     .setPriority(Priority.MEDIUM)
                     .build().getAsJSONObject(new JSONObjectRequestListener() {
                 @Override
@@ -295,9 +296,9 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
 
         progressDialog = new ProgressDialog(this);
 
-        ImageView ivBack = binding.actionBar2.findViewById(R.id.iv_back);
-        TextView tvHeading = binding.actionBar2.findViewById(R.id.tv_live_wire);
-        tvHeading.setText(R.string.edit_profile);
+
+        binding.actionBar2.ivBack.setOnClickListener(this);
+        binding.actionBar2.tvLiveWire.setText(R.string.edit_profile);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         binding.recyclerView.setLayoutManager(layoutManager);
@@ -311,7 +312,6 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
         binding.addSkillsRl.setOnClickListener(this);
         binding.flUserProfile.setOnClickListener(this);
 
-        ivBack.setOnClickListener(this);
 
         if (getIntent().hasExtra("imageKey")) {
             if (getIntent().getStringExtra("imageKey") != null) {

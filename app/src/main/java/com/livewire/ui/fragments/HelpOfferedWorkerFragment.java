@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -67,7 +68,7 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
     private int width;
     private ArrayList<CategoryModel> subCategoryList;
     private ArrayList<SubCategoryResponse.DataBean> subCategoryTempList;
-    private SubCategoryResponse subCategoryResponse;
+    private static SubCategoryResponse subCategoryResponse;
     private Spinner subCategorySpinner;
     private SubCategoryAdapter subCategoryAdapter;
     private RecyclerView recyclerView;
@@ -81,6 +82,11 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
     private int limit = 5;
     private int start = 0;
     private Animation mLoadAnimation;
+    private String newJobValue = "";
+    private String pendingRequestValue = "";
+    private  TextView tvAllJobs;
+    private TextView tvNewJobs;
+    private TextView tvPendingRequest;
 
     @Override
     public void onAttach(Context context) {
@@ -93,6 +99,7 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_help_offered, container, false);
+
     }
 
     @Override
@@ -203,18 +210,9 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
                                 if (status.equals("success")) {
                                     subCategoryResponse = new Gson().fromJson(String.valueOf(response), SubCategoryResponse.class);
 
-                                    for (int i = 0; i < subCategoryResponse.getData().size(); i++) {
-                                        SubCategoryResponse.DataBean dataBean = new SubCategoryResponse.DataBean();
-                                        dataBean.setCategoryName(subCategoryResponse.getData().get(i).getCategoryName());
-                                        dataBean.setCategoryId(subCategoryResponse.getData().get(i).getCategoryId());
-                                        dataBean.setPosition(i + 1);
-                                        subCategoryTempList.add(dataBean);
-                                    }
-                                    // subCategoryTempList.addAll(subCategoryResponse.getData());
+                                    addItemsInSubCategoryTempList();
 
-                                    SubCategoryResponse.DataBean dataBean = new SubCategoryResponse.DataBean();
-                                    dataBean.setCategoryName("Skills");
-                                    subCategoryTempList.add(0, dataBean);
+
                                 } else {
                                     Constant.snackBar(mainLayout, message);
                                 }
@@ -232,6 +230,22 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
         }
     }
 
+    // create static responce list
+    private void addItemsInSubCategoryTempList() {
+        for (int i = 0; i < subCategoryResponse.getData().size(); i++) {
+            SubCategoryResponse.DataBean dataBean = new SubCategoryResponse.DataBean();
+            dataBean.setCategoryName(subCategoryResponse.getData().get(i).getCategoryName());
+            dataBean.setCategoryId(subCategoryResponse.getData().get(i).getCategoryId());
+            dataBean.setPosition(i + 1);
+            subCategoryTempList.add(dataBean);
+        }
+        // subCategoryTempList.addAll(subCategoryResponse.getData());
+
+        SubCategoryResponse.DataBean dataBean = new SubCategoryResponse.DataBean();
+        dataBean.setCategoryName("Skills");
+        subCategoryTempList.add(0, dataBean);
+    }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -244,10 +258,13 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
             progressDialog.show();
             AndroidNetworking.post(BASE_URL + "Jobpost/getJobList")
                     .addHeaders("authToken", PreferenceConnector.readString(mContext, PreferenceConnector.AUTH_TOKEN, ""))
-                    .addBodyParameter("job_type", "1")
-                    .addBodyParameter("limit", "" + limit)
-                    .addBodyParameter("start", "" + start)
-                    .addBodyParameter("skill", skillsStrin)
+                    .addBodyParameter("job_type", "1")  // single job
+                    .addBodyParameter("new_job", newJobValue)         // new jobs == new (new_job)
+                    .addBodyParameter("request_status", pendingRequestValue)     // pending request = 0 (request_status)
+                    .addBodyParameter("limit", "" + limit)            // limt = limit+10
+                    .addBodyParameter("start", "" + start)           // start = 0
+                    .addBodyParameter("skill", skillsStrin)         // subcateory id
+
                     .setPriority(Priority.MEDIUM)
                     .build().getAsJSONObject(new JSONObjectRequestListener() {
                 @Override
@@ -278,7 +295,7 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
 
                 @Override
                 public void onError(ANError anError) {
-                    Constant.errorHandle(anError,getActivity());
+                    Constant.errorHandle(anError, getActivity());
                     progressDialog.dismiss();
                 }
             });
@@ -292,15 +309,58 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
             case R.id.btn_filter:
                 openFilterDialog();
                 break;
+
             case R.id.tv_clear_all:
                 subCategoryList.clear();
+                subCategoryTempList.clear();
+                addItemsInSubCategoryTempList();
                 filterLayout.setVisibility(View.GONE);
                 skillsStrin = "";
+                newJobValue = "";
+                pendingRequestValue = "";
                 helpOfferedApi();
                 break;
+
+            case R.id.tv_all_jobs:
+                inVactive();
+                tvAllJobs.setBackground(mContext.getResources().getDrawable(R.drawable.rounded_corner_green));
+                tvAllJobs.setTextColor(ContextCompat.getColor(mContext, R.color.colorGreen));
+                newJobValue = "";
+                pendingRequestValue = "";
+                break;
+
+            case R.id.tv_new_jobs:
+                inVactive();
+                tvNewJobs.setBackground(mContext.getResources().getDrawable(R.drawable.rounded_corner_green));
+                tvNewJobs.setTextColor(ContextCompat.getColor(mContext, R.color.colorGreen));
+                newJobValue = "new";
+                pendingRequestValue="";
+                break;
+
+            case R.id.tv_pending_request:
+                inVactive();
+                tvPendingRequest.setBackground(mContext.getResources().getDrawable(R.drawable.rounded_corner_green));
+                tvPendingRequest.setTextColor(ContextCompat.getColor(mContext, R.color.colorGreen));
+                pendingRequestValue = "0";
+                newJobValue="";
+                break;
+
             default:
         }
     }
+
+    private void inVactive(){
+        tvAllJobs.setBackground(mContext.getResources().getDrawable(R.drawable.rounded_corner_gray));
+        tvAllJobs.setTextColor(ContextCompat.getColor(mContext, R.color.colorDarkGray));
+
+        tvNewJobs.setBackground(mContext.getResources().getDrawable(R.drawable.rounded_corner_gray));
+        tvNewJobs.setTextColor(ContextCompat.getColor(mContext, R.color.colorDarkGray));
+
+        tvPendingRequest.setBackground(mContext.getResources().getDrawable(R.drawable.rounded_corner_gray));
+        tvPendingRequest.setTextColor(ContextCompat.getColor(mContext, R.color.colorDarkGray));
+
+    }
+
 
     //"""""""""open filter dialog"""""""""""""""""//
     private void openFilterDialog() {
@@ -310,9 +370,15 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             dialog.setContentView(R.layout.filter_dialog);
             dialog.getWindow().setLayout((width * 10) / 11, WindowManager.LayoutParams.WRAP_CONTENT);
-            TextView tvAllJobs = dialog.findViewById(R.id.tv_all_jobs);
-            TextView tvNewJobs = dialog.findViewById(R.id.tv_new_jobs);
-            TextView tvPendingRequest = dialog.findViewById(R.id.tv_pending_request);
+            tvAllJobs = dialog.findViewById(R.id.tv_all_jobs);
+            tvNewJobs = dialog.findViewById(R.id.tv_new_jobs);
+            tvPendingRequest = dialog.findViewById(R.id.tv_pending_request);
+
+            checkSelectedField();
+
+            tvAllJobs.setOnClickListener(this);
+            tvNewJobs.setOnClickListener(this);
+            tvPendingRequest.setOnClickListener(this);
             subCategorySpinner = dialog.findViewById(R.id.sub_category_spinner);
             recyclerView = dialog.findViewById(R.id.recycler_view);
             TextView tvCancel = dialog.findViewById(R.id.tv_cancel);
@@ -342,15 +408,17 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
                 @Override
                 public void onClick(View v) {
 
-                    if (subCategoryList.size() == 0) {
+                  /*  if (subCategoryList.size() == 0) {
                         Constant.snackBar(addSkillsLayout, "Please Select at least one Skill");
-                    } else {
+                    } else {*/
                         skillsString();
                         subCategoryAdapter.notifyDataSetChanged();
-                        filterLayout.setVisibility(View.VISIBLE);
                         helpOfferedApi();
                         dialog.dismiss();
-                    }
+                        if (subCategoryList.size() > 0){
+                            filterLayout.setVisibility(View.VISIBLE);
+                        }
+                   // }
 
                     //  skillDialogValidation(categorySpinner, addSkillsLayout);
                 }
@@ -361,6 +429,21 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
         } else {
             SubCategoryListApi();
         }
+    }
+
+    private void checkSelectedField() {
+        if (newJobValue.equals("new")){
+            inVactive();
+            tvNewJobs.setBackground(mContext.getResources().getDrawable(R.drawable.rounded_corner_green));
+            tvNewJobs.setTextColor(ContextCompat.getColor(mContext, R.color.colorGreen));
+
+        }else if (pendingRequestValue.equals("0")){
+            inVactive();
+            tvPendingRequest.setBackground(mContext.getResources().getDrawable(R.drawable.rounded_corner_green));
+            tvPendingRequest.setTextColor(ContextCompat.getColor(mContext, R.color.colorGreen));
+
+        }
+
     }
 
     @Override

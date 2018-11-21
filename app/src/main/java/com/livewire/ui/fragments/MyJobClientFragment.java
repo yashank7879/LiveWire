@@ -278,7 +278,7 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
             public void onClick(View v) {
                 dialog.dismiss();
                 if (cbPending.isChecked()){
-                    requestStatus = "0";
+                    requestStatus = "pending";
                 }
                 if (cbConfirm.isChecked()){
                     requestStatus = "1";
@@ -346,7 +346,7 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
                ivOnce.setBackground(getResources().getDrawable(R.drawable.inactive_btn_gray_bg));
            }
 
-           if (requestStatus.equals("0")) {
+           if (requestStatus.equals("pending")) {
                cbPending.setChecked(true);
            } else if (requestStatus.equals("1")) {
                cbConfirm.setChecked(true);

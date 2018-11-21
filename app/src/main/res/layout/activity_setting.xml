@@ -140,6 +140,7 @@
                 app:srcCompat="@drawable/ic_add_bank" />
 
             <TextView
+                android:id="@+id/tv_bank_account"
                 style="@style/SmallPopinsLightStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

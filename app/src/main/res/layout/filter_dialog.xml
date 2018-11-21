@@ -60,14 +60,13 @@
                 android:layout_marginTop="@dimen/_3sdp"
                 android:text="@string/all_jobs"
                 android:fontFamily="@font/poppins_light"
-                android:textColor="@color/colorDarkGray"
+                android:textColor="@color/colorGreen"
                 android:textSize="@dimen/_8sdp"
                 android:paddingTop="@dimen/_3sdp"
                 android:paddingBottom="@dimen/_3sdp"
                 android:paddingLeft="@dimen/_8sdp"
                 android:paddingRight="@dimen/_8sdp"
-                android:background="@drawable/rounded_corner_gray"
-
+                android:background="@drawable/rounded_corner_green"
                 />
 
             <TextView
@@ -78,12 +77,12 @@
                 android:text="@string/new_jobs"
                 android:fontFamily="@font/poppins_light"
                 android:textSize="@dimen/_8sdp"
-                android:background="@drawable/rounded_corner_green"
+                android:background="@drawable/rounded_corner_gray"
                 android:paddingTop="@dimen/_3sdp"
                 android:paddingBottom="@dimen/_3sdp"
                 android:paddingLeft="@dimen/_8sdp"
                 android:paddingRight="@dimen/_8sdp"
-                android:textColor="@color/colorGreen"
+                android:textColor="@color/colorDarkGray"
                 />
 
             <TextView
@@ -101,8 +100,11 @@
                 android:paddingLeft="@dimen/_8sdp"
                 android:paddingRight="@dimen/_8sdp"
                 />
+
         </LinearLayout>
+
         </LinearLayout>
+
         <TextView
             style="@style/SmallPopinsMediumStyle"
             android:layout_width="wrap_content"

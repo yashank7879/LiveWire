@@ -64,6 +64,7 @@ public class Constant {
     public static final int SELECT_VIDEO_REQUEST = 0;
     public static final int RECORD_AUDIO = 15;
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 13;
+    public static final boolean LOG_VALUE= true;
 
     public static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 12;
 
@@ -341,4 +342,12 @@ public class Constant {
         con.finish();
        con.overridePendingTransition(R.anim.slide_right_out, R.anim.slide_right_in);
     }
+
+    public static void printLogMethod(boolean value, String tag ,String msg ){
+        if (value){
+            Log.e(tag,msg);
+        }
+    }
+
+
 }

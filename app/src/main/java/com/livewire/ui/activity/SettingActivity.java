@@ -38,6 +38,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import static com.livewire.utils.ApiCollection.BASE_URL;
+import static com.livewire.utils.ApiCollection.USER_LOGOUT_API;
 
 public class SettingActivity extends AppCompatActivity implements View.OnClickListener {
     ActivitySettingBinding binding;
@@ -61,9 +62,13 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         binding.llPrivacyPolicy.setOnClickListener(this);
         binding.llLogout.setOnClickListener(this);
         binding.ivBack.setOnClickListener(this);
+        TextView tvBankAcc = findViewById(R.id.tv_bank_account);
 
         if (PreferenceConnector.readString(this, PreferenceConnector.USER_TYPE, "").equals("worker")) {// show Bank acc
-            binding.llAddBankAcc.setVisibility(View.VISIBLE);
+            if (PreferenceConnector.readString(this, PreferenceConnector.IS_BANK_ACC, "").equals("1")) {
+                tvBankAcc.setText("Edit BAnk Account");
+            }
+                binding.llAddBankAcc.setVisibility(View.VISIBLE);
             binding.rlAvailable.setVisibility(View.VISIBLE);
         } else if (PreferenceConnector.readString(this, PreferenceConnector.USER_TYPE, "").equals("client")) {// show credit card
             binding.llAddCreditCard.setVisibility(View.VISIBLE);
@@ -75,12 +80,13 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             binding.llChangePass.setVisibility(View.VISIBLE);
         }
 
+
         binding.btnSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b){// user available
+                if (b) {// user available
                     availablityUser("1");
-                }else {// user unavailable
+                } else {// user unavailable
                     availablityUser("0");
                 }
             }
@@ -95,6 +101,8 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 break;
 
             case R.id.ll_add_bank_acc:
+                Intent intent = new Intent(this, AddBankAccountActivity.class);
+                startActivity(intent);
                 break;
 
             case R.id.ll_about_us:
@@ -127,11 +135,8 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                PreferenceConnector.clear(SettingActivity.this);
-                Intent intent = new Intent(SettingActivity.this, UserSelectionActivity.class);
-                startActivity(intent);
-                finish();
-                SettingActivity.this.overridePendingTransition(R.anim.slide_right_out, R.anim.slide_right_in);
+                logoutApiCalling();
+
             }
         }).setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
@@ -140,6 +145,49 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             }
         }).show();
     }
+
+    private void logoutApiCalling() {
+
+        if (Constant.isNetworkAvailable(this, binding.settingMainLayout)) {
+            progressDialog.show();
+            AndroidNetworking.get(BASE_URL + USER_LOGOUT_API)
+                    .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
+                    .setPriority(Priority.MEDIUM)
+                    .build().getAsJSONObject(new JSONObjectRequestListener() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    progressDialog.dismiss();
+                    try {
+                        String status = response.getString("status");
+                        String message = response.getString("message");
+                        if (status.equals("success")) {
+
+                            PreferenceConnector.clear(SettingActivity.this);
+                            finishAffinity();
+                            Intent intent = new Intent(SettingActivity.this, UserSelectionActivity.class);
+                            startActivity(intent);
+                            finish();
+                            SettingActivity.this.overridePendingTransition(R.anim.slide_right_out, R.anim.slide_right_in);
+
+                        } else {
+
+                            Constant.snackBar(binding.settingMainLayout, message);
+                        }
+                    } catch (JSONException e) {
+                        Log.d("Exception", e.getMessage());
+                    }
+                }
+
+                @Override
+                public void onError(ANError anError) {
+                    Log.d("EXception", anError.getErrorDetail());
+                    progressDialog.dismiss();
+                }
+            });
+        }
+    }
+
+    //"""""""""' open dialog for change password """""""""""//
     private void openChnagePassDialog() {
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -248,12 +296,13 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
 
     }
 
+
     private void availablityUser(String s) {
         if (Constant.isNetworkAvailable(this, binding.settingMainLayout)) {
             progressDialog.show();
             AndroidNetworking.post(BASE_URL + "user/availability")
                     .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
-                    .addBodyParameter("availability",s)
+                    .addBodyParameter("availability", s)
                     .setPriority(Priority.MEDIUM)
                     .build().getAsJSONObject(new JSONObjectRequestListener() {
                 @Override

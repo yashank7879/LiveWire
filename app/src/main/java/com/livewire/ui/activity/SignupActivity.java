@@ -77,6 +77,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import static com.livewire.utils.ApiCollection.BASE_URL;
+import static com.livewire.utils.ApiCollection.USER_REGISTRATION_API;
 
 
 public class SignupActivity extends AppCompatActivity implements View.OnClickListener ,GoogleApiClient.OnConnectionFailedListener{
@@ -600,7 +601,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         if (Constant.isNetworkAvailable(this, mainLayout)) {
             progressDialog.show();
             //  progressBar.setVisibility(View.VISIBLE);
-            AndroidNetworking.upload(BASE_URL+"userRegistration")
+            AndroidNetworking.upload(BASE_URL+USER_REGISTRATION_API)
                     .addMultipartFile("profileImage", userImageFile)
                     .addMultipartParameter(model)
                     .setPriority(Priority.MEDIUM).build().getAsJSONObject(new JSONObjectRequestListener() {
@@ -702,7 +703,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         if (Constant.isNetworkAvailable(this, mainLayout)) {
             progressDialog.show();
             // progressBar.setVisibility(View.VISIBLE);
-            AndroidNetworking.post(BASE_URL+"userRegistration")
+            AndroidNetworking.post(BASE_URL+USER_REGISTRATION_API)
                     .addBodyParameter(model)
                     .setPriority(Priority.MEDIUM).
                     build().getAsJSONObject(new JSONObjectRequestListener() {

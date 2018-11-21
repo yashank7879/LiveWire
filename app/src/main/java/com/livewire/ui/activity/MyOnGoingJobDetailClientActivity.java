@@ -37,6 +37,8 @@ import org.json.JSONObject;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.livewire.utils.ApiCollection.BASE_URL;
+import static com.livewire.utils.ApiCollection.JOBPOSTSEND_GET_CLIENT_JOB_DETAIL_API;
+import static com.livewire.utils.ApiCollection.JOBPOSTSEND_GET_JOB_DETAIL_API;
 
 public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implements View.OnClickListener {
     ActivityMyOngoingJobDetailClientBinding binding;
@@ -49,7 +51,7 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_my_ongoing_job_detail_client);
         intializeView();
-        jobDetailApi();
+       // jobDetailApi();
     }
 
 
@@ -63,14 +65,7 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
             MyjobResponceClient.DataBean dataBean = (MyjobResponceClient.DataBean) getIntent().getSerializableExtra("MyJobDetail");
             setMyJobDetails(dataBean);
             binding.setDataBean(dataBean);
-           // binding.tvCategory.setText(dataBean.getParent_category());
-           // binding.tvSubCategory.setText(dataBean.getSub_category());
-           // binding.tvOfferPrice.setText("$ " + dataBean.getJob_offer());
-          ///  binding.tvStartDate.setText(dataBean.getJob_start_date());
-          //  binding.tvEndDate.setText(dataBean.getJob_end_date());
-          //  binding.tvWeekDays.setText(dataBean.getJob_week_days());
-          //  binding.tvDescription.setText(dataBean.getJob_description());
-          //  binding.tvTimeDuration.setText(dataBean.getJob_time_duration() + " hr");
+
             binding.tvTime.setText(Constant.getDayDifference(dataBean.getCrd(), dataBean.getCurrentDateTime()));
         }
     }
@@ -113,7 +108,6 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
                             binding.tvJobStatus.setBackground(getResources().getDrawable(R.drawable.doteted_balck_shape));
                             binding.tvJobStatus.setTextColor(ContextCompat.getColor(this, R.color.colorDarkBlack));
                         }
-
                         break;
                     case "1":  //request_confirmed job
                         if (dataBean.getRequestedUserData().get(0).getRequest_status().equals("1")) {
@@ -179,10 +173,10 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
         }
     }
 
-    private void jobDetailApi() {
+   /* private void jobDetailApi() {
         if (Constant.isNetworkAvailable(this, binding.detailMainLayout)) {
             progressDialog.show();
-            AndroidNetworking.post(BASE_URL + "Jobpost/getJobDetail")
+            AndroidNetworking.post(BASE_URL + JOBPOSTSEND_GET_CLIENT_JOB_DETAIL_API)
                     .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
                     .addBodyParameter("job_id")
                     .addBodyParameter("job_type")
@@ -216,6 +210,6 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
                         }
                     });
         }
-    }
+    }*/
 }
 

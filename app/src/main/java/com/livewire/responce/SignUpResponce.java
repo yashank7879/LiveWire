@@ -1,10 +1,12 @@
 package com.livewire.responce;
 
+import java.io.Serializable;
+
 /**
  * Created by mindiii on 9/17/18.
  */
 
-public class SignUpResponce {
+public class SignUpResponce implements Serializable {
     /**
      * status : success
      * message : Registration successfully done
@@ -45,7 +47,7 @@ public class SignUpResponce {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable{
         /**
          * userId : 22
          * name : yash
@@ -86,6 +88,9 @@ public class SignUpResponce {
         private String town = "";
         private String totalIncome ="";
         private String profileImage ="";
+        private String latitude ="";
+        private String longitude ="";
+        private String is_bank_account ="";
 
         public String getUserId() {
             return userId;
@@ -253,6 +258,30 @@ public class SignUpResponce {
 
         public void setProfileImage(String profileImage) {
             this.profileImage = profileImage;
+        }
+
+        public String getLatitude() {
+            return latitude;
+        }
+
+        public void setLatitude(String latitude) {
+            this.latitude = latitude;
+        }
+
+        public String getLongitude() {
+            return longitude;
+        }
+
+        public void setLongitude(String longitude) {
+            this.longitude = longitude;
+        }
+
+        public String getIs_bank_account() {
+            return is_bank_account;
+        }
+
+        public void setIs_bank_account(String is_bank_account) {
+            this.is_bank_account = is_bank_account;
         }
     }
 }

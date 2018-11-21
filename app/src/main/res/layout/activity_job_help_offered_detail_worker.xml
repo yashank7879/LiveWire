@@ -6,6 +6,8 @@
         <variable
             name="jobDetail"
             type="com.livewire.responce.HelpOfferedResponce.DataBean"/>
+
+
     </data>
 <RelativeLayout
     android:layout_width="match_parent"
@@ -91,11 +93,13 @@
                 android:layout_below="@+id/tv_posted_by"
                 android:layout_toEndOf="@+id/iv_profile_img"
                 android:fontFamily="@font/poppins_semibold"
-                android:text='@{jobDetail.name, default= "N/A"}'                android:textColor="@color/colorDarkBlack"
+                android:text='@{  jobDetail.name, default= "N/A"}'
+                android:textColor="@color/colorDarkBlack"
                 android:textSize="@dimen/_12sdp" />
 
             <RatingBar
                 android:id="@+id/rating_bar"
+                android:theme="@style/RatingBarTheme"
                 style="@style/Widget.AppCompat.RatingBar.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -118,7 +122,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_medium"
-                    android:text="1 km away"
+                    android:text='@{jobDetail.distance_in_km + " Km away" , default = "N/A"}'
                     android:textColor="@color/colorDarkGray"
                     android:textSize="@dimen/_9sdp" />
 
@@ -329,6 +333,22 @@
                 android:textAllCaps="false"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/_10sdp" />
+
+            <Button
+                android:id="@+id/btn_dilog"
+                style="@style/smallPopinsRegularStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_below="@id/btn_send_request"
+                android:layout_centerInParent="true"
+                android:layout_margin="@dimen/_15sdp"
+                android:background="@drawable/button_green_bg"
+                android:text="open review dialog"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_10sdp"
+                android:visibility="gone"
+                />
 
         </RelativeLayout>
 

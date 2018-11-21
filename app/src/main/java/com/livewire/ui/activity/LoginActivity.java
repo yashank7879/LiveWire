@@ -67,6 +67,9 @@ import java.security.NoSuchAlgorithmException;
 import cz.msebera.android.httpclient.extras.Base64;
 
 import static com.livewire.utils.ApiCollection.BASE_URL;
+import static com.livewire.utils.ApiCollection.FORGOT_PASSWORD_API;
+import static com.livewire.utils.ApiCollection.USER_LOGIN_API;
+import static com.livewire.utils.ApiCollection.USER_REGISTRATION_API;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
     private static final String TAG = LoginActivity.class.getName();
@@ -330,32 +333,36 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (Constant.isNetworkAvailable(this, forgot_layout)) {
             progressDialog.show();
             // progressBar1.setVisibility(View.VISIBLE);
-            AndroidNetworking.post(BASE_URL + "forgotPassword").addBodyParameter("email", email).setPriority(Priority.MEDIUM).build().getAsJSONObject(new JSONObjectRequestListener() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    progressDialog.dismiss();
-                    //progressBar1.setVisibility(View.GONE);
-                    String status = null;
-                    try {
-                        status = response.getString("status");
-                        String message = response.getString("message");
-                        if (status.equals("success")) {
-                            Toast.makeText(LoginActivity.this, "Password sent to your email successfully", Toast.LENGTH_SHORT).show();
-                            dialog.dismiss();
-                        } else {
-                            Constant.snackBar(forgot_layout, message);
+            AndroidNetworking.post(BASE_URL + FORGOT_PASSWORD_API)
+                    .addBodyParameter("email", email)
+                    .setPriority(Priority.MEDIUM)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            progressDialog.dismiss();
+                            //progressBar1.setVisibility(View.GONE);
+                            String status = null;
+                            try {
+                                status = response.getString("status");
+                                String message = response.getString("message");
+                                if (status.equals("success")) {
+                                    Toast.makeText(LoginActivity.this, "Password sent to your email successfully", Toast.LENGTH_SHORT).show();
+                                    dialog.dismiss();
+                                } else {
+                                    Constant.snackBar(forgot_layout, message);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
 
-                @Override
-                public void onError(ANError anError) {
-                    dialog.dismiss();
-                    Log.e(TAG, anError.getErrorDetail());
-                }
-            });
+                        @Override
+                        public void onError(ANError anError) {
+                            dialog.dismiss();
+                            Log.e(TAG, anError.getErrorDetail());
+                        }
+                    });
         }
     }
 
@@ -408,7 +415,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (Constant.isNetworkAvailable(this, mainLayout)) {
             progressDialog.show();
             // progressBar.setVisibility(View.VISIBLE);
-            AndroidNetworking.post(BASE_URL + "userRegistration")
+            AndroidNetworking.post(BASE_URL + USER_REGISTRATION_API)
                     .addBodyParameter(model)
                     .setPriority(Priority.MEDIUM).
                     build().getAsJSONObject(new JSONObjectRequestListener() {
@@ -524,7 +531,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             progressDialog.show();
             // progressBar.setVisibility(View.VISIBLE);
             //  AndroidNetworking.post("http://dev.mindiii.com/livewire/service/userLogin")
-            AndroidNetworking.post(BASE_URL + "userLogin")
+            AndroidNetworking.post(BASE_URL + USER_LOGIN_API)
                     .addBodyParameter(model)
                     .setPriority(Priority.MEDIUM)
                     .build()
@@ -544,6 +551,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.COMPLETE_PROFILE_STATUS, userResponce.getData().getCompleteProfile());
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.PASS_WORD, etPass.getText().toString());
+                                    PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.IS_BANK_ACC, userResponce.getData().getIs_bank_account());
 
                                     if (isremember) {// if remember email and password
                                         if (userResponce.getData().getUserType().equals("worker")) {

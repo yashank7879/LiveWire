@@ -6,19 +6,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.RatingBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+
 import com.livewire.R;
 import com.livewire.databinding.ActivityJobHelpOfferedDetailWorkerBinding;
 import com.livewire.responce.HelpOfferedResponce;
+import com.livewire.ui.dialog.ReviewDialog;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
 import com.livewire.utils.ProgressDialog;
@@ -32,7 +30,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.livewire.utils.ApiCollection.BASE_URL;
 
@@ -46,7 +43,7 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-      binding =  DataBindingUtil.setContentView(this, R.layout.activity_job_help_offered_detail_worker);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_job_help_offered_detail_worker);
         intializeViews();
 
         if (getIntent().getSerializableExtra("JobIdKey") != null) {
@@ -74,15 +71,16 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
         btnSendRequest = findViewById(R.id.btn_send_request);*/
         binding.btnSendRequest.setOnClickListener(this);
         findViewById(R.id.iv_back).setOnClickListener(this);
+        binding.btnDilog.setOnClickListener(this);
 
     }
 
-  /*  private void jobDetailApi(HelpOfferedResponce.DataBean jobDetail) {
-        if (Constant.isNetworkAvailable(this,mainLayout)){
+  /*  private void getJobDetailApi(String reference_id) {
+        if (Constant.isNetworkAvailable(this, binding.detailMainLayout)) {
             progressDialog.show();
-            AndroidNetworking.post(BASE_URL+"Jobpost/getJobDetail")
-                    .addBodyParameter("job_id",jobId)
-                    .addBodyParameter("job_type","1")
+            AndroidNetworking.post(BASE_URL + "Jobpost/getJobDetail")
+                    .addBodyParameter("job_id", jobId)
+                    .addBodyParameter("job_type", "1")
                     .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
                     .setPriority(Priority.MEDIUM)
                     .build()
@@ -95,10 +93,11 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
                                 status = response.getString("status");
                                 String message = response.getString("message");
                                 if (status.equals("success")) {
-                                    JobDetailWorkerResponce workerResponce = new Gson().fromJson(String.valueOf(response),JobDetailWorkerResponce.class);
-                                    setWorkerDataResponce(workerResponce);
-                                }else {
-                                    Constant.snackBar(mainLayout,message);
+                                    JobDetailWorkerResponce workerResponce = new Gson().fromJson(String.valueOf(response), JobDetailWorkerResponce.class);
+                                  //  binding.setJobDetailFromApi(workerResponce.getData());
+
+                                } else {
+                                    Constant.snackBar(binding.detailMainLayout, message);
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -108,7 +107,7 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
 
                         @Override
                         public void onError(ANError anError) {
-                        progressDialog.dismiss();
+                            progressDialog.dismiss();
                         }
                     });
         }
@@ -182,8 +181,24 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
             case R.id.iv_back:
                 onBackPressed();
                 break;
+            case R.id.btn_dilog:
+                openReviewDialog();
+                break;
             default:
         }
+    }
+
+    private void openReviewDialog() {
+        final ReviewDialog dialog = new ReviewDialog();
+        dialog.show(getSupportFragmentManager(), "");
+        dialog.setCancelable(true);
+        dialog.getReviewInfo(new ReviewDialog.ReviewDialogListner() {
+            @Override
+            public void onReviewOnClick(String text) {
+                dialog.dismiss();
+                Toast.makeText(JobHelpOfferedDetailWorkerActivity.this, text, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     //"""""""""""  send request to
@@ -224,5 +239,7 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
             });
         }
     }
+
+
 }
 

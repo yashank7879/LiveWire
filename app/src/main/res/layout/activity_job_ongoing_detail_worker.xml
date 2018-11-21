@@ -8,7 +8,7 @@
             name="workerResponcd"
             type="com.livewire.responce.OnGoingWorkerResponce.DataBean"/>
 
-    </data> 
+          </data>
 <ScrollView
     android:id="@+id/detail_main_layout"
     android:layout_width="match_parent"
@@ -105,12 +105,14 @@
                         android:layout_toEndOf="@+id/iv_profile_img"
                         android:fontFamily="@font/poppins_semibold"
                         android:singleLine="true"
-                        android:text='@{workerResponcd.name, default= "N/A"}'
+                        android:text='@{workerResponcd != null ? workerResponcd.name : "N/A", default = "N/A"}'
+
                         android:textColor="@color/colorDarkBlack"
                         android:textSize="@dimen/_12sdp" />
 
                     <RatingBar
                         android:id="@+id/rating_bar"
+                        android:theme="@style/RatingBarTheme"
                         style="@style/Widget.AppCompat.RatingBar.Small"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -133,7 +135,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_medium"
-                            android:text="1 km away"
+                            android:text='@{workerResponcd != null ? workerResponcd.distance_in_km + " Km away" : "N/A", default = "N/A"}'
                             android:textColor="@color/colorDarkGray"
                             android:textSize="@dimen/_9sdp" />
 
@@ -308,7 +310,7 @@
                         android:layout_alignBaseline="@id/tv_offer_rate"
                         android:layout_toEndOf="@id/tv_offer_rate"
                         android:fontFamily="@font/poppins_semibold"
-                        android:text='@{"$ "+workerResponcd.job_offer_rate,default = "N/A"}'
+                        android:text='@{workerResponcd != null ? "$ "+workerResponcd.job_offer_rate : "N/A",default = "N/A"}'
                         android:textColor="@color/colorDarkBlack"
                         android:textSize="@dimen/_12sdp" />
 
@@ -434,7 +436,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/start_date"
-                        android:text='@{workerResponcd.job_start_date,default = "N/A"}'
+                        android:text='@{workerResponcd != null ? workerResponcd.job_start_date : "N/A",default = "N/A"}'
                         android:textColor="@color/colorDarkGray" />
 
                     <TextView
@@ -458,7 +460,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_below="@+id/end_date"
                         android:layout_marginEnd="@dimen/_8sdp"
-                        android:text='@{workerResponcd.job_end_date,default = "N/A"}'
+                        android:text='@{workerResponcd != null ? workerResponcd.job_end_date : "N/A",default = "N/A"}'
                         android:textColor="@color/colorDarkGray" />
 
                     <TextView
@@ -478,7 +480,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/week_days"
-                        android:text='@{workerResponcd.job_week_days,default = "N/A"}'
+                        android:text='@{workerResponcd != null ? workerResponcd.job_week_days : "N/A",default = "N/A"}'
                         android:textColor="@color/colorDarkGray" />
 
                     <TextView
@@ -499,7 +501,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/time_duration"
                         android:layout_marginBottom="@dimen/_5sdp"
-                        android:text='@{workerResponcd.job_time_duration + " hr",default = "N/A"}'
+                        android:text='@{workerResponcd != null ? workerResponcd.job_time_duration + " hr" : "N/A",default = "N/A"}'
                         android:textColor="@color/colorDarkGray" />
 
                 </RelativeLayout>
@@ -523,7 +525,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/description"
                     android:layout_marginEnd="@dimen/_8sdp"
-                    android:text='@{workerResponcd.job_description,default = "N/A"}'
+                    android:text='@{workerResponcd != null ?  workerResponcd.job_description : "N/A" ,default = "N/A"}'
                     android:textSize="@dimen/_10sdp" />
 
                 <!--          <Button

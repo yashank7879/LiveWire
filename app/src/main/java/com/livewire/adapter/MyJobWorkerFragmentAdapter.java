@@ -8,6 +8,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+
+import com.livewire.ui.fragments.ConfirmJobWorkerFragment;
 import com.livewire.ui.fragments.HelpOfferedWorkerFragment;
 
 
@@ -36,9 +38,9 @@ public class MyJobWorkerFragmentAdapter extends FragmentPagerAdapter {
                 view = new View(activity);
             }
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-            return new HelpOfferedWorkerFragment();
+            return new ConfirmJobWorkerFragment();
         } else
-            return new HelpOfferedWorkerFragment();
+            return new ConfirmJobWorkerFragment();
     }
 
     @Override

@@ -108,6 +108,7 @@ import cz.msebera.android.httpclient.entity.mime.content.FileBody;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.livewire.utils.ApiCollection.BASE_URL;
+import static com.livewire.utils.ApiCollection.GET_CATEGORY_LIST_API;
 import static com.livewire.utils.Constant.MY_PERMISSIONS_REQUEST_CAMERA;
 import static com.livewire.utils.Constant.MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE;
 import static com.livewire.utils.Constant.RECORD_AUDIO;
@@ -234,7 +235,7 @@ public class CompleteProfileActivity extends AppCompatActivity implements View.O
     private void loadSkillsData() {
         if (Constant.isNetworkAvailable(this, binding.mainLayout)) {
             progressDialog.show();
-            AndroidNetworking.get(BASE_URL + "getCategoryList")
+            AndroidNetworking.get(BASE_URL + GET_CATEGORY_LIST_API)
                     .setPriority(Priority.MEDIUM)
                     .build().getAsJSONObject(new JSONObjectRequestListener() {
                 @Override
