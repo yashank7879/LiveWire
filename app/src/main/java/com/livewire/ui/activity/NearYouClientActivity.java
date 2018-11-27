@@ -120,8 +120,8 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
             AndroidNetworking.post(BASE_URL + "Jobpost/getNearByWorker")
                     .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
                     .addBodyParameter("job_id", jobId)
-                    .addBodyParameter("limit", ""+limit)
-                    .addBodyParameter("start", ""+start)
+                    .addBodyParameter("limit", String.valueOf(limit))
+                    .addBodyParameter("start", String.valueOf(start))
                     .setPriority(Priority.MEDIUM)
                     .build().getAsJSONObject(new JSONObjectRequestListener() {
                 @Override

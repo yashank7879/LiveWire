@@ -10,16 +10,20 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RatingBar;
+import android.widget.Toast;
 
 import com.livewire.R;
 import com.livewire.databinding.DialogReviewBinding;
 import com.livewire.utils.Constant;
+import com.livewire.utils.Validation;
 
 /**
  * Created by mindiii on 11/15/18.
  */
 
-public class ReviewDialog extends DialogFragment implements View.OnClickListener {
+public class ReviewDialog extends DialogFragment implements View.OnClickListener ,RatingBar.OnRatingBarChangeListener{
     DialogReviewBinding binding;
     ReviewDialogListner listner;
     private Context mContext;
@@ -38,6 +42,9 @@ public class ReviewDialog extends DialogFragment implements View.OnClickListener
         super.onViewCreated(view, savedInstanceState);
         binding.btnSubmit.setOnClickListener(this);
         binding.tvCancel.setOnClickListener(this);
+        binding.ratingBar.setOnRatingBarChangeListener(this);
+       // Toast.makeText(mContext, ""+binding.ratingBar.getRating(), Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
@@ -52,7 +59,8 @@ public class ReviewDialog extends DialogFragment implements View.OnClickListener
         switch (view.getId()){
             case R.id.btn_submit:
                 Constant.hideSoftKeyBoard(mContext,binding.etDemo);
-                listner.onReviewOnClick(binding.etDemo.getText().toString().trim());
+                reviewValidations();
+
                 break;
             case R.id.tv_cancel:
                 Constant.hideSoftKeyBoard(mContext,binding.etDemo);
@@ -67,7 +75,24 @@ public class ReviewDialog extends DialogFragment implements View.OnClickListener
 
     }
 
+    private void reviewValidations() {
+       if (Validation.isEmpty(binding.etDemo)){
+            Constant.snackBar(binding.reviewLayout,"Please Write comment.");
+        }else if (binding.ratingBar.getRating() == 0.0){
+           Constant.snackBar(binding.reviewLayout,"Please Give Rating.");
+       }
+        else {
+           listner.onReviewOnClick(binding.etDemo.getText().toString().trim(),binding.ratingBar.getRating(),binding.reviewLayout);
+       }
+    }
+
+    @Override
+    public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+
+        Toast.makeText(mContext, ""+v, Toast.LENGTH_SHORT).show();
+    }
+
     public interface ReviewDialogListner{
-      void onReviewOnClick(String text);
+      void onReviewOnClick(String text, float rating, LinearLayout layout);
     }
 }

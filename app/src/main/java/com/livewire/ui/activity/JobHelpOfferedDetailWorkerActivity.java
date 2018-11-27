@@ -1,11 +1,13 @@
 package com.livewire.ui.activity;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
@@ -32,6 +34,7 @@ import java.util.Date;
 
 
 import static com.livewire.utils.ApiCollection.BASE_URL;
+import static com.livewire.utils.ApiCollection.JOBPOSTSEND_REQUEST_2_API;
 
 public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implements View.OnClickListener {
     ActivityJobHelpOfferedDetailWorkerBinding binding;
@@ -194,18 +197,58 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
         dialog.setCancelable(true);
         dialog.getReviewInfo(new ReviewDialog.ReviewDialogListner() {
             @Override
-            public void onReviewOnClick(String text) {
-                dialog.dismiss();
-                Toast.makeText(JobHelpOfferedDetailWorkerActivity.this, text, Toast.LENGTH_SHORT).show();
+            public void onReviewOnClick(String description, float rating, LinearLayout layout) {
+
+                giveReviewApi(description,rating,dialog,layout);
+               // dialog.dismiss();
+
+                Toast.makeText(JobHelpOfferedDetailWorkerActivity.this, description +" rating: "+rating, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void giveReviewApi(String description, float rating, final ReviewDialog dialog, final LinearLayout layout) {
+        if (Constant.isNetworkAvailable(this,layout)){
+            progressDialog.show();
+            AndroidNetworking.post(BASE_URL + "user/addReview")
+                    .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
+                    .addBodyParameter("review_to", userId)
+                    .addBodyParameter("job_id", jobId )
+                    .addBodyParameter("rating", ""+rating)
+                    .addBodyParameter("description", description)
+                    .setPriority(Priority.MEDIUM)
+                    .build().getAsJSONObject(new JSONObjectRequestListener() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        progressDialog.dismiss();
+                        String status = response.getString("status");
+                        String message = response.getString("message");
+                        if (status.equals("success")) {
+                            dialog.dismiss();
+                          //  Constant.snackBar(binding.detailMainLayout, message);
+                        } else {
+                            Constant.snackBar(layout, message);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onError(ANError anError) {
+                    progressDialog.dismiss();
+                }
+            });
+        }
+
     }
 
     //"""""""""""  send request to
     private void sendRequestApi() {
         if (Constant.isNetworkAvailable(this, binding.detailMainLayout)) {
             progressDialog.show();
-            AndroidNetworking.post(BASE_URL + "Jobpost/sendRequest2")
+            AndroidNetworking.post(BASE_URL + JOBPOSTSEND_REQUEST_2_API)
                     .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
                     .addBodyParameter("job_id", jobId)
                     .addBodyParameter("request_to", userId)

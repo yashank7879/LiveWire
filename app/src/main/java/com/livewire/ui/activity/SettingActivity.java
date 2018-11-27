@@ -63,12 +63,13 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         binding.llLogout.setOnClickListener(this);
         binding.ivBack.setOnClickListener(this);
         TextView tvBankAcc = findViewById(R.id.tv_bank_account);
+        binding.llAddCreditCard.setOnClickListener(this);
 
         if (PreferenceConnector.readString(this, PreferenceConnector.USER_TYPE, "").equals("worker")) {// show Bank acc
             if (PreferenceConnector.readString(this, PreferenceConnector.IS_BANK_ACC, "").equals("1")) {
-                tvBankAcc.setText("Edit BAnk Account");
+                tvBankAcc.setText(R.string.edit_bank_account);
             }
-                binding.llAddBankAcc.setVisibility(View.VISIBLE);
+            binding.llAddBankAcc.setVisibility(View.VISIBLE);
             binding.rlAvailable.setVisibility(View.VISIBLE);
         } else if (PreferenceConnector.readString(this, PreferenceConnector.USER_TYPE, "").equals("client")) {// show credit card
             binding.llAddCreditCard.setVisibility(View.VISIBLE);
@@ -79,7 +80,6 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         } else {
             binding.llChangePass.setVisibility(View.VISIBLE);
         }
-
 
         binding.btnSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -95,13 +95,14 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onClick(View view) {
+        Intent intent = null;
         switch (view.getId()) {
             case R.id.ll_change_pass:
                 openChnagePassDialog();
                 break;
 
             case R.id.ll_add_bank_acc:
-                Intent intent = new Intent(this, AddBankAccountActivity.class);
+                intent = new Intent(this, AddBankAccountActivity.class);
                 startActivity(intent);
                 break;
 
@@ -122,6 +123,10 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.iv_back:
                 onBackPressed();
                 break;
+            case R.id.ll_add_credit_card:
+                intent = new Intent(this, AddCreditCardActivity.class);
+                startActivity(intent);
+                break;
             default:
 
         }
@@ -136,14 +141,16 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 logoutApiCalling();
-
             }
         }).setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
-        }).show();
+        });
+        AlertDialog dialog = builder.create();
+        dialog.getWindow().getAttributes().windowAnimations = R.style.CustomDialog;
+        dialog.show();
     }
 
     private void logoutApiCalling() {

@@ -133,7 +133,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         NotificationChannel mChannel = null;
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, channelId)
-                .setSmallIcon(R.drawable.livelogo)
+                .setSmallIcon(R.drawable.ic_notify_icon_blk)
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.livelogo))
                 .setContentTitle(tittle)
                 .setContentText(message)

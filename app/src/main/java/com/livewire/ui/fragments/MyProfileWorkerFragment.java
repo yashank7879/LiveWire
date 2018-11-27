@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.livewire.utils.ApiCollection.BASE_URL;
+import static com.livewire.utils.ApiCollection.GET_MY_PROFILE_API;
 
 
 public class MyProfileWorkerFragment extends Fragment implements View.OnClickListener {
@@ -108,7 +109,7 @@ public class MyProfileWorkerFragment extends Fragment implements View.OnClickLis
     private void myProfileApi() {// help offer api calling
         if (Constant.isNetworkAvailable(mContext, binding.svProfile)) {
             progressDialog.show();
-            AndroidNetworking.get(BASE_URL + "user/getMyProfile")
+            AndroidNetworking.get(BASE_URL + GET_MY_PROFILE_API)
                     .addHeaders("authToken", PreferenceConnector.readString(mContext, PreferenceConnector.AUTH_TOKEN, ""))
                     .setPriority(Priority.MEDIUM)
                     .build()

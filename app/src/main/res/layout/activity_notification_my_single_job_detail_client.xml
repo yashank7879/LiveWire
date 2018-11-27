@@ -179,7 +179,7 @@
                             android:layout_below="@+id/fl_multi_img"
                             android:text="@string/n_a"
                             android:textColor="@color/colorDarkGray"
-                            android:visibility="visible"
+                            android:visibility='@{jobDetail.total_request.equals("0") ? View.GONE  : View.VISIBLE, default = gone}'
                             android:textSize="@dimen/_11sdp"
                             android:layout_marginBottom="@dimen/_8sdp"/>
 
@@ -313,7 +313,7 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:fontFamily="@font/poppins_semibold"
-                        android:text='@{jobDetail.parent_category ,default= "N/A"}'
+                        android:text='@{jobDetail.sub_category ,default= "N/A"}'
                         android:textColor="@color/colorDarkBlack"
                         android:textSize="@dimen/_12sdp" />
 
@@ -347,7 +347,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_category"
                         android:layout_gravity="center"
-                        android:text='@{jobDetail.sub_category ,default= "N/A"}'
+                        android:text='@{jobDetail.parent_category ,default= "N/A"}'
                         android:textColor="@color/colorDarkGray" />
 
 

@@ -50,6 +50,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.livewire.utils.ApiCollection.BASE_URL;
+import static com.livewire.utils.ApiCollection.GET_MY_JOB_LIST_API;
 
 
 public class MyJobClientFragment extends Fragment implements View.OnClickListener, MyJobAdapter.OnClickMoreInfoListener {
@@ -169,7 +170,7 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
     private void myJobListApi() {// help offer api calling
         if (Constant.isNetworkAvailable(mContext, mainLayout)) {
             progressDialog.show();
-            AndroidNetworking.post(BASE_URL + "Jobpost/getMyJobList")
+            AndroidNetworking.post(BASE_URL + GET_MY_JOB_LIST_API)
                     .addHeaders("authToken", PreferenceConnector.readString(mContext, PreferenceConnector.AUTH_TOKEN, ""))
                     .addBodyParameter("job_type", jobType)
                     .addBodyParameter("request_status", requestStatus)

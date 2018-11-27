@@ -23,6 +23,7 @@ public class PreferenceConnector {
     public static final String AUTH_TOKEN = "AuthToken1";
     public static final String USER_TYPE = "userType";
     public static final String USER_INFO_JSON = "userInfoJson";
+    public static final String STRIPE_CUSTOMER_ID = "StripeCustomer";
 
     public static final String REM_LOGIN_INFO = "LoginInfo";
 

@@ -52,8 +52,8 @@ public class NearYouAdapter extends RecyclerView.Adapter<NearYouAdapter.MyViewHo
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         if (nearYouList != null) {
             NearYouResponce.DataBean data = nearYouList.get(position);
-            holder.tvCategory.setText(data.getParent_category());
-            holder.tvSubcategory.setText(data.getCategory_name());
+            holder.tvCategory.setText(data.getCategory_name());
+            holder.tvSubcategory.setText(data.getParent_category());
             holder.tvName.setText(data.getName());
             Picasso.with(holder.ivProfileImg.getContext()).load(data.getProfileImage()).into(holder.ivProfileImg);
             holder.tvDistance.setText(data.getDistance_in_km() + " Km away");

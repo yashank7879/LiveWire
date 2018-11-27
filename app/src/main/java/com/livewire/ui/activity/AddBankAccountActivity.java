@@ -235,6 +235,7 @@ public class AddBankAccountActivity extends AppCompatActivity implements View.On
                                 if (status.equals("success")) {
                                     BankAccDetailResponce bankAccDetailResonce = new Gson().fromJson(String.valueOf(response), BankAccDetailResponce.class);
                                     setBankDetail(bankAccDetailResonce);
+                                    PreferenceConnector.writeString(AddBankAccountActivity.this, PreferenceConnector.IS_BANK_ACC, "1");
                                     binding.tvContent.setVisibility(View.GONE);
                                     binding.payNow.setText(R.string.update_bank_details);
                                 } else {

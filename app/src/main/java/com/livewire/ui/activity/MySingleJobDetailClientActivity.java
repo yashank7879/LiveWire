@@ -1,6 +1,7 @@
 package com.livewire.ui.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -34,42 +35,52 @@ public class MySingleJobDetailClientActivity extends AppCompatActivity implement
     private static final String TAG = MySingleJobDetailClientActivity.class.getName();
 
     private ProgressDialog progressDialog;
+    private String JobId="";
+    private String usetId="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       binding = DataBindingUtil.setContentView(this,R.layout.activity_my_single_job_detail_client);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_my_single_job_detail_client);
         intializeView();
-        jobDetailApi();
+       // jobDetailApi();
     }
 
     private void intializeView() {
         progressDialog = new ProgressDialog(this);
         binding.ivBack.setOnClickListener(this);
+        binding.flMultiImg.setOnClickListener(this);
 
         if (getIntent().getSerializableExtra("MyJobDetail") != null) {
             MyjobResponceClient.DataBean dataBean = (MyjobResponceClient.DataBean) getIntent().getSerializableExtra("MyJobDetail");
             setMyJobDetails(dataBean);
             binding.setJobDetail(dataBean);
 
-            binding.tvCategory.setText(dataBean.getParent_category());
-            binding.tvSubCategory.setText(dataBean.getSub_category());
-            binding.tvBudgetPrice.setText("$ "+dataBean.getJob_budget());
+            binding.tvCategory.setText(dataBean.getSub_category());
+            binding.tvSubCategory.setText(dataBean.getParent_category());
+            binding.tvBudgetPrice.setText("$ " + dataBean.getJob_budget());
             binding.tvDescription.setText(dataBean.getJob_description());
-            binding.tvTime.setText(Constant.getDayDifference(dataBean.getCrd(),dataBean.getCurrentDateTime()));
+            binding.tvTime.setText(Constant.getDayDifference(dataBean.getCrd(), dataBean.getCurrentDateTime()));
+
+
+            binding.tvDate1.setText(Constant.DateFomatChange(dataBean.getJob_start_date()).substring(0, 2) + " ");
+            binding.tvDateMonth.setText(Constant.DateFomatChange(dataBean.getJob_start_date()).substring(3));
         }
     }
 
     private void setMyJobDetails(MyjobResponceClient.DataBean dataBean) {
         if (dataBean.getJob_type().equals("1")) {/// """"""" SINGLE JOB
+            JobId = dataBean.getJobId();
+            usetId = dataBean.getUserId();
+
             if (dataBean.getTotal_request().equals("0")) {   // no requested yet
 
-               /*// binding.tvNoRequest.setVisibility(View.VISIBLE);
+                //*//*
+                binding.tvNoRequest.setVisibility(View.VISIBLE);
                 binding.rlUserData.setVisibility(View.GONE);
                 binding.rlMultiImg.setVisibility(View.GONE);
-             //   binding.llChat.setVisibility(View.GONE);*/
-
-            } else if (dataBean.getTotal_request().equals("1") && dataBean.getJob_confirmed().equals("1")) { // jobconfirmed
+                //   binding.llChat.setVisibility(View.GONE);
+            } else if (/*dataBean.getTotal_request().equals("1") &&*/ dataBean.getJob_confirmed().equals("1")) { // jobconfirmed
 
                 binding.rlUserData.setVisibility(View.VISIBLE);
                 binding.llChat.setVisibility(View.VISIBLE);
@@ -78,10 +89,10 @@ public class MySingleJobDetailClientActivity extends AppCompatActivity implement
 
                 Picasso.with(binding.ivProfileImg.getContext())
                         .load(dataBean.getRequestedUserData()
-                        .get(0).getProfileImage()).fit().into(binding.ivProfileImg);
+                                .get(0).getProfileImage()).fit().into(binding.ivProfileImg);
 
                 binding.tvName.setText(dataBean.getName());
-                binding.tvDistance.setText(dataBean.getRequestedUserData().get(0).getDistance_in_km()+" Km away");
+                binding.tvDistance.setText(dataBean.getRequestedUserData().get(0).getDistance_in_km() + " Km away");
 
 
             } else {   // multiple images show
@@ -90,19 +101,21 @@ public class MySingleJobDetailClientActivity extends AppCompatActivity implement
                 binding.rlUserData.setVisibility(View.GONE);
                 binding.tvNoRequest.setVisibility(View.GONE);
                 binding.llChat.setVisibility(View.GONE);
-                binding.tvMemberRequested.setText(dataBean.getTotal_request()+" "+getString(R.string.member_requested));
+                binding.tvMemberRequested.setText(dataBean.getTotal_request() + " " + getString(R.string.member_requested));
 
                 int leftMargin = 0;
                 for (int i = 0; i < dataBean.getRequestedUserData().size(); i++) {
-                    if (i!=0) {
+                    if (i != 0) {
                         leftMargin = leftMargin + 35;
                     }
                     addhorizontalTimeView(binding.flMultiImg, dataBean.getRequestedUserData().get(i).getProfileImage(), leftMargin);
                 }
 
-            }
 
+
+            }
         }
+    }
 
 
 
@@ -122,7 +135,6 @@ public class MySingleJobDetailClientActivity extends AppCompatActivity implement
             }
 
             }*/
-    }
 
 
     //""""""""""  add image at run time """""""""""""//
@@ -152,6 +164,12 @@ public class MySingleJobDetailClientActivity extends AppCompatActivity implement
         switch (v.getId()) {
             case R.id.iv_back:
                 onBackPressed();
+                break;
+            case R.id.fl_multi_img:
+                Intent intent = new Intent(this, RequestClientActivity.class);
+                intent.putExtra("UserId", usetId);
+                intent.putExtra("JobId", JobId);
+                startActivity(intent);
                 break;
             default:
         }

@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
@@ -55,10 +56,13 @@ public class NotificationJobHelpOfferedDetailWorkerActivity extends AppCompatAct
             if (extras.getString("type").equals("Once_job_created")) {
                 jobId = extras.getString("reference_id");
                 getJobDetailApi();
-            } else if (extras.getString("type").equals("Once_job_rejected") || extras.getString("type").equals("Once_job_accepted")) {
+            } else if (extras.getString("type").equals("Once_job_rejected")) {
+                jobId = extras.getString("reference_id");
+                getJobDetailApi();
+            }else if (extras.getString("type").equals("Once_job_accepted")) {
                 jobId = extras.getString("reference_id");
                 binding.btnSendRequest.setVisibility(View.GONE);
-                binding.tvStatus.setText(extras.getString("body"));
+                binding.tvStatus.setText(R.string.job_confirmed);
                 binding.tvStatus.setVisibility(View.VISIBLE);
                 getJobDetailApi();
             }
@@ -94,6 +98,7 @@ public class NotificationJobHelpOfferedDetailWorkerActivity extends AppCompatAct
                                     JobDetailWorkerResponce workerResponce = new Gson().fromJson(String.valueOf(response), JobDetailWorkerResponce.class);
                                     binding.setJobDetail(workerResponce.getData());
                                     setWorkerDataResponce(workerResponce.getData());
+                                    userId = workerResponce.getData().getUserId();
 
                                 } else {
                                     Constant.snackBar(binding.detailMainLayout, message);
@@ -177,9 +182,7 @@ public class NotificationJobHelpOfferedDetailWorkerActivity extends AppCompatAct
                 sendRequestApi();
                 break;
             case R.id.iv_back:
-                Intent intent = new Intent(this, WorkerMainActivity.class);
-                startActivity(intent);
-                finish();
+               onBackPressed();
                 break;
             case R.id.btn_dilog:
                 openReviewDialog();
@@ -188,13 +191,21 @@ public class NotificationJobHelpOfferedDetailWorkerActivity extends AppCompatAct
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, WorkerMainActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
     private void openReviewDialog() {
         final ReviewDialog dialog = new ReviewDialog();
         dialog.show(getSupportFragmentManager(), "");
         dialog.setCancelable(true);
         dialog.getReviewInfo(new ReviewDialog.ReviewDialogListner() {
             @Override
-            public void onReviewOnClick(String text) {
+            public void onReviewOnClick(String text, float rating, LinearLayout layout) {
                 dialog.dismiss();
                 Toast.makeText(NotificationJobHelpOfferedDetailWorkerActivity.this, text, Toast.LENGTH_SHORT).show();
             }

@@ -72,14 +72,15 @@ public class NotificationMySingleJobDetailClientActivity extends AppCompatActivi
 
     private void setMyJobDetails(JobDetailClientResponce.DataBean dataBean) {
         if (dataBean.getJob_type().equals("1")) {/// """"""" SINGLE JOB
+
             if (dataBean.getTotal_request().equals("0")) {   // no requested yet
 
-               /*// binding.tvNoRequest.setVisibility(View.VISIBLE);
+                //*//*
+                binding.tvNoRequest.setVisibility(View.VISIBLE);
                 binding.rlUserData.setVisibility(View.GONE);
                 binding.rlMultiImg.setVisibility(View.GONE);
-             //   binding.llChat.setVisibility(View.GONE);*/
-
-            } else if (dataBean.getTotal_request().equals("1") && dataBean.getJob_confirmed().equals("1")) { // jobconfirmed
+                binding.llChat.setVisibility(View.GONE);
+            } else if (/*dataBean.getTotal_request().equals("1") &&*/ dataBean.getJob_confirmed().equals("1")) { // jobconfirmed
 
                 binding.rlUserData.setVisibility(View.VISIBLE);
                 binding.llChat.setVisibility(View.VISIBLE);
@@ -92,7 +93,6 @@ public class NotificationMySingleJobDetailClientActivity extends AppCompatActivi
 
                 binding.tvName.setText(dataBean.getRequestedUserData().get(0).getName());
                 binding.tvDistance.setText(dataBean.getRequestedUserData().get(0).getDistance_in_km() + " Km away");
-
 
             } else {   // multiple images show
 
@@ -161,12 +161,18 @@ public class NotificationMySingleJobDetailClientActivity extends AppCompatActivi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_back:
-                Intent intent = new Intent(this, ClientMainActivity.class);
-                startActivity(intent);
-                finish();
+               onBackPressed();
                 break;
             default:
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, ClientMainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void jobDetailApi() {

@@ -22,6 +22,7 @@
         android:roundIcon="@drawable/livelogo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
             android:name=".ui.activity.SplashActivity"
             android:theme="@style/Transparent">
@@ -31,6 +32,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -45,10 +47,10 @@
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/livelogo" />
+            android:resource="@drawable/ic_notify_icon_blk" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@color/colorAccent" />
+            android:resource="@color/colorDarkBlack" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBXpnvpXkyQzRem7Rr9hcjpiS24AYdMTnA" />
@@ -149,73 +151,64 @@
             android:name=".ui.activity.notification_activity.NotificationJobHelpOfferedDetailWorkerActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden">
+            <intent-filter>
+                <action android:name="NotificationJobHelpOfferedDetailWorkerActivity" />
 
-        <intent-filter>
-            <action android:name="NotificationJobHelpOfferedDetailWorkerActivity" />
-
-            <category android:name="android.intent.category.DEFAULT" />
-        </intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.activity.notification_activity.NotificationJobOnGoingDetailWorkerActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" >
-
+            android:windowSoftInputMode="adjustPan|stateHidden">
             <intent-filter>
                 <action android:name="NotificationJobOnGoingDetailWorkerActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.activity.notification_activity.NotificationMyOnGoingJobDetailClientActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" >
-
+            android:windowSoftInputMode="adjustPan|stateHidden">
             <intent-filter>
                 <action android:name="NotificationMyOnGoingJobDetailClientActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.activity.notification_activity.NotificationMySingleJobDetailClientActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" >
-
+            android:windowSoftInputMode="adjustPan|stateHidden">
             <intent-filter>
                 <action android:name="NotificationMySingleJobDetailClientActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".ui.activity.NotificationWorkerActivity"
+        <activity
+            android:name=".ui.activity.NotificationWorkerActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden"
-            />
-
-        <activity android:name=".ui.activity.CompletedJobClientActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.activity.CompletedJobClientActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden"/>
-
-        <activity android:name=".ui.activity.CompleteSingleJobDetailClientActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.activity.CompleteSingleJobDetailClientActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden"
-            />
-
-        <activity android:name=".ui.activity.CompleteOngoingJobDetailClientActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.activity.CompleteOngoingJobDetailClientActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden"/>
-
-        <activity android:name=".ui.activity.AddBankAccountActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.activity.AddBankAccountActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden"
-            />
-
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity android:name=".ui.activity.AddCreditCardActivity" />
+        <activity android:name=".ui.activity.CreditCardActivity"></activity>
     </application>
 
 </manifest>

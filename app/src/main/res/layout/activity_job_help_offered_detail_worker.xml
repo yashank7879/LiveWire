@@ -226,7 +226,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_details_of_help"
                 android:layout_gravity="center"
-                android:text='@{jobDetail.parentCategoryName, default= "N/A"}'
+                android:text='@{jobDetail.subCategoryName, default= "N/A"}'
                 android:fontFamily="@font/poppins_semibold"
                 android:textColor="@color/colorDarkBlack"
                 android:textSize="@dimen/_12sdp"/>
@@ -261,7 +261,7 @@
                 android:layout_below="@+id/tv_category"
                 android:layout_gravity="center"
                 android:fontFamily="@font/poppins_regular"
-                android:text='@{jobDetail.subCategoryName, default= "N/A"}'
+                android:text='@{jobDetail.parentCategoryName, default= "N/A"}'
                 android:textColor="@color/colorDarkGray"
                 android:textSize="@dimen/_12sdp"
                 />
@@ -341,14 +341,17 @@
                 android:layout_height="@dimen/_25sdp"
                 android:layout_below="@id/btn_send_request"
                 android:layout_centerInParent="true"
-                android:layout_margin="@dimen/_15sdp"
+                android:layout_margin="@dimen/_10sdp"
+                android:paddingRight="@dimen/_10sdp"
+                android:paddingLeft="@dimen/_10sdp"
                 android:background="@drawable/button_green_bg"
-                android:text="open review dialog"
+                android:text="@string/give_review"
                 android:textAllCaps="false"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/_10sdp"
-                android:visibility="gone"
+                android:visibility="visible"
                 />
+
 
         </RelativeLayout>
 

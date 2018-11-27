@@ -68,7 +68,6 @@ public class RequestClientActivity extends AppCompatActivity implements View.OnC
         adapter = new RequestAdapter(this,requestList,this);
         recyclerView.setAdapter(adapter);
 
-
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() { //swipe to refresh rcyclerview data
@@ -139,7 +138,6 @@ public class RequestClientActivity extends AppCompatActivity implements View.OnC
         }
     }
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -147,7 +145,6 @@ public class RequestClientActivity extends AppCompatActivity implements View.OnC
                 onBackPressed();
                 break;
         }
-
     }
 
     //""""""" accept ignore request """"""""""//
@@ -171,6 +168,7 @@ public class RequestClientActivity extends AppCompatActivity implements View.OnC
                         if (status.equals("success")) {
                             Constant.snackBar(mainLayout, message);
                             adapter.notifyDataSetChanged();
+                            onBackPressed();
                             //"""""' if user successfully created on going post """""""""""//
 
                             // first time replace home fragment

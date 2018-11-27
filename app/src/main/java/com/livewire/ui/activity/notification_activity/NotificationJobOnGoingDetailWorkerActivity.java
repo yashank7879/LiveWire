@@ -114,9 +114,7 @@ public class NotificationJobOnGoingDetailWorkerActivity extends AppCompatActivit
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_back:
-                Intent intent = new Intent(this, WorkerMainActivity.class);
-                startActivity(intent);
-                finish();
+              onBackPressed();
                 break;
             case R.id.btn_ignore:
                acceptRejectrequestApi(workerResponce.getData().getUserId(), workerResponce.getData().getJobId(), "2");
@@ -126,6 +124,14 @@ public class NotificationJobOnGoingDetailWorkerActivity extends AppCompatActivit
                 break;
             default:
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, WorkerMainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void setJobDetailData() {

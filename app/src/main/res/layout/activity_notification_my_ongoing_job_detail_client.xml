@@ -290,7 +290,7 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:fontFamily="@font/poppins_semibold"
-                        android:text='@{dataBean.parent_category, default = "N/A"}'                    android:textColor="@color/colorDarkBlack"
+                        android:text='@{dataBean.sub_category, default = "N/A"}'                    android:textColor="@color/colorDarkBlack"
                         android:textSize="@dimen/_12sdp" />
 
                     <!--     <TextView
@@ -323,7 +323,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_category"
                         android:layout_gravity="center"
-                        android:text='@{dataBean.sub_category, default = "N/A"}'                    android:textColor="@color/colorDarkGray" />
+                        android:text='@{dataBean.parent_category, default = "N/A"}'                    android:textColor="@color/colorDarkGray" />
 
                     <!--gone-->
                     <RelativeLayout

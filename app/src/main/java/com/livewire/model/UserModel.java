@@ -8,6 +8,7 @@ import android.net.Uri;
 
 public class UserModel {
     public String name = "";
+    public String profileImage = "";
     public String email = "";
     public String password = "";
     public String userType = "";

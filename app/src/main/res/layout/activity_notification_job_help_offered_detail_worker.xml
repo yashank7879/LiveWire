@@ -226,7 +226,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_details_of_help"
                     android:layout_gravity="center"
-                    android:text='@{jobDetail.parentCategoryName, default= "N/A"}'
+                    android:text='@{jobDetail.subCategoryName, default= "N/A"}'
                     android:fontFamily="@font/poppins_semibold"
                     android:textColor="@color/colorDarkBlack"
                     android:textSize="@dimen/_12sdp"/>
@@ -261,7 +261,7 @@
                     android:layout_below="@+id/tv_category"
                     android:layout_gravity="center"
                     android:fontFamily="@font/poppins_regular"
-                    android:text='@{jobDetail.subCategoryName, default= "N/A"}'
+                    android:text='@{jobDetail.parentCategoryName, default= "N/A"}'
                     android:textColor="@color/colorDarkGray"
                     android:textSize="@dimen/_12sdp"
                     />

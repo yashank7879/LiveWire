@@ -55,6 +55,9 @@ import java.util.ArrayList;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 import static com.livewire.utils.ApiCollection.BASE_URL;
+import static com.livewire.utils.ApiCollection.GET_JOB_LIST_API;
+import static com.livewire.utils.ApiCollection.GET_SUBCATEGORY_LIST_API;
+import static com.livewire.utils.ApiCollection.JOBPOSTSEND_REQUEST_2_API;
 
 
 public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener, SubCategoryAdapter.SubCategoryLisner, HelpOfferedAdapter.HelpOfferItemListener {
@@ -155,12 +158,11 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
         EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                limit = limit + 5; //load 5 items in recyclerview
                 if (Constant.isNetworkAvailable(mContext, mainLayout)) {
-                    if (page != 1) {
+                    limit = limit + 5; //load 5 items in recyclerview
                         // progressDialog.show();
                         helpOfferedApi();
-                    }
+
                 }
             }
         };
@@ -170,7 +172,7 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
         //""""""""" floating button hide when scroll down """"""""//
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 if (dy > 0 && btnFilter.getVisibility() == View.VISIBLE) {
                     btnFilter.hide();
@@ -195,7 +197,7 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
     //"""""""""" sub category list api """""""""""""//
     private void SubCategoryListApi() {
         if (Constant.isNetworkAvailable(mContext, mainLayout)) {
-            AndroidNetworking.get(BASE_URL + "getSubcategoryList")
+            AndroidNetworking.get(BASE_URL + GET_SUBCATEGORY_LIST_API)
                     .setPriority(Priority.MEDIUM)
                     .build()
                     .getAsJSONObject(new JSONObjectRequestListener() {
@@ -256,7 +258,7 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
     private void helpOfferedApi() {// help offer api calling
         if (Constant.isNetworkAvailable(mContext, mainLayout)) {
             progressDialog.show();
-            AndroidNetworking.post(BASE_URL + "Jobpost/getJobList")
+            AndroidNetworking.post(BASE_URL + GET_JOB_LIST_API)
                     .addHeaders("authToken", PreferenceConnector.readString(mContext, PreferenceConnector.AUTH_TOKEN, ""))
                     .addBodyParameter("job_type", "1")  // single job
                     .addBodyParameter("new_job", newJobValue)         // new jobs == new (new_job)
@@ -289,6 +291,7 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
                             } else Constant.snackBar(mainLayout, message);
                         }
                     } catch (JSONException e) {
+
                         e.printStackTrace();
                     }
                 }
@@ -550,7 +553,7 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
     private void sendRequestApi(String jobId, String userId, final int pos) {
         if (Constant.isNetworkAvailable(mContext, mainLayout)) {
             progressDialog.show();
-            AndroidNetworking.post(BASE_URL + "Jobpost/sendRequest2")
+            AndroidNetworking.post(BASE_URL + JOBPOSTSEND_REQUEST_2_API)
                     .addHeaders("authToken", PreferenceConnector.readString(mContext, PreferenceConnector.AUTH_TOKEN, ""))
                     .addBodyParameter("job_id", jobId)
                     .addBodyParameter("request_to", userId)

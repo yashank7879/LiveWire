@@ -78,8 +78,11 @@ public class EditProfileClientActivity extends AppCompatActivity implements View
         SignUpResponce userResponce= (SignUpResponce) getIntent().getSerializableExtra("ClientProfileInfo");
         binding.setUserInfo(userResponce.getData());
 
-        locationLat = Double.parseDouble(userResponce.getData().getLatitude());
-        locationLng = Double.parseDouble(userResponce.getData().getLongitude());
+        if (!userResponce.getData().getLatitude().isEmpty()) {
+            locationLat = Double.parseDouble(userResponce.getData().getLatitude());
+            locationLng = Double.parseDouble(userResponce.getData().getLongitude());
+        }
+
         locationPlace = userResponce.getData().getTown();
         Picasso.with(binding.ivProfileImg.getContext())
                 .load(userResponce.getData().getProfileImage())

@@ -91,6 +91,7 @@ public class SignUpResponce implements Serializable {
         private String latitude ="";
         private String longitude ="";
         private String is_bank_account ="";
+        private String stripe_customer_id ="";
 
         public String getUserId() {
             return userId;
@@ -282,6 +283,14 @@ public class SignUpResponce implements Serializable {
 
         public void setIs_bank_account(String is_bank_account) {
             this.is_bank_account = is_bank_account;
+        }
+
+        public String getStripe_customer_id() {
+            return stripe_customer_id;
+        }
+
+        public void setStripe_customer_id(String stripe_customer_id) {
+            this.stripe_customer_id = stripe_customer_id;
         }
     }
 }

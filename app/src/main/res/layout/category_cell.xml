@@ -10,7 +10,7 @@
         android:textColor="@color/colorDarkBlack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Family"
+        android:text="@string/n_a"
         android:textSize="@dimen/_14sdp" />
 
     <ListView

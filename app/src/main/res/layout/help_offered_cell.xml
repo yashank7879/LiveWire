@@ -58,7 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_semibold"
-                android:text='@{dataBean.parentCategoryName, default = "N/A"}'
+                android:text='@{dataBean.subCategoryName, default = "N/A"}'
                 android:textColor="@color/colorDarkBlack"
                 android:textSize="@dimen/_12sdp" />
 
@@ -68,7 +68,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_category"
-                android:text='@{dataBean.subCategoryName, default = "N/A"}'
+                android:text='@{dataBean.parentCategoryName, default = "N/A"}'
                 android:textColor="@color/colorDarkGray" />
 
             <TextView

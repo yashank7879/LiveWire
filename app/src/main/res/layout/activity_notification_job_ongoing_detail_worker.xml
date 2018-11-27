@@ -252,7 +252,7 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:fontFamily="@font/poppins_semibold"
-                        android:text="@{workerResponcd.parentCategoryName}"
+                        android:text='@{workerResponcd.subCategoryName, default ="N/A"}'
                         android:textColor="@color/colorDarkBlack"
                         android:textSize="@dimen/_12sdp" />
 
@@ -286,7 +286,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_category"
                         android:layout_gravity="center"
-                        android:text="@{workerResponcd.subCategoryName}"
+                        android:text='@{workerResponcd.parentCategoryName, default = "N/A"}'
                         android:textColor="@color/colorDarkGray" />
 
                     <!--gone-->

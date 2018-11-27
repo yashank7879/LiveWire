@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_margin="@dimen/_5sdp"
-            android:text="23 Sep 2018"
+            android:text="@string/n_a"
             android:textColor="@color/colorDarkBlack" />
 
         <TextView

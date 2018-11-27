@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.livewire.R;
 import com.livewire.responce.OnGoingWorkerResponce;
 import com.livewire.utils.Constant;
+import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -58,13 +59,14 @@ public class OngoingAdapter extends RecyclerView.Adapter<OngoingAdapter.MyViewHo
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         if (ongoingList.size() != 0) {
             OnGoingWorkerResponce.DataBean dataBean = ongoingList.get(position);
-            holder.tvCategory.setText(dataBean.getParentCategoryName());
-            holder.tvSubcategory.setText(dataBean.getSubCategoryName());
+            holder.tvCategory.setText(dataBean.getSubCategoryName());
+            holder.tvSubcategory.setText(dataBean.getParentCategoryName());
             holder.tvOfferPrice.setText(dataBean.getJob_offer_rate());
             holder.tvName.setText(dataBean.getName());
             holder.tvDistance.setText(dataBean.getDistance_in_km() + " Km away");
             holder.tvTime.setText(Constant.getDayDifference(dataBean.getCrd(), dataBean.getCurrentDateTime()));
 
+            Picasso.with(holder.ivProfileImg.getContext()).load(dataBean.getProfileImage()).fit().into(holder.ivProfileImg);
             //********"2018-07-04" date format converted into "04 july 2018"***********//
             DateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
             String start = dataBean.getJob_start_date();

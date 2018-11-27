@@ -58,6 +58,7 @@ import com.livewire.cropper.CropImage;
 import com.livewire.cropper.CropImageView;
 import com.livewire.model.UserModel;
 import com.livewire.responce.SignUpResponce;
+import com.livewire.ui.dialog.LocationDialog;
 import com.livewire.utils.Constant;
 import com.livewire.utils.ImageRotator;
 import com.livewire.utils.PreferenceConnector;
@@ -77,6 +78,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import static com.livewire.utils.ApiCollection.BASE_URL;
+import static com.livewire.utils.ApiCollection.CHECK_SOCIAL_STATUS_API;
 import static com.livewire.utils.ApiCollection.USER_REGISTRATION_API;
 
 
@@ -108,6 +110,8 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private static final int RC_SIGN_IN = 7;
     private String imageUrl;
     private static String key;
+    private String email="";
+    private String personName="";
 
 
     @Override
@@ -268,21 +272,32 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 if (graphObject.has("email")) {
                     String fb_mail = null;
                     try {
-                        fb_mail = graphObject.getString("email");
-                        String fbId = graphObject.getString("id");
-                        if (graphObject.getString("picture") != null) {
-                            imageUrl =object.getJSONObject("picture").getJSONObject("data").getString("url");;
+                        if (key.equals("client")) {
+                            email = graphObject.getString("email");
+                            personName = graphObject.getString("name");
+                            String fbId = graphObject.getString("id");
+                            if (graphObject.getString("picture") != null) {
+                                imageUrl = object.getJSONObject("picture").getJSONObject("data").getString("url");
+                            }
+                            checkSocialLogin(fbId, "fb");
+                        } else {
+                            fb_mail = graphObject.getString("email");
+                            String fbId = graphObject.getString("id");
+                            if (graphObject.getString("picture") != null) {
+                                imageUrl = object.getJSONObject("picture").getJSONObject("data").getString("url");
+                                ;
+                            }
+                            UserModel model = new UserModel();
+                            model.name = graphObject.getString("name");
+                            model.email = graphObject.getString("email");
+                            // model.profileImage = acct.getPhotoUrl();
+                            model.userType = key;
+                            model.deviceType = "2";
+                            model.deviceToken = "";
+                            model.socialId = graphObject.getString("id");
+                            model.socialType = "fb";
+                            signUpApiForSocial(model);
                         }
-                        UserModel model = new UserModel();
-                        model.name = graphObject.getString("name");
-                        model.email = graphObject.getString("email");
-                        // model.profileImage = acct.getPhotoUrl();
-                        model.userType = key;
-                        model.deviceType = "2";
-                        model.deviceToken = "";
-                        model.socialId = graphObject.getString("id");
-                        model.socialType = "fb";
-                        signUpApiForSocial(model);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -299,28 +314,112 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         data_request.executeAsync();
     }
 
+    private void checkSocialLogin(final String id, final String socialType) {
+        if (Constant.isNetworkAvailable(this, mainLayout)) {
+            progressDialog.show();
+            AndroidNetworking.post(BASE_URL + CHECK_SOCIAL_STATUS_API)
+                    .addBodyParameter("socialId", id)
+                    .setPriority(Priority.MEDIUM)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            progressDialog.dismiss();
+                            //progressBar1.setVisibility(View.GONE);
+                            String status = null;
+                            try {
+                                status = response.getString("status");
+                                String message = response.getString("message");
+                                if (status.equals("success")) {
+
+                                    String isSocialLogin = response.getString("socialId");
+                                    if (isSocialLogin.equals("0")) {
+                                        openLocationDialog(id, socialType);
+                                    } else {
+
+                                        UserModel model = new UserModel();
+                                        model.name = personName;
+                                        model.email = email;
+                                        model.userType = key;
+                                        model.deviceType = "2";
+                                        model.deviceToken = FirebaseInstanceId.getInstance().getToken();
+                                        model.socialId = id;
+                                        model.socialType = socialType;
+
+                                        signUpApiForSocial(model);
+                                    }
+
+                                } else {
+                                    Constant.snackBar(mainLayout, message);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void onError(ANError anError) {
+                            Log.e(TAG, anError.getErrorDetail());
+                        }
+                    });
+        }
+    }
+
+    private void openLocationDialog(final String id, final String socialType) {
+        final LocationDialog dialog = new LocationDialog();
+        dialog.show(getSupportFragmentManager(), "");
+        dialog.setCancelable(false);
+        dialog.getLocationInfo(new LocationDialog.LocationDialogListner() {
+            @Override
+            public void onLocationOnClick(String town, LatLng latLng, LinearLayout layout) {
+                dialog.dismiss();
+                UserModel model = new UserModel();
+                model.name = personName;
+                model.email = email;
+                model.userType = key;
+                model.deviceType = "2";
+                model.town = town;
+                model.latitude = String.valueOf(latLng.latitude);
+                model.longitude = String.valueOf(latLng.longitude);
+                if (imageUrl != null) {
+                    // imageUrl = String.valueOf(acct.getPhotoUrl());
+                    model.profileImage = imageUrl;
+                }
+                model.deviceToken = FirebaseInstanceId.getInstance().getToken();
+                model.socialId = id;
+                model.socialType = socialType;
+                signUpApiForSocial(model);
+            }
+        });
+    }
+
     //"""""""""""gmail response"""""""//
     private void handleGoogleSignInResult(GoogleSignInResult result) {
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
 
-            String personName = acct.getDisplayName();
-            String email = acct.getEmail();
-            if (acct.getPhotoUrl() != null) {
-                imageUrl = String.valueOf(acct.getPhotoUrl());
+            if (key.equals("client")) {
+                checkSocialLogin(acct.getId(), "gmail");
+                personName = acct.getDisplayName();
+                email = acct.getEmail();
+                if (acct.getPhotoUrl() != null) {
+                    imageUrl = String.valueOf(acct.getPhotoUrl());
+                }
+                Log.e(TAG, "Name: " + personName + ", email: " + email + "social: " + acct.getId());
+            }else {
+                UserModel model = new UserModel();
+                model.name = acct.getDisplayName();
+                model.email = acct.getEmail();
+                // model.profileImage = acct.getPhotoUrl();
+                model.userType = key;
+                model.deviceType = "2";
+                model.deviceToken = FirebaseInstanceId.getInstance().getToken();
+                model.socialId = acct.getId();
+                model.socialType = "gmail";
+                signUpApiForSocial(model);
             }
-            UserModel model = new UserModel();
-            model.name = acct.getDisplayName();
-            model.email = acct.getEmail();
-            // model.profileImage = acct.getPhotoUrl();
-            model.userType = key;
-            model.deviceType = "2";
-            model.deviceToken = FirebaseInstanceId.getInstance().getToken();
-            model.socialId = acct.getId();
-            model.socialType = "gmail";
-            signUpApiForSocial(model);
-            Log.e(TAG, "Name: " + personName + ", email: " + email + "social: " + acct.getId());
+
         }
     }
 
@@ -329,7 +428,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         if (Constant.isNetworkAvailable(this, mainLayout)) {
             progressDialog.show();
             // progressBar.setVisibility(View.VISIBLE);
-            AndroidNetworking.post(BASE_URL + "userRegistration")
+            AndroidNetworking.post(BASE_URL + USER_REGISTRATION_API)
                     .addBodyParameter(model)
                     .setPriority(Priority.MEDIUM).
                     build().getAsJSONObject(new JSONObjectRequestListener() {
@@ -377,6 +476,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.COMPLETE_PROFILE_STATUS, userResponce.getData().getCompleteProfile());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.AUTH_TOKEN, userResponce.getData().getAuthToken());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.SOCIAL_LOGIN, userResponce.getData().getSocialType());
+        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.STRIPE_CUSTOMER_ID, userResponce.getData().getStripe_customer_id());
 
         Log.d("Responce", userResponce.toString());
         if (userResponce.getData().getUserType().equals("worker")) {// if user is worker
@@ -644,6 +744,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.AUTH_TOKEN, userResponce.getData().getAuthToken());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.PASS_WORD, etPass.getText().toString());
+        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.STRIPE_CUSTOMER_ID, userResponce.getData().getStripe_customer_id());
 
                             /*PreferenceConnector.writeBoolean(SignupActivity.this, PreferenceConnector.IS_LOG_IN, true);
                             PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.USER_INFO_JSON, response.toString());
@@ -745,6 +846,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.COMPLETE_PROFILE_STATUS, userResponce.getData().getCompleteProfile());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.PASS_WORD, etPass.getText().toString());
+        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.STRIPE_CUSTOMER_ID, userResponce.getData().getStripe_customer_id());
         Intent intent = new Intent(SignupActivity.this, CompleteProfileActivity.class);
         startActivity(intent);
         finish();

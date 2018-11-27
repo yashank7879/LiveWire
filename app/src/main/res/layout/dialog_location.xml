@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="@dimen/_10sdp"
-                android:text="@string/give_review"
+                android:text="@string/enter_your_location"
                 android:textColor="@color/colorGreen" />
 
             <View
@@ -32,72 +32,44 @@
                 android:layout_height="1dp"
                 android:background="@color/colorLightGray" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/_14sdp"
-                android:fontFamily="@font/poppins_medium"
-                android:text="Rate Rachel Fallon"
-                android:textColor="@color/colorDarkBlack" />
 
 
-            <android.support.v7.widget.AppCompatRatingBar
-                android:id="@+id/rating_bar"
-                android:theme="@style/RatingBarTheme"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:numStars="5"
-                android:stepSize="1"
-                android:isIndicator="false"
-                android:progressTint="@color/coloryellow"
-                android:layout_marginBottom="@dimen/_10sdp"
-                android:scaleX="0.7"
-                android:scaleY="0.7"
-           />
 
-        <!-- <RatingBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:rating="3"
-                android:numStars="5"
-                android:scaleX="0.5"
-                android:scaleY="0.5"
-                />-->
-
-            <FrameLayout
-                android:layout_width="@dimen/_260sdp"
-                android:layout_height="@dimen/_70sdp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="@dimen/_10sdp"
-                android:layout_marginLeft="@dimen/_10sdp"
-                android:layout_marginRight="@dimen/_10sdp"
-                android:background="@drawable/edittext_review_bg"
-                android:padding="@dimen/_5sdp">
-
-                <EditText
-                    android:id="@+id/et_demo"
+                <TextView
+                    android:id="@+id/tv_location"
                     style="@style/SmallPopinsLightStyle"
-                    android:layout_width="match_parent"
+                    android:layout_width="@dimen/_270sdp"
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:maxLength="250"
-                    android:hint="@string/write_comment_here"
-                    android:textColor="@color/colorDarkGray" />
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:padding="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:hint="@string/enter_your_location"
+                    android:textColor="@color/colorDarkBlack"
+                    android:textColorHint="@color/colorDarkGray"
+                    />
 
-            </FrameLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorExtraLightGray"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_20sdp"
+                />
+
 
             <Button
                 android:id="@+id/btn_submit"
                 style="@style/mediumPopinsLightStyle"
                 android:layout_width="@dimen/_100sdp"
-                android:layout_height="@dimen/_32sdp"
+                android:layout_height="@dimen/_30sdp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginBottom="@dimen/_20sdp"
                 android:background="@drawable/button_green_bg"
-                android:padding="@dimen/_5sdp"
                 android:text="@string/submit"
                 android:textAllCaps="false"
                 android:textColor="@color/colorWhite" />
@@ -111,7 +83,9 @@
                 android:layout_marginBottom="@dimen/_5sdp"
                 android:padding="@dimen/_5sdp"
                 android:text="@string/cancel"
-                android:textColor="@color/colorGreen" />
+                android:textColor="@color/colorGreen"
+                android:visibility="gone"
+                />
 
         </LinearLayout>
 

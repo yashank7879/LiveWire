@@ -131,7 +131,7 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
                 btnSendOffer.setVisibility(View.GONE);
 
 
-                binding.tvName.setText(dataBean.getName());
+                binding.tvName.setText(dataBean.getRequestedUserData().get(0).getName());
 
                 binding.tvDistance.setText(dataBean.getRequestedUserData().get(0).getDistance_in_km() + " Km away");
 

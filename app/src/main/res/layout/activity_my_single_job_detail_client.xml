@@ -161,7 +161,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_request"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                 <FrameLayout
                     android:id="@+id/fl_multi_img"
@@ -178,9 +178,10 @@
                         android:layout_below="@+id/fl_multi_img"
                         android:text="@string/n_a"
                         android:textColor="@color/colorDarkGray"
-                        android:visibility="visible"
                         android:textSize="@dimen/_11sdp"
-                        android:layout_marginBottom="@dimen/_8sdp"/>
+                        android:visibility='@{jobDetail.total_request.equals("0") ? View.GONE  : View.VISIBLE, default = gone}'
+                        android:layout_marginBottom="@dimen/_8sdp"
+                        android:layout_marginTop="@dimen/_8sdp"/>
 
                 </RelativeLayout>
 
@@ -316,13 +317,13 @@
                     android:textColor="@color/colorDarkBlack"
                     android:textSize="@dimen/_12sdp" />
 
-                <!--     <TextView
-                         android:id="@+id/tv_date"
+                     <TextView
+                         android:id="@+id/tv_date1"
                          android:layout_width="wrap_content"
                          android:layout_height="wrap_content"
                          android:layout_toStartOf="@+id/tv_date_month"
                          android:layout_alignBaseline="@id/tv_category"
-                         android:text="23"
+                         android:text="@string/n_a"
                          style="@style/mediumPopinsRegularStyle"
                          android:textColor="@color/colorDarkBlack"
                          />
@@ -336,8 +337,9 @@
                          android:textColor="@color/colorDarkBlack"
                          android:textSize="@dimen/_10sdp"
                          android:layout_alignBaseline="@id/tv_category"
-                         android:text=" sep 2018"
-                         />-->
+                         android:text="@string/n_a"
+                         android:layout_marginEnd="@dimen/_8sdp"
+                         />
 
                 <TextView
                     android:id="@+id/tv_sub_category"

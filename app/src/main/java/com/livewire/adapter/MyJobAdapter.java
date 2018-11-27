@@ -114,8 +114,8 @@ public class MyJobAdapter extends RecyclerView.Adapter {
     private void setDataJobCell3(MyViewHolderJob3 holder, int position) {
         if (myJobList.size() != 0) {
             MyjobResponceClient.DataBean dataBean = myJobList.get(position);
-            holder.tvCategory.setText(dataBean.getParent_category());
-            holder.tvSubcategory.setText(dataBean.getSub_category());
+            holder.tvCategory.setText(dataBean.getSub_category());
+            holder.tvSubcategory.setText(dataBean.getParent_category());
             //  holder.tvBudget.setText("$ " + dataBean.getJob_budget());
 
             if (dataBean.getJob_offer() == null || dataBean.getJob_offer().equals("")) {
@@ -221,8 +221,8 @@ public class MyJobAdapter extends RecyclerView.Adapter {
             }
 
 
-            holder.tvCategory.setText(dataBean.getParent_category());
-            holder.tvSubcategory.setText(dataBean.getSub_category());
+            holder.tvCategory.setText(dataBean.getSub_category());
+            holder.tvSubcategory.setText(dataBean.getParent_category());
             holder.tvBudget.setText("$ " + dataBean.getJob_budget());
             holder.tvTime.setText(Constant.getDayDifference(dataBean.getCrd(), dataBean.getCurrentDateTime()));
 
@@ -248,8 +248,8 @@ public class MyJobAdapter extends RecyclerView.Adapter {
         if (myJobList.size() != 0) {
             MyjobResponceClient.DataBean dataBean = myJobList.get(position);
 
-            holder.tvCategory.setText(dataBean.getParent_category());
-            holder.tvSubcategory.setText(dataBean.getSub_category());
+            holder.tvCategory.setText(dataBean.getSub_category());
+            holder.tvSubcategory.setText(dataBean.getParent_category());
             holder.tvBudget.setText("$ " + dataBean.getJob_budget());
             holder.tvRequested.setText("" + dataBean.getTotal_request() + " Members Requested");
             holder.tvTime.setText(Constant.getDayDifference(dataBean.getCrd(), dataBean.getCurrentDateTime()));

@@ -27,6 +27,11 @@ public class ApiCollection {
     public static final String USER_LOGOUT_API = "user/logout";
     public static final String ADD_BANK_ACCOUNT_API = "payment/addBankAccount";
     public static final String GET_BANK_DETAILS_API = "payment/getBankDetails";
+    public static final String CHECK_SOCIAL_STATUS_API = "checkSocialStatus";
+    public static final String GET_MY_PROFILE_API = "user/getMyProfile";
+    public static final String GET_MY_JOB_LIST_API = "Jobpost/getMyJobList";
+    public static final String GET_JOB_LIST_API = "Jobpost/getJobList";
+    public static final String GET_SUBCATEGORY_LIST_API = "getSubcategoryList";
 
     //String jd = "http://livewire.work/service/forgotPassword";
     //String jfd = "http://dev.livewire.work/service/forgotPassword";

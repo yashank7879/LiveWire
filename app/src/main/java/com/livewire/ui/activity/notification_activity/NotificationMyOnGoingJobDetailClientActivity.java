@@ -162,13 +162,19 @@ public class NotificationMyOnGoingJobDetailClientActivity extends AppCompatActiv
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_back:
-                Intent intent = new Intent(this, ClientMainActivity.class);
-                startActivity(intent);
-                finish();
+                onBackPressed();
                 break;
 
             default:
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, ClientMainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void jobDetailApi() {
