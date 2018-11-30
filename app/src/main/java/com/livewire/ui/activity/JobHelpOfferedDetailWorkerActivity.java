@@ -41,6 +41,7 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
     private ProgressDialog progressDialog;
     private String jobId = "";
     private String userId = "";
+    private String name = "";
 
 
     @Override
@@ -122,6 +123,7 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
         userId = jobDetail.getUserId();
         binding.tvDistance.setText(jobDetail.getDistance_in_km() + " Km away");
 
+        name = jobDetail.getName();
         binding.tvTime.setText(Constant.getDayDifference(jobDetail.getCrd(), jobDetail.getCurrentDateTime()));
 
         if (jobDetail.getJob_confirmed().equals("0")) { // pending request
@@ -194,27 +196,28 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
     private void openReviewDialog() {
         final ReviewDialog dialog = new ReviewDialog();
         dialog.show(getSupportFragmentManager(), "");
-        dialog.setCancelable(true);
+        dialog.setCancelable(false);
         dialog.getReviewInfo(new ReviewDialog.ReviewDialogListner() {
             @Override
             public void onReviewOnClick(String description, float rating, LinearLayout layout) {
 
-                giveReviewApi(description,rating,dialog,layout);
-               // dialog.dismiss();
+                giveReviewApi(description, rating, dialog, layout);
+                // dialog.dismiss();
 
-                Toast.makeText(JobHelpOfferedDetailWorkerActivity.this, description +" rating: "+rating, Toast.LENGTH_SHORT).show();
+                // Toast.makeText(JobHelpOfferedDetailWorkerActivity.this, description +" rating: "+rating, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    //"""""""""" give review list""""""""""""""""""'//
     private void giveReviewApi(String description, float rating, final ReviewDialog dialog, final LinearLayout layout) {
-        if (Constant.isNetworkAvailable(this,layout)){
+        if (Constant.isNetworkAvailable(this, layout)) {
             progressDialog.show();
             AndroidNetworking.post(BASE_URL + "user/addReview")
                     .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
                     .addBodyParameter("review_to", userId)
-                    .addBodyParameter("job_id", jobId )
-                    .addBodyParameter("rating", ""+rating)
+                    .addBodyParameter("job_id", jobId)
+                    .addBodyParameter("rating", "" + rating)
                     .addBodyParameter("description", description)
                     .setPriority(Priority.MEDIUM)
                     .build().getAsJSONObject(new JSONObjectRequestListener() {
@@ -226,7 +229,7 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
                         String message = response.getString("message");
                         if (status.equals("success")) {
                             dialog.dismiss();
-                          //  Constant.snackBar(binding.detailMainLayout, message);
+                            //  Constant.snackBar(binding.detailMainLayout, message);
                         } else {
                             Constant.snackBar(layout, message);
                         }

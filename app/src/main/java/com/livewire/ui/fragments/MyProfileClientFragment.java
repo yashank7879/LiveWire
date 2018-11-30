@@ -26,6 +26,7 @@ import com.livewire.databinding.FragmentMyProfileClientBinding;
 import com.livewire.responce.SignUpResponce;
 import com.livewire.ui.activity.CompletedJobClientActivity;
 import com.livewire.ui.activity.EditProfileClientActivity;
+import com.livewire.ui.activity.ReviewListActivity;
 import com.livewire.ui.activity.SettingActivity;
 import com.livewire.ui.activity.UserSelectionActivity;
 import com.livewire.utils.Constant;
@@ -69,6 +70,7 @@ public class MyProfileClientFragment extends Fragment implements View.OnClickLis
         binding.btnLogout.setOnClickListener(this);
         binding.btnEdit.setOnClickListener(this);
         binding.cvCompleteJob.setOnClickListener(this);
+        binding.ivProfile.setOnClickListener(this);
     }
 
     @Override
@@ -121,6 +123,11 @@ public class MyProfileClientFragment extends Fragment implements View.OnClickLis
                 break;
             case R.id.cv_complete_job:
                 intent = new Intent(mContext, CompletedJobClientActivity.class);
+                startActivity(intent);
+                break;
+
+            case R.id.iv_profile:
+                intent = new Intent(mContext, ReviewListActivity.class);
                 startActivity(intent);
                 break;
             default:

@@ -40,6 +40,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.livewire.utils.ApiCollection.BASE_URL;
+import static com.livewire.utils.ApiCollection.GET_NEAR_BY_WORKER_API;
+import static com.livewire.utils.ApiCollection.JOBPOSTSEND_REQUEST_2_API;
 
 public class NearYouClientActivity extends AppCompatActivity implements View.OnClickListener, NearYouAdapter.NearYouRequestListener {
     private ProgressDialog progressDialog;
@@ -98,8 +100,9 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
         EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                limit = limit + 5; //load 5 items in recyclerview
                 if (Constant.isNetworkAvailable(NearYouClientActivity.this, mainLayout)) {
+                    limit = limit + 5; //load 5 items in recyclerview
+
                     // progressDialog.show();
                     nearYouListApi();
                 }
@@ -117,11 +120,11 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
     private void nearYouListApi() {// help offer api calling
         if (Constant.isNetworkAvailable(this, mainLayout)) {
             progressDialog.show();
-            AndroidNetworking.post(BASE_URL + "Jobpost/getNearByWorker")
+            AndroidNetworking.post(BASE_URL + GET_NEAR_BY_WORKER_API)
                     .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
                     .addBodyParameter("job_id", jobId)
-                    .addBodyParameter("limit", String.valueOf(limit))
                     .addBodyParameter("start", String.valueOf(start))
+                    .addBodyParameter("limit", String.valueOf(limit))
                     .setPriority(Priority.MEDIUM)
                     .build().getAsJSONObject(new JSONObjectRequestListener() {
                 @Override
@@ -131,13 +134,14 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
                         String status = response.getString("status");
                         String message = response.getString("message");
                         if (status.equals("success")) {
+                            nearYouList.clear();
                             NearYouResponce helpOfferedResponce = new Gson().fromJson(String.valueOf(response), NearYouResponce.class);
                             nearYouList.addAll(helpOfferedResponce.getData());
                             nearYouAdapter.notifyDataSetChanged();
                         } else {
                             if (nearYouList.size() == 0) {
                                 tv_no_job_post.setVisibility(View.VISIBLE);
-                            }else
+                            } else
 
                                 Constant.snackBar(mainLayout, message);
                         }
@@ -169,6 +173,13 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
         openRequestDialog(response.getUserId());
     }
 
+    @Override
+    public void userInfoDetail(String userId) {
+        Intent intent = new Intent(this, WorkerProfileDetailClientActivity.class);
+        intent.putExtra("UserIdKey", userId);
+        startActivity(intent);
+    }
+
     //""""""""""" open send offer dialog """"""""""""""'//
     private void openRequestDialog(final String userId) {
 
@@ -185,12 +196,12 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
         btnSendRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            if (Validation.isEmpty(etOfferPrice)){
-                Constant.snackBar(mainLayout1,"Please enter offer price.");
-            }else {
-                dialog.dismiss();
-                sendOfferRequestApi(etOfferPrice.getText().toString().trim(), mainLayout1,userId);
-            }
+                if (Validation.isEmpty(etOfferPrice)) {
+                    Constant.snackBar(mainLayout1, "Please enter offer price");
+                } else {
+                    dialog.dismiss();
+                    sendOfferRequestApi(etOfferPrice.getText().toString().trim(), mainLayout1, userId);
+                }
             }
         });
 
@@ -198,7 +209,7 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
         tvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Constant.hideSoftKeyBoard(NearYouClientActivity.this,etOfferPrice);
+                Constant.hideSoftKeyBoard(NearYouClientActivity.this, etOfferPrice);
                 dialog.dismiss();
             }
         });
@@ -209,9 +220,9 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
     }
 
     private void sendOfferRequestApi(String offerPrice, RelativeLayout mainLayout1, String userId) {
-        if (Constant.isNetworkAvailable(this,mainLayout1)){
+        if (Constant.isNetworkAvailable(this, mainLayout1)) {
             progressDialog.show();
-            AndroidNetworking.post(BASE_URL + "Jobpost/sendRequest2")
+            AndroidNetworking.post(BASE_URL + JOBPOSTSEND_REQUEST_2_API)
                     .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
                     .addBodyParameter("job_id", jobId)
                     //.addBodyParameter("request_to", "2")
@@ -222,7 +233,7 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
                     .build().getAsJSONObject(new JSONObjectRequestListener() {
                 @Override
                 public void onResponse(JSONObject response) {
-                 progressDialog.dismiss();
+                    progressDialog.dismiss();
                     String status = null;
                     try {
                         status = response.getString("status");
@@ -230,11 +241,11 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
                         if (status.equals("success")) {
                             Constant.snackBar(mainLayout, message);
                             //"""""' if user successfully created on going post """""""""""//
-                            Intent intent = new Intent(NearYouClientActivity.this,ClientMainActivity.class);
-                           intent.putExtra("NearYouKey","MyJobs");
+                            Intent intent = new Intent(NearYouClientActivity.this, ClientMainActivity.class);
+                            intent.putExtra("NearYouKey", "MyJobs");
                             startActivity(intent);
                             finish();
-                           // first time replace home fragment
+                            // first time replace home fragment
 
                         } else {
                             Constant.snackBar(mainLayout, message);

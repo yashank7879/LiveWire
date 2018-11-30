@@ -72,11 +72,22 @@
         android:layout_marginBottom="@dimen/_8sdp"
         android:background="@color/colorExtraLightGray" />
 
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view1_id"
+        android:layout_marginBottom="@dimen/_8sdp"
+        >
+    <RelativeLayout
+        android:id="@+id/rl_profile_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        >
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/iv_profile_img"
         android:layout_width="@dimen/_35sdp"
         android:layout_height="@dimen/_35sdp"
-        android:layout_below="@+id/view1_id"
         android:layout_marginEnd="@dimen/_8sdp"
         android:src="@drawable/ic_user"
         app:civ_border_color="@color/colorGreen"
@@ -86,7 +97,6 @@
         android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/view1_id"
         android:layout_toEndOf="@+id/iv_profile_img"
         android:fontFamily="@font/poppins_semibold"
         android:text="Rachel Fallon"
@@ -131,20 +141,24 @@
 
     </LinearLayout>
 
+    </RelativeLayout>
+
     <Button
         android:id="@+id/btn_send_request"
         style="@style/smallPopinsRegularStyle"
         android:layout_width="@dimen/_85sdp"
         android:layout_height="@dimen/_25sdp"
         android:layout_alignParentEnd="true"
-        android:layout_below="@+id/tv_name"
         android:layout_marginBottom="@dimen/_10sdp"
         android:background="@drawable/button_green_bg"
         android:text="@string/send_request"
         android:textAllCaps="false"
         android:textColor="@color/colorWhite"
-        android:textSize="@dimen/_10sdp" />
+        android:textSize="@dimen/_10sdp"
+        android:layout_centerInParent="true"
+        />
 
+    </RelativeLayout>
     <!-- <TextView
          android:id="@+id/request_pending"
          style="@style/smallPopinsRegularStyle"

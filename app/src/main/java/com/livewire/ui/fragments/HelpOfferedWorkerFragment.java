@@ -43,6 +43,7 @@ import com.livewire.model.CategoryModel;
 import com.livewire.pagination.EndlessRecyclerViewScrollListener;
 import com.livewire.responce.HelpOfferedResponce;
 import com.livewire.responce.SubCategoryResponse;
+import com.livewire.ui.activity.ClientProfileDetailWorkerActivity;
 import com.livewire.ui.activity.JobHelpOfferedDetailWorkerActivity;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
@@ -546,6 +547,15 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
 
         } else if (key.equals(getString(R.string.sendrequest))) {
             sendRequestApi(dataBean.getJobId(), dataBean.getUserId(), pos);
+        }
+    }
+
+    @Override
+    public void userInfoDetailOnClick(String userId) {
+        if (Constant.isNetworkAvailable(mContext,mainLayout)) {
+            Intent intent = new Intent(mContext, ClientProfileDetailWorkerActivity.class);
+            intent.putExtra("UserIdKey", userId);
+            startActivity(intent);
         }
     }
 

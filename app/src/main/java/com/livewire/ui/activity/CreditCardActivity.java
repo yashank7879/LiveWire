@@ -34,7 +34,7 @@ import java.util.Map;
 
 public class CreditCardActivity extends AppCompatActivity implements View.OnClickListener {
     ActivityCreditCardsBinding binding;
-    private static final String TAG  = CreditCardActivity.class.getName();
+    private static final String TAG = CreditCardActivity.class.getName();
     private int width;
     private int year1;
     private int month1;
@@ -93,6 +93,7 @@ public class CreditCardActivity extends AppCompatActivity implements View.OnClic
                 onBackPressed();
                 break;
             case R.id.btn_pay:
+                Constant.hideSoftKeyBoard(this,binding.edCvv);
                 validationd();
                 break;
             case R.id.tv_date:
@@ -170,9 +171,9 @@ public class CreditCardActivity extends AppCompatActivity implements View.OnClic
                         token = com.stripe.model.Token.create(tokenParams);
 
                     } catch (StripeException e) {
-                      Constant.printLogMethod(Constant.LOG_VALUE,TAG,e.getLocalizedMessage());
+                        Constant.printLogMethod(Constant.LOG_VALUE, TAG, e.getLocalizedMessage());
                         progressDialog.dismiss();
-                        Constant.snackBar(binding.svCreditcardLayout,e.getLocalizedMessage());
+                        Constant.snackBar(binding.svCreditcardLayout, e.getLocalizedMessage());
 
                     }
                     return token;
@@ -185,12 +186,15 @@ public class CreditCardActivity extends AppCompatActivity implements View.OnClic
                         @Override
                         public void run() {
                             progressDialog.dismiss();
-                             if (token != null && binding.cbSaveCard.isChecked()) {
+                            if (token != null) {
+                                saveCreditCard(token.getId());
+                            }
+                            /* if (token != null && binding.cbSaveCard.isChecked()) {
                                 if (Constant.isNetworkAvailable(CreditCardActivity.this, binding.svCreditcardLayout)) {
                                     saveCreditCard(token.getId());
                                 }
-                            }
-                           // Log.e("createStripeToken: ", "" + token.getId());
+                            }*/
+                            // Log.e("createStripeToken: ", "" + token.getId());
                         }
                     });
                 }
@@ -263,11 +267,12 @@ public class CreditCardActivity extends AppCompatActivity implements View.OnClic
             protected void onPostExecute(Customer customer) {
                 super.onPostExecute(customer);
                 progressDialog.dismiss();
-                if (customer != null){
+                if (customer != null) {
                     Toast.makeText(CreditCardActivity.this, "Your card is saved successfully.", Toast.LENGTH_SHORT).show();
-                    customer.toJson();
-                }else {
-                    Constant.snackBar(binding.svCreditcardLayout,"Stripe Error");
+                    onBackPressed();
+                    //  customer.toJson();
+                } else {
+                    Constant.snackBar(binding.svCreditcardLayout, "Stripe Error");
                 }
             }
         }.execute();

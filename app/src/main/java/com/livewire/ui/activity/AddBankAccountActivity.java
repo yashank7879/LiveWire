@@ -171,7 +171,7 @@ public class AddBankAccountActivity extends AppCompatActivity implements View.On
                                 String status = response.getString("status");
                                 String message = response.getString("message");
                                 if (status.equals("success")) {
-
+                                    onBackPressed();
                                     Constant.snackBar(binding.svAddbankLayout, "Your Account Added successfully");
 
                                     binding.payNow.setText(R.string.update_bank_details);

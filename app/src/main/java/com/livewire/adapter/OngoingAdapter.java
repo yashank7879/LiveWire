@@ -159,6 +159,13 @@ public class OngoingAdapter extends RecyclerView.Adapter<OngoingAdapter.MyViewHo
                 }
             });
 
+            rlData.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.userInfoDetailOnClick(ongoingList.get(getAdapterPosition()).getUserId());
+                }
+            });
+
         }
     }
 
@@ -176,6 +183,7 @@ public class OngoingAdapter extends RecyclerView.Adapter<OngoingAdapter.MyViewHo
 
     public interface OnGoingItemOnClick {
         void onItemClickListner(OnGoingWorkerResponce.DataBean dataBean, String moreInfo);
+        void userInfoDetailOnClick(String userId);
     }
 }
 

@@ -62,9 +62,9 @@ public class AddCreditCardActivity extends AppCompatActivity implements View.OnC
         progressDialog = new ProgressDialog(this);
         binding.tvAddNewCard.setOnClickListener(this);
         binding.ivBack.setOnClickListener(this);
+        binding.btnPay.setOnClickListener(this);
 
         showCreditCardInfo();
-        // savedCreditCardInfo();
     }
 
     @Override
@@ -155,7 +155,6 @@ public class AddCreditCardActivity extends AppCompatActivity implements View.OnC
                     customer = Customer.retrieve(PreferenceConnector.readString(AddCreditCardActivity.this, PreferenceConnector.STRIPE_CUSTOMER_ID, "")).getSources().all(cardParams);
 
                 } catch (StripeException e) {
-                    e.printStackTrace();
                     Constant.printLogMethod(Constant.LOG_VALUE,TAG,e.getLocalizedMessage());
                     progressDialog.dismiss();
                     Constant.snackBar(binding.llPaymentLayout,e.getLocalizedMessage());
@@ -170,33 +169,41 @@ public class AddCreditCardActivity extends AppCompatActivity implements View.OnC
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        progressDialog.dismiss();
-                          cardResponce = new Gson().fromJson(externalAccountCollection.toJson(), StripeSaveCardResponce.class);
-                          Log.e("Size: ", "" + cardResponce.getData().size());
-                          for (int i = 0; i < cardResponce.getData().size(); i++) {
-                              cardResponce.getData().get(i).setMoreDetail(true);
-                          }
+                        if (externalAccountCollection != null) {
 
-                          RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(AddCreditCardActivity.this);
-                          cardAdapter = new CreditCardAdapter(AddCreditCardActivity.this, cardResponce.getData(), new CreditCardAdapter.CardDetailInterface() {
-                              //"""""""""" click on holo circle img and then show card details """"""""""//
-                              @Override
-                              public void moreDetailOnClick(int pos, boolean value) {
-                                  for (int j = 0; j < cardResponce.getData().size(); j++) {
-                                      if (j == pos) {
-                                          cardResponce.getData().get(pos).setMoreDetail(value);
-                                      } else {
-                                          cardResponce.getData().get(j).setMoreDetail(true);
-                                      }
-                                  }
-                                  cardAdapter.notifyDataSetChanged();
-                              }
+                            cardResponce = new Gson().fromJson(externalAccountCollection.toJson(), StripeSaveCardResponce.class);
+                          //  Log.e("Size: ", "" + cardResponce.getData().size());
+
+                            if (cardResponce.getData().size() != 0){
+                                binding.tvNoCardAdd.setVisibility(View.GONE);
+                            }
+                            for (int i = 0; i < cardResponce.getData().size(); i++) {
+                                cardResponce.getData().get(i).setMoreDetail(true);
+                            }
+
+                            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(AddCreditCardActivity.this);
+                            cardAdapter = new CreditCardAdapter(AddCreditCardActivity.this, cardResponce.getData(), new CreditCardAdapter.CardDetailInterface() {
+                                //"""""""""" click on holo circle img and then show card details """"""""""//
+                                @Override
+                                public void moreDetailOnClick(int pos, boolean value) {
+                                    for (int j = 0; j < cardResponce.getData().size(); j++) {
+                                        if (j == pos) {
+                                            cardResponce.getData().get(pos).setMoreDetail(value);
+                                        } else {
+                                            cardResponce.getData().get(j).setMoreDetail(true);
+                                        }
+                                    }
+                                    cardAdapter.notifyDataSetChanged();
+                                }
 
 
-                              //"""""""""" user want to delete saved card """"""""""""//
-                              @Override
-                              public void deleteSaveCard(int pos, final String customerId) {
-                                  // Use the Builder class for convenient dialog construction
+                                //"""""""""" user want to delete saved card """"""""""""//
+                                @Override
+                                public void deleteSaveCard(int pos, final String customerId) {
+
+                                    removedSaveCardApi(customerId);
+
+                                 /* // Use the Builder class for convenient dialog construction
                                   final AlertDialog.Builder builder = new AlertDialog.Builder(AddCreditCardActivity.this);
 
                                   builder.setMessage(R.string.do_you_want_to_delete_this_card)
@@ -216,19 +223,20 @@ public class AddCreditCardActivity extends AppCompatActivity implements View.OnC
                                           });
                                   AlertDialog dialog = builder.create();
                                   dialog.getWindow().getAttributes().windowAnimations = R.style.CustomDialog;
-                                  dialog.show();
+                                  dialog.show();*/
 
-                              }
-                          });
-                       binding.rvPaymentCard.addItemDecoration(new DividerItemDecoration(AddCreditCardActivity.this, DividerItemDecoration.VERTICAL));
-                          binding.rvPaymentCard.setLayoutManager(layoutManager);
-                          binding.rvPaymentCard.setAdapter(cardAdapter);
+                                }
+                            });
+                            binding.rvPaymentCard.setLayoutManager(layoutManager);
+                            binding.rvPaymentCard.setAdapter(cardAdapter);
 
+                        }
 
-                      }
+                    }
                 });
 
             }
+
         }.execute();
     }
 
@@ -271,7 +279,7 @@ public class AddCreditCardActivity extends AppCompatActivity implements View.OnC
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.tv_add_new_card:
+            case R.id.btn_pay:
                 Intent intent = new Intent(this, CreditCardActivity.class);
                 startActivity(intent);
                 break;
@@ -282,6 +290,5 @@ public class AddCreditCardActivity extends AppCompatActivity implements View.OnC
             default:
         }
     }
-
 
 }

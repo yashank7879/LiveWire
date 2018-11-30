@@ -225,7 +225,7 @@
     <string name="card_number">Card Number</string>
     <string name="card_holder_name">Card Holder Name</string>
     <string name="use_a_new_card1">Use A New Card</string>
-    <string name="save_this_card">Save this card</string>
+    <string name="save_this_card">Save card</string>
     <string name="set">Set</string>
     <string name="select_month_and_year">Select Month and Year</string>
     <string name="select_card">Select Card</string>
@@ -234,6 +234,15 @@
     <string name="do_you_want_to_delete_this_card">Do you want to delete this card?</string>
     <string name="no">No</string>
     <string name="yes">Yes</string>
+    <string name="delete">Delete</string>
+    <string name="card">CARD</string>
+    <string name="card_list">CARD LIST</string>
+    <string name="add_card">Add Card</string>
+    <string name="you_don_t_add_any_payment_card_yet">You don\'t add any payment card yet</string>
+    <string name="worker_profile">WORKER PROFILE</string>
+    <string name="client_profile">CLIENT PROFILE</string>
+    <string name="reviews">REVIEWS</string>
+    <string name="no_review">No review</string>
 
 
 </resources>

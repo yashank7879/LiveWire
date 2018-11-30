@@ -39,6 +39,7 @@ import com.livewire.model.CategoryModel;
 import com.livewire.pagination.EndlessRecyclerViewScrollListener;
 import com.livewire.responce.OnGoingWorkerResponce;
 import com.livewire.responce.SubCategoryResponse;
+import com.livewire.ui.activity.ClientProfileDetailWorkerActivity;
 import com.livewire.ui.activity.JobHelpOfferedDetailWorkerActivity;
 import com.livewire.ui.activity.JobOnGoingDetailWorkerActivity;
 import com.livewire.utils.Constant;
@@ -446,6 +447,15 @@ public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapte
                 acceptRejectrequestApi(dataBean.getUserId(),dataBean.getJobId(),"2");
                 break;
                 default:
+        }
+    }
+
+    @Override
+    public void userInfoDetailOnClick(String userId) {
+        if (Constant.isNetworkAvailable(mContext,mainLayout)) {
+            Intent intent = new Intent(mContext, ClientProfileDetailWorkerActivity.class);
+            intent.putExtra("UserIdKey", userId);
+            startActivity(intent);
         }
     }
 

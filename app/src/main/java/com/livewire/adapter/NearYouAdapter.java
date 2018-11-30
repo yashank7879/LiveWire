@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.livewire.R;
@@ -99,6 +100,7 @@ public class NearYouAdapter extends RecyclerView.Adapter<NearYouAdapter.MyViewHo
         private LinearLayout llkmAway;
         private TextView tvDistance;
         private Button btnSendRequest;
+        private RelativeLayout rlProfileDetail;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -113,6 +115,13 @@ public class NearYouAdapter extends RecyclerView.Adapter<NearYouAdapter.MyViewHo
             llkmAway = (LinearLayout) itemView.findViewById(R.id.llkm_away);
             tvDistance = (TextView) itemView.findViewById(R.id.tv_distance);
             btnSendRequest = (Button) itemView.findViewById(R.id.btn_send_request);
+            rlProfileDetail = itemView.findViewById(R.id.rl_profile_detail);
+            rlProfileDetail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                listener.userInfoDetail(nearYouList.get(getAdapterPosition()).getUserId());
+                }
+            });
 
             btnSendRequest.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -120,12 +129,16 @@ public class NearYouAdapter extends RecyclerView.Adapter<NearYouAdapter.MyViewHo
                     listener.requestBtnOnclick(nearYouList.get(getAdapterPosition()));
                 }
             });
+
         }
     }
 
-    public interface NearYouRequestListener{
+    public interface NearYouRequestListener {
         void requestBtnOnclick(NearYouResponce.DataBean response);
+
+        void userInfoDetail(String userId);
     }
+
 }
 
 

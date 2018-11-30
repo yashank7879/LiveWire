@@ -100,11 +100,17 @@
                 android:layout_marginTop="@dimen/_8sdp"
                 android:background="@color/colorExtraLightGray" />
 
+
+            <RelativeLayout
+                android:id="@+id/rl_user_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/view1_id"
+                >
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/iv_profile_img"
                 android:layout_width="@dimen/_35sdp"
                 android:layout_height="@dimen/_35sdp"
-                android:layout_below="@+id/view1_id"
                 android:layout_marginEnd="@dimen/_8sdp"
                 android:src="@drawable/ic_user"
                 app:civ_border_color="@color/colorGreen"
@@ -114,7 +120,6 @@
                 android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/view1_id"
                 android:layout_toEndOf="@+id/iv_profile_img"
                 android:fontFamily="@font/poppins_semibold"
                 android:text='@{dataBean.name,default = "N/A"}'
@@ -158,6 +163,7 @@
 
             </LinearLayout>
 
+        </RelativeLayout>
             <Button
                 android:id="@+id/btn_send_request"
                 style="@style/smallPopinsRegularStyle"

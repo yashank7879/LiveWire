@@ -1,5 +1,6 @@
 package com.livewire.ui.dialog;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.ColorDrawable;
@@ -28,8 +29,7 @@ public class ReviewDialog extends DialogFragment implements View.OnClickListener
     ReviewDialogListner listner;
     private Context mContext;
 
-    @Nullable
-    @Override
+
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
        binding = DataBindingUtil.inflate(inflater,R.layout.dialog_review, container, false);
@@ -89,8 +89,9 @@ public class ReviewDialog extends DialogFragment implements View.OnClickListener
     @Override
     public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
 
-        Toast.makeText(mContext, ""+v, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(mContext, ""+v, Toast.LENGTH_SHORT).show();
     }
+
 
     public interface ReviewDialogListner{
       void onReviewOnClick(String text, float rating, LinearLayout layout);

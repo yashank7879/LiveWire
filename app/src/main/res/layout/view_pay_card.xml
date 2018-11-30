@@ -1,10 +1,317 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<?xml version="1.0" encoding="utf-8" ?>
+<com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:swipe="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/swipe"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    swipe:leftEdgeSwipeOffset="0dp"
+    swipe:rightEdgeSwipeOffset="0dp"
     android:layout_margin="@dimen/_5sdp"
-    android:orientation="vertical">
+    android:background="@drawable/bg_pay_card_item">
+
+    <!--Bottom View For Right to Left-->
+
+    <LinearLayout
+        android:id="@+id/bottom_wrapper"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        >
+
+        <RelativeLayout
+            android:id="@+id/view_background"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="match_parent"
+            android:background="@color/colorWhite"
+            android:layout_margin="@dimen/_5sdp">
+
+            <ImageView
+                android:id="@+id/iv_delete_icon"
+                android:layout_width="@dimen/_80sdp"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                swipe:srcCompat="@drawable/ic_delete_icon"
+                android:layout_marginEnd="@dimen/_10sdp"/>
+
+        </RelativeLayout>
+    </LinearLayout>
+
+
+    <!-- Another Bottom View For Left to Right -->
+
+    <LinearLayout
+        android:id="@+id/bottom_wrapper1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/main_click"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+           >
+
+            <ImageView
+                android:id="@+id/iv_delete_card"
+                android:layout_width="@dimen/_22sdp"
+                android:layout_height="@dimen/_22sdp"
+                android:layout_alignTop="@+id/rl_check_info"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_toStartOf="@+id/rl_check_info"
+                swipe:srcCompat="@drawable/ic_trash_24"
+                android:visibility="gone"
+                />
+
+            <RelativeLayout
+                android:id="@+id/rl_check_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="@dimen/_10sdp">
+
+
+                <ImageView
+                    android:id="@+id/iv_check_info"
+                    android:layout_width="@dimen/_22sdp"
+                    android:layout_height="@dimen/_22sdp"
+                    android:layout_centerVertical="true"
+                    swipe:srcCompat="@drawable/circle_holo_gray" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_35sdp"
+                    android:layout_margin="@dimen/_15sdp">
+
+                    <ImageView
+                        android:layout_width="@dimen/_32sdp"
+                        android:layout_height="@dimen/_32sdp"
+                        android:layout_centerVertical="true"
+                        swipe:srcCompat="@drawable/ic_card" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/_50sdp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_card_type"
+                            style="@style/smallPopinsRegularStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:gravity="center"
+                            android:text="@string/credit_card"
+                            android:textColor="@color/colorDarkBlack"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:password="true"
+                                android:text="1234"
+                                android:textColor="@color/colorLightGray" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="@dimen/_5sdp"
+                                android:gravity="center"
+                                android:password="true"
+                                android:text="1234"
+                                android:textColor="@color/colorLightGray" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="@dimen/_5sdp"
+                                android:gravity="center"
+                                android:password="true"
+                                android:text="1234"
+                                android:textColor="@color/colorLightGray" />
+
+                            <TextView
+                                android:id="@+id/tv_card_number"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="@dimen/_5sdp"
+                                android:gravity="center"
+                                android:text="****"
+                                android:textColor="@color/colorLightGray"
+                                android:textSize="@dimen/_12sdp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_card_extra_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_1sdp"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:background="@color/colorExtraLightGray" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_15sdp"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                style="@style/smallPopinsRegularStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/expiry_date"
+                                android:textColor="@color/colorBlack" />
+
+                            <TextView
+                                android:id="@+id/tv_date"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_30sdp"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="@dimen/_5sdp"
+                                android:gravity="center|start"
+                                android:hint="@string/mm_yyyy"
+                                android:padding="@dimen/_5sdp"
+                                android:textColor="@color/colorLightGray"
+                                android:textSize="@dimen/_12sdp" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/colorExtraLightGray" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_8sdp"
+                            android:layout_marginStart="@dimen/_8sdp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                style="@style/smallPopinsRegularStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/cvv_code"
+                                android:textColor="@color/colorBlack" />
+
+                            <TextView
+                                android:id="@+id/ed_cvv"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_30sdp"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="@dimen/_5sdp"
+                                android:background="@null"
+                                android:gravity="center|start"
+                                android:imeOptions="actionDone"
+                                android:inputType="numberPassword"
+                                android:maxLength="4"
+                                android:padding="@dimen/_5sdp"
+                                android:password="true"
+                                android:text="123"
+                                android:textColor="@color/colorLightGray"
+                                android:textSize="@dimen/_12sdp" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/colorExtraLightGray" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+        </RelativeLayout>
+    </LinearLayout>
+
+
+</com.daimajia.swipe.SwipeLayout>
+
+<!--
+<com.daimajia.swipe.SwipeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:swipe="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/tools"
+    android:id="@+id/swipe"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    swipe:leftEdgeSwipeOffset="0dp"
+    swipe:rightEdgeSwipeOffset="0dp"
+    android:layout_margin="@dimen/_5sdp"
+    app:ignore="NamespaceTypo">
+
+
+
+    <RelativeLayout
+        android:id="@+id/view_background"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_gravity="end"
+        android:layout_height="match_parent"
+        android:background="@color/colorWhite"
+        android:layout_margin="@dimen/_5sdp">
+
+        <ImageView
+            android:id="@+id/delete_icon"
+            android:layout_width="@dimen/_22sdp"
+            android:layout_height="@dimen/_22sdp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            app:srcCompat="@drawable/ic_trash_24"
+            android:layout_marginEnd="@dimen/_10sdp"/>
+
+        <TextView
+            style="@style/mediumPopinsMediumStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/delete_icon"
+            android:text="@string/delete"
+            android:textColor="@color/colorOrange"
+            android:layout_marginStart="@dimen/_10sdp"
+             />
+
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/main_click"
@@ -21,7 +328,9 @@
             android:layout_marginEnd="@dimen/_5sdp"
             android:layout_toStartOf="@+id/rl_check_info"
             android:padding="@dimen/_2sdp"
-            app:srcCompat="@drawable/ic_trash_24" />
+            app:srcCompat="@drawable/ic_trash_24"
+            android:visibility="gone"
+            />
 
         <RelativeLayout
             android:id="@+id/rl_check_info"
@@ -224,7 +533,7 @@
 
 
         </LinearLayout>
-        <!-- <RelativeLayout
+        &lt;!&ndash; <RelativeLayout
              android:layout_width="match_parent"
              android:layout_height="@dimen/_35sdp"
              android:layout_margin="@dimen/_10sdp">
@@ -298,9 +607,9 @@
 
              </LinearLayout>
 
-         </RelativeLayout>-->
+         </RelativeLayout>&ndash;&gt;
 
-        <!--<TextView
+        &lt;!&ndash;<TextView
             android:id="@+id/pay_btn"
             android:layout_width="@dimen/_50sdp"
             android:layout_height="@dimen/_25sdp"
@@ -312,9 +621,9 @@
             android:gravity="center"
             android:text="@string/pay_txt"
             android:textColor="@color/colorWhite"
-            android:textSize="@dimen/textSmallSize" />-->
+            android:textSize="@dimen/textSmallSize" />&ndash;&gt;
 
-        <!--  <RelativeLayout
+        &lt;!&ndash;  <RelativeLayout
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_alignParentEnd="true"
@@ -326,8 +635,10 @@
                   android:layout_centerVertical="true"
                   android:src="@drawable/ic_card_check" />
 
-          </RelativeLayout>-->
+          </RelativeLayout>&ndash;&gt;
+
+
 
     </RelativeLayout>
 
-</LinearLayout>
+</com.daimajia.swipe.SwipeLayout>-->

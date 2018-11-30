@@ -131,6 +131,8 @@ public class HelpOfferedAdapter extends RecyclerView.Adapter<HelpOfferedAdapter.
         private Button btnSendRequest;
         private TextView tvMoreInfo;
         private LinearLayout llMoreInfo;
+        private RelativeLayout rlUserDetail;
+
         public MyViewHolder(View view) {
             super(view);
             binding = DataBindingUtil.bind(view);
@@ -149,6 +151,7 @@ public class HelpOfferedAdapter extends RecyclerView.Adapter<HelpOfferedAdapter.
             tvDistance = view.findViewById(R.id.tv_distance);
             btnSendRequest = view.findViewById(R.id.btn_send_request);
             tvMoreInfo = view.findViewById(R.id.tv_more_info);
+             rlUserDetail = view.findViewById(R.id.rl_user_detail);
 
             llMoreInfo.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -168,6 +171,13 @@ public class HelpOfferedAdapter extends RecyclerView.Adapter<HelpOfferedAdapter.
                         //   btnSendRequest.setVisibility(View.GONE);
                         btnSendRequest.setClickable(false);
                     }
+                }
+            });
+
+            rlUserDetail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.userInfoDetailOnClick(dataBeanList.get(getAdapterPosition()).getUserId());
                 }
             });
 
@@ -204,6 +214,7 @@ public class HelpOfferedAdapter extends RecyclerView.Adapter<HelpOfferedAdapter.
 
     public interface HelpOfferItemListener{
         void helpOfferItemOnClick(HelpOfferedResponce.DataBean dataBean,String helpoffer, int pos);
+        void userInfoDetailOnClick(String userId);
     }
 
 }

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.livewire.ui.activity.ReviewListActivity"
+    android:id="@+id/review_layout"
+    >
+
+    <include layout="@layout/action_bar_worker_layout"
+        android:id="@+id/action_bar_worker"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_review"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/action_bar_worker"
+        android:background="@color/colorWhite"
+        >
+
+    </android.support.v7.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/tv_no_review"
+        style="@style/smallPopinsRegularStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_review"
+        android:layout_centerInParent="true"
+        android:textColor="@color/colorDarkBlack"
+        />
+
+</RelativeLayout>
+
+</layout>
