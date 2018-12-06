@@ -525,8 +525,8 @@
                     android:text="@string/n_a"
                     android:textSize="@dimen/_10sdp" />
 
-                <!--          <Button
-                              android:id="@+id/btn_send_request"
+                          <Button
+                              android:id="@+id/btn_end_job"
                               style="@style/smallPopinsRegularStyle"
                               android:layout_width="@dimen/_85sdp"
                               android:layout_height="@dimen/_25sdp"
@@ -534,10 +534,12 @@
                               android:layout_centerInParent="true"
                               android:layout_margin="@dimen/_15sdp"
                               android:background="@drawable/button_green_bg"
-                              android:text="@string/send_request"
+                              android:text="@string/end_job"
                               android:textAllCaps="false"
                               android:textColor="@color/colorWhite"
-                              android:textSize="@dimen/_10sdp" />-->
+                              android:textSize="@dimen/_10sdp"
+                              android:visibility="gone"
+                              />
 
             </RelativeLayout>
 

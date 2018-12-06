@@ -10,7 +10,7 @@
         <com.loopeer.shadow.ShadowView
             android:id="@+id/action_bar"
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
+            android:layout_height="@dimen/_40sdp"
             app:shadowColor="@color/colorLightGray"
             app:shadowMarginBottom="3dp"
             app:shadowRadius="@dimen/_5sdp">
@@ -21,6 +21,7 @@
                 android:background="@color/colorWhite">
 
                 <TextView
+                    android:id="@+id/tv_header"
                     style="@style/mediumPopinsMediumStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -49,7 +50,7 @@
         <ScrollView
             android:id="@+id/sv_creditcard_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_below="@+id/action_bar">
 
             <LinearLayout
@@ -359,6 +360,22 @@
                     </LinearLayout>
 
                     <Button
+                        android:id="@+id/btn_save_card"
+                        android:layout_width="@dimen/_200sdp"
+                        android:layout_height="@dimen/_32sdp"
+                        android:layout_gravity="bottom|center"
+                        android:layout_marginBottom="@dimen/_30sdp"
+                        android:layout_marginLeft="@dimen/_15sdp"
+                        android:layout_marginRight="@dimen/_15sdp"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        android:background="@drawable/button_green_bg"
+                        android:fontFamily="@font/poppins_light"
+                        android:text="@string/save_card"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="@dimen/_14sdp" />
+
+                    <Button
                         android:id="@+id/btn_pay"
                         android:layout_width="@dimen/_200sdp"
                         android:layout_height="@dimen/_32sdp"
@@ -369,10 +386,12 @@
                         android:layout_marginTop="@dimen/_20sdp"
                         android:background="@drawable/button_green_bg"
                         android:fontFamily="@font/poppins_light"
-                        android:text="@string/save_this_card"
+                        android:text="@string/pay"
                         android:textAllCaps="false"
                         android:textColor="@color/colorWhite"
-                        android:textSize="@dimen/_14sdp" />
+                        android:textSize="@dimen/_14sdp"
+                        android:visibility="gone"
+                        />
                 </LinearLayout>
 
             </LinearLayout>

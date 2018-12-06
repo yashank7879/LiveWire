@@ -46,7 +46,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.MyViewHo
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         if (requestList.size() != 0){
-            if (requestList.get(position).getJob_confirmed().equals("0")) {
+            if (requestList.get(position).getJob_confirmed().equals("0") || requestList.get(position).getJob_confirmed().equals("3")) {
                 holder.rlRequest.setVisibility(View.VISIBLE);
                 RequestResponceClient.DataBean dataBean = requestList.get(position);
                 holder.tvName.setText(dataBean.getName());

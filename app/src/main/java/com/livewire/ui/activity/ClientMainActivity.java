@@ -91,14 +91,15 @@ public class ClientMainActivity extends AppCompatActivity implements View.OnClic
         chatLl.setOnClickListener(this);
         userSettingLl.setOnClickListener(this);
 
-        if (getIntent().getStringExtra("NearYouKey") != null){//get intent from NearYouClientActivity
+        //get intent from NearYouClientActivity || from After completing payment
+        if (getIntent().getStringExtra("NearYouKey") != null){
             replaceFragment(new MyJobClientFragment(), false, R.id.fl_container); // first time replace home fragment
             inActiveTab();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 ivMyJob.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorGreen)));
             }
             clickId = R.id.my_job_ll;
-        }else {
+        }else{
             replaceFragment(new PostJobHomeFragment(), false, R.id.fl_container); // first time replace home fragment
             clickId = R.id.add_ll;
         }

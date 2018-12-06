@@ -154,7 +154,7 @@
                                     android:layout_centerHorizontal="true"
                                     android:numStars="5"
                                     android:progressTint="@color/coloryellow"
-                                    android:rating="3" />
+                                    />
 
                                 <TextView
                                     android:id="@+id/tv_location"

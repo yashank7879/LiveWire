@@ -19,6 +19,7 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.livewire.R;
 import com.livewire.databinding.ActivityMySingleJobDetailClientBinding;
 import com.livewire.responce.MyjobResponceClient;
+import com.livewire.ui.activity.credit_card.AddCreditCardActivity;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
 import com.livewire.utils.ProgressDialog;
@@ -29,40 +30,43 @@ import org.json.JSONObject;
 
 
 import static com.livewire.utils.ApiCollection.BASE_URL;
+import static com.livewire.utils.ApiCollection.JOBPOSTSEND_GET_JOB_DETAIL_API;
 
 public class MySingleJobDetailClientActivity extends AppCompatActivity implements View.OnClickListener {
     ActivityMySingleJobDetailClientBinding binding;
     private static final String TAG = MySingleJobDetailClientActivity.class.getName();
 
     private ProgressDialog progressDialog;
-    private String JobId="";
-    private String usetId="";
+    private String JobId = "";
+    private String usetId = "";
+    private String budget = "";
+    private String workerName="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_my_single_job_detail_client);
         intializeView();
-       // jobDetailApi();
+        // jobDetailApi();
     }
 
     private void intializeView() {
         progressDialog = new ProgressDialog(this);
         binding.ivBack.setOnClickListener(this);
         binding.flMultiImg.setOnClickListener(this);
+        binding.btnEndJob.setOnClickListener(this);
 
         if (getIntent().getSerializableExtra("MyJobDetail") != null) {
             MyjobResponceClient.DataBean dataBean = (MyjobResponceClient.DataBean) getIntent().getSerializableExtra("MyJobDetail");
             setMyJobDetails(dataBean);
             binding.setJobDetail(dataBean);
 
+
             binding.tvCategory.setText(dataBean.getSub_category());
             binding.tvSubCategory.setText(dataBean.getParent_category());
             binding.tvBudgetPrice.setText("$ " + dataBean.getJob_budget());
             binding.tvDescription.setText(dataBean.getJob_description());
             binding.tvTime.setText(Constant.getDayDifference(dataBean.getCrd(), dataBean.getCurrentDateTime()));
-
-
             binding.tvDate1.setText(Constant.DateFomatChange(dataBean.getJob_start_date()).substring(0, 2) + " ");
             binding.tvDateMonth.setText(Constant.DateFomatChange(dataBean.getJob_start_date()).substring(3));
         }
@@ -72,9 +76,11 @@ public class MySingleJobDetailClientActivity extends AppCompatActivity implement
         if (dataBean.getJob_type().equals("1")) {/// """"""" SINGLE JOB
             JobId = dataBean.getJobId();
             usetId = dataBean.getUserId();
+            budget = dataBean.getJob_budget();
+
+
 
             if (dataBean.getTotal_request().equals("0")) {   // no requested yet
-
                 //*//*
                 binding.tvNoRequest.setVisibility(View.VISIBLE);
                 binding.rlUserData.setVisibility(View.GONE);
@@ -84,9 +90,12 @@ public class MySingleJobDetailClientActivity extends AppCompatActivity implement
 
                 binding.rlUserData.setVisibility(View.VISIBLE);
                 binding.llChat.setVisibility(View.VISIBLE);
+                binding.btnEndJob.setVisibility(View.VISIBLE);
                 binding.tvNoRequest.setVisibility(View.GONE);
                 binding.rlMultiImg.setVisibility(View.GONE);
 
+                usetId = dataBean.getRequestedUserData().get(0).getUserId(); //worker user id to give review
+                workerName = dataBean.getRequestedUserData().get(0).getName();//worker name
                 Picasso.with(binding.ivProfileImg.getContext())
                         .load(dataBean.getRequestedUserData()
                                 .get(0).getProfileImage()).fit().into(binding.ivProfileImg);
@@ -110,9 +119,6 @@ public class MySingleJobDetailClientActivity extends AppCompatActivity implement
                     }
                     addhorizontalTimeView(binding.flMultiImg, dataBean.getRequestedUserData().get(i).getProfileImage(), leftMargin);
                 }
-
-
-
             }
         }
     }
@@ -161,14 +167,23 @@ public class MySingleJobDetailClientActivity extends AppCompatActivity implement
 
     @Override
     public void onClick(View v) {
+        Intent intent = null;
         switch (v.getId()) {
             case R.id.iv_back:
                 onBackPressed();
                 break;
             case R.id.fl_multi_img:
-                Intent intent = new Intent(this, RequestClientActivity.class);
+                intent = new Intent(this, RequestClientActivity.class);
                 intent.putExtra("UserId", usetId);
                 intent.putExtra("JobId", JobId);
+                startActivity(intent);
+                break;
+            case R.id.btn_end_job:
+                intent = new Intent(this, AddCreditCardActivity.class);
+                intent.putExtra("NameKey",workerName);
+                intent.putExtra("PaymentKey", budget);
+                intent.putExtra("JobIdKey", JobId);
+                intent.putExtra("UserIdKey", usetId);
                 startActivity(intent);
                 break;
             default:
@@ -178,7 +193,7 @@ public class MySingleJobDetailClientActivity extends AppCompatActivity implement
     private void jobDetailApi() {
         if (Constant.isNetworkAvailable(this, binding.detailMainLayout)) {
             progressDialog.show();
-            AndroidNetworking.post(BASE_URL + "Jobpost/getJobDetail")
+            AndroidNetworking.post(BASE_URL + JOBPOSTSEND_GET_JOB_DETAIL_API)
                     .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
                     .addBodyParameter("job_id")
                     .addBodyParameter("job_type")

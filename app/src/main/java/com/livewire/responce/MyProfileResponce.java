@@ -99,6 +99,7 @@ public class MyProfileResponce implements Serializable {
         private String user_intro_video="";
         private String thumbImage="";
         private String totalIncome="";
+        private String rating="";
         private List<CategoryBean> category;
 
         public String getUserId() {
@@ -315,6 +316,14 @@ public class MyProfileResponce implements Serializable {
 
         public void setTotalIncome(String totalIncome) {
             this.totalIncome = totalIncome;
+        }
+
+        public String getRating() {
+            return rating;
+        }
+
+        public void setRating(String rating) {
+            this.rating = rating;
         }
 
         public static class CategoryBean implements Serializable{

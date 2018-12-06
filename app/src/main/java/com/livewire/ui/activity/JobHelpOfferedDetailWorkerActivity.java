@@ -33,6 +33,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
+import static com.livewire.utils.ApiCollection.ADD_REVIEW_API;
 import static com.livewire.utils.ApiCollection.BASE_URL;
 import static com.livewire.utils.ApiCollection.JOBPOSTSEND_REQUEST_2_API;
 
@@ -59,20 +60,6 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
 
     private void intializeViews() {
         progressDialog = new ProgressDialog(this);
-    /*    binding.ivProfileImg = findViewById(R.id.iv_profile_img);
-        tvName = findViewById(R.id.tv_name);
-        ratingBar = findViewById(R.id.rating_bar);
-        tvDistance = findViewById(R.id.tv_distance);
-        tvTime = findViewById(R.id.tv_time);
-        tvMoreInfo = findViewById(R.id.tv_chat);
-        tvCategory = findViewById(R.id.tv_category);
-        tvDate = findViewById(R.id.tv_date);
-        tvDateMonth = findViewById(R.id.tv_date_month);
-        tvSubCategory = findViewById(R.id.tv_sub_category);
-        tvBudgetPrice = findViewById(R.id.tv_budget_price);
-        tvDescription = findViewById(R.id.tv_description);
-        mainLayout = findViewById(R.id.detail_main_layout);
-        btnSendRequest = findViewById(R.id.btn_send_request);*/
         binding.btnSendRequest.setOnClickListener(this);
         findViewById(R.id.iv_back).setOnClickListener(this);
         binding.btnDilog.setOnClickListener(this);
@@ -193,8 +180,12 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
         }
     }
 
+    //""""""" give Review Dialog """""""""""//
     private void openReviewDialog() {
+        Bundle bundle = new Bundle();
+        bundle.putString("NameKey", name);
         final ReviewDialog dialog = new ReviewDialog();
+        dialog.setArguments(bundle);
         dialog.show(getSupportFragmentManager(), "");
         dialog.setCancelable(false);
         dialog.getReviewInfo(new ReviewDialog.ReviewDialogListner() {
@@ -206,6 +197,11 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
 
                 // Toast.makeText(JobHelpOfferedDetailWorkerActivity.this, description +" rating: "+rating, Toast.LENGTH_SHORT).show();
             }
+
+            @Override
+            public void onReviewCancel() {
+
+            }
         });
     }
 
@@ -213,7 +209,7 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
     private void giveReviewApi(String description, float rating, final ReviewDialog dialog, final LinearLayout layout) {
         if (Constant.isNetworkAvailable(this, layout)) {
             progressDialog.show();
-            AndroidNetworking.post(BASE_URL + "user/addReview")
+            AndroidNetworking.post(BASE_URL + ADD_REVIEW_API)
                     .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
                     .addBodyParameter("review_to", userId)
                     .addBodyParameter("job_id", jobId)
@@ -247,7 +243,7 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
 
     }
 
-    //"""""""""""  send request to
+    //"""""""""""""""""  send request to """"""""""""""""""""///
     private void sendRequestApi() {
         if (Constant.isNetworkAvailable(this, binding.detailMainLayout)) {
             progressDialog.show();

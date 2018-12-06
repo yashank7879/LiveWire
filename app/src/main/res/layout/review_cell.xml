@@ -42,7 +42,6 @@
             android:layout_below="@+id/tv_name"
             android:layout_toEndOf="@+id/iv_profile_img"
             android:numStars="5"
-            android:rating="3"
             android:theme="@style/RatingBarTheme" />
 
         <TextView
@@ -64,7 +63,9 @@
             android:fontFamily="@font/poppins_medium"
             android:text='@{dataBean.rating ,default = "N/A"}'
             android:textColor="@color/colorLightGray"
-            android:textSize="@dimen/_9sdp" />
+            android:textSize="@dimen/_9sdp"
+            android:visibility="visible"
+            />
 
 </RelativeLayout>
 

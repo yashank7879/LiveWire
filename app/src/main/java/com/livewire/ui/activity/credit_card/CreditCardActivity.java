@@ -1,7 +1,8 @@
-package com.livewire.ui.activity;
+package com.livewire.ui.activity.credit_card;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
@@ -15,11 +16,18 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.livewire.R;
 import com.livewire.databinding.ActivityCreditCardsBinding;
+import com.livewire.ui.activity.ClientMainActivity;
+import com.livewire.ui.dialog.ReviewDialog;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
 import com.livewire.utils.ProgressDialog;
@@ -28,9 +36,16 @@ import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Customer;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.livewire.utils.ApiCollection.ADD_REVIEW_API;
+import static com.livewire.utils.ApiCollection.BASE_URL;
+import static com.livewire.utils.ApiCollection.END_JOB_API;
 
 public class CreditCardActivity extends AppCompatActivity implements View.OnClickListener {
     ActivityCreditCardsBinding binding;
@@ -39,6 +54,12 @@ public class CreditCardActivity extends AppCompatActivity implements View.OnClic
     private int year1;
     private int month1;
     private ProgressDialog progressDialog;
+    private String jobId;
+    private float budget;
+    private float stripeFee;
+    private String userId="";
+    private String name="";
+    private String cardNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +68,26 @@ public class CreditCardActivity extends AppCompatActivity implements View.OnClic
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         width = displaymetrics.widthPixels;
+
+        if (getIntent().getStringExtra("JobIdKey") != null){
+            binding.tvPayAmount.setText("Pay $"+getIntent().getFloatExtra("PayKey",0));
+            budget = getIntent().getFloatExtra("PayKey",0);
+            stripeFee = getIntent().getFloatExtra("stripeFeeKey",0);
+            jobId = getIntent().getStringExtra("JobIdKey");
+            userId = getIntent().getStringExtra("UserIdKey");
+            name = getIntent().getStringExtra("NameKey");
+
+            /*intent.putExtra("NameKey",name);
+            intent.putExtra("UserIdKey", userId);*/
+
+            binding.tvPayAmount.setVisibility(View.VISIBLE);
+            binding.btnPay.setVisibility(View.VISIBLE);
+            binding.cbSaveCard.setVisibility(View.VISIBLE);
+            binding.btnSaveCard.setVisibility(View.GONE);
+            binding.tvHeader.setText(R.string.payment);
+            binding.tvHeader.setAllCaps(true);
+        }
+
         progressDialog = new ProgressDialog(this);
         binding.cardNum1.addTextChangedListener(watcherClass);
         binding.cardNum2.addTextChangedListener(watcherClass);
@@ -54,8 +95,9 @@ public class CreditCardActivity extends AppCompatActivity implements View.OnClic
         binding.cardNum4.addTextChangedListener(watcherClass);
         binding.tvDate.setOnClickListener(this);
         binding.ivBack.setOnClickListener(this);
-        binding.btnPay.setOnClickListener(this);
+        binding.btnSaveCard.setOnClickListener(this);
         binding.cbSaveCard.setOnClickListener(this);
+        binding.btnPay.setOnClickListener(this);
     }
 
     private TextWatcher watcherClass = new TextWatcher() {
@@ -92,9 +134,13 @@ public class CreditCardActivity extends AppCompatActivity implements View.OnClic
             case R.id.iv_back:
                 onBackPressed();
                 break;
-            case R.id.btn_pay:
+            case R.id.btn_save_card:
                 Constant.hideSoftKeyBoard(this,binding.edCvv);
                 validationd();
+                break;
+                case R.id.btn_pay:
+                Constant.hideSoftKeyBoard(this,binding.edCvv);
+                payValidations();
                 break;
             case R.id.tv_date:
                 showMonthYearDialog();
@@ -112,7 +158,8 @@ public class CreditCardActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-    private void validationd() {
+    //""""""""""' user come from JobDetailActivity :- save and pay from credit card """"""""'//
+    private void payValidations() {
         if (Validation.isEmpty(binding.cardHolderName)) {
             Constant.snackBar(binding.svCreditcardLayout, getString(R.string.please_enter_cardholder_name));
         } else if (Validation.isEmpty(binding.cardNum1) || Validation.isEmpty(binding.cardNum2) || Validation.isEmpty(binding.cardNum3) || Validation.isEmpty(binding.cardNum4)) {
@@ -127,28 +174,126 @@ public class CreditCardActivity extends AppCompatActivity implements View.OnClic
                     + binding.cardNum3.getText().toString().trim()
                     + binding.cardNum4.getText().toString().trim();
 
-            createStripeToken(cardNumber, month1, year1, binding.edCvv.getText().toString().trim());
-
-/*
-            Card card = new Card(cardNumber, month1, year1, binding.edCvv.getText().toString().trim());
-
-           if (!card.validateNumber()) {
-                Toast.makeText(this, "Please Enter Valid card Number", Toast.LENGTH_SHORT).show();
-            } else if (!card.validateExpMonth()) {
-                Toast.makeText(this, "Please Enter Valid Expiry month", Toast.LENGTH_SHORT).show();
-
-            } else if (!card.validateCVC()) {
-                Toast.makeText(this, "Please Enter Valid CVC", Toast.LENGTH_SHORT).show();
-
-            } else {
-
-                createStripeToken(cardNumber, month1, year1, binding.edCvv.getText().toString().trim());
-
-            }*/
+            saveCardAndPay(cardNumber, month1, year1, binding.edCvv.getText().toString().trim());
 
         }
     }
 
+    //""""""""""' user come from JobDetailActivity :- save and pay from credit card """"""""'//
+    @SuppressLint("StaticFieldLeak")
+    private void saveCardAndPay(final String cardNumber, final int month1, final int year1, final String cvv) {
+        if (Constant.isNetworkAvailable(this, binding.svCreditcardLayout)) {
+            progressDialog.show();
+
+            new AsyncTask<Void, Void, com.stripe.model.Token>() {
+                @Override
+                protected com.stripe.model.Token doInBackground(Void... voids) {
+                    com.stripe.Stripe.apiKey = "sk_test_82UMhsygkviBYxQmikCW9Oa1";
+                    com.stripe.model.Token token = null;
+                    Map<String, Object> tokenParams = new HashMap<String, Object>();
+                    Map<String, Object> cardParams = new HashMap<String, Object>();
+                    cardParams.put("number", cardNumber);
+                    cardParams.put("exp_month", month1);
+                    cardParams.put("exp_year", year1);
+                    cardParams.put("cvc", cvv);
+                    tokenParams.put("card", cardParams);
+
+                    try {
+                        token = com.stripe.model.Token.create(tokenParams);
+
+                    } catch (StripeException e) {
+                        Constant.printLogMethod(Constant.LOG_VALUE, TAG, e.getLocalizedMessage());
+                        progressDialog.dismiss();
+                        Constant.snackBar(binding.svCreditcardLayout, e.getLocalizedMessage());
+
+                    }
+                    return token;
+                }
+
+                @Override
+                protected void onPostExecute(final com.stripe.model.Token token) {
+                    super.onPostExecute(token);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressDialog.dismiss();
+                             if (token != null /*&& binding.cbSaveCard.isChecked()*/) {
+                                if (Constant.isNetworkAvailable(CreditCardActivity.this, binding.svCreditcardLayout)) {
+                                    if (binding.cbSaveCard.isChecked()) {
+                                        createStripeToken(cardNumber, month1, year1, binding.edCvv.getText().toString().trim());
+                                        //saveCreditCard(token.getId());
+                                    }
+                                    paymentApi(token.getId());
+                                }
+                            }
+                        }
+                    });
+                }
+            }.execute();
+        }
+    }
+
+    ///"""""""""" server api to make payment """""""//
+    private void paymentApi(final String tokenId) {
+        if (Constant.isNetworkAvailable(CreditCardActivity.this, binding.svCreditcardLayout)) {
+            progressDialog.show();
+            AndroidNetworking.post(BASE_URL + END_JOB_API)
+                    .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
+                    .addBodyParameter("jobId", jobId)
+                    .addBodyParameter("amount", String.valueOf(budget))
+                    .addBodyParameter("source",tokenId)
+                    .addBodyParameter("source_type","token")
+                    .addBodyParameter("stripe_fees",""+stripeFee)
+                    .addBodyParameter("currency", "")
+                    .setPriority(Priority.MEDIUM)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            progressDialog.dismiss();
+                            String status = null;
+                            try {
+                                status = response.getString("status");
+                                String message = response.getString("message");
+                                if (status.equals("success")) {
+                                    openReviewDialog();
+                                   // Constant.snackBar(binding.svCreditcardLayout,message);
+                                } else {
+                                    Constant.snackBar(binding.svCreditcardLayout,message);
+                                    progressDialog.dismiss();
+                                }
+                            } catch (JSONException e) {
+                                Log.d(TAG, e.getMessage());
+                            }
+                        }
+                        @Override
+                        public void onError(ANError anError) {
+
+                        }
+                    });
+        }
+    }
+
+    private void validationd() {
+        if (Validation.isEmpty(binding.cardHolderName)) {
+            Constant.snackBar(binding.svCreditcardLayout, getString(R.string.please_enter_cardholder_name));
+        } else if (Validation.isEmpty(binding.cardNum1) || Validation.isEmpty(binding.cardNum2) || Validation.isEmpty(binding.cardNum3) || Validation.isEmpty(binding.cardNum4)) {
+            Constant.snackBar(binding.svCreditcardLayout, getString(R.string.please_enter_card_number));
+        } else if (Validation.isEmpty(binding.tvDate)) {
+            Constant.snackBar(binding.svCreditcardLayout, getString(R.string.please_select_mm_yy));
+        } else if (Validation.isEmpty(binding.edCvv) || binding.edCvv.getText().length() != 3) {
+            Constant.snackBar(binding.svCreditcardLayout, getString(R.string.please_enter_cvv));
+        } else {
+             cardNumber = binding.cardNum1.getText().toString().trim()
+                    + binding.cardNum2.getText().toString().trim()
+                    + binding.cardNum3.getText().toString().trim()
+                    + binding.cardNum4.getText().toString().trim();
+
+            createStripeToken(cardNumber, month1, year1, binding.edCvv.getText().toString().trim());
+        }
+    }
+
+    //"""""""""" Save your credit card :- user come from manage credit card """"""""""""'///
     @SuppressLint("StaticFieldLeak")
     private void createStripeToken(final String cardNumber, final int month1, final int year1, final String cvv) {
         if (Constant.isNetworkAvailable(this, binding.svCreditcardLayout)) {
@@ -189,12 +334,6 @@ public class CreditCardActivity extends AppCompatActivity implements View.OnClic
                             if (token != null) {
                                 saveCreditCard(token.getId());
                             }
-                            /* if (token != null && binding.cbSaveCard.isChecked()) {
-                                if (Constant.isNetworkAvailable(CreditCardActivity.this, binding.svCreditcardLayout)) {
-                                    saveCreditCard(token.getId());
-                                }
-                            }*/
-                            // Log.e("createStripeToken: ", "" + token.getId());
                         }
                     });
                 }
@@ -268,9 +407,10 @@ public class CreditCardActivity extends AppCompatActivity implements View.OnClic
                 super.onPostExecute(customer);
                 progressDialog.dismiss();
                 if (customer != null) {
-                    Toast.makeText(CreditCardActivity.this, "Your card is saved successfully.", Toast.LENGTH_SHORT).show();
-                    onBackPressed();
-                    //  customer.toJson();
+                    if (name.isEmpty()){
+                        onBackPressed();
+                    }
+                   // Toast.makeText(CreditCardActivity.this, "Your card is saved successfully.", Toast.LENGTH_SHORT).show();
                 } else {
                     Constant.snackBar(binding.svCreditcardLayout, "Stripe Error");
                 }
@@ -325,7 +465,75 @@ public class CreditCardActivity extends AppCompatActivity implements View.OnClic
             }
         });
         yearDialog.show();
+    }
 
+    //""""""" give Review Dialog """""""""""//
+    private void openReviewDialog() {
+        Bundle bundle = new Bundle();
+        bundle.putString("NameKey", name);
+        final ReviewDialog dialog = new ReviewDialog();
+        dialog.setArguments(bundle);
+        dialog.show(getSupportFragmentManager(), "");
+        dialog.setCancelable(false);
+        dialog.getReviewInfo(new ReviewDialog.ReviewDialogListner() {
+            @Override
+            public void onReviewOnClick(String description, float rating, LinearLayout layout) {
+
+                giveReviewApi(description, rating, dialog, layout);
+                // dialog.dismiss();
+
+                // Toast.makeText(JobHelpOfferedDetailWorkerActivity.this, description +" rating: "+rating, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onReviewCancel() {
+                Intent intent = new Intent(CreditCardActivity.this, ClientMainActivity.class);
+                intent.putExtra("NearYouKey","MyJob");
+                startActivity(intent);
+                finish();
+            }
+        });
+    }
+
+    //"""""""""" give review list""""""""""""""""""'//
+    private void giveReviewApi(String description, float rating, final ReviewDialog dialog, final LinearLayout layout) {
+        if (Constant.isNetworkAvailable(this, layout)) {
+            progressDialog.show();
+            AndroidNetworking.post(BASE_URL + ADD_REVIEW_API)
+                    .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
+                    .addBodyParameter("review_to", userId)
+                    .addBodyParameter("job_id", jobId)
+                    .addBodyParameter("rating", "" + rating)
+                    .addBodyParameter("description", description)
+                    .setPriority(Priority.MEDIUM)
+                    .build().getAsJSONObject(new JSONObjectRequestListener() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        progressDialog.dismiss();
+                        String status = response.getString("status");
+                        String message = response.getString("message");
+                        if (status.equals("success")) {
+                            dialog.dismiss();
+                            Intent intent = new Intent(CreditCardActivity.this, ClientMainActivity.class);
+                            intent.putExtra("NearYouKey","MyJob");
+                            startActivity(intent);
+                            finish();
+                            //  Constant.snackBar(binding.detailMainLayout, message);
+                        } else {
+                            Constant.snackBar(layout, message);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onError(ANError anError) {
+                    progressDialog.dismiss();
+                }
+            });
+        }
     }
 
 

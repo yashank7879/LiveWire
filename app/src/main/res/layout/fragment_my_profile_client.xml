@@ -114,7 +114,7 @@
                                     android:layout_centerHorizontal="true"
                                     android:numStars="5"
                                     android:progressTint="@color/coloryellow"
-                                    android:rating="3" />
+                                    />
 
                                 <TextView
                                     android:id="@+id/tv_location"
@@ -225,7 +225,7 @@
                                             android:layout_below="@+id/complete_job"
                                             android:layout_centerHorizontal="true"
                                             android:textColor="@color/colorDarkBlack"
-                                            android:text='@{userResponce.totalIncome != "" ? userResponce.totalIncome : "0", default="N/A"}'
+                                            android:text='@{userResponce.complete_job != "" ? userResponce.complete_job : "0", default="N/A"}'
                                             />
                                     </RelativeLayout>
 

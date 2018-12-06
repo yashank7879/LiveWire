@@ -92,6 +92,8 @@ public class SignUpResponce implements Serializable {
         private String longitude ="";
         private String is_bank_account ="";
         private String stripe_customer_id ="";
+        private String rating ="";
+        private String complete_job ="";
 
         public String getUserId() {
             return userId;
@@ -291,6 +293,22 @@ public class SignUpResponce implements Serializable {
 
         public void setStripe_customer_id(String stripe_customer_id) {
             this.stripe_customer_id = stripe_customer_id;
+        }
+
+        public String getRating() {
+            return rating;
+        }
+
+        public void setRating(String rating) {
+            this.rating = rating;
+        }
+
+        public String getComplete_job() {
+            return complete_job;
+        }
+
+        public void setComplete_job(String complete_job) {
+            this.complete_job = complete_job;
         }
     }
 }

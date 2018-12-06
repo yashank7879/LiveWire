@@ -56,8 +56,9 @@
         android:layout_height="@dimen/_60sdp"
         app:srcCompat="@drawable/ic_active_once"
         android:padding="@dimen/_15sdp"
+        android:tint="@color/colorLightGray"
         android:layout_gravity="center"
-        android:background="@drawable/active_btn_balck_bg"
+        android:background="@drawable/inactive_btn_gray_bg"
         />
 
         <TextView

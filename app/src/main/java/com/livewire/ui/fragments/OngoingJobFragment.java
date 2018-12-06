@@ -13,9 +13,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
+import android.text.InputType;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,13 +22,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -120,8 +118,6 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
         progressDialog.setCancelable(false);
 
 
-
-
         weekList = new ArrayList<>();
         weekList.add(new WeekListModel("Monday", false));
         weekList.add(new WeekListModel("Tuesday", false));
@@ -138,6 +134,12 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
         binding.weekDaysRl.setOnClickListener(this);
         binding.locationRl.setOnClickListener(this);
         binding.btnShare.setOnClickListener(this);
+
+        //""""  to hide keyboard """""""//
+        binding.etDescription.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        binding.etDescription.setRawInputType(InputType.TYPE_CLASS_TEXT);
+
+
         loadSkillsData();
     }
 
@@ -280,6 +282,14 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
                         String status = response.getString("status");
                         String message = response.getString("message");
                         if (status.equals("success")) {
+                            binding.tvSelectedSkill.setText("");
+                            binding.tvStartDate.setText("");
+                            binding.tvEndDate.setText("");
+                            binding.tvLocation.setText("");
+                            binding.tvWeekDays.setText("");
+                            binding.etHourRequierd.setText("");
+                            binding.etDescription.setText("");
+
 
                             String jobId = response.getString("clientJobId");
                             Intent intent = new Intent(mContext, NearYouClientActivity.class);

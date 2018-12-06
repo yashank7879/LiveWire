@@ -2,6 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <variable
+            name="dataBean"
+            type="com.livewire.responce.CompleteJobResponce.DataBean" />
+    </data>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,7 +33,7 @@
             android:layout_alignBaseline="@+id/tv_date"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="@dimen/_10sdp"
-            android:text="10 min ago"
+            android:text="@string/n_a"
             android:textColor="@color/colorLightGray"
             android:textSize="@dimen/_10sdp" />
 
@@ -43,8 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/view_id"
-            android:paddingStart="@dimen/_10sdp"
-          >
+            android:paddingStart="@dimen/_10sdp">
 
 
             <TextView
@@ -52,7 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_semibold"
-                android:text='Family'
+                android:text='@{dataBean.sub_category, default= "N/A"}'
                 android:textColor="@color/colorDarkBlack"
                 android:textSize="@dimen/_12sdp" />
 
@@ -62,7 +68,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_category"
-                android:text='BabySitting'
+                android:text='@{dataBean.parent_category, default= "N/A"}'
                 android:textColor="@color/colorDarkGray" />
 
             <TextView
@@ -71,11 +77,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:fontFamily="@font/poppins_medium"
-                android:text="@string/budget"
-                android:textColor="@color/colorDarkGray"
-                android:textSize="@dimen/_9sdp"
                 android:paddingEnd="@dimen/_10sdp"
-                />
+                android:text="@string/paid_amount"
+                android:textColor="@color/colorGreen"
+                android:textSize="@dimen/_9sdp" />
 
             <TextView
                 android:id="@+id/tv_offer_rate"
@@ -84,10 +89,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_below="@+id/budget"
-                android:text='55'
-                android:textColor="@color/colorDarkBlack"
                 android:paddingEnd="@dimen/_10sdp"
-                />
+                android:text='@{"$ "+dataBean.job_budget, default="N/A"}'
+                android:textColor="@color/colorDarkBlack" />
 
             <View
                 android:id="@+id/view1_id"
@@ -110,25 +114,26 @@
 
             <TextView
                 android:id="@+id/tv_name"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/_100sdp"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/view1_id"
                 android:layout_toEndOf="@+id/iv_profile_img"
                 android:fontFamily="@font/poppins_semibold"
-                android:text='Rachel'
+                android:text='@{dataBean.name, default ="N/A"}'
                 android:textColor="@color/colorDarkBlack"
+                android:singleLine="true"
                 android:textSize="@dimen/_11sdp" />
 
             <RatingBar
                 android:id="@+id/rating_bar"
-                android:theme="@style/RatingBarTheme"
                 style="@style/Widget.AppCompat.RatingBar.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_name"
                 android:layout_toEndOf="@+id/iv_profile_img"
                 android:numStars="5"
-                android:rating="3" />
+                android:rating="3"
+                android:theme="@style/RatingBarTheme" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -141,7 +146,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_medium"
-                    android:text=' 1 km away'
+                    android:text='@{dataBean.distance_in_km+" Km away",default="N/A"}'
                     android:textColor="@color/colorDarkGray"
                     android:textSize="@dimen/_9sdp" />
 
@@ -159,23 +164,22 @@
             <TextView
                 android:id="@+id/btn_send_request"
                 style="@style/smallPopinsRegularStyle"
-                android:layout_width="@dimen/_85sdp"
+                android:layout_width="wrap_content"
                 android:layout_height="@dimen/_20sdp"
                 android:layout_alignParentEnd="true"
                 android:layout_below="@+id/view1_id"
+                android:layout_marginEnd="@dimen/_minus1sdp"
                 android:background="@drawable/doteted_balck_shape"
-                android:text="@string/ongoing"
-                android:textAllCaps="false"
-                android:layout_marginRight="@dimen/_minus2sdp"
-                android:textColor="@color/colorDarkBlack"
                 android:gravity="center"
+                android:text='@{dataBean.job_type.equals("1") ? "Single Project /task" : "Ongoing Help Needed"}'
+                android:textAllCaps="false"
+                android:textColor="@color/colorDarkBlack"
                 android:textSize="@dimen/_10sdp"
+                android:paddingLeft="@dimen/_8sdp"
+                android:paddingRight="@dimen/_8sdp"
                 />
 
             <!-- <TextView
-
-
-
                  android:id="@+id/request_pending"
                  style="@style/smallPopinsRegularStyle"
                  android:layout_width="wrap_content"
@@ -192,12 +196,12 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_below="@+id/btn_send_request"
-                android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginBottom="@dimen/_3sdp"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:background="?android:attr/selectableItemBackground"
                 android:paddingBottom="@dimen/_5sdp"
-                android:paddingTop="@dimen/_5sdp"
                 android:paddingEnd="@dimen/_10sdp"
+                android:paddingTop="@dimen/_5sdp"
 
                 >
 

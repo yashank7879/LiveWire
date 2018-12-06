@@ -10,13 +10,16 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -110,14 +113,14 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
         tvLocation = view.findViewById(R.id.tv_location);
         etBudget = view.findViewById(R.id.et_budget);
         etDescription = view.findViewById(R.id.et_description);
-
+        //""""  to hide keyboard """""""//
+        etDescription.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        etDescription.setRawInputType(InputType.TYPE_CLASS_TEXT);
         locationRl.setOnClickListener(this);
         selectSkillsRl.setOnClickListener(this);
         selectDateRl.setOnClickListener(this);
         view.findViewById(R.id.btn_share).setOnClickListener(this);
 
-
-        Constant.hideSoftKeyBoard(mContext,etBudget);
         loadSkillsData();
     }
 
@@ -315,6 +318,12 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
                         String message = response.getString("message");
                         if (status.equals("success")) {
                             Constant.snackBar(mainLayout,"Your job successfully post");
+                            tvSelectSkill.setText("");
+                            tvLocation.setText("");
+                            tvSelectDate.setText("");
+                            etBudget.setText("");
+                            etDescription.setText("");
+
                         }else {
                             Constant.snackBar(mainLayout,message);
                         }

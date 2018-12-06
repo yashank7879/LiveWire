@@ -32,8 +32,12 @@ public class ApiCollection {
     public static final String GET_MY_PROFILE_API = "user/getMyProfile";
     public static final String GET_MY_JOB_LIST_API = "Jobpost/getMyJobList";
     public static final String GET_JOB_LIST_API = "Jobpost/getJobList";
+    public static final String COMPLETE_JOB_LIST_API = "Jobpost/completeJobList";
     public static final String GET_SUBCATEGORY_LIST_API = "getSubcategoryList";
     public static final String GET_REVIEW_LIST_API = "user/getReviewList";
+    public static final String END_JOB_API = "payment/endJob";
+    public static final String ADD_REVIEW_API = "user/addReview";
+    public static final String GET_CLIENT_PROFILE_API = "user/getClientProfile";
 
     //String jd = "http://livewire.work/service/forgotPassword";
     //String jfd = "http://dev.livewire.work/service/forgotPassword";

@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.livewire.BR;
 import com.livewire.R;
 import com.livewire.responce.GetReviewResponce;
+import com.livewire.utils.Constant;
 import com.squareup.picasso.Picasso;
 
 
@@ -32,25 +33,24 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MyViewHold
     public ReviewAdapter(Context mContext, List<GetReviewResponce.DataBean> reviewList) {
         this.mContext = mContext;
         this.reviewList = reviewList;
-
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.review_cell,viewGroup,false);
+        View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.review_cell, viewGroup, false);
         return new MyViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int i) {
-
-        if (reviewList.size() != 0){
+        if (reviewList.size() != 0) {
             GetReviewResponce.DataBean dataBean = reviewList.get(i);
-
-            holder.getBinding().setVariable(BR.dataBean,dataBean);
+            holder.getBinding().setVariable(BR.dataBean, dataBean);
             holder.getBinding().executePendingBindings();
+            holder.ratingBar.setRating(Float.parseFloat(dataBean.getRating()));
             Picasso.with(holder.ivProfileImg.getContext()).load(dataBean.getProfileImage()).fit().into(holder.ivProfileImg);
+            holder.tvDate.setText(Constant.getDayDifference(dataBean.getCrd(), dataBean.getCurrentDateTime()));
         }
 
     }
@@ -63,18 +63,15 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MyViewHold
     public class MyViewHolder extends RecyclerView.ViewHolder {
         ViewDataBinding viewDataBinding;
         private CircleImageView ivProfileImg;
-        private TextView tvName;
         private RatingBar ratingBar;
-        private TextView tvDescription;
         private TextView tvDate;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             viewDataBinding = DataBindingUtil.bind(itemView);
-            ivProfileImg = (CircleImageView) itemView.findViewById(R.id.iv_profile_img);
-            tvName = (TextView) itemView.findViewById(R.id.tv_name);
-            ratingBar = (RatingBar) itemView.findViewById(R.id.rating_bar);
-            tvDescription = (TextView) itemView.findViewById(R.id.tv_description);
-            tvDate = (TextView) itemView.findViewById(R.id.tv_date);
+            ivProfileImg = itemView.findViewById(R.id.iv_profile_img);
+            ratingBar =  itemView.findViewById(R.id.rating_bar);
+            tvDate =  itemView.findViewById(R.id.tv_date);
         }
 
         public ViewDataBinding getBinding() {
@@ -83,19 +80,3 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MyViewHold
     }
 }
 
-/*protected class ViewHolder {
-    private CircleImageView ivProfileImg;
-    private TextView tvName;
-    private RatingBar ratingBar;
-    private TextView tvDescription;
-    private TextView tvDate;
-
-    public ViewHolder(View view) {
-        ivProfileImg = (CircleImageView) view.findViewById(R.id.iv_profile_img);
-        tvName = (TextView) view.findViewById(R.id.tv_name);
-        ratingBar = (RatingBar) view.findViewById(R.id.rating_bar);
-        tvDescription = (TextView) view.findViewById(R.id.tv_description);
-        tvDate = (TextView) view.findViewById(R.id.tv_date);
-    }
-}
-}*/

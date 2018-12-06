@@ -79,7 +79,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="@string/no_job_post_available"
+        android:text="@string/record_not_found"
         android:visibility="gone" />
 
 </RelativeLayout>

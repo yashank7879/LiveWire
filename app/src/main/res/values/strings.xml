@@ -107,7 +107,7 @@
     <string name="single_project_task">Single Project Task</string>
     <string name="confirm_request">Confirm Request</string>
     <string name="ongoing_help">OnGoing Help</string>
-    <string name="record_not_found">Record not found</string>
+    <string name="record_not_found">No Record Found</string>
     <string name="login_with_facebook">Login with Facebook</string>
     <string name="accept">Accept</string>
     <string name="request">Request</string>
@@ -133,6 +133,19 @@
     <string name="please_enter_Postal_code">Please enter Postal code.</string>
     <string name="please_select_acc_type">Please select Account Type</string>
     <string name="pls_select_your_dob">Please select your Date of birth</string>
+
+
+    <!--Bank account validation-->
+    <string name="account_holder_first_name">Account Holder First name</string>
+    <string name="account_holder_last_name">Account Holder Last name</string>
+    <string name="please_enter_account_holder_first_name">Please enter account holder first name</string>
+    <string name="please_enter_account_holder_last_name">Please enter account holder last name</string>
+    <string name="edit_bank_account">Edit Bank Account</string>
+    <string name="add_bank_acc">Add Bank Account</string>
+    <string name="update_bank_details">Update Bank Details</string>
+    <string name="payment">Payment</string>
+    <string name="pay">Pay</string>
+    <string name="save_and_update">Save and Update</string>
 
     <!-- MyJobDeatail Activity client side -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -189,7 +202,7 @@
     <string name="add_skill">Add Skill</string>
     <string name="edit_profile">EDIT PROFILE</string>
 
-    <string name="save_and_update">Save and Update</string>
+
     <string name="total_expense">Total Expense</string>
     <string name="completed_jobs">Completed Jobs</string>
 
@@ -206,17 +219,8 @@
     <string name="job_reviews">Job Reviews</string>
     <string name="by_you">By You</string>
 
-    <string name="account_holder_first_name">Account Holder First name</string>
-    <string name="account_holder_last_name">Account Holder Last name</string>
-    <string name="please_enter_account_holder_first_name">Please enter account holder first name</string>
-    <string name="please_enter_account_holder_last_name">Please enter account holder last name</string>
-    <string name="edit_bank_account">Edit Bank Account</string>
-    <string name="add_bank_acc">Add Bank Account</string>
-    <string name="update_bank_details">Update Bank Details</string>
-    <string name="payment">Payment</string>
-    <string name="pay">Pay</string>
 
-
+    <!--Add Credit card screen-->
     <string name="use_a_new_card">+Use A New Card</string>
     <string name="cvv_code">Cvv Code</string>
     <string name="mm_yyyy">mm/yyyy</string>
@@ -225,7 +229,7 @@
     <string name="card_number">Card Number</string>
     <string name="card_holder_name">Card Holder Name</string>
     <string name="use_a_new_card1">Use A New Card</string>
-    <string name="save_this_card">Save card</string>
+    <string name="save_card">Save card</string>
     <string name="set">Set</string>
     <string name="select_month_and_year">Select Month and Year</string>
     <string name="select_card">Select Card</string>
@@ -237,12 +241,18 @@
     <string name="delete">Delete</string>
     <string name="card">CARD</string>
     <string name="card_list">CARD LIST</string>
-    <string name="add_card">Add Card</string>
+    <string name="addCard">Add Card</string>
     <string name="you_don_t_add_any_payment_card_yet">You don\'t add any payment card yet</string>
+
+
     <string name="worker_profile">WORKER PROFILE</string>
     <string name="client_profile">CLIENT PROFILE</string>
     <string name="reviews">REVIEWS</string>
     <string name="no_review">No review</string>
+    <string name="end_job">End Job</string>
+    <string name="save_this_card">Save this card</string>
+    <string name="paid_amount">Paid Amount</string>
+    <string name="job_done_by">Job Done By</string>
 
 
 </resources>

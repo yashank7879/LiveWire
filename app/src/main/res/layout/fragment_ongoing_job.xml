@@ -246,6 +246,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="@string/location"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:singleLine="true"
                     android:textColor="@color/colorDarkBlack"
                     android:textColorHint="@color/colorLightGray" />
 
@@ -276,8 +278,8 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:hint="@string/description"
-                    android:imeOptions="actionGo"
-                    android:maxLength="120"
+                    android:imeOptions="actionDone"
+                    android:maxLength="200"
                     android:textColor="@color/colorDarkBlack"
                     android:textColorHint="@color/colorLightGray" />
 

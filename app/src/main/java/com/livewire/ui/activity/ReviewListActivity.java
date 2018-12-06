@@ -38,7 +38,7 @@ import static com.livewire.utils.ApiCollection.GET_REVIEW_LIST_API;
 public class ReviewListActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = ReviewListActivity.class.getName();
     ActivityReviewListBinding binding;
-    ProgressDialog progressDialog;
+    private ProgressDialog progressDialog;
     private GetReviewResponce reviewResponce;
     private List<GetReviewResponce.DataBean> reviewList = new ArrayList<>();
     private ReviewAdapter adapter;
@@ -87,7 +87,9 @@ public class ReviewListActivity extends AppCompatActivity implements View.OnClic
                             }
                             adapter.notifyDataSetChanged();
                         } else {
-                            Constant.snackBar(binding.reviewLayout, message);
+                            if (!message.equalsIgnoreCase("Record not found")){
+                                Constant.snackBar(binding.reviewLayout, message);
+                            }
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

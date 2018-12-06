@@ -29,6 +29,7 @@ import com.livewire.responce.MyProfileResponce;
 import com.livewire.ui.activity.CompleteProfileActivity;
 import com.livewire.ui.activity.EditProfileWorkerActivity;
 import com.livewire.ui.activity.PlayVideoActivity;
+import com.livewire.ui.activity.ReviewListActivity;
 import com.livewire.ui.activity.SettingActivity;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
@@ -64,7 +65,6 @@ public class MyProfileWorkerFragment extends Fragment implements View.OnClickLis
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -88,6 +88,7 @@ public class MyProfileWorkerFragment extends Fragment implements View.OnClickLis
         binding.btnEdit.setOnClickListener(this);
         binding.ivSetting.setOnClickListener(this);
         binding.rlVideoImg.setOnClickListener(this);
+        binding.ivProfile.setOnClickListener(this);
 
         myProfileApi();
 
@@ -123,34 +124,17 @@ public class MyProfileWorkerFragment extends Fragment implements View.OnClickLis
                                 if (status.equals("success")) {
                                     userResponce = new Gson().fromJson(String.valueOf(response), MyProfileResponce.class);
                                     videoUrl = userResponce.getData().getIntro_video();
-                                    if (!userResponce.getData().getVideo_thumb().isEmpty()){
+                                    if (!userResponce.getData().getVideo_thumb().isEmpty()) {
 
                                         Picasso.with(binding.videoThumbImg.getContext()).load(userResponce.getData().getVideo_thumb()).fit()
                                                 .error(R.color.colorWhite)
                                                 .into(binding.videoThumbImg);
-                                  }
-
-                                  /*  for (MyProfileResponce.DataBean.CategoryBean categoryBean : userResponce.getData().getCategory()) {
-
-                                        CategoryBean catgoryData = new CategoryBean();
-                                        catgoryData.setCategoryName(categoryBean.getCategoryName());
-                                        catgoryData.setParent_id(categoryBean.getParent_id());
-                                        catgoryData.setParentCategoryId(categoryBean.getParentCategoryId());
-
-                                        for (int i = 0; i < categoryBean.getSubcat().size(); i++) {
-                                            CategoryBean.SubcatBean subcatBean = new CategoryBean.SubcatBean();
-                                            subcatBean.setCategoryId(categoryBean.getSubcat().get(i).getCategoryId());
-                                            subcatBean.setCategoryName(categoryBean.getSubcat().get(i).getCategoryName());
-                                            subcatBean.setParent_id(categoryBean.getSubcat().get(i).getParent_id());
-                                            subcatBean.setMax_rate(categoryBean.getSubcat().get(i).getMax_rate());
-                                            subcatBean.setMin_rate(categoryBean.getSubcat().get(i).getMin_rate());
-                                            subcatBeanList.add(subcatBean);
-                                            catgoryData.setSubcat(subcatBeanList);
-
+                                        if (!userResponce.getData().getRating().isEmpty()) {
+                                            binding.ratingBar.setRating(Float.parseFloat(userResponce.getData().getRating()));
                                         }
+                                    }
 
-                                    }*/
-                                  showSkillBeans.clear();
+                                    showSkillBeans.clear();
                                     showSkillBeans.addAll(userResponce.getData().getCategory());
                                     showSkillsAdapter.notifyDataSetChanged();
 
@@ -171,8 +155,8 @@ public class MyProfileWorkerFragment extends Fragment implements View.OnClickLis
 
                         @Override
                         public void onError(ANError anError) {
-                            Log.e( "getErrorBody: ",anError.getErrorBody() );
-                           Constant.errorHandle(anError,getActivity());
+                            Log.e("getErrorBody: ", anError.getErrorBody());
+                            Constant.errorHandle(anError, getActivity());
                             progressDialog.dismiss();
                         }
                     });
@@ -184,11 +168,9 @@ public class MyProfileWorkerFragment extends Fragment implements View.OnClickLis
         Intent intent = null;
         switch (view.getId()) {
             case R.id.btn_edit:
-              //  Toast.makeText(mContext, R.string.under_devlopment_mode, Toast.LENGTH_SHORT).show();
                 intent = new Intent(mContext, EditProfileWorkerActivity.class);
                 intent.putExtra("EditProfileKey", "EditProfile");
-              //  intent.putExtra("MyProfileKey",userResponce.getData());
-                intent.putExtra("CategoryListKey",userResponce);
+                intent.putExtra("CategoryListKey", userResponce);
                 startActivity(intent);
                 break;
             case R.id.rl_video_img:
@@ -200,6 +182,10 @@ public class MyProfileWorkerFragment extends Fragment implements View.OnClickLis
                 break;
             case R.id.iv_setting:
                 intent = new Intent(mContext, SettingActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.iv_profile:
+                intent = new Intent(mContext, ReviewListActivity.class);
                 startActivity(intent);
                 break;
             default:

@@ -52,13 +52,14 @@ public class GetReviewResponce {
          * profileImage : https://livewire.work/./uploads/profile/default.png
          */
 
-        private String userId;
-        private String name;
-        private String reviewId;
-        private String rating;
-        private String review_description;
-        private String crd;
-        private String profileImage;
+        private String userId="";
+        private String name="";
+        private String reviewId="";
+        private String rating="";
+        private String review_description="";
+        private String crd="";
+        private String profileImage="";
+        private String currentDateTime="";
 
         public String getUserId() {
             return userId;
@@ -114,6 +115,14 @@ public class GetReviewResponce {
 
         public void setProfileImage(String profileImage) {
             this.profileImage = profileImage;
+        }
+
+        public String getCurrentDateTime() {
+            return currentDateTime;
+        }
+
+        public void setCurrentDateTime(String currentDateTime) {
+            this.currentDateTime = currentDateTime;
         }
     }
 }

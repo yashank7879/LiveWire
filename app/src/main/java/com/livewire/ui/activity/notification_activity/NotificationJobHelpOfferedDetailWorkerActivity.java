@@ -209,6 +209,11 @@ public class NotificationJobHelpOfferedDetailWorkerActivity extends AppCompatAct
                 dialog.dismiss();
                 Toast.makeText(NotificationJobHelpOfferedDetailWorkerActivity.this, text, Toast.LENGTH_SHORT).show();
             }
+
+            @Override
+            public void onReviewCancel() {
+
+            }
         });
     }
 

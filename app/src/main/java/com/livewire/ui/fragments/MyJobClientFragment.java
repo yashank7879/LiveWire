@@ -89,7 +89,6 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_my_job_client, container, false);
     }
@@ -140,7 +139,6 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
         };
 
         rvMyjob.addOnScrollListener(scrollListener);
-
         actionBarIntialize(view);
         myJobListApi();
 
@@ -232,8 +230,6 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
         }
     }
 
-
-
     // open filter
     private void openFilterDialog() {
         final Dialog dialog = new Dialog(mContext);
@@ -287,9 +283,9 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
                 if (!cbConfirm.isChecked() && !cbPending.isChecked()){
                     requestStatus="";
                 }
-                if (jobType.equals("")) {
+                /*if (jobType.equals("")) {
                     jobType = "1";
-                }
+                }*/
                 jobType = tempJobTyp;
                 state= true;
                 myJobListApi();
