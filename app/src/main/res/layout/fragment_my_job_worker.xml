@@ -73,6 +73,7 @@
         app:tabIndicatorColor="@color/colorGreen"
         android:layout_below="@+id/action_bar"
         app:tabTextColor="@color/colorDarkBlack"
+        app:tabIndicatorFullWidth="false"
         />
 
     <android.support.v4.view.ViewPager

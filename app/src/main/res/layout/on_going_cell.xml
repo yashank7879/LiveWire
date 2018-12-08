@@ -7,6 +7,12 @@
     android:background="@color/colorWhite">
 
 
+    <RelativeLayout
+        android:id="@+id/date_rl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
     <TextView
         android:id="@+id/tv_start_from"
         style="@style/SmallPopinsMediumStyle"
@@ -14,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/tv_date"
         android:layout_marginStart="@dimen/_10sdp"
-        android:text="Start From: "
+        android:text="@string/start_from"
         android:textColor="@color/colorDarkGray"
         android:textSize="@dimen/_10sdp" />
 
@@ -24,19 +30,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_5sdp"
-        android:layout_toRightOf="@+id/tv_start_from"
-        android:text="23 Sep 2018"
+        android:layout_toEndOf="@+id/tv_start_from"
+        android:text="@string/n_a"
         android:textColor="@color/colorDarkBlack" />
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/tv_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/tv_date"
+        android:layout_alignBaseline="@+id/date_rl"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="@dimen/_10sdp"
         android:fontFamily="@font/poppins_light"
-        android:text="10 min ago"
+        android:text="@string/n_a"
         android:textColor="@color/colorLightGray"
         android:textSize="@dimen/_9sdp" />
 
@@ -44,7 +51,7 @@
         android:id="@+id/view_id"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/tv_date"
+        android:layout_below="@+id/date_rl"
         android:layout_marginBottom="@dimen/_5sdp"
         android:background="@color/colorExtraLightGray" />
 
@@ -62,7 +69,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_semibold"
-            android:text="Cook"
+            android:text="@string/n_a"
             android:textColor="@color/colorDarkBlack"
             android:textSize="@dimen/_12sdp" />
 
@@ -72,7 +79,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_category"
-            android:text="House &amp; Home"
+            android:text="@string/n_a"
             android:textColor="@color/colorDarkGray" />
 
         <RelativeLayout
@@ -89,7 +96,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:fontFamily="@font/poppins_medium"
-                android:text="Offered Price"
+                android:text="@string/offered_price"
                 android:textColor="@color/colorDarkGray"
                 android:textSize="@dimen/_9sdp" />
 
@@ -101,7 +108,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/offered_price"
                 android:layout_toStartOf="@+id/hr"
-                android:text="$ 60.30"
+                android:text="$0"
                 android:textColor="@color/colorDarkBlack" />
 
             <TextView
@@ -155,7 +162,7 @@
                     android:layout_toEndOf="@+id/iv_profile_img"
                     android:fontFamily="@font/poppins_semibold"
                     android:singleLine="true"
-                    android:text="Rachel Fallon"
+                    android:text="@string/n_a"
                     android:textColor="@color/colorDarkBlack"
                     android:textSize="@dimen/_11sdp" />
 
@@ -183,7 +190,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/poppins_medium"
-                        android:text="1 km away"
+                        android:text="@string/n_a"
                         android:textColor="@color/colorDarkGray"
                         android:textSize="@dimen/_9sdp" />
 

@@ -61,6 +61,7 @@ import com.livewire.responce.SignUpResponce;
 import com.livewire.ui.dialog.LocationDialog;
 import com.livewire.utils.Constant;
 import com.livewire.utils.ImageRotator;
+import com.livewire.utils.PermissionAll;
 import com.livewire.utils.PreferenceConnector;
 import com.livewire.utils.ProgressDialog;
 import com.livewire.utils.Validation;
@@ -125,6 +126,9 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private void intializeView() {
         progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false);
+        //""""""" all permission """"""""""""
+        PermissionAll permissionAll = new PermissionAll();
+        permissionAll.RequestMultiplePermission(SignupActivity.this);
 
         TextView tvLiveWire = findViewById(R.id.tv_live_wire);
         mainLayout = findViewById(R.id.main_layout);

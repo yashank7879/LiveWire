@@ -13,11 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,7 +26,6 @@ import com.livewire.databinding.ActivityWorkerMainBinding;
 import com.livewire.ui.fragments.ChatWorkerFragment;
 import com.livewire.ui.fragments.HelpOfferedWorkerFragment;
 import com.livewire.ui.fragments.MyJobWorkerFragment;
-import com.livewire.ui.fragments.MyJobsWorkerFragment;
 import com.livewire.ui.fragments.MyProfileWorkerFragment;
 import com.livewire.ui.fragments.OnGoingWorkerFragment;
 import com.livewire.utils.PreferenceConnector;
@@ -101,11 +96,11 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
             case R.id.ongoing_job_ll:
                 if (clickId != R.id.ongoing_job_ll) {
                     inActiveTab();
-                    replaceFragment(new OnGoingWorkerFragment(), false, R.id.fl_container);
                     binding.tvHeading.setText(R.string.ongoing);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         binding.ivOngoing.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorGreen)));
                     }
+                    replaceFragment(new OnGoingWorkerFragment(), false, R.id.fl_container);
                     clickId = R.id.ongoing_job_ll;
                 }
                 break;
@@ -124,10 +119,10 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
                     inActiveTab();
                     binding.tvHeading.setText(R.string.chat);
                     binding.tvHeading.setAllCaps(true);
-                    replaceFragment(new ChatWorkerFragment(), false, R.id.fl_container);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         binding.ivChat.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorGreen)));
                     }
+                    replaceFragment(new ChatWorkerFragment(), false, R.id.fl_container);
                     clickId = R.id.chat_ll;
                 }
                 break;
@@ -137,10 +132,10 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
                     inActiveTab();
                     binding.actionBar.setVisibility(View.GONE);
                     binding.tvHeading.setText(R.string.my_profile);
-                    replaceFragment(new MyProfileWorkerFragment(), false, R.id.fl_container);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         binding.ivUser.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorGreen)));
                     }
+                    replaceFragment(new MyProfileWorkerFragment(), false, R.id.fl_container);
                     clickId = R.id.user_setting_ll;
                 }
                 break;

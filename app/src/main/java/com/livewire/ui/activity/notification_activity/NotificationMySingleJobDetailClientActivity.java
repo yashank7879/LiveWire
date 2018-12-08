@@ -23,6 +23,8 @@ import com.livewire.databinding.ActivityNotificationMySingleJobDetailClientBindi
 import com.livewire.responce.JobDetailClientResponce;
 import com.livewire.ui.activity.ClientMainActivity;
 
+import com.livewire.ui.activity.RequestClientActivity;
+import com.livewire.ui.activity.credit_card.AddCreditCardActivity;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
 import com.livewire.utils.ProgressDialog;
@@ -37,7 +39,10 @@ import static com.livewire.utils.ApiCollection.JOBPOSTSEND_GET_CLIENT_JOB_DETAIL
 public class NotificationMySingleJobDetailClientActivity extends AppCompatActivity implements View.OnClickListener {
     ActivityNotificationMySingleJobDetailClientBinding binding;
     private static final String TAG = NotificationMySingleJobDetailClientActivity.class.getName();
-
+    private String JobId = "";
+    private String usetId = "";
+    private String budget = "";
+    private String workerName="";
     private ProgressDialog progressDialog;
     private String jobId = "";
 
@@ -57,22 +62,14 @@ public class NotificationMySingleJobDetailClientActivity extends AppCompatActivi
         if (type.equals("Once_job_request")) {
             jobId = extras.getString("reference_id");
             jobDetailApi();
-
-          /*  MyjobResponceClient.DataBean dataBean = (MyjobResponceClient.DataBean) getIntent().getSerializableExtra("MyJobDetail");
-            setMyJobDetails(dataBean);
-            binding.setJobDetail(dataBean);
-
-            binding.tvCategory.setText(dataBean.getParent_category());
-            binding.tvSubCategory.setText(dataBean.getSub_category());
-            binding.tvBudgetPrice.setText("$ "+dataBean.getJob_budget());
-            binding.tvDescription.setText(dataBean.getJob_description());
-            binding.tvTime.setText(Constant.getDayDifference(dataBean.getCrd(),dataBean.getCurrentDateTime()));*/
-        }
+      }
     }
 
     private void setMyJobDetails(JobDetailClientResponce.DataBean dataBean) {
         if (dataBean.getJob_type().equals("1")) {/// """"""" SINGLE JOB
-
+            JobId = dataBean.getJobId();
+           // usetId = dataBean.get();
+            budget = dataBean.getJob_budget();
             if (dataBean.getTotal_request().equals("0")) {   // no requested yet
 
                 //*//*
@@ -81,7 +78,8 @@ public class NotificationMySingleJobDetailClientActivity extends AppCompatActivi
                 binding.rlMultiImg.setVisibility(View.GONE);
                 binding.llChat.setVisibility(View.GONE);
             } else if (/*dataBean.getTotal_request().equals("1") &&*/ dataBean.getJob_confirmed().equals("1")) { // jobconfirmed
-
+                usetId = dataBean.getRequestedUserData().get(0).getUserId(); //worker user id to give review
+                workerName = dataBean.getRequestedUserData().get(0).getName();//worker name
                 binding.rlUserData.setVisibility(View.VISIBLE);
                 binding.llChat.setVisibility(View.VISIBLE);
                 binding.tvNoRequest.setVisibility(View.GONE);
@@ -107,7 +105,9 @@ public class NotificationMySingleJobDetailClientActivity extends AppCompatActivi
                     if (i != 0) {
                         leftMargin = leftMargin + 35;
                     }
-                    addhorizontalTimeView(binding.flMultiImg, dataBean.getRequestedUserData().get(i).getProfileImage(), leftMargin);
+                    if (dataBean.getRequestedUserData().size() < 4) {
+                        addhorizontalTimeView(binding.flMultiImg, dataBean.getRequestedUserData().get(i).getProfileImage(), leftMargin);
+                    }
                 }
 
             }
@@ -153,15 +153,29 @@ public class NotificationMySingleJobDetailClientActivity extends AppCompatActivi
         // Left Top Right Bottom Margin
         lp.setMargins(leftMargin, 0, 0, 0);
         showTime.setLayoutParams(lp);
-
         linearLayout.addView(v);
     }
 
     @Override
     public void onClick(View v) {
+        Intent  intent= null;
         switch (v.getId()) {
             case R.id.iv_back:
                onBackPressed();
+                break;
+            case R.id.fl_multi_img:
+                intent = new Intent(this, RequestClientActivity.class);
+
+                intent.putExtra("JobId", JobId);
+                startActivity(intent);
+                break;
+            case R.id.btn_end_job:
+                intent = new Intent(this, AddCreditCardActivity.class);
+                intent.putExtra("NameKey",workerName);
+                intent.putExtra("PaymentKey", budget);
+                intent.putExtra("JobIdKey", JobId);
+                intent.putExtra("UserIdKey", usetId);
+                startActivity(intent);
                 break;
             default:
         }
@@ -170,6 +184,7 @@ public class NotificationMySingleJobDetailClientActivity extends AppCompatActivi
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        finishAffinity();
         Intent intent = new Intent(this, ClientMainActivity.class);
         startActivity(intent);
         finish();

@@ -362,7 +362,7 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
         ivOngoing.setBackground(getResources().getDrawable(R.drawable.inactive_btn_gray_bg));
     }
 
-    //"""""""" Click on More Info """"""""""""""//
+    //""""""""" Click on More Info """"""""""""""//
     @Override
     public void moreInfoOnClickClient(MyjobResponceClient.DataBean dataBean) {
         Intent intent =null;

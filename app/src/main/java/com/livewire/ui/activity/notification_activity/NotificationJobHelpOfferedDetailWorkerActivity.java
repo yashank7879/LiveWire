@@ -194,6 +194,7 @@ public class NotificationJobHelpOfferedDetailWorkerActivity extends AppCompatAct
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        finishAffinity();
         Intent intent = new Intent(this, WorkerMainActivity.class);
         startActivity(intent);
         finish();

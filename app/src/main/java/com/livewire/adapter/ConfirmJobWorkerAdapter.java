@@ -38,15 +38,20 @@ public class ConfirmJobWorkerAdapter extends RecyclerView.Adapter<ConfirmJobWork
 
     private static final String TAG = ConfirmJobWorkerAdapter.class.getName();
     private Context mContext;
-    private  List<HelpOfferedResponce.DataBean> dataBeanList;
-
+    private List<HelpOfferedResponce.DataBean> dataBeanList;
     private RelativeLayout manLayout;
+    private String currentDateTime = "";
+    private ConfirmJobListener listener;
 
-    public ConfirmJobWorkerAdapter(Context mContext, List<HelpOfferedResponce.DataBean> data, RelativeLayout mainLayout) {
-        this.mContext = mContext ;
-        this.dataBeanList= data;
-
+    public ConfirmJobWorkerAdapter(Context mContext, List<HelpOfferedResponce.DataBean> data, RelativeLayout mainLayout, ConfirmJobListener listener) {
+        this.mContext = mContext;
+        this.dataBeanList = data;
         this.manLayout = mainLayout;
+        this.listener = listener;
+    }
+
+    public void getCurrentTime(String currentDateTime) {
+        this.currentDateTime = currentDateTime;
     }
 
     @NonNull
@@ -59,43 +64,18 @@ public class ConfirmJobWorkerAdapter extends RecyclerView.Adapter<ConfirmJobWork
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
-        if (dataBeanList.size() != 0){
+        if (dataBeanList.size() != 0) {
             HelpOfferedResponce.DataBean dataBean = dataBeanList.get(position);
+            holder.getBinding().setVariable(BR.dataBean, dataBean);
+            holder.getBinding().executePendingBindings();
 
-           /* holder.getBinding().setVariable(BR.dataBean,dataBean);
-            holder.getBinding().executePendingBindings();*/
-
-            holder.tvTime.setText(Constant.getDayDifference(dataBean.getCrd(),dataBean.getCurrentDateTime()));
+            holder.tvTime.setText(Constant.getDayDifference(dataBean.getCrd(), currentDateTime));
             Picasso.with(holder.ivProfileImg.getContext()).load(dataBean.getProfileImage()).fit().into(holder.ivProfileImg);
-
             //********"2018-07-04" date format converted into "04 july 2018"***********//
-            holder.tvDate.setText(Constant.dateTextColorChange(mContext,Constant.DateFomatChange(dataBean.getJob_start_date())));
-
-          /*  DateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
-            String start= dataBean.getJob_start_date();
-
-            try {
-                Date newStartDate;
-                newStartDate= sd.parse(start);
-                sd = new SimpleDateFormat("dd MMM yyyy");
-                start = sd.format(newStartDate);
-
-                holder.tvDate.setText(dateTextColorChange(start));
-                // holder.tvDate.setText(start);
-            } catch (ParseException e) {
-                Log.e(TAG, e.getMessage());
-            }*/
-
-        /*   if (dataBean.getJob_confirmed().equals("0")){ // pending request
-               holder.btnSendRequest.setBackground(null);
-               holder.btnSendRequest.setText(R.string.pending_request);
-               holder.btnSendRequest.setTextColor(ContextCompat.getColor(mContext, R.color.colorOrange));
-               holder.btnSendRequest.setClickable(false);
-            }else if (dataBean.getJob_confirmed().equals("3")){// job not send
-               holder.btnSendRequest.setBackground(mContext.getResources().getDrawable(R.drawable.button_green_bg));
-               holder.btnSendRequest.setText(R.string.send_request);
-               holder.btnSendRequest.setTextColor(ContextCompat.getColor(mContext,R.color.colorWhite));
-           }*/
+            holder.tvDate.setText(Constant.dateTextColorChange(mContext, Constant.DateFomatChange(dataBean.getJob_start_date())));
+            if (!dataBean.getRating().isEmpty()) {
+                holder.ratingBar.setRating(Float.parseFloat(dataBean.getRating()));
+            }
         }
 
     }
@@ -103,8 +83,9 @@ public class ConfirmJobWorkerAdapter extends RecyclerView.Adapter<ConfirmJobWork
 
     @Override
     public int getItemCount() {
-        return 15;
+        return dataBeanList.size();
     }
+
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private final ViewDataBinding binding;
@@ -122,6 +103,7 @@ public class ConfirmJobWorkerAdapter extends RecyclerView.Adapter<ConfirmJobWork
         private TextView btnSendRequest;
         private TextView tvMoreInfo;
         private LinearLayout llMoreInfo;
+
         public MyViewHolder(View view) {
             super(view);
             binding = DataBindingUtil.bind(view);
@@ -141,14 +123,14 @@ public class ConfirmJobWorkerAdapter extends RecyclerView.Adapter<ConfirmJobWork
             btnSendRequest = view.findViewById(R.id.btn_send_request);
             tvMoreInfo = view.findViewById(R.id.tv_more_info);
 
-        /*    llMoreInfo.setOnClickListener(new View.OnClickListener() {
+            llMoreInfo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.helpOfferItemOnClick(dataBeanList.get(getAdapterPosition()),mContext.getString(R.string.moreinfo),getAdapterPosition());
+                    listener.ConfirmJobItemOnClick(dataBeanList.get(getAdapterPosition()), getAdapterPosition());
                 }
             });
 
-            btnSendRequest.setOnClickListener(new View.OnClickListener() {
+           /* btnSendRequest.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     listener.helpOfferItemOnClick(dataBeanList.get(getAdapterPosition()), mContext.getString(R.string.sendrequest),getAdapterPosition());
@@ -163,39 +145,16 @@ public class ConfirmJobWorkerAdapter extends RecyclerView.Adapter<ConfirmJobWork
             });*/
 
         }
+
         public ViewDataBinding getBinding() {
 
             return binding;
 
         }
     }
-    private SpannableStringBuilder dateTextColorChange(String start){
-        SpannableStringBuilder builder = new SpannableStringBuilder();
-        SpannableString userName = new SpannableString(start.substring(0,2)+" ");
-        userName.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.colorDarkBlack)), 0, 2, 0);
-        userName.setSpan(new StyleSpan(Typeface.BOLD), 0, userName.length(), 0);
-        builder.append(userName);
-        SpannableString interesString = new SpannableString(start.substring(3));
-//                interesString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.colorDarkBlack)), 3, start.length(), 0);
-        builder.append(interesString);
-        return  builder;
-    }
 
-/*
-    private void colorChangeText(){
-        SpannableStringBuilder builder = new SpannableStringBuilder();
-        SpannableString userName = new SpannableString();
-        userName.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.colorDarkBlack)), 0, 2, 0);
-        userName.setSpan(new StyleSpan(Typeface.BOLD), 0, userName.length(), 0);
-        builder.append(userName);
-        SpannableString interesString = new SpannableString(" send offer on your car.");
-        builder.append(interesString);
-        holder.userName.setText(builder);
-        //holder.time.setText(Constant.getDayDifference(interestedListResponce.getUpd(), currentTime));
-    }*/
-
-    public interface ConfirmJobListener{
-        void ConfirmJobItemOnClick(HelpOfferedResponce.DataBean dataBean, String helpoffer, int pos);
+    public interface ConfirmJobListener {
+        void ConfirmJobItemOnClick(HelpOfferedResponce.DataBean dataBean, int pos);
     }
 
 }

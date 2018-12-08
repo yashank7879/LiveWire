@@ -253,6 +253,8 @@
     <string name="save_this_card">Save this card</string>
     <string name="paid_amount">Paid Amount</string>
     <string name="job_done_by">Job Done By</string>
+    <string name="start_from">Start From:</string>
+    <string name="offered_price">Offered Price</string>
 
 
 </resources>

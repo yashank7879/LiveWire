@@ -38,7 +38,11 @@ public class ApiCollection {
     public static final String END_JOB_API = "payment/endJob";
     public static final String ADD_REVIEW_API = "user/addReview";
     public static final String GET_CLIENT_PROFILE_API = "user/getClientProfile";
+    public static final String GET_MY_JOB_REQUEST_LIST_API = "Jobpost/getMyJobRequestList";
+    public static final String CONFIRM_OR_COMPLETED_JOB_LIST_API = "Jobpost/confirmOrCompletedJobList?";
 
+
+    //job_status_type=1&job_type=1&skill=
     //String jd = "http://livewire.work/service/forgotPassword";
     //String jfd = "http://dev.livewire.work/service/forgotPassword";
     //http://dev.livewire.work/service/userRegistration

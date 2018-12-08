@@ -63,6 +63,9 @@ public class HelpOfferedResponce implements Serializable {
          * parentCategoryName : family
          * subCategoryName : Tuition / Extra lessons
          * distance_in_km : 186.1
+         *
+         * "parent_category": "Family",
+         "sub_category": "Babysitting",
          */
 
         private String userId="";
@@ -82,6 +85,55 @@ public class HelpOfferedResponce implements Serializable {
         private String distance_in_km="";
         private String currentDateTime ="";
         private String job_confirmed="";
+        private String request_status="";
+        private String job_type="";
+        private String rating="";
+        private String parent_category="";
+        private String sub_category="";
+        private String job_offer="";
+
+        public String getParent_category() {
+            return parent_category;
+        }
+
+        public void setParent_category(String parent_category) {
+            this.parent_category = parent_category;
+        }
+
+        public String getSub_category() {
+            return sub_category;
+        }
+
+        public void setSub_category(String sub_category) {
+            this.sub_category = sub_category;
+        }
+
+
+        public String getRequest_status() {
+            return request_status;
+        }
+
+        public void setRequest_status(String request_status) {
+            this.request_status = request_status;
+        }
+
+        public String getJob_type() {
+            return job_type;
+        }
+
+        public void setJob_type(String job_type) {
+            this.job_type = job_type;
+        }
+
+        public String getRating() {
+            return rating;
+        }
+
+        public void setRating(String rating) {
+            this.rating = rating;
+        }
+
+
 
         public String getUserId() {
             return userId;
@@ -217,6 +269,14 @@ public class HelpOfferedResponce implements Serializable {
 
         public void setJob_confirmed(String job_confirmed) {
             this.job_confirmed = job_confirmed;
+        }
+
+        public String getJob_offer() {
+            return job_offer;
+        }
+
+        public void setJob_offer(String job_offer) {
+            this.job_offer = job_offer;
         }
     }
 }

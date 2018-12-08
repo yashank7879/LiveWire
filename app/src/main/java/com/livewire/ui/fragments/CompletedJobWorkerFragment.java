@@ -1,9 +1,7 @@
 package com.livewire.ui.fragments;
 
-
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -38,13 +36,11 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.google.gson.Gson;
 import com.livewire.R;
 import com.livewire.adapter.ConfirmJobWorkerAdapter;
-import com.livewire.adapter.HelpOfferedAdapter;
 import com.livewire.adapter.SubCategoryAdapter;
 import com.livewire.model.CategoryModel;
 import com.livewire.pagination.EndlessRecyclerViewScrollListener;
 import com.livewire.responce.HelpOfferedResponce;
 import com.livewire.responce.SubCategoryResponse;
-import com.livewire.ui.activity.JobHelpOfferedDetailWorkerActivity;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
 import com.livewire.utils.ProgressDialog;
@@ -58,8 +54,11 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 import static com.livewire.utils.ApiCollection.BASE_URL;
 import static com.livewire.utils.ApiCollection.CONFIRM_OR_COMPLETED_JOB_LIST_API;
 
+/**
+ * Created by mindiii on 12/8/18.
+ */
 
-public class ConfirmJobWorkerFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener, SubCategoryAdapter.SubCategoryLisner,ConfirmJobWorkerAdapter.ConfirmJobListener {
+public class CompletedJobWorkerFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener, SubCategoryAdapter.SubCategoryLisner,ConfirmJobWorkerAdapter.ConfirmJobListener{
     private Context mContext;
     private RelativeLayout mainLayout;
     private ArrayList<HelpOfferedResponce.DataBean> offerList;
@@ -94,12 +93,10 @@ public class ConfirmJobWorkerFragment extends Fragment implements View.OnClickLi
         super.onAttach(context);
         this.mContext = context;
     }
-
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_confirm_job_worker, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragmetn_completed_job_worker, container, false);
     }
 
     @Override
@@ -245,7 +242,7 @@ public class ConfirmJobWorkerFragment extends Fragment implements View.OnClickLi
         if (Constant.isNetworkAvailable(mContext, mainLayout)) {
             progressDialog.show();
             AndroidNetworking.get(BASE_URL + CONFIRM_OR_COMPLETED_JOB_LIST_API
-                    + "job_status_type=1&job_type=2" + jobType + "&skill=" + skillsStrin)
+                    + "job_status_type=4&job_type=1" + jobType + "&skill=" + skillsStrin)
                     .addHeaders("authToken", PreferenceConnector.readString(mContext, PreferenceConnector.AUTH_TOKEN, ""))
                     .setPriority(Priority.MEDIUM)
                     .build().getAsJSONObject(new JSONObjectRequestListener() {
@@ -498,19 +495,4 @@ public class ConfirmJobWorkerFragment extends Fragment implements View.OnClickLi
     public void ConfirmJobItemOnClick(HelpOfferedResponce.DataBean dataBean, int pos) {
 
     }
-
-/*    //""""""' help offer listener """"""""""//
-    @Override
-    public void helpOfferItemOnClick(HelpOfferedResponce.DataBean dataBean, String key, int pos) {
-        if (key.equals(getString(R.string.moreinfo))) {
-            Intent intent = new Intent(mContext, JobHelpOfferedDetailWorkerActivity.class);
-            intent.putExtra("JobIdKey", dataBean);
-            startActivity(intent);
-
-        } else if (key.equals(getString(R.string.sendrequest))) {
-            sendRequestApi(dataBean.getJobId(), dataBean.getUserId(), pos);
-        }
-    }*/
-
 }
-

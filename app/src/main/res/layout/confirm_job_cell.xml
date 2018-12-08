@@ -2,12 +2,46 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data >
+
+        <variable
+            name="dataBean"
+            type="com.livewire.responce.HelpOfferedResponce.DataBean"/>
+    </data>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_5sdp"
         android:background="@color/colorWhite">
 
+        <RelativeLayout
+            android:id="@+id/date_rl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            >
+            <TextView
+                android:id="@+id/tv_start_from"
+                style="@style/SmallPopinsMediumStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/tv_date1"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:text="@string/start_from"
+                android:textColor="@color/colorDarkGray"
+                android:textSize="@dimen/_10sdp" />
+
+            <TextView
+                android:id="@+id/tv_date1"
+                style="@style/mediumPopinsLightStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5sdp"
+                android:layout_toEndOf="@+id/tv_start_from"
+                android:text="@string/n_a"
+                android:textColor="@color/colorDarkBlack" />
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/tv_date"
@@ -52,7 +86,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_semibold"
-                android:text='Family'
+                android:text='@{dataBean.sub_category, default = "N/A"}'
                 android:textColor="@color/colorDarkBlack"
                 android:textSize="@dimen/_12sdp" />
 
@@ -62,7 +96,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_category"
-                android:text='BabySitting'
+                android:text='@{dataBean.parent_category, default = "N/A"}'
                 android:textColor="@color/colorDarkGray" />
 
             <TextView
@@ -71,8 +105,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:fontFamily="@font/poppins_medium"
-                android:text="@string/budget"
-                android:textColor="@color/colorDarkGray"
+                android:text='@{dataBean.request_status.equals("1") ? "Budget" : "Paid Amount",default = "Budget"}'
+                android:textColor='@{dataBean.request_status.equals("1") ? @color/colorDarkGray : @color/colorGreen}'
                 android:textSize="@dimen/_9sdp"
                 android:paddingEnd="@dimen/_10sdp"
                 />
@@ -84,7 +118,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_below="@+id/budget"
-                android:text='55'
+                android:text='@{!dataBean.job_budget.equals("") ? "$ "+dataBean.job_budget : "$ "+ dataBean.job_offer, default= "$ 0"}'
                 android:textColor="@color/colorDarkBlack"
                 android:paddingEnd="@dimen/_10sdp"
                 />
@@ -115,12 +149,13 @@
                 android:layout_below="@+id/view1_id"
                 android:layout_toEndOf="@+id/iv_profile_img"
                 android:fontFamily="@font/poppins_semibold"
-                android:text='Rachel'
+                android:text='@{dataBean.name,default = "N/A"}'
                 android:textColor="@color/colorDarkBlack"
                 android:textSize="@dimen/_11sdp" />
 
             <RatingBar
                 android:id="@+id/rating_bar"
+                android:theme="@style/RatingBarTheme"
                 style="@style/Widget.AppCompat.RatingBar.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -128,7 +163,7 @@
                 android:layout_toEndOf="@+id/iv_profile_img"
                 android:numStars="5"
                 android:progressTint="@color/coloryellow"
-                android:rating="3" />
+                />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -141,7 +176,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_medium"
-                    android:text=' 1 km away'
+                    android:text='@{dataBean.distance_in_km+" Km away"}'
                     android:textColor="@color/colorDarkGray"
                     android:textSize="@dimen/_9sdp" />
 
@@ -164,18 +199,15 @@
                 android:layout_alignParentEnd="true"
                 android:layout_below="@+id/view1_id"
                 android:background="@drawable/doteted_balck_shape"
-                android:text="@string/ongoing"
+                android:text='@{dataBean.job_type.equals("1") ? "Help Offered" : "On Going",default = "N/A"}'
                 android:textAllCaps="false"
-                android:layout_marginRight="@dimen/_minus2sdp"
+                android:layout_marginEnd="@dimen/_minus2sdp"
                 android:textColor="@color/colorDarkBlack"
                 android:gravity="center"
                 android:textSize="@dimen/_10sdp"
                 />
 
             <!-- <TextView
-
-
-
                  android:id="@+id/request_pending"
                  style="@style/smallPopinsRegularStyle"
                  android:layout_width="wrap_content"

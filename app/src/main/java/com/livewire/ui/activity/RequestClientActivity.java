@@ -30,6 +30,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.livewire.utils.ApiCollection.BASE_URL;
+import static com.livewire.utils.ApiCollection.GET_MY_JOB_REQUEST_LIST_API;
+import static com.livewire.utils.ApiCollection.JOBPOSTSEND_REQUEST_2_API;
 
 public class RequestClientActivity extends AppCompatActivity implements View.OnClickListener , RequestAdapter.RequestAcceptIgnorListner{
 
@@ -39,8 +41,6 @@ public class RequestClientActivity extends AppCompatActivity implements View.OnC
     private RequestAdapter adapter;
     private SwipeRefreshLayout swipeRefresh;
     private String jobId;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +95,7 @@ public class RequestClientActivity extends AppCompatActivity implements View.OnC
     private void loadRequestListData() {
         if (Constant.isNetworkAvailable(this, mainLayout)) {
             progressDialog.show();
-            AndroidNetworking.post(BASE_URL + "Jobpost/getMyJobRequestList")
+            AndroidNetworking.post(BASE_URL + GET_MY_JOB_REQUEST_LIST_API)
                     .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
                     .addBodyParameter("job_id",jobId)
                     .setPriority(Priority.MEDIUM)
@@ -151,7 +151,7 @@ public class RequestClientActivity extends AppCompatActivity implements View.OnC
     private void acceptRejectrequestApi( String requestStatus,String userId) {
         if (Constant.isNetworkAvailable(this,mainLayout)){
             progressDialog.show();
-            AndroidNetworking.post(BASE_URL + "Jobpost/sendRequest2")
+            AndroidNetworking.post(BASE_URL + JOBPOSTSEND_REQUEST_2_API)
                     .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
                     .addBodyParameter("job_id",jobId)
                     .addBodyParameter("request_by", userId)
@@ -189,7 +189,6 @@ public class RequestClientActivity extends AppCompatActivity implements View.OnC
             });
         }
     }
-
     @Override
     public void OnClickRequestAccept(String status, String userId) {
         acceptRejectrequestApi(status,userId);

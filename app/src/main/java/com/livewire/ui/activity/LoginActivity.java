@@ -56,6 +56,7 @@ import com.livewire.responce.SignUpResponce;
 import com.livewire.ui.dialog.LocationDialog;
 import com.livewire.ui.dialog.ReviewDialog;
 import com.livewire.utils.Constant;
+import com.livewire.utils.PermissionAll;
 import com.livewire.utils.PreferenceConnector;
 import com.livewire.utils.PreferenceConnectorRem;
 import com.livewire.utils.ProgressDialog;
@@ -129,10 +130,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         width = displaymetrics.widthPixels;
         progressDialog = new ProgressDialog(this);
-        progressDialog.setCancelable(false);
-        progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
         callBackManager = CallbackManager.Factory.create();
+
+        //""""""" all permission """"""""""""
+        PermissionAll permissionAll = new PermissionAll();
+        permissionAll.RequestMultiplePermission(LoginActivity.this);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()

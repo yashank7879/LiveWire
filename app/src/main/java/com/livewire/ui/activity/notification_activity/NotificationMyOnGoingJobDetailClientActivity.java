@@ -172,6 +172,7 @@ public class NotificationMyOnGoingJobDetailClientActivity extends AppCompatActiv
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        finishAffinity();
         Intent intent = new Intent(this, ClientMainActivity.class);
         startActivity(intent);
         finish();

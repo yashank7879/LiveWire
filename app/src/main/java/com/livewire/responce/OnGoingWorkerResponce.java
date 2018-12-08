@@ -66,6 +66,26 @@ public class OnGoingWorkerResponce implements Serializable{
          * job_confirmed : 3
          * currentDateTime : 2018-10-22 06:13:35
          * record_count : 9
+         *
+         *
+         *
+         *   "jobId": "324",
+         "category_id": "7",
+         "user_id": "210",
+         "job_start_date": "2020-12-06",
+         "job_budget": "200",
+         "job_type": "1",
+         "request_status": "4",
+         "upd": "2018-12-06 13:23:21",
+         "parent_category": "Family",
+         "sub_category": "Babysitting",
+         "userId": "210",
+         "name": "rohitclient",
+         "http": "Czvg",
+         "https": "Czvgu",
+         "profileImage": "https://livewire.work/./uploads/profile/thumb/CzvguIfdYblKG2c7.jpeg",
+         "distance_in_km": "6096.9",
+         "rating": "2"
          */
 
         private String userId ="";
@@ -91,6 +111,9 @@ public class OnGoingWorkerResponce implements Serializable{
         private String currentDateTime="";
         private String min_rate="";
         private String max_rate="";
+        private String request_status="";
+        private String job_type="";
+        private String rating="";
         private int record_count;
 
         public String getUserId() {
