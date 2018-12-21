@@ -38,13 +38,13 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.google.gson.Gson;
 import com.livewire.R;
 import com.livewire.adapter.ConfirmJobWorkerAdapter;
-import com.livewire.adapter.HelpOfferedAdapter;
 import com.livewire.adapter.SubCategoryAdapter;
 import com.livewire.model.CategoryModel;
 import com.livewire.pagination.EndlessRecyclerViewScrollListener;
 import com.livewire.responce.HelpOfferedResponce;
 import com.livewire.responce.SubCategoryResponse;
-import com.livewire.ui.activity.JobHelpOfferedDetailWorkerActivity;
+import com.livewire.ui.activity.complete_confirm_job_worker.CompleteJobHelpOfferedDetailWorkerActivity;
+import com.livewire.ui.activity.complete_confirm_job_worker.CompleteJobOnGoingDetailWorkerActivity;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
 import com.livewire.utils.ProgressDialog;
@@ -59,7 +59,7 @@ import static com.livewire.utils.ApiCollection.BASE_URL;
 import static com.livewire.utils.ApiCollection.CONFIRM_OR_COMPLETED_JOB_LIST_API;
 
 
-public class ConfirmJobWorkerFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener, SubCategoryAdapter.SubCategoryLisner,ConfirmJobWorkerAdapter.ConfirmJobListener {
+public class ConfirmJobWorkerFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener, SubCategoryAdapter.SubCategoryLisner, ConfirmJobWorkerAdapter.ConfirmJobListener {
     private Context mContext;
     private RelativeLayout mainLayout;
     private ArrayList<HelpOfferedResponce.DataBean> offerList;
@@ -121,15 +121,13 @@ public class ConfirmJobWorkerFragment extends Fragment implements View.OnClickLi
         tvClearAll = view.findViewById(R.id.tv_clear_all);
         rvFilter = view.findViewById(R.id.rv_filter_list);
 
-
         mLoadAnimation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in);
         mLoadAnimation.setDuration(1000);
-
 
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(layoutManager);
-        offeredAdapter = new ConfirmJobWorkerAdapter(mContext, offerList, mainLayout,this);
+        offeredAdapter = new ConfirmJobWorkerAdapter(mContext, offerList, mainLayout, this);
         recyclerView.setAdapter(offeredAdapter);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
@@ -151,7 +149,7 @@ public class ConfirmJobWorkerFragment extends Fragment implements View.OnClickLi
             }
         });
 
-        //******  Pagination """""""""""""""//
+        //**************  Pagination """""""""""""""//
         EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
@@ -245,7 +243,7 @@ public class ConfirmJobWorkerFragment extends Fragment implements View.OnClickLi
         if (Constant.isNetworkAvailable(mContext, mainLayout)) {
             progressDialog.show();
             AndroidNetworking.get(BASE_URL + CONFIRM_OR_COMPLETED_JOB_LIST_API
-                    + "job_status_type=1&job_type=2" + jobType + "&skill=" + skillsStrin)
+                    + "job_status_type=1&job_type=" + jobType + "&skill=" + skillsStrin)
                     .addHeaders("authToken", PreferenceConnector.readString(mContext, PreferenceConnector.AUTH_TOKEN, ""))
                     .setPriority(Priority.MEDIUM)
                     .build().getAsJSONObject(new JSONObjectRequestListener() {
@@ -304,24 +302,21 @@ public class ConfirmJobWorkerFragment extends Fragment implements View.OnClickLi
                 inVactive();
                 tvAllJobs.setBackground(mContext.getResources().getDrawable(R.drawable.rounded_corner_green));
                 tvAllJobs.setTextColor(ContextCompat.getColor(mContext, R.color.colorGreen));
-               /* newJobValue = "";
-                pendingRequestValue = "";*/
+                jobType = "";
                 break;
 
             case R.id.tv_new_jobs:
                 inVactive();
                 tvOnGoingJob.setBackground(mContext.getResources().getDrawable(R.drawable.rounded_corner_green));
                 tvOnGoingJob.setTextColor(ContextCompat.getColor(mContext, R.color.colorGreen));
-            /*    newJobValue = "new";
-                pendingRequestValue="";*/
+                jobType = "2";
                 break;
 
             case R.id.tv_pending_request:
                 inVactive();
                 tvHelpOffred.setBackground(mContext.getResources().getDrawable(R.drawable.rounded_corner_green));
                 tvHelpOffred.setTextColor(ContextCompat.getColor(mContext, R.color.colorGreen));
-                /*pendingRequestValue = "0";
-                newJobValue="";*/
+                jobType = "1";
                 break;
 
             default:
@@ -358,8 +353,11 @@ public class ConfirmJobWorkerFragment extends Fragment implements View.OnClickLi
             tvAllJobs = dialog.findViewById(R.id.tv_all_jobs);
             tvOnGoingJob = dialog.findViewById(R.id.tv_new_jobs);
             tvHelpOffred = dialog.findViewById(R.id.tv_pending_request);
+            tvHelpOffred.setText(R.string.help_offered1);
+            tvOnGoingJob.setText(R.string.ongoing1);
 
-
+            //""""""" Filter value """""""""//
+            checkSelectedField();
             tvAllJobs.setOnClickListener(this);
             tvOnGoingJob.setOnClickListener(this);
             tvHelpOffred.setOnClickListener(this);
@@ -385,16 +383,14 @@ public class ConfirmJobWorkerFragment extends Fragment implements View.OnClickLi
             btnApplySkills.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    if (subCategoryList.size() == 0) {
-                        Constant.snackBar(addSkillsLayout, "Please Select at least one Skill");
-                    } else {
                         skillsString();
                         subCategoryAdapter.notifyDataSetChanged();
-                        filterLayout.setVisibility(View.VISIBLE);
                         confirmJobApi();
                         dialog.dismiss();
+                    if (subCategoryList.size() > 0){
+                        filterLayout.setVisibility(View.VISIBLE);
                     }
+
 
                     //  skillDialogValidation(categorySpinner, addSkillsLayout);
                 }
@@ -405,6 +401,27 @@ public class ConfirmJobWorkerFragment extends Fragment implements View.OnClickLi
         } else {
             SubCategoryListApi();
         }
+    }
+
+    private void checkSelectedField() {
+        switch (jobType) {
+            case "1":
+                inVactive();
+                tvHelpOffred.setBackground(mContext.getResources().getDrawable(R.drawable.rounded_corner_green));
+                tvHelpOffred.setTextColor(ContextCompat.getColor(mContext, R.color.colorGreen));
+
+                break;
+            case "2":
+                inVactive();
+                tvOnGoingJob.setBackground(mContext.getResources().getDrawable(R.drawable.rounded_corner_green));
+                tvOnGoingJob.setTextColor(ContextCompat.getColor(mContext, R.color.colorGreen));
+                break;
+            default:
+                tvAllJobs.setBackground(mContext.getResources().getDrawable(R.drawable.rounded_corner_green));
+                tvAllJobs.setTextColor(ContextCompat.getColor(mContext, R.color.colorGreen));
+                break;
+        }
+
     }
 
     @Override
@@ -494,11 +511,25 @@ public class ConfirmJobWorkerFragment extends Fragment implements View.OnClickLi
         return skillsStrin;
     }
 
+
     @Override
-    public void ConfirmJobItemOnClick(HelpOfferedResponce.DataBean dataBean, int pos) {
+    public void ConfirmJobItemOnClick(String jobId, String jobType) {
+        Intent intent = null;
+        if (jobType.equals("1")) {
+            if (Constant.isNetworkAvailable(mContext, mainLayout)) {
+                intent = new Intent(mContext, CompleteJobHelpOfferedDetailWorkerActivity.class);
+                intent.putExtra("JobIdKey", jobId);
+                startActivity(intent);
+            }
+        } else {
+            if (Constant.isNetworkAvailable(mContext, mainLayout)) {
+                intent = new Intent(mContext, CompleteJobOnGoingDetailWorkerActivity.class);
+                intent.putExtra("JobIdKey", jobId);
+                startActivity(intent);
+            }
+        }
 
     }
-
 /*    //""""""' help offer listener """"""""""//
     @Override
     public void helpOfferItemOnClick(HelpOfferedResponce.DataBean dataBean, String key, int pos) {

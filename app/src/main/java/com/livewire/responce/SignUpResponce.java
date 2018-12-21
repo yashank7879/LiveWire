@@ -10,6 +10,8 @@ public class SignUpResponce implements Serializable {
     /**
      * status : success
      * message : Registration successfully done
+     *  "stripe_fees": "2.9",
+     "stripe_transaction_fees": "0.30"
      * data : {"userId":"22","name":"yash","email":"yash1@gmail.com",
      * "password":"$2y$10$Jk3DURGnpSOlJbqxjH0Urerv4uDAQGSIZDMITcj8MRNbFEXHSE0Qi",
      * "userType":"worker","firebase_id":"","Is_notify":"1","completeProfile":"0",
@@ -21,6 +23,9 @@ public class SignUpResponce implements Serializable {
 
     private String status;
     private String message;
+    private String stripe_fees;
+    private String stripe_transaction_fees;
+
     private DataBean data;
 
     public String getStatus() {
@@ -47,6 +52,22 @@ public class SignUpResponce implements Serializable {
         this.data = data;
     }
 
+    public String getStripe_fees() {
+        return stripe_fees;
+    }
+
+    public void setStripe_fees(String stripe_fees) {
+        this.stripe_fees = stripe_fees;
+    }
+
+    public String getStripe_transaction_fees() {
+        return stripe_transaction_fees;
+    }
+
+    public void setStripe_transaction_fees(String stripe_transaction_fees) {
+        this.stripe_transaction_fees = stripe_transaction_fees;
+    }
+
     public static class DataBean implements Serializable{
         /**
          * userId : 22
@@ -65,6 +86,7 @@ public class SignUpResponce implements Serializable {
          * status : 1
          * crd : 2018-09-17 12:14:01
          * upd : 0000-00-00 00:00:00
+         *
          */
 
         private String userId = "";

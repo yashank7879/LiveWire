@@ -28,6 +28,7 @@ import com.livewire.model.CategoryBean;
 import com.livewire.responce.MyProfileResponce;
 import com.livewire.ui.activity.CompleteProfileActivity;
 import com.livewire.ui.activity.EditProfileWorkerActivity;
+import com.livewire.ui.activity.NotificationListWorkerActivity;
 import com.livewire.ui.activity.PlayVideoActivity;
 import com.livewire.ui.activity.ReviewListActivity;
 import com.livewire.ui.activity.SettingActivity;
@@ -89,6 +90,7 @@ public class MyProfileWorkerFragment extends Fragment implements View.OnClickLis
         binding.ivSetting.setOnClickListener(this);
         binding.rlVideoImg.setOnClickListener(this);
         binding.ivProfile.setOnClickListener(this);
+        binding.ivNotification.setOnClickListener(this);
 
         myProfileApi();
 
@@ -186,6 +188,10 @@ public class MyProfileWorkerFragment extends Fragment implements View.OnClickLis
                 break;
             case R.id.iv_profile:
                 intent = new Intent(mContext, ReviewListActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.iv_notification:
+                intent = new Intent(mContext, NotificationListWorkerActivity.class);
                 startActivity(intent);
                 break;
             default:

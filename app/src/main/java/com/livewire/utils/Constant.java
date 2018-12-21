@@ -68,6 +68,16 @@ public class Constant {
 
     public static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 12;
 
+
+    //FireBase....................................................
+    public static final String ARG_USERS = "users";
+    public static final String ARG_CHAT_ROOMS = "chat_rooms";
+    public static final String ARG_GROUP_CHAT_ROOMS_DELETE = "event_chat_deleteMute";
+    public static final String ARG_GROUP_CHAT_ROOMS = "group_chat_rooms";
+    public static final String ARG_HISTORY = "chat_history";
+    public static final String BlockUsers = "block_users";
+    public static final String blockedBy = "blockedBy";
+
     //"""""""its used for live wire text""""""""//
     public static SpannableStringBuilder liveWireText(Context mContext) {
         SpannableStringBuilder builder = new SpannableStringBuilder();

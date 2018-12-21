@@ -48,9 +48,14 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.livewire.R;
+import com.livewire.model.UserInfoFcm;
 import com.livewire.model.UserModel;
 import com.livewire.responce.SignUpResponce;
 import com.livewire.ui.dialog.LocationDialog;
@@ -539,11 +544,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     Log.d("Responce", userResponce.getData().getUserType());
                                     PreferenceConnector.writeBoolean(LoginActivity.this, PreferenceConnector.IS_LOG_IN, true);
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.USER_INFO_JSON, response.toString());
-                                    PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.COMPLETE_PROFILE_STATUS, userResponce.getData().getCompleteProfile());
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.AUTH_TOKEN, userResponce.getData().getAuthToken());
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.SOCIAL_LOGIN, userResponce.getData().getSocialType());
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.STRIPE_CUSTOMER_ID, userResponce.getData().getStripe_customer_id());
+                                    PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.IS_BANK_ACC, userResponce.getData().getIs_bank_account());
+
+                                    PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.MY_USER_ID, userResponce.getData().getUserId());
+                                    PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
+                                    PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.PROFILE_IMG, userResponce.getData().getProfileImage());
+                                    PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.Name, userResponce.getData().getName());
+                                    PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.Email, userResponce.getData().getEmail());
+
+
                                     if (userResponce.getData().getUserType().equals("worker")) {// if user is worker
                                         Intent intent = null;
                                         if (userResponce.getData().getCompleteProfile().equals("0")) { // if worker not complete own profile
@@ -554,6 +567,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                             startActivity(intent);
                                             finish();
                                         } else if (userResponce.getData().getCompleteProfile().equals("1")) {// if worker complete own profile
+                                            addUserFirebaseDatabase();
                                             soicialLogOut();
                                             finishAffinity();
                                             intent = new Intent(LoginActivity.this, WorkerMainActivity.class);
@@ -561,6 +575,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                             finish();
                                         }
                                     } else { // if user is Client
+                                        addUserFirebaseDatabase();
                                         soicialLogOut();
                                         finishAffinity();
                                         Intent intent = new Intent(LoginActivity.this, ClientMainActivity.class);
@@ -658,11 +673,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     PreferenceConnector.writeBoolean(LoginActivity.this, PreferenceConnector.IS_LOG_IN, true);
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.USER_INFO_JSON, response.toString());
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.AUTH_TOKEN, userResponce.getData().getAuthToken());
-                                    PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.COMPLETE_PROFILE_STATUS, userResponce.getData().getCompleteProfile());
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.PASS_WORD, etPass.getText().toString());
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.IS_BANK_ACC, userResponce.getData().getIs_bank_account());
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.STRIPE_CUSTOMER_ID, userResponce.getData().getStripe_customer_id());
+
+                                    PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
+                                    PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.MY_USER_ID, userResponce.getData().getUserId());
+                                    PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.PROFILE_IMG, userResponce.getData().getProfileImage());
+                                    PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.Name, userResponce.getData().getName());
+                                    PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.Email, userResponce.getData().getEmail());
+                                    addUserFirebaseDatabase();
 
                                     if (isremember) {// if remember email and password
                                         if (userResponce.getData().getUserType().equals("worker")) {
@@ -729,5 +750,46 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+    //""""""""" register user in Firebase data base  """""""""""""""//
+   private void addUserFirebaseDatabase(){
+       DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+       Log.e(TAG, database.toString());
+       UserInfoFcm infoFcm = new UserInfoFcm();
+       infoFcm.email = PreferenceConnector.readString(this,PreferenceConnector.Email,"");
+       infoFcm.firebaseToken = FirebaseInstanceId.getInstance().getToken();
+       infoFcm.name = PreferenceConnector.readString(this,PreferenceConnector.Name,"");
+       infoFcm.notificationStatus = "";
+       infoFcm.profilePic = PreferenceConnector.readString(this,PreferenceConnector.PROFILE_IMG,"");
+       infoFcm.uid = PreferenceConnector.readString(this,PreferenceConnector.MY_USER_ID,"");
+       infoFcm.userType = PreferenceConnector.readString(this,PreferenceConnector.USER_TYPE,"");
+       infoFcm.authToken = PreferenceConnector.readString(this,PreferenceConnector.AUTH_TOKEN,"");
+
+       database.child(Constant.ARG_USERS)
+               .child(PreferenceConnector.readString(this,PreferenceConnector.MY_USER_ID,""))
+               .setValue(infoFcm)
+               .addOnCompleteListener(new OnCompleteListener<Void>() {
+                   @Override
+                   public void onComplete(Task<Void> task) {
+                       if (task.isSuccessful()) {
+                           //Utils.goToOnlineStatus(SignInActivity.this, Constant.online);
+
+                          /* if (isProfileUpdate.equals("1")) {
+                               MainActivity.start(SignInActivity.this, false);
+                               finish();
+                           } else {
+                               Intent intent = new Intent(SignInActivity.this, EditProfileActivity.class);
+                               startActivity(intent);
+                               finish();
+
+                              *//*  MainActivity.start(SignInActivity.this, false);
+                                finish();*//*
+                           }*/
+                       } else {
+                           Toast.makeText(LoginActivity.this, "Not Store", Toast.LENGTH_SHORT).show();
+                       }
+                   }
+               });
     }
 }

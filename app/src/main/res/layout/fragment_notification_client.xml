@@ -4,7 +4,9 @@
 
 <RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/main_layout"
+    >
 
     <com.loopeer.shadow.ShadowView
         android:id="@+id/action_bar"
@@ -27,28 +29,25 @@
                 android:textColor="@color/colorGreen"
                 />
 
-            <!-- <ImageView
-                 android:layout_width="@dimen/_25sdp"
-                 android:layout_height="match_parent"
-                 android:layout_alignParentStart="true"
-                 android:layout_centerVertical="true"
-                 android:layout_marginRight="@dimen/_5sdp"
-                 android:padding="@dimen/_4sdp"
-                 app:srcCompat="@drawable/ic_left_arrow"
-                 android:tint="@color/colorDarkBlack"
-                 android:id="@+id/iv_back"
-                 />-->
-
         </RelativeLayout>
 
     </com.loopeer.shadow.ShadowView>
 
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_below="@id/action_bar"
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </android.support.v7.widget.RecyclerView>
     <TextView
+        android:id="@+id/tv_no_data"
         style="@style/mediumPopinsMediumStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="@string/under_devlopment_mode"
+        android:text="@string/record_not_found"
         />
 
 </RelativeLayout>

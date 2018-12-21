@@ -368,11 +368,11 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
         Intent intent =null;
         if (dataBean.getJob_type().equals("1")) { // single job
             intent  = new Intent(mContext, MySingleJobDetailClientActivity.class);
-            intent.putExtra("MyJobDetail", dataBean);
+            intent.putExtra("JobIdKey", dataBean.getJobId());
             startActivity(intent);
         }else if (dataBean.getJob_type().equals("2")){// ongoing job
             intent  = new Intent(mContext, MyOnGoingJobDetailClientActivity.class);
-            intent.putExtra("MyJobDetail", dataBean);
+            intent.putExtra("JobIdKey", dataBean.getJobId());
             startActivity(intent);
         }
     }

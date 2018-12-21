@@ -1,11 +1,12 @@
 package com.livewire.responce;
 
+import java.util.List;
+
 /**
  * Created by mindiii on 10/8/18.
  */
 
 public class JobDetailWorkerResponce {
-
 
     /**
      * status : success
@@ -16,6 +17,15 @@ public class JobDetailWorkerResponce {
     private String status;
     private String message;
     private DataBean data;
+    private List<ReviewBean> review;
+
+    public List<ReviewBean> getReview() {
+        return review;
+    }
+
+    public void setReview(List<ReviewBean> review) {
+        this.review = review;
+    }
 
     public String getStatus() {
         return status;
@@ -32,6 +42,7 @@ public class JobDetailWorkerResponce {
     public void setMessage(String message) {
         this.message = message;
     }
+
 
     public DataBean getData() {
         return data;
@@ -66,7 +77,20 @@ public class JobDetailWorkerResponce {
          * job_confirmed : 0
          * min_rate : 50
          * max_rate : 100
-         */
+         * number_of_days : 10
+         * review_status: 1
+         *
+         *  /* "review":[
+         {
+         "review_by":"226",
+         "review_for":"225",
+         "rating":"4",
+         "job_id":"372",
+         "review_description":"i like your services\n",
+         "crd":"2018-12-13 12:54:08"
+         }
+         ]*/
+
 
         private String userId ="";
         private String name="";
@@ -93,6 +117,8 @@ public class JobDetailWorkerResponce {
         private String max_rate="";
         private String currentDateTime="";
         private String job_budget="";
+        private String number_of_days="";
+        private String review_status="";
 
         public String getUserId() {
             return userId;
@@ -293,5 +319,82 @@ public class JobDetailWorkerResponce {
         public void setJob_budget(String job_budget) {
             this.job_budget = job_budget;
         }
+
+        public String getNumber_of_days() {
+            return number_of_days;
+        }
+
+        public void setNumber_of_days(String number_of_days) {
+            this.number_of_days = number_of_days;
+        }
+
+        public String getReview_status() {
+            return review_status;
+        }
+
+        public void setReview_status(String review_status) {
+            this.review_status = review_status;
+        }
+    }
+
+
+
+    public static class ReviewBean{
+        private String review_by;
+           private String rating;
+           private String job_id;
+           private String review_description;
+           private String crd;
+
+           public String getReview_by() {
+               return review_by;
+           }
+
+           public void setReview_by(String review_by) {
+               this.review_by = review_by;
+           }
+
+           public String getReview_for() {
+               return review_for;
+           }
+
+           public void setReview_for(String review_for) {
+               this.review_for = review_for;
+           }
+
+           public String getRating() {
+               return rating;
+           }
+
+           public void setRating(String rating) {
+               this.rating = rating;
+           }
+
+           public String getJob_id() {
+               return job_id;
+           }
+
+           public void setJob_id(String job_id) {
+               this.job_id = job_id;
+           }
+
+           public String getReview_description() {
+               return review_description;
+           }
+
+           public void setReview_description(String review_description) {
+               this.review_description = review_description;
+           }
+
+           public String getCrd() {
+               return crd;
+           }
+
+           public void setCrd(String crd) {
+               this.crd = crd;
+           }
+
+           private String review_for;
+
     }
 }

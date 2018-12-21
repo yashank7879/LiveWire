@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.livewire.BR;
@@ -34,7 +35,6 @@ public class CompletedJobAdapter extends RecyclerView.Adapter<CompletedJobAdapte
         this.mContext = mContext;
         this.completeJobList = completeJobList;
         this.listener = listener;
-
     }
 
     @NonNull
@@ -56,6 +56,17 @@ public class CompletedJobAdapter extends RecyclerView.Adapter<CompletedJobAdapte
                     .into(holder.ivProfileImg);
             holder.tvDate.setText(Constant.dateTextColorChange(mContext, Constant.DateFomatChange(dataBean.getJob_start_date())));
             holder.tvTime.setText(Constant.getDayDifference(dataBean.getUpd(), currentTime));
+            if (!dataBean.getRating().isEmpty()){
+                holder.ratingBar.setRating(Float.parseFloat(dataBean.getRating()));
+            }
+
+            if (dataBean.getJob_type().equals("2")){
+            float paidAmount  =(Float.parseFloat(dataBean.getJob_time_duration()) * Float.parseFloat(dataBean.getJob_offer())* Float.parseFloat(dataBean.getNumber_of_days()));
+                holder.tv_offer_rate.setText("$ "+paidAmount);
+
+            }else {
+                holder.tv_offer_rate.setText("$ "+dataBean.getJob_budget());
+            }
         }
 
     }
@@ -73,8 +84,10 @@ public class CompletedJobAdapter extends RecyclerView.Adapter<CompletedJobAdapte
         ViewDataBinding binding;
         TextView tvTime;
         TextView tvDate;
+        TextView tv_offer_rate;
         ImageView ivProfileImg;
         LinearLayout llMoreInfo;
+        RatingBar ratingBar ;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -83,6 +96,8 @@ public class CompletedJobAdapter extends RecyclerView.Adapter<CompletedJobAdapte
             tvDate = itemView.findViewById(R.id.tv_date);
             ivProfileImg = itemView.findViewById(R.id.iv_profile_img);
             llMoreInfo = itemView.findViewById(R.id.ll_more_info);
+            tv_offer_rate = itemView.findViewById(R.id.tv_offer_rate);
+            ratingBar = itemView.findViewById(R.id.rating_bar);
             llMoreInfo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

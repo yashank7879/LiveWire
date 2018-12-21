@@ -66,14 +66,16 @@ public class NotificationJobHelpOfferedDetailWorkerActivity extends AppCompatAct
                 binding.tvStatus.setVisibility(View.VISIBLE);
                 getJobDetailApi();
             }
+
         }
+
     }
 
     private void intializeViews() {
         progressDialog = new ProgressDialog(this);
         binding.btnSendRequest.setOnClickListener(this);
         findViewById(R.id.iv_back).setOnClickListener(this);
-        binding.btnDilog.setOnClickListener(this);
+
 
     }
 
@@ -185,7 +187,6 @@ public class NotificationJobHelpOfferedDetailWorkerActivity extends AppCompatAct
                onBackPressed();
                 break;
             case R.id.btn_dilog:
-                openReviewDialog();
                 break;
             default:
         }

@@ -66,6 +66,10 @@ public class HelpOfferedResponce implements Serializable {
          *
          * "parent_category": "Family",
          "sub_category": "Babysitting",
+
+         "job_time_duration":"3",
+         "number_of_days":"10",
+         "job_offer":"55",
          */
 
         private String userId="";
@@ -91,6 +95,26 @@ public class HelpOfferedResponce implements Serializable {
         private String parent_category="";
         private String sub_category="";
         private String job_offer="";
+        private String job_time_duration="";
+        private String number_of_days="";
+
+
+
+        public String getNumber_of_days() {
+            return number_of_days;
+        }
+
+        public void setNumber_of_days(String number_of_days) {
+            this.number_of_days = number_of_days;
+        }
+
+        public String getJob_time_duration() {
+            return job_time_duration;
+        }
+
+        public void setJob_time_duration(String job_time_duration) {
+            this.job_time_duration = job_time_duration;
+        }
 
         public String getParent_category() {
             return parent_category;

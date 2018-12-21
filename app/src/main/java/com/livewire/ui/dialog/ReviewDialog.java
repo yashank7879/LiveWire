@@ -30,7 +30,7 @@ import static android.content.Context.INPUT_METHOD_SERVICE;
  * Created by mindiii on 11/15/18.
  */
 
-public class ReviewDialog extends DialogFragment implements View.OnClickListener ,RatingBar.OnRatingBarChangeListener{
+public class ReviewDialog extends DialogFragment implements View.OnClickListener, RatingBar.OnRatingBarChangeListener {
     DialogReviewBinding binding;
     ReviewDialogListner listner;
     private Context mContext;
@@ -38,7 +38,7 @@ public class ReviewDialog extends DialogFragment implements View.OnClickListener
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-       binding = DataBindingUtil.inflate(inflater,R.layout.dialog_review, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.dialog_review, container, false);
         String name = getArguments().getString("NameKey");
         binding.tvName.setText(String.format("Rate %s", name));
         return binding.getRoot();
@@ -65,18 +65,18 @@ public class ReviewDialog extends DialogFragment implements View.OnClickListener
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.btn_submit:
-                Constant.hideSoftKeyBoard(mContext,binding.etDemo);
+                Constant.hideSoftKeyBoard(mContext, binding.etDemo);
                 reviewValidations();
 
                 break;
             case R.id.tv_cancel:
-                Constant.hideSoftKeyBoard(mContext,binding.etDemo);
+                Constant.hideSoftKeyBoard(mContext, binding.etDemo);
                 listner.onReviewCancel();
                 getDialog().dismiss();
                 break;
-                default:
+            default:
         }
     }
 
@@ -86,14 +86,13 @@ public class ReviewDialog extends DialogFragment implements View.OnClickListener
     }
 
     private void reviewValidations() {
-       if (Validation.isEmpty(binding.etDemo)){
-            Constant.snackBar(binding.reviewLayout,"Please Write comment.");
-        }else if (binding.ratingBar.getRating() == 0.0){
-           Constant.snackBar(binding.reviewLayout,"Please Give Rating.");
-       }
-        else {
-           listner.onReviewOnClick(binding.etDemo.getText().toString().trim(),binding.ratingBar.getRating(),binding.reviewLayout);
-       }
+        if (Validation.isEmpty(binding.etDemo)) {
+            Constant.snackBar(binding.reviewLayout, "Please Write comment.");
+        } else if (binding.ratingBar.getRating() == 0.0) {
+            Constant.snackBar(binding.reviewLayout, "Please Give Rating.");
+        } else {
+            listner.onReviewOnClick(binding.etDemo.getText().toString().trim(), binding.ratingBar.getRating(), binding.reviewLayout);
+        }
     }
 
     @Override
@@ -102,8 +101,9 @@ public class ReviewDialog extends DialogFragment implements View.OnClickListener
         //Toast.makeText(mContext, ""+v, Toast.LENGTH_SHORT).show();
     }
 
-    public interface ReviewDialogListner{
-      void onReviewOnClick(String text, float rating, LinearLayout layout);
-      void onReviewCancel();
+    public interface ReviewDialogListner {
+        void onReviewOnClick(String text, float rating, LinearLayout layout);
+
+        void onReviewCancel();
     }
 }

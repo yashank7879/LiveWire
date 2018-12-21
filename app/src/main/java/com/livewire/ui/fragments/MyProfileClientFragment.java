@@ -167,7 +167,6 @@ public class MyProfileClientFragment extends Fragment implements View.OnClickLis
                                 e.printStackTrace();
                             }
                         }
-
                         @Override
                         public void onError(ANError anError) {
                             Constant.errorHandle(anError, getActivity());

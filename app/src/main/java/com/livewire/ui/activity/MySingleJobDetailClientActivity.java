@@ -16,8 +16,10 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.google.gson.Gson;
 import com.livewire.R;
 import com.livewire.databinding.ActivityMySingleJobDetailClientBinding;
+import com.livewire.responce.JobDetailClientResponce;
 import com.livewire.responce.MyjobResponceClient;
 import com.livewire.ui.activity.credit_card.AddCreditCardActivity;
 import com.livewire.utils.Constant;
@@ -30,6 +32,7 @@ import org.json.JSONObject;
 
 
 import static com.livewire.utils.ApiCollection.BASE_URL;
+import static com.livewire.utils.ApiCollection.JOBPOSTSEND_GET_CLIENT_JOB_DETAIL_API;
 import static com.livewire.utils.ApiCollection.JOBPOSTSEND_GET_JOB_DETAIL_API;
 
 public class MySingleJobDetailClientActivity extends AppCompatActivity implements View.OnClickListener {
@@ -56,9 +59,11 @@ public class MySingleJobDetailClientActivity extends AppCompatActivity implement
         binding.flMultiImg.setOnClickListener(this);
         binding.btnEndJob.setOnClickListener(this);
 
-        if (getIntent().getSerializableExtra("MyJobDetail") != null) {
-            MyjobResponceClient.DataBean dataBean = (MyjobResponceClient.DataBean) getIntent().getSerializableExtra("MyJobDetail");
-            setMyJobDetails(dataBean);
+        if (getIntent().getSerializableExtra("JobIdKey") != null) {
+            //MyjobResponceClient.DataBean dataBean = (MyjobResponceClient.DataBean) getIntent().getSerializableExtra("MyJobDetail");
+          JobId = getIntent().getStringExtra("JobIdKey");
+            jobDetailApi();
+            /*setMyJobDetails(dataBean);
             binding.setJobDetail(dataBean);
 
 
@@ -66,18 +71,24 @@ public class MySingleJobDetailClientActivity extends AppCompatActivity implement
             binding.tvSubCategory.setText(dataBean.getParent_category());
             binding.tvBudgetPrice.setText("$ " + dataBean.getJob_budget());
             binding.tvDescription.setText(dataBean.getJob_description());
+
             binding.tvTime.setText(Constant.getDayDifference(dataBean.getCrd(), dataBean.getCurrentDateTime()));
             binding.tvDate1.setText(Constant.DateFomatChange(dataBean.getJob_start_date()).substring(0, 2) + " ");
             binding.tvDateMonth.setText(Constant.DateFomatChange(dataBean.getJob_start_date()).substring(3));
+      */
         }
     }
 
-    private void setMyJobDetails(MyjobResponceClient.DataBean dataBean) {
+
+
+    private void setMyJobDetails(JobDetailClientResponce.DataBean dataBean) {
         if (dataBean.getJob_type().equals("1")) {/// """"""" SINGLE JOB
             JobId = dataBean.getJobId();
-            usetId = dataBean.getUserId();
+            //usetId = dataBean.getUserId();
             budget = dataBean.getJob_budget();
-
+            binding.tvTime.setText(Constant.getDayDifference(dataBean.getCrd(), dataBean.getCurrentDateTime()));
+            binding.tvDate1.setText(Constant.DateFomatChange(dataBean.getJob_start_date()).substring(0, 2) + " ");
+            binding.tvDateMonth.setText(Constant.DateFomatChange(dataBean.getJob_start_date()).substring(3));
 
 
             if (dataBean.getTotal_request().equals("0")) {   // no requested yet
@@ -100,7 +111,7 @@ public class MySingleJobDetailClientActivity extends AppCompatActivity implement
                         .load(dataBean.getRequestedUserData()
                                 .get(0).getProfileImage()).fit().into(binding.ivProfileImg);
 
-                binding.tvName.setText(dataBean.getName());
+                binding.tvName.setText(dataBean.getRequestedUserData().get(0).getName());
                 binding.tvDistance.setText(dataBean.getRequestedUserData().get(0).getDistance_in_km() + " Km away");
 
 
@@ -174,12 +185,14 @@ public class MySingleJobDetailClientActivity extends AppCompatActivity implement
                 break;
             case R.id.fl_multi_img:
                 intent = new Intent(this, RequestClientActivity.class);
-                intent.putExtra("UserId", usetId);
+                //intent.putExtra("UserId", usetId);
                 intent.putExtra("JobId", JobId);
                 startActivity(intent);
                 break;
             case R.id.btn_end_job:
                 intent = new Intent(this, AddCreditCardActivity.class);
+
+                intent.putExtra("SingleJobPayment","SingleJob");
                 intent.putExtra("NameKey",workerName);
                 intent.putExtra("PaymentKey", budget);
                 intent.putExtra("JobIdKey", JobId);
@@ -193,10 +206,10 @@ public class MySingleJobDetailClientActivity extends AppCompatActivity implement
     private void jobDetailApi() {
         if (Constant.isNetworkAvailable(this, binding.detailMainLayout)) {
             progressDialog.show();
-            AndroidNetworking.post(BASE_URL + JOBPOSTSEND_GET_JOB_DETAIL_API)
+            AndroidNetworking.post(BASE_URL + JOBPOSTSEND_GET_CLIENT_JOB_DETAIL_API)
                     .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
-                    .addBodyParameter("job_id")
-                    .addBodyParameter("job_type")
+                    .addBodyParameter("job_id", JobId)
+                    .addBodyParameter("job_type", "1")
                     .setPriority(Priority.MEDIUM)
                     .build()
                     .getAsJSONObject(new JSONObjectRequestListener() {
@@ -209,10 +222,18 @@ public class MySingleJobDetailClientActivity extends AppCompatActivity implement
                                 status = response.getString("status");
                                 String message = response.getString("message");
                                 if (status.equals("success")) {
+                                    JobDetailClientResponce dataBean = new Gson().fromJson(String.valueOf(response), JobDetailClientResponce.class);
+                                    setMyJobDetails(dataBean.getData());
+                                    binding.setJobDetail(dataBean.getData());
 
+                                    /*setMyJobDetails(dataBean.getData());
+                                    binding.setJobDetail(dataBean.getData());*/
+                                    // binding.setJobDetail(dataBean.getData());
+
+                                    binding.tvTime.setText(Constant.getDayDifference(dataBean.getData().getCrd(), dataBean.getData().getCurrentDateTime()));
                                 } else {
                                     progressDialog.dismiss();
-
+                                    Constant.snackBar(binding.detailMainLayout, message);
                                 }
                             } catch (JSONException e) {
                                 Log.d(TAG, e.getMessage());

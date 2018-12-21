@@ -26,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -51,11 +52,16 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.livewire.R;
 import com.livewire.cropper.CropImage;
 import com.livewire.cropper.CropImageView;
+import com.livewire.model.UserInfoFcm;
 import com.livewire.model.UserModel;
 import com.livewire.responce.SignUpResponce;
 import com.livewire.ui.dialog.LocationDialog;
@@ -448,6 +454,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                             SignUpResponce userResponce = new Gson().fromJson(String.valueOf(response), SignUpResponce.class);
                             PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.USER_INFO_JSON, response.toString());
                             setSocialResponceData(userResponce);
+
                         /*    Intent intent = new Intent(LoginActivity.this, CompleteProfileActivity.class);
                             startActivity(intent);
                             finish();*/
@@ -474,13 +481,19 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
     ///""""""" set social responce data """"""""""//
     private void setSocialResponceData(SignUpResponce userResponce) {
-        Log.d("Responce", userResponce.getData().getUserType());
         PreferenceConnector.writeBoolean(SignupActivity.this, PreferenceConnector.IS_LOG_IN, true);
-        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.COMPLETE_PROFILE_STATUS, userResponce.getData().getCompleteProfile());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.AUTH_TOKEN, userResponce.getData().getAuthToken());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.SOCIAL_LOGIN, userResponce.getData().getSocialType());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.STRIPE_CUSTOMER_ID, userResponce.getData().getStripe_customer_id());
+        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.IS_BANK_ACC, userResponce.getData().getIs_bank_account());
+
+        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.MY_USER_ID, userResponce.getData().getUserId());
+        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
+        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.PROFILE_IMG, userResponce.getData().getProfileImage());
+        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.Name, userResponce.getData().getName());
+        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.Email, userResponce.getData().getEmail());
+       // addUserFirebaseDatabase();
 
         Log.d("Responce", userResponce.toString());
         if (userResponce.getData().getUserType().equals("worker")) {// if user is worker
@@ -492,12 +505,14 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 startActivity(intent);
                 finish();
             } else if (userResponce.getData().getCompleteProfile().equals("1")) {// if worker complete own profile
+                addUserFirebaseDatabase();
                 finishAffinity();
                 intent = new Intent(SignupActivity.this, WorkerMainActivity.class);
                 startActivity(intent);
                 finish();
             }
         } else { // if user is Client
+            addUserFirebaseDatabase();
             finishAffinity();
             Intent intent = new Intent(SignupActivity.this, ClientMainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -746,14 +761,17 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private void setSignUpClientData(SignUpResponce userResponce) {
         PreferenceConnector.writeBoolean(SignupActivity.this, PreferenceConnector.IS_LOG_IN, true);
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.AUTH_TOKEN, userResponce.getData().getAuthToken());
-        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.PASS_WORD, etPass.getText().toString());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.STRIPE_CUSTOMER_ID, userResponce.getData().getStripe_customer_id());
 
-                            /*PreferenceConnector.writeBoolean(SignupActivity.this, PreferenceConnector.IS_LOG_IN, true);
-                            PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.USER_INFO_JSON, response.toString());
-                            PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.AUTH_TOKEN, userResponce.getData().getAuthToken());
-                        */
+        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.MY_USER_ID, userResponce.getData().getUserId());
+        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
+        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.PROFILE_IMG, userResponce.getData().getProfileImage());
+        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.Name, userResponce.getData().getName());
+        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.Email, userResponce.getData().getEmail());
+        addUserFirebaseDatabase();
+
+        finishAffinity();
         Intent intent = new Intent(SignupActivity.this, ClientMainActivity.class);
         startActivity(intent);
         finish();
@@ -851,6 +869,9 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.PASS_WORD, etPass.getText().toString());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.STRIPE_CUSTOMER_ID, userResponce.getData().getStripe_customer_id());
+        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.IS_BANK_ACC, userResponce.getData().getIs_bank_account());
+        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.MY_USER_ID, userResponce.getData().getUserId());
+        finishAffinity();
         Intent intent = new Intent(SignupActivity.this, CompleteProfileActivity.class);
         startActivity(intent);
         finish();
@@ -885,5 +906,46 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+    //""""""""" register user in Firebase data base  """""""""""""""//
+    private void addUserFirebaseDatabase(){
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        Log.e(TAG, database.toString());
+        UserInfoFcm infoFcm = new UserInfoFcm();
+        infoFcm.email = PreferenceConnector.readString(this,PreferenceConnector.Email,"");
+        infoFcm.firebaseToken = FirebaseInstanceId.getInstance().getToken();
+        infoFcm.name = PreferenceConnector.readString(this,PreferenceConnector.Name,"");
+        infoFcm.notificationStatus = "";
+        infoFcm.profilePic = PreferenceConnector.readString(this,PreferenceConnector.PROFILE_IMG,"");
+        infoFcm.uid = PreferenceConnector.readString(this,PreferenceConnector.MY_USER_ID,"");
+        infoFcm.userType = PreferenceConnector.readString(this,PreferenceConnector.USER_TYPE,"");
+        infoFcm.authToken = PreferenceConnector.readString(this,PreferenceConnector.AUTH_TOKEN,"");
+
+        database.child(Constant.ARG_USERS)
+                .child(PreferenceConnector.readString(this,PreferenceConnector.MY_USER_ID,""))
+                .setValue(infoFcm)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            //Utils.goToOnlineStatus(SignInActivity.this, Constant.online);
+
+                          /* if (isProfileUpdate.equals("1")) {
+                               MainActivity.start(SignInActivity.this, false);
+                               finish();
+                           } else {
+                               Intent intent = new Intent(SignInActivity.this, EditProfileActivity.class);
+                               startActivity(intent);
+                               finish();
+
+                              *//*  MainActivity.start(SignInActivity.this, false);
+                                finish();*//*
+                           }*/
+                        } else {
+                            Toast.makeText(SignupActivity.this, "Not Store", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 }

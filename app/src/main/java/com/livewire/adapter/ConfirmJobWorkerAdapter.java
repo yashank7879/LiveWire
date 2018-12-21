@@ -76,6 +76,17 @@ public class ConfirmJobWorkerAdapter extends RecyclerView.Adapter<ConfirmJobWork
             if (!dataBean.getRating().isEmpty()) {
                 holder.ratingBar.setRating(Float.parseFloat(dataBean.getRating()));
             }
+            // @{!dataBean.job_budget.equals("") ? "$ "+dataBean.job_budget : "$ "+ dataBean.job_offer, default= "$ 0"}
+            if (!dataBean.getNumber_of_days().isEmpty() && !dataBean.getJob_offer().isEmpty()) {
+                float paidAmount = Float.parseFloat(dataBean.getNumber_of_days()) * Float.parseFloat(dataBean.getJob_offer()) * Float.parseFloat(dataBean.getJob_time_duration());
+                holder.tvBudget.setText("$ " + paidAmount);
+
+            } else if (!dataBean.getJob_offer().isEmpty()) {
+                holder.tvBudget.setText("$ " + dataBean.getJob_offer());
+
+            } else {
+                holder.tvBudget.setText("$ " + dataBean.getJob_budget());
+            }
         }
 
     }
@@ -126,7 +137,7 @@ public class ConfirmJobWorkerAdapter extends RecyclerView.Adapter<ConfirmJobWork
             llMoreInfo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.ConfirmJobItemOnClick(dataBeanList.get(getAdapterPosition()), getAdapterPosition());
+                    listener.ConfirmJobItemOnClick(dataBeanList.get(getAdapterPosition()).getJobId(), dataBeanList.get(getAdapterPosition()).getJob_type());
                 }
             });
 
@@ -154,7 +165,7 @@ public class ConfirmJobWorkerAdapter extends RecyclerView.Adapter<ConfirmJobWork
     }
 
     public interface ConfirmJobListener {
-        void ConfirmJobItemOnClick(HelpOfferedResponce.DataBean dataBean, int pos);
+        void ConfirmJobItemOnClick(String JobId, String pos);
     }
 
 }

@@ -61,13 +61,12 @@ public class NotificationJobOnGoingDetailWorkerActivity extends AppCompatActivit
 
         findViewById(R.id.btn_ignore).setOnClickListener(this);
         findViewById(R.id.btn_accept).setOnClickListener(this);
+        binding.btnAcceptRejectLayout.setVisibility(View.VISIBLE);
 
         Bundle extra = getIntent().getExtras();;
         if (extra.getString("type").equals("Ongoing_job_request")) {
             jobId = extra.getString("reference_id");
-
             getJobDetailApi();
-
         }
     }
 
@@ -141,6 +140,10 @@ public class NotificationJobOnGoingDetailWorkerActivity extends AppCompatActivit
 
         Picasso.with(binding.ivProfileImg.getContext())
                 .load(workerResponce.getData().getProfileImage()).fit().into(binding.ivProfileImg);
+
+        binding.tvStartDate.setText(Constant.DateFomatChange(workerResponce.getData().getJob_start_date()));
+
+        binding.tvEndDate.setText(Constant.DateFomatChange(workerResponce.getData().getJob_end_date()));
 
         SpannableStringBuilder builder = new SpannableStringBuilder();
         SpannableString minprice = new SpannableString("$ " + workerResponce.getData().getMin_rate());

@@ -165,11 +165,11 @@ public class HelpOfferedAdapter extends RecyclerView.Adapter<HelpOfferedAdapter.
                 public void onClick(View v) {
                     listener.helpOfferItemOnClick(dataBeanList.get(getAdapterPosition()), mContext.getString(R.string.sendrequest),getAdapterPosition());
                     if (Constant.isNetworkAvailable(mContext,manLayout)) {
-                        btnSendRequest.setBackground(null);
+                       /* btnSendRequest.setBackground(null);
                         btnSendRequest.setText(R.string.pending_request);
                         btnSendRequest.setTextColor(ContextCompat.getColor(mContext, R.color.colorOrange));
                         //   btnSendRequest.setVisibility(View.GONE);
-                        btnSendRequest.setClickable(false);
+                        btnSendRequest.setClickable(false);*/
                     }
                 }
             });

@@ -58,6 +58,9 @@ public class CompleteJobResponce {
          * profileImage : https://livewire.work/./uploads/profile/thumb/aru6yYUOQSPKXoHR.jpg
          * distance_in_km : 6096.9
          * rating : 5
+         * "job_time_duration":"3",
+         "number_of_days":"5",
+         "job_offer":"55",
          */
 
         private String jobId;
@@ -73,8 +76,35 @@ public class CompleteJobResponce {
         private String userId;
         private String name;
         private String profileImage;
+        private String job_time_duration;
+        private String number_of_days;
+        private String job_offer;
         private String distance_in_km;
         private String rating;
+
+        public String getJob_time_duration() {
+            return job_time_duration;
+        }
+
+        public void setJob_time_duration(String job_time_duration) {
+            this.job_time_duration = job_time_duration;
+        }
+
+        public String getNumber_of_days() {
+            return number_of_days;
+        }
+
+        public void setNumber_of_days(String number_of_days) {
+            this.number_of_days = number_of_days;
+        }
+
+        public String getJob_offer() {
+            return job_offer;
+        }
+
+        public void setJob_offer(String job_offer) {
+            this.job_offer = job_offer;
+        }
 
         public String getJobId() {
             return jobId;

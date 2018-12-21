@@ -5,7 +5,7 @@
     <data>
         <variable
             name="jobDetail"
-            type="com.livewire.responce.HelpOfferedResponce.DataBean"/>
+            type="com.livewire.responce.JobDetailWorkerResponce.DataBean"/>
 
 
     </data>
@@ -93,7 +93,7 @@
                 android:layout_below="@+id/tv_posted_by"
                 android:layout_toEndOf="@+id/iv_profile_img"
                 android:fontFamily="@font/poppins_semibold"
-                android:text='@{  jobDetail.name, default= "N/A"}'
+                android:text='@{jobDetail.name, default= "N/A"}'
                 android:textColor="@color/colorDarkBlack"
                 android:textSize="@dimen/_12sdp" />
 
@@ -349,7 +349,7 @@
                 android:textAllCaps="false"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/_10sdp"
-                android:visibility="visible"
+                android:visibility="gone"
                 />
 
 

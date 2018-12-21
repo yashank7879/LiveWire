@@ -6,7 +6,7 @@
         <import type="android.view.View"/>
         <variable
             name="jobDetail"
-            type="com.livewire.responce.MyjobResponceClient.DataBean"/>
+            type="com.livewire.responce.JobDetailClientResponce.DataBean"/>
     </data>
     
 <ScrollView 
@@ -313,7 +313,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:fontFamily="@font/poppins_semibold"
-                    android:text="@string/n_a"
+                    android:text='@{jobDetail.sub_category,default = "N/A"}'
                     android:textColor="@color/colorDarkBlack"
                     android:textSize="@dimen/_12sdp" />
 
@@ -348,7 +348,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_category"
                     android:layout_gravity="center"
-                    android:text="@string/n_a"
+                    android:text='@{jobDetail.parent_category,default = "N/A"}'
                     android:textColor="@color/colorDarkGray" />
 
 
@@ -370,7 +370,7 @@
                     android:layout_alignBaseline="@id/tv_offer_rate"
                     android:layout_toEndOf="@id/tv_offer_rate"
                     android:fontFamily="@font/poppins_semibold"
-                    android:text="@string/n_a"
+                    android:text='@{"$ "+jobDetail.job_budget,default = "N/A"}'
                     android:textColor="@color/colorDarkBlack"
                     android:textSize="@dimen/_12sdp" />
 
@@ -522,7 +522,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/description"
                     android:layout_marginEnd="@dimen/_8sdp"
-                    android:text="@string/n_a"
+                    android:text='@{jobDetail.job_description,default = "N/A"}'
                     android:textSize="@dimen/_10sdp" />
 
                           <Button

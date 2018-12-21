@@ -18,7 +18,6 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.google.gson.Gson;
 import com.livewire.R;
 import com.livewire.adapter.CompletedJobAdapter;
-import com.livewire.adapter.ConfirmJobWorkerAdapter;
 import com.livewire.databinding.ActivityCompletedJobClientBinding;
 import com.livewire.pagination.EndlessRecyclerViewScrollListener;
 import com.livewire.responce.CompleteJobResponce;
@@ -34,7 +33,6 @@ import java.util.List;
 
 import static com.livewire.utils.ApiCollection.BASE_URL;
 import static com.livewire.utils.ApiCollection.COMPLETE_JOB_LIST_API;
-import static com.livewire.utils.ApiCollection.GET_JOB_LIST_API;
 
 public class CompletedJobClientActivity extends AppCompatActivity implements View.OnClickListener, CompletedJobAdapter.CompleteJobClientListener {
     ActivityCompletedJobClientBinding binding;
@@ -101,8 +99,8 @@ public class CompletedJobClientActivity extends AppCompatActivity implements Vie
         }
     }
 
-    //"""""" help offer list api calling"""""""""""//
-    private void completeJobApi() {// help offer api calling
+    //"""""" complete job list api calling"""""""""""//
+    private void completeJobApi() {
         if (Constant.isNetworkAvailable(this, binding.compltejobLayout)) {
             progressDialog.show();
             AndroidNetworking.get(BASE_URL + COMPLETE_JOB_LIST_API)

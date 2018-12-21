@@ -59,6 +59,11 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.iceteck.silicompressorr.SiliCompressor;
 import com.livewire.R;
@@ -71,12 +76,14 @@ import com.livewire.model.CategoryBean;
 import com.livewire.model.CategoryModel;
 import com.livewire.model.IntroVideoModal;
 import com.livewire.model.SubCategoryModel;
+import com.livewire.model.UserInfoFcm;
 import com.livewire.multiple_file_upload.MultiPartRequest;
 import com.livewire.multiple_file_upload.MultiPartRequestForUpdateProfile;
 import com.livewire.multiple_file_upload.Template;
 import com.livewire.multiple_file_upload.VolleyMySingleton;
 import com.livewire.responce.AddSkillsResponce;
 import com.livewire.responce.MyProfileResponce;
+import com.livewire.responce.SignUpResponce;
 import com.livewire.utils.Constant;
 import com.livewire.utils.ImageRotator;
 import com.livewire.utils.ImageVideoUtils;
@@ -1142,8 +1149,17 @@ mediaFilesList.remove(0);
                     String message = result.getString("message");
                     if (status.equalsIgnoreCase("success")) {
                         //*************sucess fully add car status**************//
-                        Constant.snackBar(binding.mainLayout, message);
+
+                        SignUpResponce userResponce = new Gson().fromJson(String.valueOf(response), SignUpResponce.class);
                         PreferenceConnector.writeString(CompleteProfileActivity.this, PreferenceConnector.COMPLETE_PROFILE_STATUS, "1");
+                        PreferenceConnector.writeString(CompleteProfileActivity.this, PreferenceConnector.MY_USER_ID, userResponce.getData().getUserId());
+                        PreferenceConnector.writeString(CompleteProfileActivity.this, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
+                        PreferenceConnector.writeString(CompleteProfileActivity.this, PreferenceConnector.PROFILE_IMG, userResponce.getData().getProfileImage());
+                        PreferenceConnector.writeString(CompleteProfileActivity.this, PreferenceConnector.Name, userResponce.getData().getUserId());
+                        PreferenceConnector.writeString(CompleteProfileActivity.this, PreferenceConnector.Email, userResponce.getData().getEmail());
+
+                        addUserFirebaseDatabase();
+
                         Intent intent = new Intent(CompleteProfileActivity.this, WorkerMainActivity.class);
                         startActivity(intent);
                         finish();
@@ -1334,5 +1350,46 @@ mediaFilesList.remove(0);
 
         mRequest.add(mMultiPartRequest);
     }*/
+
+    //""""""""" register user in Firebase data base  """""""""""""""//
+    private void addUserFirebaseDatabase(){
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        Log.e(TAG, database.toString());
+        UserInfoFcm infoFcm = new UserInfoFcm();
+        infoFcm.email = PreferenceConnector.readString(this,PreferenceConnector.Email,"");
+        infoFcm.firebaseToken = FirebaseInstanceId.getInstance().getToken();
+        infoFcm.name = PreferenceConnector.readString(this,PreferenceConnector.Name,"");
+        infoFcm.notificationStatus = "";
+        infoFcm.profilePic = PreferenceConnector.readString(this,PreferenceConnector.PROFILE_IMG,"");
+        infoFcm.uid = PreferenceConnector.readString(this,PreferenceConnector.MY_USER_ID,"");
+        infoFcm.userType = PreferenceConnector.readString(this,PreferenceConnector.USER_TYPE,"");
+        infoFcm.authToken = PreferenceConnector.readString(this,PreferenceConnector.AUTH_TOKEN,"");
+
+        database.child(Constant.ARG_USERS)
+                .child(PreferenceConnector.readString(this,PreferenceConnector.MY_USER_ID,""))
+                .setValue(infoFcm)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            //Utils.goToOnlineStatus(SignInActivity.this, Constant.online);
+
+                          /* if (isProfileUpdate.equals("1")) {
+                               MainActivity.start(SignInActivity.this, false);
+                               finish();
+                           } else {
+                               Intent intent = new Intent(SignInActivity.this, EditProfileActivity.class);
+                               startActivity(intent);
+                               finish();
+
+                              *//*  MainActivity.start(SignInActivity.this, false);
+                                finish();*//*
+                           }*/
+                        } else {
+                            Toast.makeText(CompleteProfileActivity.this, "Not Store", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
 
 }

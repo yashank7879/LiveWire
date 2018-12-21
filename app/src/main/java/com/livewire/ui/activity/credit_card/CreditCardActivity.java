@@ -18,7 +18,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
-import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -46,6 +45,7 @@ import java.util.Map;
 import static com.livewire.utils.ApiCollection.ADD_REVIEW_API;
 import static com.livewire.utils.ApiCollection.BASE_URL;
 import static com.livewire.utils.ApiCollection.END_JOB_API;
+import static com.livewire.utils.ApiCollection.ONGOING_END_JOB_API;
 
 public class CreditCardActivity extends AppCompatActivity implements View.OnClickListener {
     ActivityCreditCardsBinding binding;
@@ -60,6 +60,8 @@ public class CreditCardActivity extends AppCompatActivity implements View.OnClic
     private String userId="";
     private String name="";
     private String cardNumber;
+    private String workingDays="";
+    private String jobType="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,16 +71,15 @@ public class CreditCardActivity extends AppCompatActivity implements View.OnClic
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         width = displaymetrics.widthPixels;
 
-        if (getIntent().getStringExtra("JobIdKey") != null){
+        if (getIntent().getStringExtra("JobType").equals("SingleJob")){ //user come from Single job payment
             binding.tvPayAmount.setText("Pay $"+getIntent().getFloatExtra("PayKey",0));
             budget = getIntent().getFloatExtra("PayKey",0);
             stripeFee = getIntent().getFloatExtra("stripeFeeKey",0);
             jobId = getIntent().getStringExtra("JobIdKey");
             userId = getIntent().getStringExtra("UserIdKey");
             name = getIntent().getStringExtra("NameKey");
+            jobType = getIntent().getStringExtra("JobType");
 
-            /*intent.putExtra("NameKey",name);
-            intent.putExtra("UserIdKey", userId);*/
 
             binding.tvPayAmount.setVisibility(View.VISIBLE);
             binding.btnPay.setVisibility(View.VISIBLE);
@@ -86,6 +87,29 @@ public class CreditCardActivity extends AppCompatActivity implements View.OnClic
             binding.btnSaveCard.setVisibility(View.GONE);
             binding.tvHeader.setText(R.string.payment);
             binding.tvHeader.setAllCaps(true);
+
+        } else if (getIntent().getStringExtra("JobType").equals("OngoingJob")) { //user come from Ongoing job payment
+            binding.tvPayAmount.setText("Pay $"+getIntent().getFloatExtra("PayKey",0));
+            budget = getIntent().getFloatExtra("PayKey",0);
+            stripeFee = getIntent().getFloatExtra("stripeFeeKey",0);
+            jobId = getIntent().getStringExtra("JobIdKey");
+            userId = getIntent().getStringExtra("UserIdKey");
+            name = getIntent().getStringExtra("NameKey");
+            workingDays = getIntent().getStringExtra("WorkingDays");
+            jobType = getIntent().getStringExtra("JobType");
+
+            binding.tvPayAmount.setVisibility(View.VISIBLE);
+            binding.btnPay.setVisibility(View.VISIBLE);
+            binding.cbSaveCard.setVisibility(View.VISIBLE);
+            binding.btnSaveCard.setVisibility(View.GONE);
+            binding.tvHeader.setText(R.string.payment);
+            binding.tvHeader.setAllCaps(true);
+        }else if (getIntent().getStringExtra("JobType").equals("SaveCreditCard")){ //user come from setting :- manage Credit card :- Add Credit card
+            binding.tvPayAmount.setVisibility(View.GONE);
+            binding.btnPay.setVisibility(View.GONE);
+            binding.cbSaveCard.setVisibility(View.GONE);
+            binding.btnSaveCard.setVisibility(View.VISIBLE);
+
         }
 
         progressDialog = new ProgressDialog(this);
@@ -223,7 +247,11 @@ public class CreditCardActivity extends AppCompatActivity implements View.OnClic
                                         createStripeToken(cardNumber, month1, year1, binding.edCvv.getText().toString().trim());
                                         //saveCreditCard(token.getId());
                                     }
-                                    paymentApi(token.getId());
+                                    if (getIntent().getStringExtra("JobType").equals("SingleJob")) {
+                                        singleJobPaymentApi(token.getId());
+                                    }else if (getIntent().getStringExtra("JobType").equals("OngoingJob")){
+                                        paymentForOngoingJob(token.getId());
+                                    }
                                 }
                             }
                         }
@@ -233,8 +261,51 @@ public class CreditCardActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
+    private void paymentForOngoingJob(String id) {
+        if (Constant.isNetworkAvailable(this, binding.svCreditcardLayout)) {
+            progressDialog.show();
+            AndroidNetworking.post(BASE_URL + ONGOING_END_JOB_API)
+                    .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
+                    .addBodyParameter("jobId", jobId)
+                    .addBodyParameter("amount", "" + budget)
+                    .addBodyParameter("source",id )
+                    .addBodyParameter("source_type", "token")
+                    .addBodyParameter("stripe_fees", "" + stripeFee)
+                    .addBodyParameter("currency", "")
+                    .addBodyParameter("working_days", workingDays)
+                    .setPriority(Priority.MEDIUM)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            progressDialog.dismiss();
+                            String status = null;
+                            try {
+                                status = response.getString("status");
+                                String message = response.getString("message");
+                                if (status.equals("success")) {
+                                    openReviewDialog();
+                                    Constant.snackBar(binding.svCreditcardLayout, message);
+                                } else {
+                                    Constant.snackBar(binding.svCreditcardLayout, message);
+                                    progressDialog.dismiss();
+                                }
+                            } catch (JSONException e) {
+                                Log.d(TAG, e.getMessage());
+                            }
+                        }
+
+                        @Override
+                        public void onError(ANError anError) {
+
+                        }
+                    });
+
+        }
+    }
+
     ///"""""""""" server api to make payment """""""//
-    private void paymentApi(final String tokenId) {
+    private void singleJobPaymentApi(final String tokenId) {
         if (Constant.isNetworkAvailable(CreditCardActivity.this, binding.svCreditcardLayout)) {
             progressDialog.show();
             AndroidNetworking.post(BASE_URL + END_JOB_API)

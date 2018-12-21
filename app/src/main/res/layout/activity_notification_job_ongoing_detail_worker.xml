@@ -1,28 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    >
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="workerResponcd"
-            type="com.livewire.responce.JobDetailWorkerResponce.DataBean"/>
+            type="com.livewire.responce.JobDetailWorkerResponce.DataBean" />
 
     </data>
 
-    <ScrollView
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/detail_main_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:scrollbars="none"
+        android:background="@color/colorWhite"
         >
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorWhite">
+            android:background="@color/colorWhite"
+            android:orientation="vertical">
 
             <com.loopeer.shadow.ShadowView
                 android:id="@+id/action_bar"
@@ -61,11 +62,20 @@
 
             </com.loopeer.shadow.ShadowView>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+               >
+
+                <RelativeLayout
+                    android:id="@+id/rl_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
             <com.loopeer.shadow.ShadowView
                 android:id="@+id/details_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/action_bar"
                 app:shadowColor="#666666"
                 app:shadowMarginBottom="3dp"
                 app:shadowRadius="@dimen/_5sdp">
@@ -115,7 +125,6 @@
 
                         <RatingBar
                             android:id="@+id/rating_bar"
-                            android:theme="@style/RatingBarTheme"
                             style="@style/Widget.AppCompat.RatingBar.Small"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -123,7 +132,8 @@
                             android:layout_toEndOf="@+id/iv_profile_img"
                             android:numStars="5"
                             android:progressTint="@color/coloryellow"
-                            android:rating="3" />
+                            android:rating="3"
+                            android:theme="@style/RatingBarTheme" />
 
                         <LinearLayout
                             android:id="@+id/ll_km_away"
@@ -210,21 +220,34 @@
 
             </com.loopeer.shadow.ShadowView>
 
-
-            <com.loopeer.shadow.ShadowView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/details_id"
-                android:layout_marginLeft="@dimen/_5sdp"
-                android:layout_marginRight="@dimen/_5sdp"
-                android:layout_marginTop="-1dp"
-                app:shadowColor="#666666"
-                app:shadowMarginBottom="3dp"
-                app:shadowMarginLeft="3dp"
-                app:shadowMarginRight="3dp"
-                app:shadowRadius="@dimen/_5sdp">
+                </RelativeLayout>
 
                 <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rl_details"
+                    >
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/sv_more_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                android:layout_marginLeft="@dimen/_8sdp"
+                android:layout_marginRight="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_minus5sdp"
+                app:cardBackgroundColor="@color/colorWhite"
+                android:elevation="4dp"
+                android:divider="@android:color/transparent"
+                android:clipToPadding="false"
+                android:clipChildren="false"
+                app:cardElevation="6dp"
+                app:cardPreventCornerOverlap="false"
+                android:layout_marginBottom="@dimen/_8sdp"
+               >
+
+                <RelativeLayout
+                    android:id="@+id/rl_profile_details"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingBottom="@dimen/_8sdp"
@@ -242,8 +265,6 @@
                         android:textColor="@color/colorGreen" />
 
 
-
-
                     <TextView
                         android:id="@+id/tv_category"
                         android:layout_width="wrap_content"
@@ -256,28 +277,6 @@
                         android:textColor="@color/colorDarkBlack"
                         android:textSize="@dimen/_12sdp" />
 
-                    <!--     <TextView
-                             android:id="@+id/tv_date"
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content"
-                             android:layout_toStartOf="@+id/tv_date_month"
-                             android:layout_alignBaseline="@id/tv_category"
-                             android:text="23"
-                             style="@style/mediumPopinsRegularStyle"
-                             android:textColor="@color/colorDarkBlack"
-                             />
-
-                         <TextView
-                             android:id="@+id/tv_date_month"
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content"
-                             android:layout_alignParentEnd="true"
-                             android:fontFamily="@font/poppins_light"
-                             android:textColor="@color/colorDarkBlack"
-                             android:textSize="@dimen/_10sdp"
-                             android:layout_alignBaseline="@id/tv_category"
-                             android:text=" sep 2018"
-                             />-->
 
                     <TextView
                         android:id="@+id/tv_sub_category"
@@ -335,8 +334,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/tv_offer_rate"
                             android:text="@string/rate_range"
-                            android:textColor="@color/colorDarkBlack"
-                            />
+                            android:textColor="@color/colorDarkBlack" />
 
                         <TextView
                             android:id="@+id/tv_range_price"
@@ -362,27 +360,6 @@
 
                     </RelativeLayout>
 
-                    <!--<TextView
-                        android:id="@+id/tv_budget"
-                        style="@style/smallPopinsRegularStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_sub_category"
-                        android:layout_marginEnd="@dimen/_5sdp"
-                        android:text="@string/budget"
-                        android:textColor="@color/colorDarkBlack"
-                       />
-
-                    <TextView
-                        android:id="@+id/tv_budget_price"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBaseline="@id/tv_budget"
-                        android:layout_toEndOf="@id/tv_budget"
-                        android:fontFamily="@font/poppins_semibold"
-                        android:text="@string/n_a"
-                        android:textColor="@color/colorDarkBlack"
-                        android:textSize="@dimen/_12sdp" />-->
 
 
                     <View
@@ -439,7 +416,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/start_date"
-                            android:text='@{workerResponcd != null ? workerResponcd.job_start_date : "N/A",default = "N/A"}'
+                            android:text='@string/n_a'
                             android:textColor="@color/colorDarkGray" />
 
                         <TextView
@@ -463,7 +440,7 @@
                             android:layout_alignParentEnd="true"
                             android:layout_below="@+id/end_date"
                             android:layout_marginEnd="@dimen/_8sdp"
-                            android:text='@{workerResponcd != null ? workerResponcd.job_end_date : "N/A",default = "N/A"}'
+                            android:text="@string/n_a"
                             android:textColor="@color/colorDarkGray" />
 
                         <TextView
@@ -531,30 +508,15 @@
                         android:text='@{workerResponcd != null ?  workerResponcd.job_description : "N/A" ,default = "N/A"}'
                         android:textSize="@dimen/_10sdp" />
 
-                    <!--          <Button
-                                  android:id="@+id/btn_send_request"
-                                  style="@style/smallPopinsRegularStyle"
-                                  android:layout_width="@dimen/_85sdp"
-                                  android:layout_height="@dimen/_25sdp"
-                                  android:layout_below="@id/tv_description"
-                                  android:layout_centerInParent="true"
-                                  android:layout_margin="@dimen/_15sdp"
-                                  android:background="@drawable/button_green_bg"
-                                  android:text="@string/send_request"
-                                  android:textAllCaps="false"
-                                  android:textColor="@color/colorWhite"
-                                  android:textSize="@dimen/_10sdp" />-->
 
-
-                    <!--gone-->
                     <RelativeLayout
+                        android:id="@+id/btn_accept_reject_layout"
                         android:layout_width="@dimen/_200sdp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_10sdp"
                         android:layout_below="@+id/tv_description"
-                        android:visibility="visible"
                         android:layout_centerHorizontal="true"
-                        >
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:visibility="gone">
 
 
                         <Button
@@ -573,22 +535,348 @@
                             style="@style/smallPopinsRegularStyle"
                             android:layout_width="@dimen/_65sdp"
                             android:layout_height="@dimen/_22sdp"
+                            android:layout_alignParentEnd="true"
                             android:background="@drawable/button_green_bg"
                             android:text="@string/accept"
                             android:textAllCaps="false"
-                            android:layout_alignParentEnd="true"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/_10sdp" />
 
                     </RelativeLayout>
 
+
+                    <RelativeLayout
+                        android:id="@+id/payment_info_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_description"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/tv_payment_info"
+                            style="@style/SmallPopinsMediumStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="10dp"
+                            android:fontFamily="@font/poppins_medium"
+                            android:text="@string/payment_info"
+                            android:textColor="@color/colorGreen" />
+
+                        <TextView
+                            android:id="@+id/tv_total_working_days"
+                            style="@style/SmallPopinsLightStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tv_payment_info"
+                            android:layout_marginEnd="@dimen/_8sdp"
+                            android:text="@string/total_working_days"
+                            android:textColor="@color/colorDarkBlack" />
+
+                        <TextView
+                            android:id="@+id/tv_offer_price1"
+                            style="@style/SmallPopinsLightStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tv_total_working_days"
+                            android:layout_marginEnd="@dimen/_8sdp"
+                            android:text="@string/offered_price"
+                            android:textColor="@color/colorDarkBlack" />
+
+                        <TextView
+                            android:id="@+id/tv_total_days"
+                            style="@style/SmallPopinsMediumStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tv_payment_info"
+                            android:layout_marginEnd="@dimen/_2sdp"
+                            android:layout_toLeftOf="@+id/tv_days"
+                            android:text="0"
+                            android:textColor="@color/colorDarkBlack" />
+
+                        <TextView
+                            android:id="@+id/tv_days"
+                            style="@style/SmallPopinsMediumStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_below="@+id/tv_payment_info"
+                            android:layout_marginEnd="@dimen/_8sdp"
+                            android:text="@string/days"
+                            android:textColor="@color/colorDarkGray" />
+
+                        <TextView
+                            android:id="@+id/tv_offer_price_value"
+                            style="@style/SmallPopinsMediumStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tv_total_days"
+                            android:layout_marginEnd="@dimen/_2sdp"
+                            android:layout_toLeftOf="@+id/tv_hr"
+                            android:text="$ 0.00"
+                            android:textColor="@color/colorDarkBlack" />
+
+                        <TextView
+                            android:id="@+id/tv_hr"
+                            style="@style/SmallPopinsMediumStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_below="@+id/tv_total_days"
+                            android:layout_marginEnd="@dimen/_8sdp"
+                            android:text="@string/hr"
+                            android:textColor="@color/colorDarkGray" />
+
+
+                        <TextView
+                            android:id="@+id/tv_admin_commision"
+                            style="@style/SmallPopinsLightStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tv_offer_price_value"
+                            android:layout_marginEnd="@dimen/_8sdp"
+                            android:text="@string/admin_commission"
+                            android:textColor="@color/colorDarkBlack" />
+
+                        <TextView
+                            android:id="@+id/tv_commision_price"
+                            style="@style/SmallPopinsMediumStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_below="@+id/tv_offer_price_value"
+                            android:layout_marginEnd="@dimen/_8sdp"
+                            android:text="$ 0.0"
+                            android:textColor="@color/colorDarkBlack" />
+
+                        <View
+                            android:id="@+id/view5_id"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_below="@+id/tv_commision_price"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:background="@color/colorExtraLightGray" />
+
+                        <TextView
+                            android:id="@+id/tv_total_amount"
+                            style="@style/SmallPopinsLightStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/view5_id"
+                            android:layout_marginEnd="@dimen/_8sdp"
+                            android:text="@string/total_amount"
+                            android:textColor="@color/colorDarkBlack" />
+
+                        <TextView
+                            android:id="@+id/tv_total_price"
+                            style="@style/SmallPopinsMediumStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_below="@+id/view5_id"
+                            android:layout_marginEnd="@dimen/_8sdp"
+                            android:text="$ 524.23"
+                            android:textColor="@color/colorDarkBlack" />
+
+                        <View
+                            android:id="@+id/view6_id"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_below="@+id/tv_total_price"
+                            android:layout_marginBottom="@dimen/_5sdp"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:background="@color/colorExtraLightGray" />
+
+
+                        <TextView
+                            android:id="@+id/tv_job_review"
+                            style="@style/SmallPopinsMediumStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_below="@+id/view6_id"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="10dp"
+                            android:fontFamily="@font/poppins_medium"
+                            android:text="@string/job_reviews"
+                            android:textColor="@color/colorGreen"
+                            android:visibility="gone" />
+
+                        <RelativeLayout
+                            android:id="@+id/review_by_rl"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tv_job_review"
+                            android:visibility="gone">
+
+                            <TextView
+                                android:id="@+id/tv_by_you"
+                                style="@style/SmallPopinsMediumStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="@dimen/_5sdp"
+                                android:text="@string/by_you"
+                                android:textColor="@color/colorDarkBlack"
+                                android:textSize="@dimen/_12sdp" />
+
+                            <TextView
+                                android:id="@+id/tv_review_time"
+                                style="@style/smallPopinsRegularStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginTop="@dimen/_5sdp"
+                               android:layout_marginEnd="@dimen/_8sdp"
+                                android:text="@string/n_a"
+                                android:textColor="@color/colorDarkBlack"
+                                android:textSize="@dimen/_10sdp" />
+
+                            <RatingBar
+                                android:id="@+id/rating_bar_review"
+                                style="@style/Widget.AppCompat.RatingBar.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/tv_by_you"
+                                android:numStars="5"
+                                android:progressTint="@color/coloryellow"
+                                android:theme="@style/RatingBarTheme" />
+
+                            <TextView
+                                android:id="@+id/tv_review_description"
+                                style="@style/smallPopinsRegularStyle"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/rating_bar_review"
+                                android:layout_marginBottom="@dimen/_10sdp"
+                                android:layout_marginEnd="@dimen/_8sdp"
+                                android:text='N/A'
+                                android:textSize="@dimen/_10sdp" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/review_user_rl"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/review_by_rl"
+                            android:visibility="gone">
+
+                            <TextView
+                                android:id="@+id/tv_user_name_review"
+                                style="@style/SmallPopinsMediumStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="@dimen/_5sdp"
+                                android:text="Rachel"
+                                android:textColor="@color/colorDarkBlack"
+                                android:textSize="@dimen/_12sdp" />
+
+                            <TextView
+                                android:id="@+id/tv_user_time_review"
+                                style="@style/smallPopinsRegularStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginTop="@dimen/_5sdp"
+                                android:text="@string/n_a"
+                                android:layout_marginEnd="@dimen/_8sdp"
+                                android:textColor="@color/colorDarkBlack"
+                                android:textSize="@dimen/_10sdp" />
+
+                            <RatingBar
+                                android:id="@+id/rating_bar_user_review"
+                                style="@style/Widget.AppCompat.RatingBar.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/tv_user_name_review"
+                                android:numStars="5"
+                                android:progressTint="@color/coloryellow"
+                                android:theme="@style/RatingBarTheme" />
+
+                            <TextView
+                                android:id="@+id/tv_review_user_description"
+                                style="@style/smallPopinsRegularStyle"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/rating_bar_user_review"
+                                android:layout_marginBottom="@dimen/_10sdp"
+                                android:layout_marginEnd="@dimen/_8sdp"
+                                android:text='good'
+                                android:textSize="@dimen/_10sdp" />
+                        </RelativeLayout>
+                        <!-- <TextView
+                             android:id="@+id/tv_by_you"
+                             style="@style/SmallPopinsMediumStyle"
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:layout_below="@+id/tv_job_review"
+                             android:layout_gravity="center"
+                             android:layout_marginTop="@dimen/_5sdp"
+                             android:text="@string/by_you"
+                             android:textColor="@color/colorDarkBlack"
+                             android:textSize="@dimen/_12sdp" />
+
+                         <TextView
+                             android:id="@+id/tv_review_time"
+                             style="@style/smallPopinsRegularStyle"
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:layout_alignParentEnd="true"
+                             android:layout_below="@+id/tv_job_review"
+                             android:layout_marginTop="@dimen/_5sdp"
+                             android:text="1 day ago"
+                             android:textColor="@color/colorDarkBlack"
+                             android:textSize="@dimen/_10sdp" />
+
+                         <RatingBar
+                             android:id="@+id/rating_bar_review"
+                             android:theme="@style/RatingBarTheme"
+                             style="@style/Widget.AppCompat.RatingBar.Small"
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:layout_below="@+id/tv_by_you"
+                             android:numStars="5"
+                             android:progressTint="@color/coloryellow"
+                             android:rating="3" />
+
+                         <TextView
+                             android:id="@+id/tv_review_description"
+                             style="@style/smallPopinsRegularStyle"
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:layout_below="@+id/rating_bar_review"
+                             android:layout_marginEnd="@dimen/_8sdp"
+                             android:layout_marginBottom="@dimen/_10sdp"
+                             android:text='N/A'
+                             android:textSize="@dimen/_10sdp" />-->
+                    </RelativeLayout>
+
+                    <Button
+                        android:id="@+id/btn_give_review"
+                        style="@style/smallPopinsRegularStyle"
+                        android:layout_width="@dimen/_85sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:layout_below="@id/payment_info_layout"
+                        android:layout_centerInParent="true"
+                        android:layout_margin="@dimen/_15sdp"
+                        android:background="@drawable/button_green_bg"
+                        android:text="@string/give_review"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="@dimen/_10sdp"
+                        android:visibility="gone" />
+
                 </RelativeLayout>
 
 
-            </com.loopeer.shadow.ShadowView>
+            </android.support.v7.widget.CardView>
 
+                </RelativeLayout>
+            </RelativeLayout>
 
-        </RelativeLayout>
+        </LinearLayout>
 
     </ScrollView>
 </layout>

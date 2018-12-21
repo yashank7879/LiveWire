@@ -1,6 +1,8 @@
 package com.livewire.ui.activity;
 
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -10,7 +12,6 @@ import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.ScrollView;
-import android.widget.TextView;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -30,6 +31,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import static com.livewire.utils.ApiCollection.BASE_URL;
+import static com.livewire.utils.ApiCollection.JOBPOSTSEND_GET_WORKER_JOB_DETAIL_API;
 import static com.livewire.utils.ApiCollection.JOBPOSTSEND_REQUEST_2_API;
 
 public class JobOnGoingDetailWorkerActivity extends AppCompatActivity implements View.OnClickListener {
@@ -39,6 +41,7 @@ public class JobOnGoingDetailWorkerActivity extends AppCompatActivity implements
     private ProgressDialog progressDialog;
     private ScrollView detailMainLayout;
     private OnGoingWorkerResponce.DataBean workerResponcd;
+    private String jobId="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,20 +60,17 @@ public class JobOnGoingDetailWorkerActivity extends AppCompatActivity implements
         findViewById(R.id.btn_accept).setOnClickListener(this);
 
         if (getIntent().getSerializableExtra("JobDetail") != null) {
-            workerResponcd = (OnGoingWorkerResponce.DataBean) getIntent().getSerializableExtra("JobDetail");
-
-            setJobDetailData(workerResponcd);
-            binding.setWorkerResponcd(workerResponcd);
-        }/*else if (getIntent().getStringExtra("Ongoing_job_request") != null){
-            getJobDetailApi(getIntent().getStringExtra("reference_id"));
-        }*/
+            jobId =  getIntent().getStringExtra("JobDetail");
+            getJobDetailApi();
+        }
     }
 
-   /* private void getJobDetailApi(String jobId) {
+
+    private void getJobDetailApi() {
 
         if (Constant.isNetworkAvailable(this,binding.detailMainLayout)){
             progressDialog.show();
-            AndroidNetworking.post(BASE_URL+"Jobpost/getJobDetail")
+            AndroidNetworking.post(BASE_URL+JOBPOSTSEND_GET_WORKER_JOB_DETAIL_API)
                     .addBodyParameter("job_id",jobId)
                     .addBodyParameter("job_type","2")
                     .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
@@ -85,8 +85,9 @@ public class JobOnGoingDetailWorkerActivity extends AppCompatActivity implements
                                 status = response.getString("status");
                                 String message = response.getString("message");
                                 if (status.equals("success")) {
-                                    JobDetailWorkerResponce workerResponce = new Gson().fromJson(String.valueOf(response),JobDetailWorkerResponce.class);
-                                    binding.setWorkerInfo(workerResponce.getData());
+                                    JobDetailWorkerResponce  workerResponce = new Gson().fromJson(String.valueOf(response),JobDetailWorkerResponce.class);
+                                    binding.setWorkerResponcd(workerResponce.getData());
+                                    setJobDetailData(workerResponce.getData());
                                 }else {
                                     Constant.snackBar(binding.detailMainLayout,message);
                                 }
@@ -97,12 +98,13 @@ public class JobOnGoingDetailWorkerActivity extends AppCompatActivity implements
 
                         @Override
                         public void onError(ANError anError) {
-                        progressDialog.dismiss();
+                            progressDialog.dismiss();
                         }
                     });
         }
 
-    }*/
+    }
+
 
     @Override
     public void onClick(View v) {
@@ -111,16 +113,46 @@ public class JobOnGoingDetailWorkerActivity extends AppCompatActivity implements
                 onBackPressed();
                 break;
             case R.id.btn_ignore:
-                acceptRejectrequestApi(workerResponcd.getUserId(), workerResponcd.getJobId(), "2");
+                if (PreferenceConnector.readString(this,PreferenceConnector.IS_BANK_ACC,"").equals("1")) {
+                    acceptRejectrequestApi(workerResponcd.getUserId(), workerResponcd.getJobId(), "2");
+                }else {
+                    showAddBankAccountDialog();
+                }
                 break;
             case R.id.btn_accept:
-                acceptRejectrequestApi(workerResponcd.getUserId(), workerResponcd.getJobId(), "1");
+                if (PreferenceConnector.readString(this,PreferenceConnector.IS_BANK_ACC,"").equals("1")) {
+                    acceptRejectrequestApi(workerResponcd.getUserId(), workerResponcd.getJobId(), "1");
+                }else {
+                    showAddBankAccountDialog();
+                }
                 break;
             default:
         }
     }
 
-    private void setJobDetailData(OnGoingWorkerResponce.DataBean workerResponcd) {
+    private void showAddBankAccountDialog() {
+        final android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
+        builder.setTitle("Add Bank Account");
+        builder.setMessage("Please add your bank details first.");
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(JobOnGoingDetailWorkerActivity.this,AddBankAccountActivity.class);
+                startActivity(intent);
+                // logoutApiCalling();
+            }
+        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        android.support.v7.app.AlertDialog dialog = builder.create();
+        dialog.getWindow().getAttributes().windowAnimations = R.style.CustomDialog;
+        dialog.show();
+    }
+
+    private void setJobDetailData(JobDetailWorkerResponce.DataBean workerResponcd) {
 
         binding.tvTime.setText(Constant.getDayDifference(workerResponcd.getCrd(), workerResponcd.getCurrentDateTime()));
 

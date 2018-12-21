@@ -35,11 +35,14 @@ public class ApiCollection {
     public static final String COMPLETE_JOB_LIST_API = "Jobpost/completeJobList";
     public static final String GET_SUBCATEGORY_LIST_API = "getSubcategoryList";
     public static final String GET_REVIEW_LIST_API = "user/getReviewList";
-    public static final String END_JOB_API = "payment/endJob";
+
     public static final String ADD_REVIEW_API = "user/addReview";
     public static final String GET_CLIENT_PROFILE_API = "user/getClientProfile";
     public static final String GET_MY_JOB_REQUEST_LIST_API = "Jobpost/getMyJobRequestList";
     public static final String CONFIRM_OR_COMPLETED_JOB_LIST_API = "Jobpost/confirmOrCompletedJobList?";
+    public static final String END_JOB_API = "payment/endJob"; // single job payment
+    public static final String ONGOING_END_JOB_API = "payment/ongoingEndJob"; // ongoing job payment
+    public static final String NOTIFICATION_LIST_API = "user/notificationList"; //https://livewire.work/service/user/notificationList
 
 
     //job_status_type=1&job_type=1&skill=

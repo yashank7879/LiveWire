@@ -2,6 +2,7 @@ package com.livewire.ui.fragments;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -39,6 +40,7 @@ import com.livewire.model.CategoryModel;
 import com.livewire.pagination.EndlessRecyclerViewScrollListener;
 import com.livewire.responce.OnGoingWorkerResponce;
 import com.livewire.responce.SubCategoryResponse;
+import com.livewire.ui.activity.AddBankAccountActivity;
 import com.livewire.ui.activity.ClientProfileDetailWorkerActivity;
 import com.livewire.ui.activity.JobHelpOfferedDetailWorkerActivity;
 import com.livewire.ui.activity.JobOnGoingDetailWorkerActivity;
@@ -53,6 +55,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.livewire.utils.ApiCollection.BASE_URL;
+import static com.livewire.utils.ApiCollection.GET_JOB_LIST_API;
+import static com.livewire.utils.ApiCollection.GET_SUBCATEGORY_LIST_API;
+import static com.livewire.utils.ApiCollection.JOBPOSTSEND_REQUEST_2_API;
 
 
 public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapter.SubCategoryLisner, AdapterView.OnItemSelectedListener,View.OnClickListener,OngoingAdapter.OnGoingItemOnClick {
@@ -171,7 +176,7 @@ public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapte
     private void ongoingListApi() {
         if (Constant.isNetworkAvailable(mContext, mainLayout)) {
             progressDialog.show();
-            AndroidNetworking.post(BASE_URL + "Jobpost/getJobList")
+            AndroidNetworking.post(BASE_URL + GET_JOB_LIST_API)
                     .addHeaders("authToken", PreferenceConnector.readString(mContext, PreferenceConnector.AUTH_TOKEN, ""))
                     .addBodyParameter("job_type", "2")
                     .addBodyParameter("limit", ""+limit)
@@ -222,7 +227,7 @@ public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapte
     //"""""""""" sub category list api """""""""""""//
     private void subCategoryListApi() {
         if (Constant.isNetworkAvailable(mContext, mainLayout)) {
-            AndroidNetworking.get(BASE_URL + "getSubcategoryList")
+            AndroidNetworking.get(BASE_URL + GET_SUBCATEGORY_LIST_API)
                     .setPriority(Priority.MEDIUM)
                     .build()
                     .getAsJSONObject(new JSONObjectRequestListener() {
@@ -437,14 +442,23 @@ public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapte
         switch (key) {
             case "MoreInfo":
                 Intent intent = new Intent(mContext, JobOnGoingDetailWorkerActivity.class);
-                intent.putExtra("JobDetail",dataBean);
+                intent.putExtra("JobDetail",dataBean.getJobId());
                 startActivity(intent);
                 break;
             case "Accept":
-                acceptRejectrequestApi(dataBean.getUserId(),dataBean.getJobId(),"1");
+                if (PreferenceConnector.readString(mContext,PreferenceConnector.IS_BANK_ACC,"").equals("1")) {
+                    acceptRejectrequestApi(dataBean.getUserId(), dataBean.getJobId(), "1");
+                }else {
+                    showAddBankAccountDialog();
+                }
                 break;
             case "Reject":
-                acceptRejectrequestApi(dataBean.getUserId(),dataBean.getJobId(),"2");
+
+                if (PreferenceConnector.readString(mContext,PreferenceConnector.IS_BANK_ACC,"").equals("1")) {
+                    acceptRejectrequestApi(dataBean.getUserId(), dataBean.getJobId(), "2");
+                }else {
+                    showAddBankAccountDialog();
+                }
                 break;
                 default:
         }
@@ -459,11 +473,32 @@ public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapte
         }
     }
 
+    private void showAddBankAccountDialog() {
+        final android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(mContext);
+        builder.setTitle("Add Bank Account");
+        builder.setMessage("Please add your bank details first.");
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(mContext,AddBankAccountActivity.class);
+                startActivity(intent);
+                // logoutApiCalling();
+            }
+        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        android.support.v7.app.AlertDialog dialog = builder.create();
+        dialog.getWindow().getAttributes().windowAnimations = R.style.CustomDialog;
+        dialog.show();
+    }
     //""""""" accept ignore request """"""""""//
     private void acceptRejectrequestApi(String userId, String jobId, String requestStatus) {
     if (Constant.isNetworkAvailable(mContext,mainLayout)){
         progressDialog.show();
-        AndroidNetworking.post(BASE_URL + "Jobpost/sendRequest2")
+        AndroidNetworking.post(BASE_URL + JOBPOSTSEND_REQUEST_2_API)
                 .addHeaders("authToken", PreferenceConnector.readString(mContext, PreferenceConnector.AUTH_TOKEN, ""))
                 .addBodyParameter("job_id",jobId)
                 .addBodyParameter("request_by", userId)

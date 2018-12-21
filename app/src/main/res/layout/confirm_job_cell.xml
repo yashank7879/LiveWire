@@ -118,7 +118,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_below="@+id/budget"
-                android:text='@{!dataBean.job_budget.equals("") ? "$ "+dataBean.job_budget : "$ "+ dataBean.job_offer, default= "$ 0"}'
+                android:text='@string/n_a'
                 android:textColor="@color/colorDarkBlack"
                 android:paddingEnd="@dimen/_10sdp"
                 />
@@ -248,7 +248,7 @@
                     android:layout_height="@dimen/_9sdp"
                     android:layout_gravity="center"
                     android:layout_marginStart="@dimen/_3sdp"
-                    app:srcCompat="@drawable/ic_right_arrow" />
+                    app:srcCompat="@drawable/ic_right_arrow_copy" />
             </LinearLayout>
 
         </RelativeLayout>

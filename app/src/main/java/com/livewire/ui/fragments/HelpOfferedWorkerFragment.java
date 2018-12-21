@@ -1,8 +1,10 @@
 package com.livewire.ui.fragments;
 
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -17,6 +19,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +33,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -43,6 +47,7 @@ import com.livewire.model.CategoryModel;
 import com.livewire.pagination.EndlessRecyclerViewScrollListener;
 import com.livewire.responce.HelpOfferedResponce;
 import com.livewire.responce.SubCategoryResponse;
+import com.livewire.ui.activity.AddBankAccountActivity;
 import com.livewire.ui.activity.ClientProfileDetailWorkerActivity;
 import com.livewire.ui.activity.JobHelpOfferedDetailWorkerActivity;
 import com.livewire.utils.Constant;
@@ -88,7 +93,7 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
     private Animation mLoadAnimation;
     private String newJobValue = "";
     private String pendingRequestValue = "";
-    private  TextView tvAllJobs;
+    private TextView tvAllJobs;
     private TextView tvNewJobs;
     private TextView tvPendingRequest;
 
@@ -112,7 +117,6 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         width = displaymetrics.widthPixels;
-
         subCategoryTempList = new ArrayList<>();
         subCategoryList = new ArrayList<>();
         offerList = new ArrayList<>();
@@ -161,8 +165,8 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 if (Constant.isNetworkAvailable(mContext, mainLayout)) {
                     limit = limit + 5; //load 5 items in recyclerview
-                        // progressDialog.show();
-                        helpOfferedApi();
+                    // progressDialog.show();
+                    helpOfferedApi();
 
                 }
             }
@@ -338,7 +342,7 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
                 tvNewJobs.setBackground(mContext.getResources().getDrawable(R.drawable.rounded_corner_green));
                 tvNewJobs.setTextColor(ContextCompat.getColor(mContext, R.color.colorGreen));
                 newJobValue = "new";
-                pendingRequestValue="";
+                pendingRequestValue = "";
                 break;
 
             case R.id.tv_pending_request:
@@ -346,14 +350,14 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
                 tvPendingRequest.setBackground(mContext.getResources().getDrawable(R.drawable.rounded_corner_green));
                 tvPendingRequest.setTextColor(ContextCompat.getColor(mContext, R.color.colorGreen));
                 pendingRequestValue = "0";
-                newJobValue="";
+                newJobValue = "";
                 break;
 
             default:
         }
     }
 
-    private void inVactive(){
+    private void inVactive() {
         tvAllJobs.setBackground(mContext.getResources().getDrawable(R.drawable.rounded_corner_gray));
         tvAllJobs.setTextColor(ContextCompat.getColor(mContext, R.color.colorDarkGray));
 
@@ -411,20 +415,13 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
             btnApplySkills.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                  /*  if (subCategoryList.size() == 0) {
-                        Constant.snackBar(addSkillsLayout, "Please Select at least one Skill");
-                    } else {*/
-                        skillsString();
-                        subCategoryAdapter.notifyDataSetChanged();
-                        helpOfferedApi();
-                        dialog.dismiss();
-                        if (subCategoryList.size() > 0){
-                            filterLayout.setVisibility(View.VISIBLE);
-                        }
-                   // }
-
-                    //  skillDialogValidation(categorySpinner, addSkillsLayout);
+                    skillsString();
+                    subCategoryAdapter.notifyDataSetChanged();
+                    helpOfferedApi();
+                    dialog.dismiss();
+                    if (subCategoryList.size() > 0) {
+                        filterLayout.setVisibility(View.VISIBLE);
+                    }
                 }
             });
 
@@ -436,12 +433,12 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
     }
 
     private void checkSelectedField() {
-        if (newJobValue.equals("new")){
+        if (newJobValue.equals("new")) {
             inVactive();
             tvNewJobs.setBackground(mContext.getResources().getDrawable(R.drawable.rounded_corner_green));
             tvNewJobs.setTextColor(ContextCompat.getColor(mContext, R.color.colorGreen));
 
-        }else if (pendingRequestValue.equals("0")){
+        } else if (pendingRequestValue.equals("0")) {
             inVactive();
             tvPendingRequest.setBackground(mContext.getResources().getDrawable(R.drawable.rounded_corner_green));
             tvPendingRequest.setTextColor(ContextCompat.getColor(mContext, R.color.colorGreen));
@@ -542,22 +539,50 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
     public void helpOfferItemOnClick(HelpOfferedResponce.DataBean dataBean, String key, int pos) {
         if (key.equals(getString(R.string.moreinfo))) {
             Intent intent = new Intent(mContext, JobHelpOfferedDetailWorkerActivity.class);
-            intent.putExtra("JobIdKey", dataBean);
+            intent.putExtra("type", dataBean.getJobId());
             startActivity(intent);
 
         } else if (key.equals(getString(R.string.sendrequest))) {
-            sendRequestApi(dataBean.getJobId(), dataBean.getUserId(), pos);
+            if (PreferenceConnector.readString(mContext, PreferenceConnector.IS_BANK_ACC, "0").equals("1")) {
+                dataBean.setJob_confirmed("0");
+                offeredAdapter.notifyDataSetChanged();
+                sendRequestApi(dataBean.getJobId(), dataBean.getUserId(), pos);
+            } else {
+                showAddBankAccountDialog();
+            }
         }
     }
-
     @Override
     public void userInfoDetailOnClick(String userId) {
-        if (Constant.isNetworkAvailable(mContext,mainLayout)) {
+        if (Constant.isNetworkAvailable(mContext, mainLayout)) {
             Intent intent = new Intent(mContext, ClientProfileDetailWorkerActivity.class);
             intent.putExtra("UserIdKey", userId);
             startActivity(intent);
         }
     }
+
+    private void showAddBankAccountDialog() {
+        final android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(mContext);
+        builder.setTitle("Add Bank Account");
+        builder.setMessage("Please add your bank details first.");
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(mContext, AddBankAccountActivity.class);
+                startActivity(intent);
+            }
+        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        android.support.v7.app.AlertDialog dialog = builder.create();
+        dialog.getWindow().getAttributes().windowAnimations = R.style.CustomDialog;
+        dialog.show();
+    }
+
+
 
     //"""""""" Jobpost/sendRequest  """""""""""""""//
     private void sendRequestApi(String jobId, String userId, final int pos) {
@@ -577,26 +602,7 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
                         String status = response.getString("status");
                         String message = response.getString("message");
                         if (status.equals("success")) {
-
                             Constant.snackBar(mainLayout, message);
-                          /*  HelpOfferedResponce.DataBean dataBean = new HelpOfferedResponce.DataBean();
-                           dataBean.setUserId(offerList.get(pos).getUserId());
-                           dataBean.setName(offerList.get(pos).getName());
-                           dataBean.setProfileImage(offerList.get(pos).getProfileImage());
-                           dataBean.setJobId(offerList.get(pos).getJobId());
-                           dataBean.setCategory_id(offerList.get(pos).getCategory_id());
-                           dataBean.setJob_start_date(offerList.get(pos).getJob_start_date());
-                           dataBean.setJob_budget(offerList.get(pos).getJob_budget());
-                           dataBean.setJob_location(offerList.get(pos).getJob_location());
-                           dataBean.setJob_description(offerList.get(pos).getJob_description());
-                           dataBean.setCrd(offerList.get(pos).getCrd());
-                           dataBean.setParentCategoryName(offerList.get(pos).getParentCategoryName());
-                           dataBean.setDistance_in_km(offerList.get(pos).getDistance_in_km());
-                           dataBean.setJob_confirmed("3");
-
-                            offerList.set(pos,dataBean);*/
-
-
                         } else {
                             Constant.snackBar(mainLayout, message);
                         }

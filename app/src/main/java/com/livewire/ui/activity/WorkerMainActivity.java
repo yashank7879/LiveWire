@@ -66,7 +66,7 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
         binding.chatLl.setOnClickListener(this);
         binding.myJobLl.setOnClickListener(this);
         binding.ivSetting.setOnClickListener(this);
-
+        binding.ivNotification.setOnClickListener(this);
         replaceFragment(new HelpOfferedWorkerFragment(), false, R.id.fl_container); // first time replace home fragment
         clickId = R.id.home_ll;
 
@@ -139,9 +139,10 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
                     clickId = R.id.user_setting_ll;
                 }
                 break;
-            case R.id.iv_setting:
-                intent = new Intent(this, SettingActivity.class);
+            case R.id.iv_notification:
+                intent = new Intent(this, NotificationListWorkerActivity.class);
                 startActivity(intent);
+                break;
             default:
         }
     }

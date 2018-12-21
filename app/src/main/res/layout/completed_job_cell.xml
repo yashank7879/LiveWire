@@ -90,7 +90,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_below="@+id/budget"
                 android:paddingEnd="@dimen/_10sdp"
-                android:text='@{"$ "+dataBean.job_budget, default="N/A"}'
+                android:text='@string/n_a'
                 android:textColor="@color/colorDarkBlack" />
 
             <View
@@ -132,7 +132,6 @@
                 android:layout_below="@+id/tv_name"
                 android:layout_toEndOf="@+id/iv_profile_img"
                 android:numStars="5"
-                android:rating="3"
                 android:theme="@style/RatingBarTheme" />
 
             <LinearLayout
@@ -220,7 +219,7 @@
                     android:layout_height="@dimen/_9sdp"
                     android:layout_gravity="center"
                     android:layout_marginStart="@dimen/_3sdp"
-                    app:srcCompat="@drawable/ic_right_arrow" />
+                    app:srcCompat="@drawable/ic_right_arrow_copy" />
             </LinearLayout>
 
         </RelativeLayout>

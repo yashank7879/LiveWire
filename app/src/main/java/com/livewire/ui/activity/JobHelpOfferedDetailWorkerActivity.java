@@ -1,5 +1,6 @@
 package com.livewire.ui.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.v4.content.ContextCompat;
@@ -15,9 +16,11 @@ import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 
+import com.google.gson.Gson;
 import com.livewire.R;
 import com.livewire.databinding.ActivityJobHelpOfferedDetailWorkerBinding;
 import com.livewire.responce.HelpOfferedResponce;
+import com.livewire.responce.JobDetailWorkerResponce;
 import com.livewire.ui.dialog.ReviewDialog;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
@@ -35,6 +38,7 @@ import java.util.Date;
 
 import static com.livewire.utils.ApiCollection.ADD_REVIEW_API;
 import static com.livewire.utils.ApiCollection.BASE_URL;
+import static com.livewire.utils.ApiCollection.JOBPOSTSEND_GET_WORKER_JOB_DETAIL_API;
 import static com.livewire.utils.ApiCollection.JOBPOSTSEND_REQUEST_2_API;
 
 public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implements View.OnClickListener {
@@ -50,12 +54,31 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_job_help_offered_detail_worker);
         intializeViews();
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            if (extras.getString("type").equals("Once_job_created")) {
+                jobId = extras.getString("reference_id");
+                getJobDetailApi();
+            } else if (extras.getString("type").equals("Once_job_rejected")) {
+                jobId = extras.getString("reference_id");
+                getJobDetailApi();
+            }else if (extras.getString("type").equals("Once_job_accepted")) {
+                jobId = extras.getString("reference_id");
+                binding.btnSendRequest.setVisibility(View.GONE);
+                /*binding.tvStatus.setText(R.string.job_confirmed);
+                binding.tvStatus.setVisibility(View.VISIBLE);*/
+                getJobDetailApi();
+            }else if (extras.getString("type") != null){
+                jobId = extras.getString("type");
+                getJobDetailApi();
+            }
 
-        if (getIntent().getSerializableExtra("JobIdKey") != null) {
+        }
+        /*if (getIntent().getSerializableExtra("JobIdKey") != null) {
             HelpOfferedResponce.DataBean jobDetail = (HelpOfferedResponce.DataBean) getIntent().getSerializableExtra("JobIdKey");
             setWorkerDataResponce(jobDetail);
             binding.setJobDetail(jobDetail);
-        }
+        }*/
     }
 
     private void intializeViews() {
@@ -66,10 +89,10 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
 
     }
 
-  /*  private void getJobDetailApi(String reference_id) {
+    private void getJobDetailApi() {
         if (Constant.isNetworkAvailable(this, binding.detailMainLayout)) {
             progressDialog.show();
-            AndroidNetworking.post(BASE_URL + "Jobpost/getJobDetail")
+            AndroidNetworking.post(BASE_URL + JOBPOSTSEND_GET_WORKER_JOB_DETAIL_API)
                     .addBodyParameter("job_id", jobId)
                     .addBodyParameter("job_type", "1")
                     .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
@@ -85,7 +108,9 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
                                 String message = response.getString("message");
                                 if (status.equals("success")) {
                                     JobDetailWorkerResponce workerResponce = new Gson().fromJson(String.valueOf(response), JobDetailWorkerResponce.class);
-                                  //  binding.setJobDetailFromApi(workerResponce.getData());
+                                    binding.setJobDetail(workerResponce.getData());
+                                    setWorkerDataResponce(workerResponce.getData());
+                                    userId = workerResponce.getData().getUserId();
 
                                 } else {
                                     Constant.snackBar(binding.detailMainLayout, message);
@@ -102,10 +127,10 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
                         }
                     });
         }
-    }*/
+    }
 
     //"""""""""set job deatil worker response data """""""""""
-    private void setWorkerDataResponce(HelpOfferedResponce.DataBean jobDetail) {
+    private void setWorkerDataResponce(JobDetailWorkerResponce.DataBean jobDetail) {
         jobId = jobDetail.getJobId();
         userId = jobDetail.getUserId();
         binding.tvDistance.setText(jobDetail.getDistance_in_km() + " Km away");
@@ -168,7 +193,12 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_send_request:
-                sendRequestApi();
+                if (PreferenceConnector.readString(this,PreferenceConnector.IS_BANK_ACC,"").equals("1")) {
+                    sendRequestApi();
+                }else {
+                    showAddBankAccountDialog();
+                }
+
                 break;
             case R.id.iv_back:
                 onBackPressed();
@@ -180,6 +210,27 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
         }
     }
 
+    private void showAddBankAccountDialog() {
+        final android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
+        builder.setTitle("Add Bank Account");
+        builder.setMessage("Please add your bank details first.");
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(JobHelpOfferedDetailWorkerActivity.this,AddBankAccountActivity.class);
+                startActivity(intent);
+                // logoutApiCalling();
+            }
+        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        android.support.v7.app.AlertDialog dialog = builder.create();
+        dialog.getWindow().getAttributes().windowAnimations = R.style.CustomDialog;
+        dialog.show();
+    }
     //""""""" give Review Dialog """""""""""//
     private void openReviewDialog() {
         Bundle bundle = new Bundle();

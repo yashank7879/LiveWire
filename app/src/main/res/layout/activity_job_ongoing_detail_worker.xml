@@ -6,7 +6,7 @@
     <data>
         <variable
             name="workerResponcd"
-            type="com.livewire.responce.OnGoingWorkerResponce.DataBean"/>
+            type="com.livewire.responce.JobDetailWorkerResponce.DataBean"/>
 
           </data>
 <ScrollView
@@ -310,7 +310,7 @@
                         android:layout_alignBaseline="@id/tv_offer_rate"
                         android:layout_toEndOf="@id/tv_offer_rate"
                         android:fontFamily="@font/poppins_semibold"
-                        android:text='@{workerResponcd != null ? "$ "+workerResponcd.job_offer_rate : "N/A",default = "N/A"}'
+                        android:text='@{workerResponcd != null ? "$ "+workerResponcd.job_offer : "N/A",default = "N/A"}'
                         android:textColor="@color/colorDarkBlack"
                         android:textSize="@dimen/_12sdp" />
 

@@ -174,6 +174,7 @@ public class AddBankAccountActivity extends AppCompatActivity implements View.On
                                     onBackPressed();
                                     Constant.snackBar(binding.svAddbankLayout, "Your Account Added successfully");
 
+                                    PreferenceConnector.writeString(AddBankAccountActivity.this,PreferenceConnector.IS_BANK_ACC,"1");
                                     binding.payNow.setText(R.string.update_bank_details);
                                     binding.accHolderFirstName.setEnabled(false);
                                     binding.accHolderLastName.setEnabled(false);
@@ -235,7 +236,6 @@ public class AddBankAccountActivity extends AppCompatActivity implements View.On
                                 if (status.equals("success")) {
                                     BankAccDetailResponce bankAccDetailResonce = new Gson().fromJson(String.valueOf(response), BankAccDetailResponce.class);
                                     setBankDetail(bankAccDetailResonce);
-                                    PreferenceConnector.writeString(AddBankAccountActivity.this, PreferenceConnector.IS_BANK_ACC, "1");
                                     binding.tvContent.setVisibility(View.GONE);
                                     binding.payNow.setText(R.string.update_bank_details);
                                 } else {
@@ -279,8 +279,6 @@ public class AddBankAccountActivity extends AppCompatActivity implements View.On
                 binding.spinnerBankType.setSelection(i);
             }
         }
-
-
         binding.accNumber.setText(bankAccDetailResonce.getBank_detail().getAccountNumber());
 
     }

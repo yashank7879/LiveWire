@@ -28,13 +28,11 @@ import com.livewire.ui.activity.ClientMainActivity;
 import com.livewire.ui.dialog.ReviewDialog;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
-import com.livewire.utils.PreferenceConnectorRem;
 import com.livewire.utils.ProgressDialog;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Customer;
 import com.stripe.model.ExternalAccountCollection;
-import com.stripe.model.issuing.Card;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -60,34 +58,51 @@ public class AddCreditCardActivity extends AppCompatActivity implements View.OnC
     private String jobId = "";
     private float budget;
     private float stripeFee;
-    private String userId="";
-    private String name="";
+    private String userId = "";
+    private String name = "";
+    private String workerDays;
+    private String offer;
+    private String hours;
+    private String jobType ="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_credit_cards);
-
+        DecimalFormat df = new DecimalFormat("0.00");
         //""""" user come at credit card activity from JobDetail  """""""""""'//
-        if (getIntent().getStringExtra("PaymentKey") != null) {
+        if (getIntent().getStringExtra("PaymentKey") != null) {// //user come from setting manage credit card
             binding.tvPayAmount.setVisibility(View.VISIBLE);
             binding.tvSelectCard.setVisibility(View.VISIBLE);
             binding.tvAddNewCard.setVisibility(View.VISIBLE);
             binding.btnPay.setVisibility(View.VISIBLE);
             binding.btnAddCard.setVisibility(View.GONE);
 
-            jobId = getIntent().getStringExtra("JobIdKey");
-            userId = getIntent().getStringExtra("UserIdKey");//""""" worker user Id """"//
-            name = getIntent().getStringExtra("NameKey");//"""" worker name """"""""//
+            if (getIntent().getStringExtra("SingleJobPayment") != null) {  //user come from Confirm Single job payment
+                jobId = getIntent().getStringExtra("JobIdKey");
+                userId = getIntent().getStringExtra("UserIdKey");//""""" worker user Id """"//
+                name = getIntent().getStringExtra("NameKey");//"""" worker name """"""""//
+                budget = Float.parseFloat(getIntent().getStringExtra("PaymentKey"));
+                stripeFee = Float.parseFloat(df.format(((((budget * 2.9) / 100) + 0.30))));
+                binding.tvPayAmount.setText("Pay $" + budget);
+                jobType = getIntent().getStringExtra("SingleJobPayment");
 
-            budget = Float.parseFloat(getIntent().getStringExtra("PaymentKey"));
-            //stripeFee = (float) ((((budget * 2.9) / 100) + 0.30));
+            } else if (getIntent().getStringExtra("OngoingJobPayment") != null) {  //user come from Confirm Ongoing job payment
+                jobId = getIntent().getStringExtra("JobIdKey");
+                userId = getIntent().getStringExtra("UserIdKey"); //""""" worker user Id """"//
+                name = getIntent().getStringExtra("NameKey"); //"""" worker name """"""""//
+                offer = getIntent().getStringExtra("PaymentKey"); //"""" offer Price """"""""//
+                workerDays = getIntent().getStringExtra("WorkDays");//"""" working days """"""""//
+                hours = getIntent().getStringExtra("Hours"); //"""" Hours """"""""//
+                jobType = getIntent().getStringExtra("OngoingJobPayment");
 
-            DecimalFormat df = new DecimalFormat("0.00");
-            stripeFee = Float.parseFloat(df.format(((((budget * 2.9) / 100) + 0.30))));
+                budget = Float.parseFloat(offer) * Float.parseFloat(workerDays) * Float.parseFloat(hours);
+                Constant.printLogMethod(Constant.LOG_VALUE, TAG, "" + budget);
+                stripeFee = Float.parseFloat(df.format(((((budget * 2.9) / 100) + 0.30))));
+                binding.tvPayAmount.setText("Pay $" + budget);
 
-            binding.tvPayAmount.setText("Pay $" + budget);
-            Constant.printLogMethod(Constant.LOG_VALUE, "stripe fee:", "" + stripeFee);
+            }
+            // Constant.printLogMethod(Constant.LOG_VALUE, "stripe fee:", "" + stripeFee);
         }
         progressDialog = new ProgressDialog(this);
         binding.tvAddNewCard.setOnClickListener(this);
@@ -144,7 +159,7 @@ public class AddCreditCardActivity extends AppCompatActivity implements View.OnC
                             //  Log.e("Size: ", "" + cardResponce.getData().size());
 
                             if (cardResponce.getData().size() != 0) {
-                               // binding.tvSelectCard.setVisibility(View.VISIBLE);
+                                // binding.tvSelectCard.setVisibility(View.VISIBLE);
                                 binding.tvNoCardAdd.setVisibility(View.GONE);
                             }
                             for (int i = 0; i < cardResponce.getData().size(); i++) {
@@ -242,7 +257,6 @@ public class AddCreditCardActivity extends AppCompatActivity implements View.OnC
                     progressDialog.dismiss();
                     if (customer != null) {
                         showCreditCardInfo();
-
                     }
                 }
             }.execute();
@@ -255,6 +269,7 @@ public class AddCreditCardActivity extends AppCompatActivity implements View.OnC
         switch (view.getId()) {
             case R.id.btn_add_card:
                 intent = new Intent(this, CreditCardActivity.class);
+                intent.putExtra("JobType","SaveCreditCard");
                 startActivity(intent);
                 break;
 
@@ -264,11 +279,13 @@ public class AddCreditCardActivity extends AppCompatActivity implements View.OnC
 
             case R.id.tv_add_new_card:
                 intent = new Intent(this, CreditCardActivity.class);
+                intent.putExtra("JobType",jobType);
                 intent.putExtra("PayKey", budget);
                 intent.putExtra("JobIdKey", jobId);
                 intent.putExtra("stripeFeeKey", stripeFee);
-                intent.putExtra("NameKey",name);
+                intent.putExtra("NameKey", name);
                 intent.putExtra("UserIdKey", userId);
+                intent.putExtra("WorkingDays",workerDays);
                 startActivity(intent);
                 break;
 
@@ -276,14 +293,61 @@ public class AddCreditCardActivity extends AppCompatActivity implements View.OnC
                 if (cardId.isEmpty()) {
                     Constant.snackBar(binding.llPaymentLayout, "Please select Card");
                 } else {
-                    paymentApi();
+                    if (jobType.equals("OngoingJob")) {
+                        paymentForOngoingJob();
+                    }else if (jobType.equals("SingleJob")){
+                        paymentForSingleJob();
+                    }
                 }
                 break;
             default:
         }
     }
 
-    private void paymentApi() {
+    private void paymentForOngoingJob() {
+        if (Constant.isNetworkAvailable(this, binding.llPaymentLayout)) {
+            progressDialog.show();
+            AndroidNetworking.post(BASE_URL + "payment/ongoingEndJob")
+                    .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
+                    .addBodyParameter("jobId", jobId)
+                    .addBodyParameter("amount", "" + budget)
+                    .addBodyParameter("source", cardId)
+                    .addBodyParameter("source_type", "card")
+                    .addBodyParameter("stripe_fees", "" + stripeFee)
+                    .addBodyParameter("currency", "")
+                    .addBodyParameter("working_days", workerDays)
+                    .setPriority(Priority.MEDIUM)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            progressDialog.dismiss();
+                            String status = null;
+                            try {
+                                status = response.getString("status");
+                                String message = response.getString("message");
+                                if (status.equals("success")) {
+                                    openReviewDialog();
+                                    Constant.snackBar(binding.llPaymentLayout, message);
+                                } else {
+                                    Constant.snackBar(binding.llPaymentLayout, message);
+                                    progressDialog.dismiss();
+                                }
+                            } catch (JSONException e) {
+                                Log.d(TAG, e.getMessage());
+                            }
+                        }
+
+                        @Override
+                        public void onError(ANError anError) {
+
+                        }
+                    });
+
+        }
+    }
+
+    private void paymentForSingleJob() {
         if (Constant.isNetworkAvailable(this, binding.llPaymentLayout)) {
             progressDialog.show();
             AndroidNetworking.post(BASE_URL + END_JOB_API)
@@ -347,7 +411,7 @@ public class AddCreditCardActivity extends AppCompatActivity implements View.OnC
             @Override
             public void onReviewCancel() {
                 Intent intent = new Intent(AddCreditCardActivity.this, ClientMainActivity.class);
-                intent.putExtra("NearYouKey","MyJob");
+                intent.putExtra("NearYouKey", "MyJob");
                 startActivity(intent);
                 finish();
             }
@@ -375,7 +439,7 @@ public class AddCreditCardActivity extends AppCompatActivity implements View.OnC
                         if (status.equals("success")) {
                             dialog.dismiss();
                             Intent intent = new Intent(AddCreditCardActivity.this, ClientMainActivity.class);
-                            intent.putExtra("NearYouKey","MyJob");
+                            intent.putExtra("NearYouKey", "MyJob");
                             startActivity(intent);
                             finish();
                             //  Constant.snackBar(binding.detailMainLayout, message);
