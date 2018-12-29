@@ -72,6 +72,7 @@ public class MyProfileClientFragment extends Fragment implements View.OnClickLis
         binding.btnEdit.setOnClickListener(this);
         binding.cvCompleteJob.setOnClickListener(this);
         binding.ivProfile.setOnClickListener(this);
+        binding.rlRatingBar.setOnClickListener(this);
     }
 
     @Override
@@ -127,7 +128,7 @@ public class MyProfileClientFragment extends Fragment implements View.OnClickLis
                 startActivity(intent);
                 break;
 
-            case R.id.iv_profile:
+            case R.id.rl_rating_bar:
                 intent = new Intent(mContext, ReviewListActivity.class);
                 startActivity(intent);
                 break;

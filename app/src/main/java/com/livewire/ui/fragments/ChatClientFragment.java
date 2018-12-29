@@ -130,7 +130,6 @@ public class ChatClientFragment extends Fragment {
                     }
                 }
 
-
                /* for(Chat chat:historyList){
                     if(chat.uid.equals(dataSnapshot.getKey())){
                         historyList.remove(chat);

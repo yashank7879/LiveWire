@@ -62,7 +62,7 @@
                             app:shadowMargin="@dimen/_2sdp"
                             app:shadowRadius="@dimen/_5sdp"
                             app:shadowColor="@color/colorDarkGray"
-                           app:cornerRadius="@dimen/_5sdp"
+                             app:cornerRadius="@dimen/_5sdp"
                             >
 
                             <RelativeLayout
@@ -107,24 +107,30 @@
 
                                     />
 
+                                <RelativeLayout
+                                    android:id="@+id/rl_rating_bar"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/tv_name"
+                                    android:layout_centerHorizontal="true">
+
                                 <RatingBar
                                     android:id="@+id/rating_bar"
                                     android:theme="@style/RatingBarTheme"
                                     style="@style/Widget.AppCompat.RatingBar.Small"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_below="@+id/tv_name"
-                                    android:layout_centerHorizontal="true"
                                     android:numStars="5"
                                     android:progressTint="@color/coloryellow"
                                     />
 
+                                </RelativeLayout>
                                 <TextView
                                     android:id="@+id/tv_location"
                                     style="@style/smallPopinsRegularStyle"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_below="@+id/rating_bar"
+                                    android:layout_below="@+id/rl_rating_bar"
                                     android:layout_centerHorizontal="true"
                                     android:drawablePadding="@dimen/_2sdp"
                                     android:drawableStart="@drawable/ic_location"

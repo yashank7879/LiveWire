@@ -199,7 +199,55 @@
                 android:layout_marginRight="@dimen/_20sdp"
                 android:background="@color/colorLightGray" />
 
-            <EditText
+
+            <RelativeLayout
+                android:id="@+id/et_hour_requierd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginRight="@dimen/_20sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_20sdp">
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/iv_subcategory_spin"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    app:srcCompat="@drawable/ic_arrow_drop_down_black"
+                    />
+
+
+        <!--        <TextView
+                android:id="@+id/tv_hour_requierd"
+                style="@style/SmallPopinsLightStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hour_required_per_day"
+                android:singleLine="true"
+                android:textColor="@color/colorDarkBlack"
+                android:textColorHint="@color/colorLightGray" />-->
+
+                <Spinner
+                    android:id="@+id/hour_require_spinner"
+                    android:layout_width="@dimen/_210sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@color/colorExtraLightGray"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:dropDownVerticalOffset="@dimen/_10sdp"
+                    android:dropDownWidth="@dimen/_240sdp"
+                    android:focusableInTouchMode="true"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="center|bottom"
+                    android:spinnerMode="dropdown"
+                    />
+
+            </RelativeLayout>
+
+           <!-- <EditText
                 android:id="@+id/et_hour_requierd"
                 style="@style/SmallPopinsLightStyle"
                 android:layout_width="match_parent"
@@ -213,7 +261,7 @@
                 android:inputType="number"
                 android:singleLine="true"
                 android:textColor="@color/colorDarkBlack"
-                android:textColorHint="@color/colorLightGray" />
+                android:textColorHint="@color/colorLightGray" />-->
 
             <View
                 android:layout_width="match_parent"

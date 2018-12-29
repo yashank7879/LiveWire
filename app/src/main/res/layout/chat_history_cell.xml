@@ -8,7 +8,9 @@
         android:id="@+id/chat_cell_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="@color/colorWhite"
+        >
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_favorite_image"
@@ -37,7 +39,6 @@
                 android:fontFamily="@font/poppins_semibold"
                 android:gravity="center|start"
                 android:maxLines="1"
-                android:text="Vironica "
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/_10sdp" />
 

@@ -4,9 +4,12 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <include layout="@layout/action_bar_client_layout"
+    <include
         android:id="@+id/action_bar"
-        />
+        layout="@layout/action_bar_client_layout"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="8dp" />
 
     <com.loopeer.shadow.ShadowView
         android:id="@+id/sv_action_bar"
@@ -59,7 +62,6 @@
 
     </com.loopeer.shadow.ShadowView>
 
-
     <android.support.design.widget.TabLayout
         android:id="@+id/sliding_tabs"
         android:layout_width="match_parent"
@@ -69,6 +71,8 @@
         app:tabIndicatorColor="@color/colorGreen"
         android:layout_below="@+id/action_bar"
         app:tabIndicatorFullWidth="false"
+        app:tabTextColor="@color/colorDarkGray"
+        app:tabTextAppearance="@style/MyTabLayoutTextAppearance"
         />
 
     <android.support.v4.view.ViewPager

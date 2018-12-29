@@ -7,8 +7,8 @@
         <variable
             name="workerResponcd"
             type="com.livewire.responce.JobDetailWorkerResponce.DataBean"/>
-
           </data>
+
 <ScrollView
     android:id="@+id/detail_main_layout"
     android:layout_width="match_parent"
@@ -120,7 +120,7 @@
                         android:layout_toEndOf="@+id/iv_profile_img"
                         android:numStars="5"
                         android:progressTint="@color/coloryellow"
-                        android:rating="3" />
+                      />
 
                     <LinearLayout
                         android:id="@+id/ll_km_away"
@@ -545,13 +545,13 @@
 
                 <!--gone-->
                 <RelativeLayout
+                    android:id="@+id/accept_reject_layout"
                     android:layout_width="@dimen/_200sdp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_below="@+id/tv_description"
-                    android:visibility="visible"
-                    android:layout_centerHorizontal="true"
-                    >
+                    android:visibility="gone"
+                    android:layout_centerHorizontal="true">
 
 
                     <Button

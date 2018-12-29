@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -28,12 +29,18 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.livewire.R;
 import com.livewire.cropper.CropImage;
 import com.livewire.cropper.CropImageView;
 
 import com.livewire.databinding.ActivityEditProfileClientBinding;
+import com.livewire.model.UserInfoFcm;
 import com.livewire.model.UserModel;
 import com.livewire.responce.SignUpResponce;
 import com.livewire.utils.Constant;
@@ -61,7 +68,7 @@ public class EditProfileClientActivity extends AppCompatActivity implements View
     ActivityEditProfileClientBinding binding;
     private static final String TAG = EditProfileClientActivity.class.getName();
     private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
-    private String locationPlace="";
+    private String locationPlace = "";
     private Uri tmpUri;
     private LatLng locationLatLng;
     private Bitmap profileImageBitmap;
@@ -73,9 +80,9 @@ public class EditProfileClientActivity extends AppCompatActivity implements View
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       binding = DataBindingUtil.setContentView(this,R.layout.activity_edit_profile_client);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_edit_profile_client);
 
-        SignUpResponce userResponce= (SignUpResponce) getIntent().getSerializableExtra("ClientProfileInfo");
+        SignUpResponce userResponce = (SignUpResponce) getIntent().getSerializableExtra("ClientProfileInfo");
         binding.setUserInfo(userResponce.getData());
 
         if (!userResponce.getData().getLatitude().isEmpty()) {
@@ -94,7 +101,7 @@ public class EditProfileClientActivity extends AppCompatActivity implements View
 
     private void intializeView() {
         progressDialog = new ProgressDialog(this);
-       binding.actionBarWorker.ivBack.setOnClickListener(this);
+        binding.actionBarWorker.ivBack.setOnClickListener(this);
         binding.actionBarWorker.tvLiveWire.setText(R.string.edit_profile);
 
         binding.btnSaveAndUpdate.setOnClickListener(this);
@@ -105,7 +112,7 @@ public class EditProfileClientActivity extends AppCompatActivity implements View
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.iv_back:
                 onBackPressed();
                 break;
@@ -117,7 +124,7 @@ public class EditProfileClientActivity extends AppCompatActivity implements View
                 break;
             case R.id.tv_town_resident:
                 autoCompletePlacePicker();
-                default:
+            default:
         }
     }
 
@@ -302,19 +309,19 @@ public class EditProfileClientActivity extends AppCompatActivity implements View
     private void etClientValdidations() {
         if (Validation.isEmpty(binding.etFullName)) {
             Constant.snackBar(binding.editProfileLayout, "Please enter FullName");
-           // binding.etFullName.startAnimation(shake);
+            // binding.etFullName.startAnimation(shake);
         } else if (Validation.isEmpty(binding.etEmail1)) {
             Constant.snackBar(binding.editProfileLayout, "Please enter Email");
-           // binding.etEmail1.startAnimation(shake);
+            // binding.etEmail1.startAnimation(shake);
         } else if (binding.etEmail1.getText().toString().trim().contains(" ")) {
-           // binding.etEmail1.startAnimation(shake);
+            // binding.etEmail1.startAnimation(shake);
             Constant.snackBar(binding.editProfileLayout, "Email can't hold space");
         } else if (!Validation.isEmailValid(binding.etEmail1)) {
-          //  binding.etEmail1.startAnimation(shake);
+            //  binding.etEmail1.startAnimation(shake);
             binding.etEmail1.requestFocus();
             Constant.snackBar(binding.editProfileLayout, "Please enter valid email");
         } else if (binding.tvTownResident.getText().toString().equals("")) {
-          //  binding.tvTownResident.startAnimation(shake);
+            //  binding.tvTownResident.startAnimation(shake);
             binding.tvTownResident.requestFocus();
             Constant.snackBar(binding.editProfileLayout, "Please enter your location");
         } else {
@@ -329,44 +336,80 @@ public class EditProfileClientActivity extends AppCompatActivity implements View
     }
 
     private void updateProfileInfoApi(UserModel model) {
-            if (Constant.isNetworkAvailable(this, binding.editProfileLayout)) {
-                progressDialog.show();
-                // progressBar.setVisibility(View.VISIBLE);
-                AndroidNetworking.upload(BASE_URL+UPDATE_CLIENT_PROFILE_API)
-                        .addHeaders("authToken",PreferenceConnector.readString(this,PreferenceConnector.AUTH_TOKEN,""))
-                       .addMultipartFile("profileImage",userImageFile)
-                        .addMultipartParameter(model)
+        if (Constant.isNetworkAvailable(this, binding.editProfileLayout)) {
+            progressDialog.show();
+            // progressBar.setVisibility(View.VISIBLE);
+            AndroidNetworking.upload(BASE_URL + UPDATE_CLIENT_PROFILE_API)
+                    .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
+                    .addMultipartFile("profileImage", userImageFile)
+                    .addMultipartParameter(model)
+                    .setPriority(Priority.MEDIUM).
+                    build().getAsJSONObject(new JSONObjectRequestListener() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        progressDialog.dismiss();
+                        //progressBar.setVisibility(View.GONE);
+                        String status = response.getString("status");
+                        String message = response.getString("message");
+                        if (status.equals("success")) {
+                            SignUpResponce userResponce = new Gson().fromJson(String.valueOf(response), SignUpResponce.class);
 
-                        .setPriority(Priority.MEDIUM).
-                        build().getAsJSONObject(new JSONObjectRequestListener() {
+                            PreferenceConnector.writeString(EditProfileClientActivity.this, PreferenceConnector.MY_USER_ID, userResponce.getData().getUserId());
+                            PreferenceConnector.writeString(EditProfileClientActivity.this, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
+                            PreferenceConnector.writeString(EditProfileClientActivity.this, PreferenceConnector.PROFILE_IMG, userResponce.getData().getThumbImage());
+                            PreferenceConnector.writeString(EditProfileClientActivity.this, PreferenceConnector.Name, userResponce.getData().getName());
+                            PreferenceConnector.writeString(EditProfileClientActivity.this, PreferenceConnector.Email, userResponce.getData().getEmail());
+                            addUserFirebaseDatabase();
+                            finish();
+                            // setSignUpWorkerdata(userResponce);
+
+                        } else {
+                            Constant.snackBar(binding.editProfileLayout, message);
+                        }
+
+                    } catch (JSONException e) {
+                        progressDialog.dismiss();
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onError(ANError anError) {
+
+                }
+            });
+        }
+
+    }
+
+    private void addUserFirebaseDatabase() {
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        Log.e(TAG, database.toString());
+        UserInfoFcm infoFcm = new UserInfoFcm();
+        infoFcm.email = PreferenceConnector.readString(this, PreferenceConnector.Email, "");
+        infoFcm.firebaseToken = FirebaseInstanceId.getInstance().getToken();
+        infoFcm.name = PreferenceConnector.readString(this, PreferenceConnector.Name, "");
+        infoFcm.notificationStatus = "";
+        infoFcm.profilePic = PreferenceConnector.readString(this, PreferenceConnector.PROFILE_IMG, "");
+        infoFcm.uid = PreferenceConnector.readString(this, PreferenceConnector.MY_USER_ID, "");
+        infoFcm.userType = PreferenceConnector.readString(this, PreferenceConnector.USER_TYPE, "");
+        infoFcm.authToken = PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, "");
+
+        database.child(Constant.ARG_USERS)
+                .child(PreferenceConnector.readString(this, PreferenceConnector.MY_USER_ID, ""))
+                .setValue(infoFcm)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            progressDialog.dismiss();
-                            //progressBar.setVisibility(View.GONE);
-                            String status = response.getString("status");
-                            String message = response.getString("message");
-                            if (status.equals("success")) {
-                                finish();
-                               // setSignUpWorkerdata(userResponce);
+                    public void onComplete(Task<Void> task) {
+                        if (task.isSuccessful()) {
+                          /*  //Utils.goToOnlineStatus(SignInActivity.this, Constant.online);*/
 
-                            } else {
-                                Constant.snackBar(binding.editProfileLayout, message);
-                            }
-
-                        } catch (JSONException e) {
-                            progressDialog.dismiss();
-                            e.printStackTrace();
+                        } else {
+                            Toast.makeText(EditProfileClientActivity.this, "Not Store", Toast.LENGTH_SHORT).show();
                         }
                     }
-
-                    @Override
-                    public void onError(ANError anError) {
-
-                    }
                 });
-            }
-
     }
 
 

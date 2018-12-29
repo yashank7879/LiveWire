@@ -41,7 +41,7 @@
         android:layout_toEndOf="@+id/iv_profile_img"
         android:numStars="5"
         android:progressTint="@color/coloryellow"
-        android:rating="3" />
+    />
 
     <LinearLayout
         android:id="@+id/ll_km_away"

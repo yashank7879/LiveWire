@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorWhite">
+
+
+    <com.loopeer.shadow.ShadowView
+        android:id="@+id/action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        app:shadowColor="#666666"
+        app:shadowMarginBottom="3dp"
+        app:shadowRadius="@dimen/_5sdp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_left_arrow"
+            android:tint="@color/colorPrimary"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@color/colorWhite"
+            android:padding="@dimen/_5sdp"
+            android:layout_centerVertical="true"
+
+       />
+
+        </RelativeLayout>
+    </com.loopeer.shadow.ShadowView>
+
+
+    <uk.co.senab.photoview.PhotoView
+        android:id="@+id/photo_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?actionBarSize"
+        />
+
+
+
+</RelativeLayout>

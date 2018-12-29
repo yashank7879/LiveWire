@@ -158,6 +158,7 @@ public class NotificationClientFragment extends Fragment implements Notification
     }*/
         switch (dataBean.getNotification_message().getType()) {
             case "Once_job_request":
+          //  case "Once_job_rejected":
            // case "Once_job_accepted":
                 intent = new Intent(mContext, MySingleJobDetailClientActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

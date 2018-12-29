@@ -31,6 +31,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.livewire.R;
+import com.livewire.ui.activity.chat.ChattingActivity;
 import com.livewire.ui.fragments.ChatClientFragment;
 import com.livewire.ui.fragments.ChatWorkerFragment;
 import com.livewire.ui.fragments.MyJobClientFragment;
@@ -99,7 +100,18 @@ public class ClientMainActivity extends AppCompatActivity implements View.OnClic
                 ivMyJob.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorGreen)));
             }
             clickId = R.id.my_job_ll;
-        }else{
+        }else if (getIntent().getStringExtra("opponentChatId") != null){
+            String  oponnetId =  getIntent().getStringExtra("opponentChatId");
+            String  name =  getIntent().getStringExtra("titleName");
+
+            Intent intent = new Intent(this, ChattingActivity.class);
+            intent.putExtra("otherUID",oponnetId);
+            intent.putExtra("titleName",name);
+            intent.putExtra("profilePic","");
+            startActivity(intent);
+            replaceFragment(new PostJobHomeFragment(), false, R.id.fl_container); // first time replace home fragment
+            clickId = R.id.add_ll;
+        }else {
             replaceFragment(new PostJobHomeFragment(), false, R.id.fl_container); // first time replace home fragment
             clickId = R.id.add_ll;
         }

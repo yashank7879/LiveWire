@@ -84,6 +84,7 @@ public class HelpOfferedResponce implements Serializable {
         private String job_longitude="";
         private String job_description="";
         private String crd="";
+        private String upd="";
         private String parentCategoryName="";
         private String subCategoryName="";
         private String distance_in_km="";
@@ -301,6 +302,14 @@ public class HelpOfferedResponce implements Serializable {
 
         public void setJob_offer(String job_offer) {
             this.job_offer = job_offer;
+        }
+
+        public String getUpd() {
+            return upd;
+        }
+
+        public void setUpd(String upd) {
+            this.upd = upd;
         }
     }
 }

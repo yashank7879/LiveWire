@@ -1,6 +1,7 @@
 package com.livewire.adapter;
 
 
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -30,6 +32,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import uk.co.senab.photoview.PhotoView;
+
 /**
  * Created by mindiii on 12/21/18.
  */
@@ -40,12 +44,15 @@ public class ChattingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private String myUid;
     private int VIEW_TYPE_ME = 1;
     private int VIEW_TYPE_OTHER = 2;
-    boolean ishideName = true;
+    boolean ishideName ;
+    GetDateStatus getDateStatus;
 
-    public ChattingAdapter(Context mContext, ArrayList<Chat> chatList, String myUid) {
+    public ChattingAdapter(Context mContext, ArrayList<Chat> chatList, String myUid, GetDateStatus getDateStatus, boolean ishideName) {
         this.chatList = chatList;
         this.mContext = mContext;
         this.myUid = myUid;
+        this.getDateStatus = getDateStatus;
+        this.ishideName = ishideName;
     }
 
     @Override
@@ -115,7 +122,7 @@ public class ChattingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
 
         void myBindData(final Chat chat, int tempPos) {
-            if (chat.image == 1) {
+            if (!chat.imageUrl.isEmpty()) {
 
                 ly_my_image_view.setVisibility(View.VISIBLE);
                 my_message.setVisibility(View.GONE);
@@ -165,10 +172,10 @@ public class ChattingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             iv_my_side_img.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                   // full_screen_photo_dialog(chat.imageUrl);
+                    full_screen_photo_dialog(chat.imageUrl);
                 }
             });
-           // getDateStatus.currentDateStatus(chat.timestamp);
+            getDateStatus.currentDateStatus(chat.timestamp);
 
             /* SimpleDateFormat sd1 = new  SimpleDateFormat("dd MMMM yyyy");
              try {
@@ -187,15 +194,15 @@ public class ChattingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }
 
             if(!ishideName){
-               // iv_msg_tick.setVisibility(View.GONE);
+                iv_msg_tick.setVisibility(View.GONE);
             }
 
         }
 
-       /* public void full_screen_photo_dialog(String image_url) {
-            final Dialog openDialog = new Dialog(context, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+        public void full_screen_photo_dialog(String image_url) {
+            final Dialog openDialog = new Dialog(mContext, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
             openDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            openDialog.getWindow().getAttributes().windowAnimations = R.style.PauseDialogAnimation;
+            openDialog.getWindow().getAttributes().windowAnimations = R.style.pauseDialogAnimation;
             openDialog.setContentView(R.layout.full_image_view_dialog);
             ImageView iv_back = openDialog.findViewById(R.id.iv_back);
             iv_back.setOnClickListener(new View.OnClickListener() {
@@ -207,11 +214,11 @@ public class ChattingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             PhotoView photoView = openDialog.findViewById(R.id.photo_view);
             if (!image_url.equals("")) {
-                Glide.with(context).load(image_url).apply(new RequestOptions().placeholder(R.drawable.placeholder_chat_image)).into(photoView);
+                Glide.with(mContext).load(image_url).apply(new RequestOptions().placeholder(R.drawable.ic_user)).into(photoView);
             }
             openDialog.show();
 
-        }*/
+        }
     }
 
     public class OtherViewHolder extends RecyclerView.ViewHolder {
@@ -236,7 +243,7 @@ public class ChattingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         public void otherBindData(final Chat chat, int tempPos) {
 
-            if (chat.image == 1) {
+            if (!chat.imageUrl.isEmpty()) {
 
                 ly_other_image_view.setVisibility(View.VISIBLE);
                 other_message.setVisibility(View.GONE);
@@ -275,11 +282,11 @@ public class ChattingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             iv_other_side_img.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                  //  full_screen_photo_dialog(chat.imageUrl);
+                    full_screen_photo_dialog(chat.imageUrl);
                 }
             });
 
-           // getDateStatus.currentDateStatus(chat.timestamp);
+           getDateStatus.currentDateStatus(chat.timestamp);
 
             if (!chat.banner_date.equals(chatList.get(tempPos).banner_date)) {
                 tv_days_status.setText(chat.banner_date);
@@ -301,10 +308,10 @@ public class ChattingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         }
 
-       /* public void full_screen_photo_dialog(String image_url) {
-            final Dialog openDialog = new Dialog(context, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+        public void full_screen_photo_dialog(String image_url) {
+            final Dialog openDialog = new Dialog(mContext, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
             openDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            openDialog.getWindow().getAttributes().windowAnimations = R.style.PauseDialogAnimation;
+            openDialog.getWindow().getAttributes().windowAnimations = R.style.pauseDialogAnimation;
             openDialog.setContentView(R.layout.full_image_view_dialog);
             ImageView iv_back = openDialog.findViewById(R.id.iv_back);
             iv_back.setOnClickListener(new View.OnClickListener() {
@@ -316,11 +323,14 @@ public class ChattingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             PhotoView photoView = openDialog.findViewById(R.id.photo_view);
             if (!image_url.equals("")) {
-                Glide.with(context).load(image_url).apply(new RequestOptions().placeholder(R.drawable.placeholder_chat_image)).into(photoView);
+                Glide.with(mContext).load(image_url).apply(new RequestOptions().placeholder(R.drawable.ic_user)).into(photoView);
 
             }
             openDialog.show();
 
-        }*/
+        }
+    }
+    public interface GetDateStatus{
+        void currentDateStatus(Object timestamp);
     }
 }

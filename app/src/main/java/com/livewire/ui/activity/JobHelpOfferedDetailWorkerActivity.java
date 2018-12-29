@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -19,8 +18,8 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.google.gson.Gson;
 import com.livewire.R;
 import com.livewire.databinding.ActivityJobHelpOfferedDetailWorkerBinding;
-import com.livewire.responce.HelpOfferedResponce;
 import com.livewire.responce.JobDetailWorkerResponce;
+import com.livewire.ui.activity.chat.ChattingActivity;
 import com.livewire.ui.dialog.ReviewDialog;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
@@ -47,6 +46,7 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
     private String jobId = "";
     private String userId = "";
     private String name = "";
+    private String clientProfileImg="";
 
 
     @Override
@@ -86,6 +86,7 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
         binding.btnSendRequest.setOnClickListener(this);
         findViewById(R.id.iv_back).setOnClickListener(this);
         binding.btnDilog.setOnClickListener(this);
+        binding.llChat.setOnClickListener(this);
 
     }
 
@@ -138,15 +139,12 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
         name = jobDetail.getName();
         binding.tvTime.setText(Constant.getDayDifference(jobDetail.getCrd(), jobDetail.getCurrentDateTime()));
 
+
         if (jobDetail.getJob_confirmed().equals("0")) { // pending request
             binding.btnSendRequest.setBackground(null);
             binding.btnSendRequest.setText(R.string.pending_request);
             binding.btnSendRequest.setTextColor(ContextCompat.getColor(this, R.color.colorOrange));
             binding.btnSendRequest.setClickable(false);
-   /*        }else if (dataBean.getJob_confirmed().equals("1")){// accepted
-               holder.btnSendRequest.setClickable(false);
-           }else if (dataBean.getJob_confirmed().equals("2")){// job not accepted
-            holder.btnSendRequest.setClickable(false);*/
         } else if (jobDetail.getJob_confirmed().equals("3")) {// job not send
             binding.btnSendRequest.setBackground(this.getResources().getDrawable(R.drawable.button_green_bg));
             binding.btnSendRequest.setText(R.string.send_request);
@@ -155,6 +153,11 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
         Picasso.with(binding.ivProfileImg.getContext())
                 .load(jobDetail.getProfileImage())
                 .fit().into(binding.ivProfileImg);
+        clientProfileImg = jobDetail.getProfileImage();
+
+        if (!jobDetail.getRating().isEmpty()){
+            binding.ratingBar.setRating(Float.parseFloat(jobDetail.getRating()));
+        }
 
         //********"2018-07-04" date format converted into "04 jul 2018"***********//
         DateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
@@ -173,20 +176,6 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
             Log.e("Tag", e.getMessage());
         }
 
-        if (jobDetail.getJob_confirmed().equals("0")) { // pending request
-            binding.btnSendRequest.setBackground(null);
-            binding.btnSendRequest.setText(R.string.pending_request);
-            binding.btnSendRequest.setTextColor(ContextCompat.getColor(this, R.color.colorOrange));
-            binding.btnSendRequest.setClickable(false);
-     /*   } else if (jobDetail.getJob_confirmed().equals("1")) {// accepted
-            btnSendRequest.setClickable(false);
-        } else if (jobDetail.getJob_confirmed().equals("2")) {// job not accepted
-            btnSendRequest.setClickable(false);*/
-        } else if (jobDetail.getJob_confirmed().equals("3")) {// job not send
-
-        }
-        // tvDate.setText(Constant.getDayDifference(workerResponce.getData().get(0).getCrd(),workerResponce.getData().get(0).getCurrentDateTime()) );
-        // tvDateMonth.setText(Constant.getDayDifference(workerResponce.getData().get(0).getCrd(),workerResponce.getData().get(0).getCurrentDateTime()) );
     }
 
     @Override
@@ -205,6 +194,13 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
                 break;
             case R.id.btn_dilog:
                 openReviewDialog();
+                break;
+            case R.id.ll_chat:
+                Intent intent = new Intent(this, ChattingActivity.class);
+                intent.putExtra("otherUID", userId);
+                intent.putExtra("titleName", binding.tvName.getText().toString().trim());
+                intent.putExtra("profilePic",clientProfileImg );
+                startActivity(intent);
                 break;
             default:
         }

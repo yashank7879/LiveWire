@@ -95,6 +95,8 @@ public class JobDetailClientResponce {
         private String job_confirmed;
         private String currentDateTime;
         private String number_of_days;
+
+
         private List<RequestedUserDataBean> requestedUserData;
 
         public String getJobId() {
@@ -286,7 +288,15 @@ public class JobDetailClientResponce {
             private String distance_in_km;
             private String max_rate;
             private String min_rate;
+            private String rating="";
 
+            public String getRating() {
+                return rating;
+            }
+
+            public void setRating(String rating) {
+                this.rating = rating;
+            }
             public String getReview_status() {
                 return review_status;
             }

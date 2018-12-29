@@ -57,12 +57,19 @@ public class NotificationMySingleJobDetailClientActivity extends AppCompatActivi
     private void intializeView() {
         progressDialog = new ProgressDialog(this);
         binding.ivBack.setOnClickListener(this);
+        binding.flMultiImg.setOnClickListener(this);
         Bundle extras = getIntent().getExtras();
         String type = extras.getString("type");
         if (type.equals("Once_job_request")) {
             jobId = extras.getString("reference_id");
             jobDetailApi();
       }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        jobDetailApi();
     }
 
     private void setMyJobDetails(JobDetailClientResponce.DataBean dataBean) {
@@ -165,7 +172,6 @@ public class NotificationMySingleJobDetailClientActivity extends AppCompatActivi
                 break;
             case R.id.fl_multi_img:
                 intent = new Intent(this, RequestClientActivity.class);
-
                 intent.putExtra("JobId", JobId);
                 startActivity(intent);
                 break;

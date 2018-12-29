@@ -23,11 +23,13 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.livewire.R;
 import com.livewire.databinding.ActivityWorkerMainBinding;
+import com.livewire.ui.activity.chat.ChattingActivity;
 import com.livewire.ui.fragments.ChatWorkerFragment;
 import com.livewire.ui.fragments.HelpOfferedWorkerFragment;
 import com.livewire.ui.fragments.MyJobWorkerFragment;
 import com.livewire.ui.fragments.MyProfileWorkerFragment;
 import com.livewire.ui.fragments.OnGoingWorkerFragment;
+import com.livewire.ui.fragments.PostJobHomeFragment;
 import com.livewire.utils.PreferenceConnector;
 
 public class WorkerMainActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
@@ -67,8 +69,24 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
         binding.myJobLl.setOnClickListener(this);
         binding.ivSetting.setOnClickListener(this);
         binding.ivNotification.setOnClickListener(this);
-        replaceFragment(new HelpOfferedWorkerFragment(), false, R.id.fl_container); // first time replace home fragment
-        clickId = R.id.home_ll;
+
+
+         if (getIntent().getStringExtra("opponentChatId") != null){
+            String  oponnetId =  getIntent().getStringExtra("opponentChatId");
+            String  name =  getIntent().getStringExtra("titleName");
+
+            Intent intent = new Intent(this, ChattingActivity.class);
+            intent.putExtra("otherUID",oponnetId);
+            intent.putExtra("titleName",name);
+            intent.putExtra("profilePic","");
+            startActivity(intent);
+            replaceFragment(new HelpOfferedWorkerFragment(), false, R.id.fl_container); // first time replace home fragment
+            clickId = R.id.home_ll;
+        }else {
+            replaceFragment(new HelpOfferedWorkerFragment(), false, R.id.fl_container); // first time replace home fragment
+            clickId = R.id.home_ll;
+        }
+
 
     }
 

@@ -135,6 +135,7 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
                         String message = response.getString("message");
                         if (status.equals("success")) {
                             nearYouList.clear();
+                            tv_no_job_post.setVisibility(View.GONE);
                             NearYouResponce helpOfferedResponce = new Gson().fromJson(String.valueOf(response), NearYouResponce.class);
                             nearYouList.addAll(helpOfferedResponce.getData());
                             nearYouAdapter.notifyDataSetChanged();
@@ -142,7 +143,6 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
                             if (nearYouList.size() == 0) {
                                 tv_no_job_post.setVisibility(View.VISIBLE);
                             } else
-
                                 Constant.snackBar(mainLayout, message);
                         }
                     } catch (JSONException e) {
@@ -198,6 +198,8 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
             public void onClick(View v) {
                 if (Validation.isEmpty(etOfferPrice)) {
                     Constant.snackBar(mainLayout1, "Please enter offer price");
+                } if (etOfferPrice.getText().toString().trim().equals("0")) {
+                    Constant.snackBar(mainLayout1, "Offer price should not be zero");
                 } else {
                     dialog.dismiss();
                     sendOfferRequestApi(etOfferPrice.getText().toString().trim(), mainLayout1, userId);

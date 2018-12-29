@@ -111,8 +111,9 @@ public class NotificationListWorkerActivity extends AppCompatActivity implements
         Intent intent = null;
         switch (dataBean.getNotification_message().getType()) {
             case "Ongoing_job_request":
+            case "Ongoing_job_accepted":
                 intent = new Intent(this, JobOnGoingDetailWorkerActivity.class);
-                intent.putExtra("JobDetail", dataBean.getNotification_message().getReference_id() );
+                intent.putExtra("JobDetail", dataBean.getNotification_message().getReference_id());
                 intent.putExtra("body", dataBean.getNotification_message().getBody());
                 intent.putExtra(CONSTANTTYPE, dataBean.getNotification_message().getType());
                 startActivity(intent);

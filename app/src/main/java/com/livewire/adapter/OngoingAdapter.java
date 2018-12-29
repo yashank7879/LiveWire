@@ -66,6 +66,9 @@ public class OngoingAdapter extends RecyclerView.Adapter<OngoingAdapter.MyViewHo
             holder.tvDistance.setText(dataBean.getDistance_in_km() + " Km away");
             holder.tvTime.setText(Constant.getDayDifference(dataBean.getCrd(), dataBean.getCurrentDateTime()));
 
+            if (dataBean.getRating() != null) {
+                holder.ratingBar.setRating(Float.parseFloat(dataBean.getRating()));
+            }
             Picasso.with(holder.ivProfileImg.getContext()).load(dataBean.getProfileImage()).fit().into(holder.ivProfileImg);
             //********"2018-07-04" date format converted into "04 july 2018"***********//
             DateFormat sd = new SimpleDateFormat("yyyy-MM-dd");

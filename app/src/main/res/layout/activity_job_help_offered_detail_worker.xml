@@ -107,7 +107,7 @@
                 android:layout_toEndOf="@+id/iv_profile_img"
                 android:numStars="5"
                 android:progressTint="@color/coloryellow"
-                android:rating="3" />
+               />
 
             <LinearLayout
                 android:id="@+id/ll_km_away"
@@ -155,6 +155,7 @@
                 android:textSize="@dimen/_10sdp" />
 
             <LinearLayout
+                android:id="@+id/ll_chat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"

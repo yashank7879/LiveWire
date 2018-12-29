@@ -136,6 +136,9 @@ public class MyJobAdapter extends RecyclerView.Adapter {
                     holder.tvDistance.setText(dataBean.getRequestedUserData().get(0).getDistance_in_km() + " Km away");
                     Picasso.with(holder.ivProfileImg.getContext()).load(dataBean.getRequestedUserData().get(0).getProfileImage()).error(R.drawable.ic_user).fit().into(holder.ivProfileImg);
 
+                    if (!dataBean.getRequestedUserData().get(0).getRating().isEmpty()) {
+                        holder.ratingBar.setRating(Float.parseFloat(dataBean.getRequestedUserData().get(0).getRating()));
+                    }
 
                     switch (dataBean.getJob_confirmed()) {
                         case "0": // request zero
@@ -211,13 +214,16 @@ public class MyJobAdapter extends RecyclerView.Adapter {
                 holder.prfileLayout.setVisibility(View.VISIBLE);
                 holder.tvJobConfirm.setVisibility(View.VISIBLE);
                 holder.requestPending.setVisibility(View.GONE);
-
                 holder.tvName.setText(dataBean.getRequestedUserData().get(0).getName());
                 holder.tvDistance.setText(dataBean.getRequestedUserData().get(0).getDistance_in_km() + " Km away");
                 Picasso.with(holder.ivProfileImg.getContext())
                         .load(dataBean.getRequestedUserData().get(0).getProfileImage())
                         .fit()
                         .into(holder.ivProfileImg);
+
+                if (!dataBean.getRequestedUserData().get(0).getRating().isEmpty()) {
+                    holder.ratingBar.setRating(Float.parseFloat(dataBean.getRequestedUserData().get(0).getRating()));
+                }
             }
 
 
@@ -253,6 +259,7 @@ public class MyJobAdapter extends RecyclerView.Adapter {
             holder.tvBudget.setText("$ " + dataBean.getJob_budget());
             holder.tvRequested.setText("" + dataBean.getTotal_request() + " Members Requested");
             holder.tvTime.setText(Constant.getDayDifference(dataBean.getCrd(), dataBean.getCurrentDateTime()));
+
 
 
             //********"2018-07-04" date format converted into "04 july 2018"***********//

@@ -18,12 +18,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RatingBar;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.androidnetworking.AndroidNetworking;
@@ -34,34 +30,32 @@ import com.google.gson.Gson;
 import com.livewire.R;
 import com.livewire.databinding.ActivityMyOngoingJobDetailClientBinding;
 import com.livewire.responce.JobDetailClientResponce;
-import com.livewire.responce.MyjobResponceClient;
+import com.livewire.ui.activity.chat.ChattingActivity;
 import com.livewire.ui.activity.credit_card.AddCreditCardActivity;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
 import com.livewire.utils.ProgressDialog;
-import com.loopeer.shadow.ShadowView;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
 import static com.livewire.utils.ApiCollection.BASE_URL;
+import static com.livewire.utils.ApiCollection.CANCLE_JOB_BY_CLIENT_API;
 import static com.livewire.utils.ApiCollection.JOBPOSTSEND_GET_CLIENT_JOB_DETAIL_API;
-import static com.livewire.utils.ApiCollection.JOBPOSTSEND_GET_JOB_DETAIL_API;
-import static com.livewire.utils.Validation.isEmailValid;
 
 public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implements View.OnClickListener {
     ActivityMyOngoingJobDetailClientBinding binding;
     private static final String TAG = MyOnGoingJobDetailClientActivity.class.getName();
     private ProgressDialog progressDialog;
-    private Button btnSendOffer;
     private int width;
     private String offer = "";
     private String hours = "";
     private String jobId = "";
-    private String userId="";
+    private String userId = "";
+    private String workerProfilePic = "";
+    private Button btnCancelJob;
+    private String jobRequestId="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,13 +74,17 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
         progressDialog = new ProgressDialog(this);
         findViewById(R.id.iv_back).setOnClickListener(this);
         binding.btnEndJob.setOnClickListener(this);
-
-        btnSendOffer = findViewById(R.id.btn_send_offer);
+        binding.llChat.setOnClickListener(this);
+        btnCancelJob = findViewById(R.id.btn_cancel_job);
 
         if (getIntent().getStringExtra("JobIdKey") != null) {
-            //MyjobResponceClient.DataBean dataBean = (MyjobResponceClient.DataBean) getIntent().getSerializableExtra("MyJobDetail");
             jobId = getIntent().getStringExtra("JobIdKey");
+            if (getIntent().getStringExtra("jobrequestId") != null) {
+                jobRequestId = getIntent().getStringExtra("jobrequestId");
+            }
             jobDetailApi();
+
+
             /*setMyJobDetails(dataBean);
             binding.setDataBean(dataBean);
 
@@ -97,7 +95,7 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
     private void setMyJobDetails(final JobDetailClientResponce.DataBean dataBean) {
         if (dataBean.getJob_type().equals("2")) {///"""""""""" ONGOING JOB """'
             if (dataBean.getTotal_request().equals("0")) {  // NO OFFER SEND YET
-                btnSendOffer.setVisibility(View.VISIBLE);
+                binding.btnSendOffer.setVisibility(View.VISIBLE);
                 binding.rlMoredetail.setVisibility(View.VISIBLE);
                 binding.tvNoRequest.setVisibility(View.VISIBLE);
                 binding.tvJobStatus.setVisibility(View.GONE);
@@ -107,10 +105,10 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
 
                 binding.tvNoRequest.setText(R.string.no_offer_request_yet);
 
-                btnSendOffer.setOnClickListener(new View.OnClickListener() {
+                binding.btnSendOffer.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String jobId = dataBean.getJobId();
+                         jobId = dataBean.getJobId();
                         Intent intent = new Intent(MyOnGoingJobDetailClientActivity.this, NearYouClientActivity.class);
                         intent.putExtra("JobIdKey", jobId);
                         startActivity(intent);
@@ -119,13 +117,18 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
 
             } else if (dataBean.getTotal_request().equals("1")) {
                 // JOB CONFIRM OR PENDING REQUEST OR IN PROGRESS
-
+                if (!dataBean.getRequestedUserData().get(0).getRating().isEmpty()) {
+                    binding.ratingBar.setRating(Float.parseFloat(dataBean.getRequestedUserData().get(0).getRating()));
+                }
                 switch (dataBean.getJob_confirmed()) {
                     case "0": // request pending job
                         if (dataBean.getRequestedUserData().get(0).getRequest_status().equals("0")) {
                             binding.tvJobStatus.setText(R.string.request_pending);
                             binding.tvJobStatus.setBackground(getResources().getDrawable(R.drawable.doteted_orange_shape));
                             binding.tvJobStatus.setTextColor(ContextCompat.getColor(this, R.color.colorOrange));
+                            btnCancelJob.setVisibility(View.VISIBLE);
+                            btnCancelJob.setOnClickListener(this);
+                            getWorkerData(dataBean);
 
                         } else if (dataBean.getRequestedUserData().get(0).getRequest_status().equals("2")) {
                             binding.tvJobStatus.setText(R.string.request_cancel);
@@ -139,10 +142,9 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
                             binding.tvJobStatus.setBackground(getResources().getDrawable(R.drawable.doteted_green_shape));
                             binding.tvJobStatus.setTextColor(ContextCompat.getColor(this, R.color.colorGreen));
                             binding.btnEndJob.setVisibility(View.VISIBLE);
-                            jobId = dataBean.getJobId();
-                            userId = dataBean.getRequestedUserData().get(0).getUserId();
-                            offer = dataBean.getJob_offer();
-                            hours = dataBean.getJob_time_duration();
+
+                            getWorkerData(dataBean);
+
                         }
 
                         break;
@@ -157,7 +159,7 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
                 binding.rlUserData.setVisibility(View.VISIBLE);
                 binding.rlMoredetail.setVisibility(View.VISIBLE);
                 binding.tvNoRequest.setVisibility(View.GONE);
-                btnSendOffer.setVisibility(View.GONE);
+                binding.btnSendOffer.setVisibility(View.GONE);
 
 
                 binding.tvName.setText(dataBean.getRequestedUserData().get(0).getName());
@@ -191,6 +193,15 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
         }
     }
 
+    private void getWorkerData(JobDetailClientResponce.DataBean dataBean) {
+        jobId = dataBean.getJobId();
+        userId = dataBean.getRequestedUserData().get(0).getUserId();
+        offer = dataBean.getJob_offer();
+        hours = dataBean.getJob_time_duration();
+        workerProfilePic = dataBean.getRequestedUserData().get(0).getProfileImage();
+    }
+
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -200,9 +211,62 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
             case R.id.btn_end_job:
                 openWorkingDaysDialog();
                 break;
+            case R.id.ll_chat:
+                Intent intent = new Intent(this, ChattingActivity.class);
+                intent.putExtra("otherUID", userId);
+                intent.putExtra("titleName", binding.tvName.getText().toString());
+                intent.putExtra("profilePic", workerProfilePic);
+                startActivity(intent);
+                break;
+            case R.id.btn_cancel_job:
+                cancelJobApi();
+                break;
+
 
             default:
         }
+    }
+
+    private void cancelJobApi() {
+        //  Jobpost/cancleJobByClient
+
+        if (Constant.isNetworkAvailable(this, binding.detailMainLayout)) {
+            progressDialog.show();
+            AndroidNetworking.post(BASE_URL + CANCLE_JOB_BY_CLIENT_API)
+                    .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
+                    .addBodyParameter("job_request_id", jobRequestId)
+                    .setPriority(Priority.MEDIUM)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            progressDialog.dismiss();
+                            String status = null;
+                            try {
+                                status = response.getString("status");
+                                String message = response.getString("message");
+                                if (status.equals("success")) {
+                                    Intent intent = new Intent(MyOnGoingJobDetailClientActivity.this, NearYouClientActivity.class);
+                                    intent.putExtra("JobIdKey", jobId);
+                                    startActivity(intent);
+                                    finish();
+                                } else {
+                                    progressDialog.dismiss();
+                                    Constant.snackBar(binding.detailMainLayout, message);
+                                }
+                            } catch (JSONException e) {
+                                Log.d(TAG, e.getMessage());
+                            }
+                        }
+
+                        @Override
+                        public void onError(ANError anError) {
+                            Log.d(TAG, anError.getErrorDetail());
+                            progressDialog.dismiss();
+                        }
+                    });
+        }
+
     }
 
     private void openWorkingDaysDialog() {
@@ -283,7 +347,6 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
                             } catch (JSONException e) {
                                 Log.d(TAG, e.getMessage());
                             }
-
                         }
 
                         @Override

@@ -22,6 +22,7 @@ import com.livewire.R;
 import com.livewire.databinding.ActivityJobOngoingDetailWorkerBinding;
 import com.livewire.responce.JobDetailWorkerResponce;
 import com.livewire.responce.OnGoingWorkerResponce;
+import com.livewire.ui.activity.chat.ChattingActivity;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
 import com.livewire.utils.ProgressDialog;
@@ -42,6 +43,8 @@ public class JobOnGoingDetailWorkerActivity extends AppCompatActivity implements
     private ScrollView detailMainLayout;
     private OnGoingWorkerResponce.DataBean workerResponcd;
     private String jobId="";
+    private String userId="";
+    private String clientProfileImg="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +61,7 @@ public class JobOnGoingDetailWorkerActivity extends AppCompatActivity implements
 
         findViewById(R.id.btn_ignore).setOnClickListener(this);
         findViewById(R.id.btn_accept).setOnClickListener(this);
+        binding.llChat.setOnClickListener(this);
 
         if (getIntent().getSerializableExtra("JobDetail") != null) {
             jobId =  getIntent().getStringExtra("JobDetail");
@@ -126,6 +130,14 @@ public class JobOnGoingDetailWorkerActivity extends AppCompatActivity implements
                     showAddBankAccountDialog();
                 }
                 break;
+            case R.id.ll_chat: {
+                Intent intent = new Intent(this, ChattingActivity.class);
+                intent.putExtra("otherUID",userId );
+                intent.putExtra("titleName", binding.tvName.getText().toString().trim());
+                intent.putExtra("profilePic", clientProfileImg);
+                startActivity(intent);
+            }
+                break;
             default:
         }
     }
@@ -154,12 +166,19 @@ public class JobOnGoingDetailWorkerActivity extends AppCompatActivity implements
 
     private void setJobDetailData(JobDetailWorkerResponce.DataBean workerResponcd) {
 
+        userId  = workerResponcd.getUserId();
+        clientProfileImg  = workerResponcd.getProfileImage();
+
         binding.tvTime.setText(Constant.getDayDifference(workerResponcd.getCrd(), workerResponcd.getCurrentDateTime()));
 
         binding.tvDistance.setText(workerResponcd.getDistance_in_km() + " Km away");
 
         Picasso.with(binding.ivProfileImg.getContext())
                 .load(workerResponcd.getProfileImage()).fit().into(binding.ivProfileImg);
+
+        if (!workerResponcd.getRating().isEmpty()) {
+            binding.ratingBar.setRating(Float.parseFloat(workerResponcd.getRating()));
+        }
 
         SpannableStringBuilder builder = new SpannableStringBuilder();
         SpannableString minprice = new SpannableString("$ " + workerResponcd.getMin_rate());
@@ -176,6 +195,21 @@ public class JobOnGoingDetailWorkerActivity extends AppCompatActivity implements
         builder.append(maxprice);
 
         binding.tvRangePrice.setText(builder);
+
+        switch (workerResponcd.getJob_confirmed()) {
+            case "0":
+                binding.acceptRejectLayout.setVisibility(View.VISIBLE);
+
+                break;
+            case "1":
+                binding.acceptRejectLayout.setVisibility(View.GONE);
+                break;
+            default:
+            /*Noting will print*/
+                break;
+        }
+
+
     }
 
     private void acceptRejectrequestApi(String userId, String jobId, String requestStatus) {

@@ -58,9 +58,8 @@ public class MyProfileWorkerFragment extends Fragment implements View.OnClickLis
     private List<CategoryBean.SubcatBean> subcatBeanList;
     private MyProfileResponce userResponce;
 
-
     public MyProfileWorkerFragment() {
-        // Required empty public constructor
+     // Required empty public constructor
     }
 
     @Override
@@ -86,11 +85,13 @@ public class MyProfileWorkerFragment extends Fragment implements View.OnClickLis
         showSkillsAdapter = new ShowSkillsAdapter(mContext, showSkillBeans);
         binding.rvSkillData.setAdapter(showSkillsAdapter);
 
+        binding.ratingBar.setOnClickListener(this);
         binding.btnEdit.setOnClickListener(this);
         binding.ivSetting.setOnClickListener(this);
         binding.rlVideoImg.setOnClickListener(this);
         binding.ivProfile.setOnClickListener(this);
         binding.ivNotification.setOnClickListener(this);
+        binding.rlRatingBar.setOnClickListener(this);
 
         myProfileApi();
 
@@ -186,12 +187,16 @@ public class MyProfileWorkerFragment extends Fragment implements View.OnClickLis
                 intent = new Intent(mContext, SettingActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.iv_profile:
+            /*case R.id.iv_profile:
                 intent = new Intent(mContext, ReviewListActivity.class);
                 startActivity(intent);
-                break;
+                break;*/
             case R.id.iv_notification:
                 intent = new Intent(mContext, NotificationListWorkerActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.rl_rating_bar:
+                intent = new Intent(mContext, ReviewListActivity.class);
                 startActivity(intent);
                 break;
             default:

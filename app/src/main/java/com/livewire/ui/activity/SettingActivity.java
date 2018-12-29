@@ -27,9 +27,12 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.livewire.R;
 import com.livewire.databinding.ActivitySettingBinding;
 import com.livewire.ui.activity.credit_card.AddCreditCardActivity;
+import com.livewire.ui.activity.notification_activity.AboutUsActivity;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
 import com.livewire.utils.ProgressDialog;
@@ -103,17 +106,34 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 break;
 
             case R.id.ll_add_bank_acc:
-                intent = new Intent(this, AddBankAccountActivity.class);
-                startActivity(intent);
+                if (Constant.isNetworkAvailable(this, binding.settingMainLayout)) {
+                    intent = new Intent(this, AddBankAccountActivity.class);
+                    startActivity(intent);
+                }
                 break;
 
             case R.id.ll_about_us:
+                if (Constant.isNetworkAvailable(this, binding.settingMainLayout)) {
+                    intent = new Intent(this, AboutUsActivity.class);
+                    intent.putExtra("Type","AboutUs");
+                    startActivity(intent);
+                }
                 break;
 
             case R.id.ll_terms_condition:
+                if (Constant.isNetworkAvailable(this, binding.settingMainLayout)) {
+                    intent = new Intent(this, AboutUsActivity.class);
+                    intent.putExtra("Type","TermsCondition");
+                    startActivity(intent);
+                }
                 break;
 
             case R.id.ll_privacy_policy:
+                if (Constant.isNetworkAvailable(this,binding.settingMainLayout)) {
+                    intent = new Intent(this, AboutUsActivity.class);
+                    intent.putExtra("Type","PrivacyPolicy");
+                    startActivity(intent);
+                }
                 break;
 
             case R.id.ll_logout:
@@ -125,8 +145,11 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 onBackPressed();
                 break;
             case R.id.ll_add_credit_card:
-                intent = new Intent(this, AddCreditCardActivity.class);
-                startActivity(intent);
+                if (Constant.isNetworkAvailable(this,binding.settingMainLayout)) {
+                    intent = new Intent(this, AddCreditCardActivity.class);
+                    intent.putExtra("FromSetting", "Setting");
+                    startActivity(intent);
+                }
                 break;
             default:
 
@@ -169,7 +192,8 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                         String status = response.getString("status");
                         String message = response.getString("message");
                         if (status.equals("success")) {
-
+                            String f_id = PreferenceConnector.readString(SettingActivity.this, PreferenceConnector.MY_USER_ID, "");
+                            FirebaseDatabase.getInstance().getReference().child(Constant.ARG_USERS).child(f_id).child("firebaseToken").setValue("");
                             PreferenceConnector.clear(SettingActivity.this);
                             finishAffinity();
                             Intent intent = new Intent(SettingActivity.this, UserSelectionActivity.class);

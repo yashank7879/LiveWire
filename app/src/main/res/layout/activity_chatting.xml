@@ -89,7 +89,9 @@
             app:srcCompat="@drawable/ic_left_arrow"
             android:tint="@color/colorPrimary"
             android:layout_centerVertical="true"
-            android:padding="@dimen/_7sdp"/>
+            android:padding="@dimen/_7sdp"
+            android:background="?android:attr/selectableItemBackground"
+            />
 
         <ImageView
             android:id="@+id/iv_popup_menu"
@@ -98,7 +100,9 @@
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:padding="@dimen/_8sdp"
-            app:srcCompat="@drawable/ic_dot_ico" />
+            app:srcCompat="@drawable/ic_dot_ico"
+            android:background="?android:attr/selectableItemBackground"
+            />
 
 
 
@@ -111,21 +115,23 @@
         android:layout_height="match_parent"
         android:layout_marginTop="?actionBarSize"
         android:orientation="vertical"
-        android:weightSum="2">
+        >
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:layout_above="@+id/shadow_view"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
             app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-            app:stackFromEnd="true" />
+            app:stackFromEnd="true"
+            android:layout_above="@+id/shadow_view"/>
+
 
         <android.support.v7.widget.CardView
             android:id="@+id/shadow_view"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp"
+            android:layout_height="wrap_content"
             android:background="@color/colorLightGray"
             android:elevation="3dp"
             app:cardBackgroundColor="@color/colorWhite"
@@ -134,7 +140,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center"
                 android:padding="@dimen/_5sdp"
@@ -152,9 +158,8 @@
 
                 <EditText
                     android:id="@+id/ed_message"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/_5sdp"
                     android:layout_marginRight="@dimen/_5sdp"
                     android:background="@null"
@@ -162,7 +167,7 @@
                     android:layout_gravity="center"
                     android:maxHeight="@dimen/_60sdp"
                     android:fontFamily="@font/poppins_regular"
-                    android:hint="Type here..."
+                    android:hint="@string/type_here"
                     android:minHeight="@dimen/_30sdp"
                     android:textSize="@dimen/_12sdp"
                     android:textColorHint="@color/colorDarkGray"
@@ -192,26 +197,26 @@
 
     </RelativeLayout>
 
-   <!-- <TextView
+
+
+    <TextView
         android:id="@+id/tv_days_status"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_google_plus_btn"
+        android:layout_height="@dimen/_20sdp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/_51sdp"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/_50sdp"
+        android:background="@color/colorLightGray"
+        android:fontFamily="@font/poppins_light"
         android:gravity="center"
         android:minWidth="@dimen/_100sdp"
         android:padding="@dimen/_5sdp"
-        android:layout_marginRight="@dimen/_5sdp"
         android:textColor="@color/colorWhite"
-        android:fontFamily="@font/josefinsans_regular"
-        android:backgroundTint="@color/grey"
-        android:maxLines="1"
-        android:textSize="@dimen/text_Small_Size"
+        android:textSize="@dimen/_8sdp"
+        android:text="@string/n_a"
+        android:shadowRadius="@android:integer/config_longAnimTime"
         android:visibility="gone"
-
-        />-->
-
+        />
 
     <RelativeLayout
         android:id="@+id/ly_popup_menu"
@@ -222,11 +227,11 @@
         <ImageView
             android:layout_width="@dimen/_20sdp"
             android:layout_height="@dimen/_24sdp"
-            app:srcCompat="@drawable/ic_traingle"
+            app:srcCompat="@drawable/ico_traingle"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_30sdp"
-            android:elevation="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_25sdp"
+            android:elevation="@dimen/_3sdp"
             />
 
         <android.support.v7.widget.CardView

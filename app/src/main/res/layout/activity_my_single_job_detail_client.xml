@@ -122,8 +122,7 @@
                         android:layout_below="@+id/tv_name"
                         android:layout_toEndOf="@+id/iv_profile_img"
                         android:numStars="5"
-                        android:progressTint="@color/coloryellow"
-                        android:rating="3" />
+                        android:progressTint="@color/coloryellow" />
 
                     <LinearLayout
                         android:id="@+id/ll_km_away"
@@ -195,7 +194,6 @@
                     android:textColor="@color/colorDarkGray"
                     android:visibility='@{jobDetail.total_request.equals("0") ? View.VISIBLE : View.GONE}'
                     android:layout_marginBottom="@dimen/_8sdp"
-
                     />
 
                 <TextView

@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -490,7 +491,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.MY_USER_ID, userResponce.getData().getUserId());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
-        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.PROFILE_IMG, userResponce.getData().getProfileImage());
+        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.PROFILE_IMG, userResponce.getData().getThumbImage());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.Name, userResponce.getData().getName());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.Email, userResponce.getData().getEmail());
        // addUserFirebaseDatabase();
@@ -633,8 +634,10 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 assert data != null;
                 Place place = PlaceAutocomplete.getPlace(this, data);
                 tvTownResidence.setText(place.getAddress());
+                tvTownResidence.setTextColor(ContextCompat.getColor(this,R.color.colorDarkBlack));
                 locationPlace = place.getAddress().toString();
                 locationLatLng = place.getLatLng();
+
                 Log.e(TAG, "Place: " + place.getName());
 
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
@@ -677,29 +680,33 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     //"""""' client validations """"""""""""//
     private void etClientValdidations() {
         if (Validation.isEmpty(etFullName)) {
-            Constant.snackBar(mainLayout, "Please enter FullName");
+            Constant.snackBar(mainLayout, getString(R.string.please_enter_fullname));
             etFullName.startAnimation(shake);
-        } else if (Validation.isEmpty(etEmail)) {
-            Constant.snackBar(mainLayout, "Please enter Email");
+        } else if (etFullName.getText().toString().length() < 2) {
+            Constant.snackBar(mainLayout, getString(R.string.full_name_should_not_less_than_characters));
+            etFullName.startAnimation(shake);
+        }
+        else if (Validation.isEmpty(etEmail)) {
+            Constant.snackBar(mainLayout, getString(R.string.please_enter_email_id));
             etEmail.startAnimation(shake);
         } else if (etEmail.getText().toString().trim().contains(" ")) {
             etEmail.startAnimation(shake);
-            Constant.snackBar(mainLayout, "Email can't hold space");
+            Constant.snackBar(mainLayout, getString(R.string.email_can_hold_space));
         } else if (!Validation.isEmailValid(etEmail)) {
             etEmail.startAnimation(shake);
             etEmail.requestFocus();
-            Constant.snackBar(mainLayout, "Please enter valid email");
+            Constant.snackBar(mainLayout, getString(R.string.please_enter_valid_email_id));
         } else if (tvTownResidence.getText().toString().equals("")) {
             tvTownResidence.startAnimation(shake);
             tvTownResidence.requestFocus();
-            Constant.snackBar(mainLayout, "Please enter your location");
+            Constant.snackBar(mainLayout, getString(R.string.please_enter_your_location));
         } else if (Validation.isEmpty(etPass)) {
             etPass.startAnimation(shake);
-            Constant.snackBar(mainLayout, "Please enter password");
+            Constant.snackBar(mainLayout, getString(R.string.pass_can_hold_space));
         } else if (etPass.getText().toString().length() < 6) {
             etPass.startAnimation(shake);
             etPass.requestFocus();
-            Constant.snackBar(mainLayout, "Password should be 6 character");
+            Constant.snackBar(mainLayout, getString(R.string.pass_should_have_minimum_six_char));
         } else {
             UserModel model = new UserModel();
             model.name = etFullName.getText().toString();
@@ -766,7 +773,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.MY_USER_ID, userResponce.getData().getUserId());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
-        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.PROFILE_IMG, userResponce.getData().getProfileImage());
+        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.PROFILE_IMG, userResponce.getData().getThumbImage());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.Name, userResponce.getData().getName());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.Email, userResponce.getData().getEmail());
         addUserFirebaseDatabase();
@@ -791,26 +798,29 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     //"""""""  worker validations  """""""""//
     private void etWorkerValdidations() {
         if (Validation.isEmpty(etFullName)) {
-            Constant.snackBar(mainLayout, "Please enter FullName");
+            Constant.snackBar(mainLayout, getString(R.string.please_enter_fullname));
             etFullName.startAnimation(shake);
-        } else if (Validation.isEmpty(etEmail)) {
-            Constant.snackBar(mainLayout, "Please enter Email");
+        } else if (etFullName.getText().toString().length() < 2) {
+            Constant.snackBar(mainLayout, getString(R.string.full_name_should_not_less_than_characters));
+            etFullName.startAnimation(shake);
+        }  else if (Validation.isEmpty(etEmail)) {
+            Constant.snackBar(mainLayout, getString(R.string.please_enter_email_id));
             etEmail.startAnimation(shake);
         } else if (etEmail.getText().toString().trim().contains(" ")) {
             etEmail.startAnimation(shake);
-            Constant.snackBar(mainLayout, "Email can't hold space");
+            Constant.snackBar(mainLayout, getString(R.string.email_can_hold_space));
         } else if (!Validation.isEmailValid(etEmail)) {
             etEmail.startAnimation(shake);
             etEmail.requestFocus();
-            Constant.snackBar(mainLayout, "Please enter valid email");
+            Constant.snackBar(mainLayout, getString(R.string.please_enter_valid_email_id));
         } else if (Validation.isEmpty(etPass)) {
             etPass.startAnimation(shake);
-            Constant.snackBar(mainLayout, "Please enter password");
+            Constant.snackBar(mainLayout, getString(R.string.pass_can_hold_space));
         } else if (etPass.getText().toString().length() < 6) {
             etPass.startAnimation(shake);
             etPass.requestFocus();
-            Constant.snackBar(mainLayout, "Password should be 6 character");
-        } else {
+            Constant.snackBar(mainLayout, getString(R.string.pass_should_have_minimum_six_char));
+        }  else {
             UserModel model = new UserModel();
             model.name = etFullName.getText().toString();
             model.email = etEmail.getText().toString();

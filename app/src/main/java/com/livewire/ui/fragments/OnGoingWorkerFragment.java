@@ -453,7 +453,6 @@ public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapte
                 }
                 break;
             case "Reject":
-
                 if (PreferenceConnector.readString(mContext,PreferenceConnector.IS_BANK_ACC,"").equals("1")) {
                     acceptRejectrequestApi(dataBean.getUserId(), dataBean.getJobId(), "2");
                 }else {

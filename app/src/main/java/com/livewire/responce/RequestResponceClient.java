@@ -56,6 +56,7 @@ public class RequestResponceClient {
         private String request_status="";
         private String profileImage="";
         private String job_confirmed="";
+        private String rating="";
 
         public String getUserId() {
             return userId;
@@ -103,6 +104,14 @@ public class RequestResponceClient {
 
         public void setJob_confirmed(String job_confirmed) {
             this.job_confirmed = job_confirmed;
+        }
+
+        public String getRating() {
+            return rating;
+        }
+
+        public void setRating(String rating) {
+            this.rating = rating;
         }
     }
 }

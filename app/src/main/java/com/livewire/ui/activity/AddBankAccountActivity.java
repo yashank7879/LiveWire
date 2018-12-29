@@ -59,9 +59,11 @@ public class AddBankAccountActivity extends AppCompatActivity implements View.On
 
         accTypeList = new ArrayList<>();
         accTypeList.add("Account Holder Type");
-        accTypeList.add("Saving Account");
-        accTypeList.add("Current Account");
-        accTypeList.add("Joint Account");
+        accTypeList.add("Saving");
+        accTypeList.add("Current");
+        accTypeList.add("Joint");
+        accTypeList.add("Fixed Deposit Account");
+        accTypeList.add("NRI Accounts");
         getBankAccountDetails();
 
         accTypeAdapter = new ArrayAdapter<>(AddBankAccountActivity.this, R.layout.spinner_item, accTypeList);

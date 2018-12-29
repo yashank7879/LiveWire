@@ -143,7 +143,7 @@
     <string name="please_enter_account_holder_last_name">Please enter account holder last name</string>
     <string name="edit_bank_account">Edit Bank Account</string>
     <string name="add_bank_acc">Add Bank Account</string>
-    <string name="update_bank_details">Update Bank Details</string>
+    <string name="update_bank_details">Update Account</string>
     <string name="payment">Payment</string>
     <string name="pay">Pay</string>
     <string name="save_and_update">Save and Update</string>
@@ -260,6 +260,25 @@
     <string name="paid_to_you">Paid To You</string>
     <string name="days">Days</string>
     <string name="on_going_help_needed">On Going Help Needed</string>
+
+    <string name="are_you_sure_want_to_unfriend">Are you sure want to unfriend</string>
+    <string name="no_messages_yet">No messages yet</string>
+    <string name="you_don_t_have_any_notification_yet">You don\'t have any Notification yet</string>
+    <string name="you_don_t_have_any_review_yet">You don\'t have any review yet</string>
+    <string name="please_enter_email_id">Please enter Email Id</string>
+    <string name="email_can_hold_space">Email can\'t hold space</string>
+    <string name="please_enter_password">Please enter password</string>
+    <string name="pass_can_hold_space">Password can\'t hold space</string>
+    <string name="pass_should_have_minimum_six_char">Password should have minimum 6 character.</string>
+    <string name="please_enter_valid_email_id">Please enter valid Email Id</string>
+    <string name="please_enter_fullname">Please enter Full Name</string>
+    <string name="please_enter_your_location">Please enter your location</string>
+    <string name="full_name_should_not_less_than_characters">Full name should not less than 2 characters</string>
+    <string name="on_going3">On Going</string>
+    <string name="type_here">Type here…</string>
+    <string name="no_card_added">No Card Added</string>
+
+    <string name="terms_and_conditions">Terms &amp; Conditions</string>
 
 
 </resources>

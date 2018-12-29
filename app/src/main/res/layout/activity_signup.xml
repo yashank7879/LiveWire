@@ -116,7 +116,8 @@
             android:inputType="text"
             android:singleLine="true"
             android:textSize="@dimen/_12sdp"
-            android:textColor="@color/colorDarkGray"
+            android:textColorHint="@color/colorDarkGray"
+            android:textColor="@color/colorDarkBlack"
             />
 
         <View
@@ -140,7 +141,8 @@
             android:inputType="textEmailAddress"
             android:singleLine="true"
             android:textSize="@dimen/_12sdp"
-            android:textColor="@color/colorDarkGray"
+            android:textColorHint="@color/colorDarkGray"
+            android:textColor="@color/colorDarkBlack"
             />
 
         <View
@@ -192,7 +194,8 @@
             android:inputType="textPassword"
             android:singleLine="true"
             android:textSize="@dimen/_12sdp"
-            android:textColor="@color/colorDarkGray"
+            android:textColorHint="@color/colorDarkGray"
+            android:textColor="@color/colorDarkBlack"
             />
 
         <View

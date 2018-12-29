@@ -42,13 +42,9 @@ import com.livewire.model.CategoryModel;
 import com.livewire.pagination.EndlessRecyclerViewScrollListener;
 import com.livewire.responce.HelpOfferedResponce;
 import com.livewire.responce.SubCategoryResponse;
-import com.livewire.ui.activity.ClientProfileDetailWorkerActivity;
-import com.livewire.ui.activity.JobHelpOfferedDetailWorkerActivity;
-import com.livewire.ui.activity.JobOnGoingDetailWorkerActivity;
+
 import com.livewire.ui.activity.complete_confirm_job_worker.CompleteJobHelpOfferedDetailWorkerActivity;
 import com.livewire.ui.activity.complete_confirm_job_worker.CompleteJobOnGoingDetailWorkerActivity;
-import com.livewire.ui.activity.notification_activity.NotificationJobHelpOfferedDetailWorkerActivity;
-import com.livewire.ui.activity.notification_activity.NotificationMyOnGoingJobDetailClientActivity;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
 import com.livewire.utils.ProgressDialog;

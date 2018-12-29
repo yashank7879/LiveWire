@@ -130,8 +130,8 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
         rvFilter = view.findViewById(R.id.rv_filter_list);
 
 
-        mLoadAnimation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in);
-        mLoadAnimation.setDuration(1000);
+       /* mLoadAnimation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in);
+        mLoadAnimation.setDuration(1000);*/
 
 
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
@@ -188,7 +188,7 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
             }
         });
 
-        mainLayout.startAnimation(mLoadAnimation);
+      //  mainLayout.startAnimation(mLoadAnimation);
         SubCategoryListApi();
         helpOfferedApi();
     }

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data >
-
+        <import type="android.view.View"/>
         <variable
             name="dataBean"
             type="com.livewire.responce.HelpOfferedResponce.DataBean"/>
@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:visibility="gone"
+            android:visibility='@{dataBean.job_type.equals("2") ? View.VISIBLE : View.GONE}'
             >
             <TextView
                 android:id="@+id/tv_start_from"
@@ -41,6 +41,7 @@
                 android:layout_toEndOf="@+id/tv_start_from"
                 android:text="@string/n_a"
                 android:textColor="@color/colorDarkBlack" />
+
         </RelativeLayout>
 
         <TextView
@@ -50,8 +51,10 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_margin="@dimen/_5sdp"
-            android:text="23 Sep 2018"
-            android:textColor="@color/colorDarkBlack" />
+            android:text="@string/n_a"
+            android:textColor="@color/colorDarkBlack"
+            android:visibility='@{dataBean.job_type.equals("1") ? View.VISIBLE : View.INVISIBLE}'
+            />
 
         <TextView
             android:id="@+id/tv_time"
@@ -60,6 +63,7 @@
             android:layout_alignBaseline="@+id/tv_date"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
             android:text="10 min ago"
             android:textColor="@color/colorLightGray"
             android:textSize="@dimen/_10sdp" />
@@ -68,7 +72,7 @@
             android:id="@+id/view_id"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_below="@+id/tv_date"
+            android:layout_below="@+id/tv_time"
             android:layout_marginBottom="@dimen/_5sdp"
             android:background="@color/colorExtraLightGray" />
 
@@ -105,9 +109,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:fontFamily="@font/poppins_medium"
-                android:text='@{dataBean.request_status.equals("1") ? "Budget" : "Paid Amount",default = "Budget"}'
-                android:textColor='@{dataBean.request_status.equals("1") ? @color/colorDarkGray : @color/colorGreen}'
                 android:textSize="@dimen/_9sdp"
+                android:text="@string/n_a"
                 android:paddingEnd="@dimen/_10sdp"
                 />
 

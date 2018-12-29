@@ -25,12 +25,12 @@
 
     <TextView
         android:id="@+id/tv_no_review"
-        style="@style/smallPopinsRegularStyle"
+        style="@style/mediumPopinsMediumStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/no_review"
         android:layout_centerInParent="true"
-        android:textColor="@color/colorDarkBlack"
+        android:text="@string/you_don_t_have_any_review_yet"
+        android:textColor="@color/colorGreen"
         />
 
 </RelativeLayout>

@@ -20,7 +20,7 @@ import com.google.gson.Gson;
 import com.livewire.R;
 import com.livewire.databinding.ActivityMySingleJobDetailClientBinding;
 import com.livewire.responce.JobDetailClientResponce;
-import com.livewire.responce.MyjobResponceClient;
+import com.livewire.ui.activity.chat.ChattingActivity;
 import com.livewire.ui.activity.credit_card.AddCreditCardActivity;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
@@ -33,7 +33,6 @@ import org.json.JSONObject;
 
 import static com.livewire.utils.ApiCollection.BASE_URL;
 import static com.livewire.utils.ApiCollection.JOBPOSTSEND_GET_CLIENT_JOB_DETAIL_API;
-import static com.livewire.utils.ApiCollection.JOBPOSTSEND_GET_JOB_DETAIL_API;
 
 public class MySingleJobDetailClientActivity extends AppCompatActivity implements View.OnClickListener {
     ActivityMySingleJobDetailClientBinding binding;
@@ -44,6 +43,7 @@ public class MySingleJobDetailClientActivity extends AppCompatActivity implement
     private String usetId = "";
     private String budget = "";
     private String workerName="";
+    private String workerProfilePic="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +58,7 @@ public class MySingleJobDetailClientActivity extends AppCompatActivity implement
         binding.ivBack.setOnClickListener(this);
         binding.flMultiImg.setOnClickListener(this);
         binding.btnEndJob.setOnClickListener(this);
+        binding.llChat.setOnClickListener(this);
 
         if (getIntent().getSerializableExtra("JobIdKey") != null) {
             //MyjobResponceClient.DataBean dataBean = (MyjobResponceClient.DataBean) getIntent().getSerializableExtra("MyJobDetail");
@@ -99,6 +100,9 @@ public class MySingleJobDetailClientActivity extends AppCompatActivity implement
                 //   binding.llChat.setVisibility(View.GONE);
             } else if (/*dataBean.getTotal_request().equals("1") &&*/ dataBean.getJob_confirmed().equals("1")) { // jobconfirmed
 
+                if (!dataBean.getRequestedUserData().get(0).getRating().isEmpty()) {
+                    binding.ratingBar.setRating(Float.parseFloat(dataBean.getRequestedUserData().get(0).getRating()));
+                }
                 binding.rlUserData.setVisibility(View.VISIBLE);
                 binding.llChat.setVisibility(View.VISIBLE);
                 binding.btnEndJob.setVisibility(View.VISIBLE);
@@ -107,6 +111,7 @@ public class MySingleJobDetailClientActivity extends AppCompatActivity implement
 
                 usetId = dataBean.getRequestedUserData().get(0).getUserId(); //worker user id to give review
                 workerName = dataBean.getRequestedUserData().get(0).getName();//worker name
+                workerProfilePic = dataBean.getRequestedUserData().get(0).getProfileImage();
                 Picasso.with(binding.ivProfileImg.getContext())
                         .load(dataBean.getRequestedUserData()
                                 .get(0).getProfileImage()).fit().into(binding.ivProfileImg);
@@ -199,6 +204,14 @@ public class MySingleJobDetailClientActivity extends AppCompatActivity implement
                 intent.putExtra("UserIdKey", usetId);
                 startActivity(intent);
                 break;
+
+            case R.id.ll_chat:
+             intent = new Intent(this, ChattingActivity.class);
+            intent.putExtra("otherUID", usetId);
+            intent.putExtra("titleName", workerName);
+            intent.putExtra("profilePic", workerProfilePic);
+            startActivity(intent);
+            break;
             default:
         }
     }

@@ -119,6 +119,7 @@ public class JobDetailWorkerResponce {
         private String job_budget="";
         private String number_of_days="";
         private String review_status="";
+        private String rating="";
 
         public String getUserId() {
             return userId;
@@ -334,6 +335,14 @@ public class JobDetailWorkerResponce {
 
         public void setReview_status(String review_status) {
             this.review_status = review_status;
+        }
+
+        public String getRating() {
+            return rating;
+        }
+
+        public void setRating(String rating) {
+            this.rating = rating;
         }
     }
 

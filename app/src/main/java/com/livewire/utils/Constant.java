@@ -66,6 +66,7 @@ public class Constant {
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 13;
     public static final boolean LOG_VALUE= true;
 
+
     public static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 12;
 
 
@@ -77,6 +78,7 @@ public class Constant {
     public static final String ARG_HISTORY = "chat_history";
     public static final String BlockUsers = "block_users";
     public static final String blockedBy = "blockedBy";
+    public static String isNotification = "isNotification";
 
     //"""""""its used for live wire text""""""""//
     public static SpannableStringBuilder liveWireText(Context mContext) {
@@ -200,7 +202,7 @@ public class Constant {
                     returnDay = elapsedHours + " hours ago";
                 }
             } else if (elapsedDays == 1) {
-                returnDay =  /*elapsedDays + */"yesterday";
+                returnDay =  /*elapsedDays + */"Yesterday";
             } else {
                 returnDay = elapsedDays + " days ago";
             }
@@ -360,4 +362,23 @@ public class Constant {
     }
 
 
+    public static void openAlertDialog(Context context, String message) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("LiveWire");
+        builder.setCancelable(false);
+        builder.setMessage(message);
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        AlertDialog alert = builder.create();
+
+        if(!((Activity) context).isFinishing())
+        {
+            alert.show();
+        }
+
+    }
 }

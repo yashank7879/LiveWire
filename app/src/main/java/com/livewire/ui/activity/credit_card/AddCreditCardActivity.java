@@ -77,12 +77,17 @@ public class AddCreditCardActivity extends AppCompatActivity implements View.OnC
             binding.tvAddNewCard.setVisibility(View.VISIBLE);
             binding.btnPay.setVisibility(View.VISIBLE);
             binding.btnAddCard.setVisibility(View.GONE);
+            binding.tvSelectCard.setVisibility(View.GONE);
+            binding.btnPay.setVisibility(View.GONE);
 
             if (getIntent().getStringExtra("SingleJobPayment") != null) {  //user come from Confirm Single job payment
                 jobId = getIntent().getStringExtra("JobIdKey");
                 userId = getIntent().getStringExtra("UserIdKey");//""""" worker user Id """"//
                 name = getIntent().getStringExtra("NameKey");//"""" worker name """"""""//
                 budget = Float.parseFloat(getIntent().getStringExtra("PaymentKey"));
+
+
+
                 stripeFee = Float.parseFloat(df.format(((((budget * 2.9) / 100) + 0.30))));
                 binding.tvPayAmount.setText("Pay $" + budget);
                 jobType = getIntent().getStringExtra("SingleJobPayment");
@@ -103,6 +108,8 @@ public class AddCreditCardActivity extends AppCompatActivity implements View.OnC
 
             }
             // Constant.printLogMethod(Constant.LOG_VALUE, "stripe fee:", "" + stripeFee);
+        }else {
+            binding.tvHeader.setText(R.string.card_list);
         }
         progressDialog = new ProgressDialog(this);
         binding.tvAddNewCard.setOnClickListener(this);
@@ -159,7 +166,13 @@ public class AddCreditCardActivity extends AppCompatActivity implements View.OnC
                             //  Log.e("Size: ", "" + cardResponce.getData().size());
 
                             if (cardResponce.getData().size() != 0) {
-                                // binding.tvSelectCard.setVisibility(View.VISIBLE);
+                                /* binding.tvSelectCard.setVisibility(View.VISIBLE);
+                                 binding.btnPay.setVisibility(View.VISIBLE);*/
+
+                                if (jobType.equals("OngoingJob") || jobType.equals("SingleJob")) {
+                                    binding.tvSelectCard.setVisibility(View.VISIBLE);
+                                    binding.btnPay.setVisibility(View.VISIBLE);
+                                }
                                 binding.tvNoCardAdd.setVisibility(View.GONE);
                             }
                             for (int i = 0; i < cardResponce.getData().size(); i++) {

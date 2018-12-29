@@ -33,7 +33,7 @@ import static com.livewire.utils.ApiCollection.BASE_URL;
 import static com.livewire.utils.ApiCollection.GET_MY_JOB_REQUEST_LIST_API;
 import static com.livewire.utils.ApiCollection.JOBPOSTSEND_REQUEST_2_API;
 
-public class RequestClientActivity extends AppCompatActivity implements View.OnClickListener , RequestAdapter.RequestAcceptIgnorListner{
+public class RequestClientActivity extends AppCompatActivity implements View.OnClickListener, RequestAdapter.RequestAcceptIgnorListner {
 
     private ProgressDialog progressDialog;
     private RelativeLayout mainLayout;
@@ -41,6 +41,7 @@ public class RequestClientActivity extends AppCompatActivity implements View.OnC
     private RequestAdapter adapter;
     private SwipeRefreshLayout swipeRefresh;
     private String jobId;
+    private TextView tvNoJobPost;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +50,8 @@ public class RequestClientActivity extends AppCompatActivity implements View.OnC
         intializeViews();
         actionBarIntialize();
 
-        if (getIntent().getStringExtra("JobId")!= null){
-             jobId = getIntent().getStringExtra("JobId");
+        if (getIntent().getStringExtra("JobId") != null) {
+            jobId = getIntent().getStringExtra("JobId");
 
             loadRequestListData();
         }
@@ -62,10 +63,11 @@ public class RequestClientActivity extends AppCompatActivity implements View.OnC
         progressDialog = new ProgressDialog(this);
         mainLayout = findViewById(R.id.request_main_layout);
         swipeRefresh = findViewById(R.id.swipe_refresh);
+        tvNoJobPost = findViewById(R.id.tv_no_job_post);
         RecyclerView recyclerView = findViewById(R.id.rv_request);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new RequestAdapter(this,requestList,this);
+        adapter = new RequestAdapter(this, requestList, this);
         recyclerView.setAdapter(adapter);
 
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -97,7 +99,7 @@ public class RequestClientActivity extends AppCompatActivity implements View.OnC
             progressDialog.show();
             AndroidNetworking.post(BASE_URL + GET_MY_JOB_REQUEST_LIST_API)
                     .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
-                    .addBodyParameter("job_id",jobId)
+                    .addBodyParameter("job_id", jobId)
                     .setPriority(Priority.MEDIUM)
                     .build()
                     .getAsJSONObject(new JSONObjectRequestListener() {
@@ -109,7 +111,7 @@ public class RequestClientActivity extends AppCompatActivity implements View.OnC
                                 status = response.getString("status");
                                 String message = response.getString("message");
                                 if (status.equals("success")) {
-                                    // tvNoJobPost.setVisibility(View.GONE);
+                                    tvNoJobPost.setVisibility(View.GONE);
                                     requestList.clear();
                                     RequestResponceClient responceClient = new Gson().fromJson(String.valueOf(response), RequestResponceClient.class);
                                     requestList.addAll(responceClient.getData());
@@ -119,7 +121,7 @@ public class RequestClientActivity extends AppCompatActivity implements View.OnC
                                     requestList.clear();
                                     adapter.notifyDataSetChanged();
                                     if (requestList.size() == 0) {
-                                        //   tvNoJobPost.setVisibility(View.VISIBLE);
+                                           tvNoJobPost.setVisibility(View.VISIBLE);
                                     }
                                     Constant.snackBar(mainLayout, message);
                                 }
@@ -131,7 +133,7 @@ public class RequestClientActivity extends AppCompatActivity implements View.OnC
 
                         @Override
                         public void onError(ANError anError) {
-                            Constant.errorHandle(anError,RequestClientActivity.this);
+                            Constant.errorHandle(anError, RequestClientActivity.this);
 
                         }
                     });
@@ -140,7 +142,7 @@ public class RequestClientActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.iv_back:
                 onBackPressed();
                 break;
@@ -148,12 +150,12 @@ public class RequestClientActivity extends AppCompatActivity implements View.OnC
     }
 
     //""""""" accept ignore request """"""""""//
-    private void acceptRejectrequestApi( String requestStatus,String userId) {
-        if (Constant.isNetworkAvailable(this,mainLayout)){
+    private void acceptRejectrequestApi(final String requestStatus, String userId, final int pos) {
+        if (Constant.isNetworkAvailable(this, mainLayout)) {
             progressDialog.show();
             AndroidNetworking.post(BASE_URL + JOBPOSTSEND_REQUEST_2_API)
                     .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
-                    .addBodyParameter("job_id",jobId)
+                    .addBodyParameter("job_id", jobId)
                     .addBodyParameter("request_by", userId)
                     .addBodyParameter("request_status", requestStatus)
                     .setPriority(Priority.MEDIUM)
@@ -167,12 +169,18 @@ public class RequestClientActivity extends AppCompatActivity implements View.OnC
                         String message = response.getString("message");
                         if (status.equals("success")) {
                             Constant.snackBar(mainLayout, message);
-                            adapter.notifyDataSetChanged();
-                            onBackPressed();
-                            //"""""' if user successfully created on going post """""""""""//
 
-                            // first time replace home fragment
+                            if (requestStatus.equals("1")) { // if
+                                onBackPressed();
+                            } else {
+                                requestList.remove(pos);
+                                adapter.notifyDataSetChanged();
 
+                                if (requestList.size() == 0) {
+                                    onBackPressed();
+                                }
+
+                            }
                         } else {
                             Constant.snackBar(mainLayout, message);
                         }
@@ -183,14 +191,15 @@ public class RequestClientActivity extends AppCompatActivity implements View.OnC
 
                 @Override
                 public void onError(ANError anError) {
-                    Constant.errorHandle(anError,RequestClientActivity.this);
+                    Constant.errorHandle(anError, RequestClientActivity.this);
                     progressDialog.dismiss();
                 }
             });
         }
     }
+
     @Override
-    public void OnClickRequestAccept(String status, String userId) {
-        acceptRejectrequestApi(status,userId);
+    public void OnClickRequestAccept(String status, String userId, int pos) {
+        acceptRejectrequestApi(status, userId, pos);
     }
 }

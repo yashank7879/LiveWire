@@ -88,6 +88,7 @@ public class MyjobResponceClient implements Serializable {
         private String job_offer="";
         private String total_request="";
         private String job_confirmed="";
+        private String jobrequestId="";
         private String job_week_days="";
         private String  job_time_duration="";
         private String currentDateTime="";
@@ -278,6 +279,14 @@ public class MyjobResponceClient implements Serializable {
             this.requestedUserData = requestedUserData;
         }
 
+        public String getJobrequestId() {
+            return jobrequestId;
+        }
+
+        public void setJobrequestId(String jobrequestId) {
+            this.jobrequestId = jobrequestId;
+        }
+
         public static class RequestedUserDataBean implements Serializable {
             /**
              * userId : 27
@@ -298,6 +307,7 @@ public class MyjobResponceClient implements Serializable {
             private String distance_in_km="";
             private String max_rate="";
             private String min_rate="";
+            private String rating="";
 
             public String getUserId() {
                 return userId;
@@ -361,6 +371,14 @@ public class MyjobResponceClient implements Serializable {
 
             public void setMin_rate(String min_rate) {
                 this.min_rate = min_rate;
+            }
+
+            public String getRating() {
+                return rating;
+            }
+
+            public void setRating(String rating) {
+                this.rating = rating;
             }
         }
     }

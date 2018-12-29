@@ -1,5 +1,6 @@
 package com.livewire.ui.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -7,6 +8,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -60,6 +62,7 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
@@ -90,6 +93,9 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
     private String endDateString = "";
     private Calendar endDateTime;
     private ArrayList<WeekListModel> weekList;
+    List<String> hourList;
+    private ArrayAdapter<String> hourRequireAdapter;
+
 
     @Nullable
     @Override
@@ -140,7 +146,44 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
         binding.etDescription.setRawInputType(InputType.TYPE_CLASS_TEXT);
 
 
+        openHourAdapter();
+
+        hourList = new ArrayList<>();
+        hourRequireAdapter = new ArrayAdapter<>(mContext, R.layout.spinner_item, hourList);
+        hourRequireAdapter.setDropDownViewResource(R.layout.spinner_drop_down);
+        binding.hourRequireSpinner.setOnItemSelectedListener(this);
+        binding.hourRequireSpinner.setAdapter(hourRequireAdapter);
+
+
         loadSkillsData();
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void openHourAdapter() {
+        new AsyncTask<Void, Void, List<String>>() {
+            @Override
+            protected List<String> doInBackground(Void... voids) {
+
+
+               hourList.add(0, "Hours Required Per Day");
+                double hour = 0.5;
+                for (int i = 0; i <= 48; i++) {
+                    if (hour < 24) {
+                        hour += 0.5;
+                        hourList.add(String.valueOf(hour));
+                    }
+                }
+                return hourList;
+            }
+
+            @Override
+            protected void onPostExecute(List<String> hour) {
+                super.onPostExecute(hour);
+
+                hourRequireAdapter.notifyDataSetChanged();
+
+            }
+        }.execute();
     }
 
 /*    TextWatcher watcherClass = new TextWatcher() {
@@ -242,8 +285,8 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
             Constant.snackBar(binding.svOngoingJob, "Please enter End date");
         } else if (Validation.isEmpty(binding.tvWeekDays)) {
             Constant.snackBar(binding.svOngoingJob, "Please Select week days");
-        } else if (Validation.isEmpty(binding.etHourRequierd)) {
-            Constant.snackBar(binding.svOngoingJob, "Please enter hour Required per day");
+        } else if (binding.hourRequireSpinner.getSelectedItem().toString().equals("Hours Required Per Day")) {
+            Constant.snackBar(binding.svOngoingJob, "Please select hour Required per day");
         } else if (Validation.isEmpty(binding.tvLocation)) {
             Constant.snackBar(binding.svOngoingJob, "Please enter your Location");
         } else if (Validation.isEmpty(binding.etDescription)) {
@@ -256,7 +299,7 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
             model.job_location = locationPlace;
             model.job_latitude = String.valueOf(locationLatLng.latitude);
             model.job_longitude = String.valueOf(locationLatLng.longitude);
-            model.job_time_duration = binding.etHourRequierd.getText().toString().trim();
+            model.job_time_duration = binding.hourRequireSpinner.getSelectedItem().toString().trim();
             model.job_week_days = binding.tvWeekDays.getText().toString().trim();
             model.job_type = "2";
             model.job_title = "test";
@@ -287,7 +330,7 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
                             binding.tvEndDate.setText("");
                             binding.tvLocation.setText("");
                             binding.tvWeekDays.setText("");
-                            binding.etHourRequierd.setText("");
+                            //binding.etHourRequierd.setText("");
                             binding.etDescription.setText("");
 
 
@@ -432,6 +475,8 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
             final Spinner categorySpinner = dialog.findViewById(R.id.category_spinner);
             subCategorySpinner = dialog.findViewById(R.id.sub_category_spinner);
             Button btnAddSkills = dialog.findViewById(R.id.btn_add_skills);
+            TextView tvHeader = dialog.findViewById(R.id.tv_header);
+            tvHeader.setText(R.string.select_skill);
 
             ArrayAdapter categoryAdapter = new ArrayAdapter<>(mContext, R.layout.spinner_item, skillsResponce.getData());
             categoryAdapter.setDropDownViewResource(R.layout.spinner_drop_down);
@@ -522,7 +567,7 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
         switch (parent.getId()) {
             case R.id.category_spinner:
                 /*if (position >= 1) {*/
-                Log.e(TAG, skillsResponce.getData().get(position).getCategoryName());
+                //Log.e(TAG, skillsResponce.getData().get(position).getCategoryName());
                 ArrayAdapter<AddSkillsResponce.DataBean.SubcatBean> subCateoryAdapter = new ArrayAdapter<>(mContext, R.layout.spinner_item, skillsResponce.getData().get(position).getSubcat());
                 subCateoryAdapter.setDropDownViewResource(R.layout.spinner_drop_down);
                 subCategorySpinner.setOnItemSelectedListener(this);
@@ -531,6 +576,13 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
                 // ivCategorySpin.startAnimation(AnimationUtils.loadAnimation(this, R.anim.spinner_icon_rotator));
                 //   }
                 break;
+
+            case R.id.hour_require_spinner:
+
+               /* if (parent.getSelectedItem().toString().equals("Hours Required Per Day"))
+                Log.d("onItemSelected: ", parent.getSelectedItem().toString());*/
+                break;
+            default:
         }
     }
 

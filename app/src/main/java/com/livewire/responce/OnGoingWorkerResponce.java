@@ -111,10 +111,21 @@ public class OnGoingWorkerResponce implements Serializable{
         private String currentDateTime="";
         private String min_rate="";
         private String max_rate="";
-        private String request_status="";
         private String job_type="";
         private String rating="";
+        private String request_status="";
+
         private int record_count;
+
+        public String getRequest_status() {
+            return request_status;
+        }
+
+        public void setRequest_status(String request_status) {
+            this.request_status = request_status;
+        }
+
+
 
         public String getUserId() {
             return userId;
@@ -306,6 +317,22 @@ public class OnGoingWorkerResponce implements Serializable{
 
         public void setRecord_count(int record_count) {
             this.record_count = record_count;
+        }
+
+        public String getJob_type() {
+            return job_type;
+        }
+
+        public void setJob_type(String job_type) {
+            this.job_type = job_type;
+        }
+
+        public String getRating() {
+            return rating;
+        }
+
+        public void setRating(String rating) {
+            this.rating = rating;
         }
     }
 }

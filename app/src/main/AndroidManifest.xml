@@ -21,8 +21,7 @@
         android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"> <!-- Shadow view cause View is gone when data is load in view at run time -->
-
+        android:theme="@style/AppTheme">
         <activity
             android:name=".ui.activity.SplashActivity"
             android:theme="@style/Transparent">
@@ -187,6 +186,26 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".ui.activity.notification_activity.NotificationCompleteJobHelpOfferedDetailWorkerActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden">
+            <intent-filter>
+                <action android:name="Once_job_completed" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.activity.notification_activity.NotificationCompleteJobOnGoingDetailWorkerActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden">
+            <intent-filter>
+                <action android:name="Ongoing_job_completed" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".ui.activity.NotificationListWorkerActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
@@ -238,7 +257,16 @@
             android:name=".ui.activity.complete_confirm_job_worker.CompleteJobOnGoingDetailWorkerActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity android:name=".ui.activity.ChattingActivity"></activity>
+        <activity
+            android:name=".ui.activity.chat.ChattingActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="ChatActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ui.activity.notification_activity.AboutUsActivity" />
     </application>
 
 </manifest>

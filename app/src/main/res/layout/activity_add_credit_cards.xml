@@ -26,6 +26,7 @@
                     android:background="@color/colorWhite">
 
                     <TextView
+                        android:id="@+id/tv_header"
                         style="@style/mediumPopinsMediumStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -104,8 +105,10 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:gravity="center_vertical"
-                android:text="@string/you_don_t_add_any_payment_card_yet"
-                android:textColor="@color/colorGreen" />
+                android:text="@string/no_card_added"
+                android:textColor="@color/colorGreen"
+
+                />
 
 
             <LinearLayout

@@ -60,6 +60,10 @@ public class CompletedJobAdapter extends RecyclerView.Adapter<CompletedJobAdapte
                 holder.ratingBar.setRating(Float.parseFloat(dataBean.getRating()));
             }
 
+            if ( dataBean.getRating() != null || !dataBean.getRating().isEmpty()) {
+                holder.ratingBar.setRating(Float.parseFloat(dataBean.getRating()));
+            }
+
             if (dataBean.getJob_type().equals("2")){
             float paidAmount  =(Float.parseFloat(dataBean.getJob_time_duration()) * Float.parseFloat(dataBean.getJob_offer())* Float.parseFloat(dataBean.getNumber_of_days()));
                 holder.tv_offer_rate.setText("$ "+paidAmount);

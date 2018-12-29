@@ -76,6 +76,9 @@ public class HelpOfferedAdapter extends RecyclerView.Adapter<HelpOfferedAdapter.
             //********"2018-07-04" date format converted into "04 july 2018"***********//
             holder.tvDate.setText(Constant.dateTextColorChange(mContext,Constant.DateFomatChange(dataBean.getJob_start_date())));
 
+            if (dataBean.getRating() != null) {
+                holder.ratingBar.setRating(Float.parseFloat(dataBean.getRating()));
+            }
           /*  DateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
             String start= dataBean.getJob_start_date();
 
@@ -106,7 +109,6 @@ public class HelpOfferedAdapter extends RecyclerView.Adapter<HelpOfferedAdapter.
                holder.btnSendRequest.setTextColor(ContextCompat.getColor(mContext,R.color.colorWhite));
            }
         }
-
     }
 
 

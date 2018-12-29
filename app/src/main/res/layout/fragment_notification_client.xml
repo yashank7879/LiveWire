@@ -43,11 +43,12 @@
     </android.support.v7.widget.RecyclerView>
     <TextView
         android:id="@+id/tv_no_data"
-        style="@style/mediumPopinsMediumStyle"
+        style="@style/mediumPopinsRegularStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="@string/record_not_found"
+        android:text="@string/you_don_t_have_any_notification_yet"
+        android:textColor="@color/colorGreen"
         />
 
 </RelativeLayout>

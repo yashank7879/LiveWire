@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/main_layout"
+
+    >
+
+    <com.loopeer.shadow.ShadowView
+        android:id="@+id/action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:shadowColor="@color/colorLightGray"
+        app:shadowMarginBottom="3dp"
+        app:shadowRadius="@dimen/_5sdp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:background="@color/colorWhite"
+        >
+
+        <ImageView
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="match_parent"
+            android:id="@+id/back_image"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/_6sdp"
+            app:srcCompat="@drawable/ic_left_arrow"
+            android:tint="@color/colorDarkBlack"
+            android:background="?android:attr/selectableItemBackground"
+
+            />
+
+        <TextView
+            style="@style/largePopinsMediumStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/colorGreen"
+            android:id="@+id/edit_car_title"
+            />
+
+    </RelativeLayout>
+
+    </com.loopeer.shadow.ShadowView>
+
+
+    <WebView android:id="@+id/web_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/action_bar">
+
+    </WebView>
+
+</RelativeLayout>
+</layout>

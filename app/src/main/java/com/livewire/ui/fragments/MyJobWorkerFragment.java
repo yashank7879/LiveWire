@@ -66,6 +66,7 @@ public class MyJobWorkerFragment extends Fragment {
         // decrease width of indicator
         for (int i = 0; i < tabLayout.getTabCount(); i++) {
             View tab = ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(i);
+
             ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) tab.getLayoutParams();
             p.setMargins(15, 0, 15, 0);
             tab.requestLayout();

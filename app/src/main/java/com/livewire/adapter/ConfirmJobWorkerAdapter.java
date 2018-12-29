@@ -69,13 +69,38 @@ public class ConfirmJobWorkerAdapter extends RecyclerView.Adapter<ConfirmJobWork
             holder.getBinding().setVariable(BR.dataBean, dataBean);
             holder.getBinding().executePendingBindings();
 
-            holder.tvTime.setText(Constant.getDayDifference(dataBean.getCrd(), currentDateTime));
+            holder.tvTime.setText(Constant.getDayDifference(dataBean.getUpd(), currentDateTime));
             Picasso.with(holder.ivProfileImg.getContext()).load(dataBean.getProfileImage()).fit().into(holder.ivProfileImg);
+
+
+            if (dataBean.getJob_type().equals("1") && dataBean.getRequest_status().equals("4") ){
+                holder.budget.setText(R.string.paid_amount);
+                holder.budget.setTextColor(ContextCompat.getColor(mContext, R.color.colorGreen));
+                holder.tvDate.setText(Constant.dateTextColorChange(mContext, Constant.DateFomatChange(dataBean.getJob_start_date())));
+
+            } else if ( dataBean.getJob_type().equals("2") && dataBean.getRequest_status().equals("4")) {
+                holder.budget.setText(R.string.paid_amount);
+                holder.budget.setTextColor(ContextCompat.getColor(mContext, R.color.colorGreen));
+                holder.tvDateOngoing.setText(Constant.dateTextColorChange(mContext, Constant.DateFomatChange(dataBean.getJob_start_date())));
+
+            }else if (dataBean.getJob_type().equals("2")) {
+                holder.budget.setTextColor(ContextCompat.getColor(mContext, R.color.colorDarkGray));
+                holder.budget.setText(R.string.offered_rate);
+                holder.tvDateOngoing.setText(Constant.dateTextColorChange(mContext, Constant.DateFomatChange(dataBean.getJob_start_date())));
+
+            }else if (dataBean.getJob_type().equals("1")) {
+                holder.budget.setTextColor(ContextCompat.getColor(mContext, R.color.colorDarkGray));
+                holder.budget.setText(R.string.budget);
+                holder.tvDate.setText(Constant.dateTextColorChange(mContext, Constant.DateFomatChange(dataBean.getJob_start_date())));
+
+            }
             //********"2018-07-04" date format converted into "04 july 2018"***********//
-            holder.tvDate.setText(Constant.dateTextColorChange(mContext, Constant.DateFomatChange(dataBean.getJob_start_date())));
-            if (!dataBean.getRating().isEmpty()) {
+            if (!dataBean.getRating().isEmpty() ) {
                 holder.ratingBar.setRating(Float.parseFloat(dataBean.getRating()));
             }
+
+
+
             // @{!dataBean.job_budget.equals("") ? "$ "+dataBean.job_budget : "$ "+ dataBean.job_offer, default= "$ 0"}
             if (!dataBean.getNumber_of_days().isEmpty() && !dataBean.getJob_offer().isEmpty()) {
                 float paidAmount = Float.parseFloat(dataBean.getNumber_of_days()) * Float.parseFloat(dataBean.getJob_offer()) * Float.parseFloat(dataBean.getJob_time_duration());
@@ -111,8 +136,10 @@ public class ConfirmJobWorkerAdapter extends RecyclerView.Adapter<ConfirmJobWork
         private TextView tvName;
         private RatingBar ratingBar;
         private TextView tvDistance;
+        private TextView budget;
         private TextView btnSendRequest;
         private TextView tvMoreInfo;
+        private TextView tvDateOngoing;
         private LinearLayout llMoreInfo;
 
         public MyViewHolder(View view) {
@@ -125,6 +152,8 @@ public class ConfirmJobWorkerAdapter extends RecyclerView.Adapter<ConfirmJobWork
             tvCategory = view.findViewById(R.id.tv_category);
             tvSubcategory = view.findViewById(R.id.tv_subcategory);
             tvBudget = view.findViewById(R.id.tv_offer_rate);
+            budget = view.findViewById(R.id.budget);
+            tvDateOngoing = view.findViewById(R.id.tv_date1);
             llMoreInfo = view.findViewById(R.id.ll_more_info);
 
             ivProfileImg = view.findViewById(R.id.iv_profile_img);

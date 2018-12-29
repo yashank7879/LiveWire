@@ -45,7 +45,7 @@
         android:id="@+id/swipe_refresh"
         android:layout_below="@+id/filter_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_ongoing"
@@ -80,6 +80,8 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:text="@string/record_not_found"
-        android:visibility="gone" />
+        android:visibility="visible"
+        android:textColor="@color/colorGreen"
+        />
 
 </RelativeLayout>

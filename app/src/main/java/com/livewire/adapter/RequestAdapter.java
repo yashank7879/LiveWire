@@ -51,7 +51,10 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.MyViewHo
                 RequestResponceClient.DataBean dataBean = requestList.get(position);
                 holder.tvName.setText(dataBean.getName());
                 holder.tvDistance.setText(dataBean.getDistance_in_km() + " Km away");
-                Picasso.with(holder.ivProfileImg.getContext()).load(dataBean.getProfileImage()).fit().into(holder.ivProfileImg);
+                Picasso.with(holder.ivProfileImg.getContext()).load(dataBean.getProfileImage()).placeholder(R.drawable.ic_user).fit().into(holder.ivProfileImg);
+            if (!dataBean.getRating().isEmpty()){
+                holder.ratingBar.setRating(Float.parseFloat(dataBean.getRating()));
+            }
             }
         }
     }
@@ -66,38 +69,36 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.MyViewHo
         private CircleImageView ivProfileImg;
         private TextView tvName;
         private RatingBar ratingBar;
-        private LinearLayout llKmAway;
         private TextView tvDistance;
         private Button btnIgnore;
         private Button btnAccept;
         private RelativeLayout rlRequest;
         public MyViewHolder(View itemView) {
             super(itemView);
-            ivProfileImg = (CircleImageView) itemView.findViewById(R.id.iv_profile_img);
-            tvName = (TextView) itemView.findViewById(R.id.tv_name);
-            ratingBar = (RatingBar) itemView.findViewById(R.id.rating_bar);
-            llKmAway = (LinearLayout) itemView.findViewById(R.id.ll_km_away);
-            tvDistance = (TextView) itemView.findViewById(R.id.tv_distance);
-            btnIgnore = (Button) itemView.findViewById(R.id.btn_ignore);
-            btnAccept = (Button) itemView.findViewById(R.id.btn_accept);
+            ivProfileImg =itemView.findViewById(R.id.iv_profile_img);
+            tvName =  itemView.findViewById(R.id.tv_name);
+            ratingBar =  itemView.findViewById(R.id.rating_bar);
+            tvDistance =  itemView.findViewById(R.id.tv_distance);
+            btnIgnore =itemView.findViewById(R.id.btn_ignore);
+            btnAccept =  itemView.findViewById(R.id.btn_accept);
             rlRequest =  itemView.findViewById(R.id.rl_request);
             btnAccept.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) {
-                  listner.OnClickRequestAccept("1",requestList.get(getAdapterPosition()).getUserId());
-                  requestList.remove(getAdapterPosition());
+                public void onClick(View view) { //"" request accept = 1 "
+                  listner.OnClickRequestAccept("1",requestList.get(getAdapterPosition()).getUserId(), getAdapterPosition());
+                 // requestList.remove(getAdapterPosition());
                 }
             });
             btnIgnore.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) {
-                  listner.OnClickRequestAccept("2", requestList.get(getAdapterPosition()).getUserId());
-                    requestList.remove(getAdapterPosition());
+                public void onClick(View view) {//"" request reject = 2 "
+                  listner.OnClickRequestAccept("2", requestList.get(getAdapterPosition()).getUserId(),getAdapterPosition());
+                    //requestList.remove(getAdapterPosition());
                 }
             });
         }
     }
    public interface RequestAcceptIgnorListner{
-        void OnClickRequestAccept(String s, String userId);
+        void OnClickRequestAccept(String s, String userId, int position);
     }
 }

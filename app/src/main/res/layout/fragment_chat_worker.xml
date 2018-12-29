@@ -1,17 +1,31 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
 <FrameLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/chat_layout"
     tools:context="com.livewire.ui.fragments.ChatWorkerFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:reverseLayout="true"
+        app:stackFromEnd="true"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+
     <TextView
-        style="@style/mediumPopinsMediumStyle"
+        android:id="@+id/tv_no_data"
+        style="@style/mediumPopinsRegularStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/under_devlopment_mode"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:text="@string/no_messages_yet"
+        android:textColor="@color/colorGreen"
+        />
 
 </FrameLayout>
+
 </layout>

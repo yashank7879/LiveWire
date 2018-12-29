@@ -43,6 +43,7 @@ public class ApiCollection {
     public static final String END_JOB_API = "payment/endJob"; // single job payment
     public static final String ONGOING_END_JOB_API = "payment/ongoingEndJob"; // ongoing job payment
     public static final String NOTIFICATION_LIST_API = "user/notificationList"; //https://livewire.work/service/user/notificationList
+    public static final String CANCLE_JOB_BY_CLIENT_API = "Jobpost/cancleJobByClient"; //https://livewire.work/service/Jobpost/cancleJobByClient
 
 
     //job_status_type=1&job_type=1&skill=

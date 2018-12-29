@@ -552,7 +552,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.MY_USER_ID, userResponce.getData().getUserId());
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
-                                    PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.PROFILE_IMG, userResponce.getData().getProfileImage());
+                                    PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.PROFILE_IMG, userResponce.getData().getThumbImage());
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.Name, userResponce.getData().getName());
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.Email, userResponce.getData().getEmail());
 
@@ -620,22 +620,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     //""""""""""registration validations""""""//
     private void fieldValidation() {
         if (Validation.isEmpty(etMail)) {
-            Constant.snackBar(mainLayout, "Please enter Email Id");
+            Constant.snackBar(mainLayout, getString(R.string.please_enter_email_id));
             etMail.startAnimation(shake);
         } else if (etMail.getText().toString().trim().contains(" ")) {
-            Constant.snackBar(mainLayout, "Email can't hold space");
+            Constant.snackBar(mainLayout, getString(R.string.email_can_hold_space));
             etMail.startAnimation(shake);
         } else if (!Validation.isEmailValid(etMail)) {
-            Constant.snackBar(mainLayout, "Please enter valid Email Id");
+            Constant.snackBar(mainLayout, getString(R.string.please_enter_valid_email_id));
             etMail.startAnimation(shake);
         } else if (Validation.isEmpty(etPass)) {
-            Constant.snackBar(mainLayout, "Please enter password");
+            Constant.snackBar(mainLayout, getString(R.string.please_enter_password));
             etPass.startAnimation(shake);
         } else if (etPass.getText().toString().contains(" ")) {
-            Constant.snackBar(mainLayout, "Password can't hold space");
+            Constant.snackBar(mainLayout, getString(R.string.pass_can_hold_space));
             etPass.startAnimation(shake);
         } else if (etPass.getText().toString().length() < 6) {
-            Constant.snackBar(mainLayout, "Password should be 6 character");
+            Constant.snackBar(mainLayout, getString(R.string.pass_should_have_minimum_six_char));
             etPass.startAnimation(shake);
         } else {
             Constant.hideSoftKeyBoard(this, etMail);
@@ -680,7 +680,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.MY_USER_ID, userResponce.getData().getUserId());
-                                    PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.PROFILE_IMG, userResponce.getData().getProfileImage());
+                                    PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.PROFILE_IMG, userResponce.getData().getThumbImage());
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.Name, userResponce.getData().getName());
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.Email, userResponce.getData().getEmail());
                                     addUserFirebaseDatabase();

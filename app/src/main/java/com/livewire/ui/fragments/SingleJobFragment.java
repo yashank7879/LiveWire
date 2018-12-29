@@ -228,6 +228,8 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
             TextView tvCancel = dialog.findViewById(R.id.tv_cancel);
             final RelativeLayout addSkillsLayout = dialog.findViewById(R.id.select_skill_rl);
 
+            TextView tvHeader = dialog.findViewById(R.id.tv_header);
+            tvHeader.setText(R.string.select_skill);
             final Spinner categorySpinner = dialog.findViewById(R.id.category_spinner);
             subCategorySpinner = dialog.findViewById(R.id.sub_category_spinner);
             Button btnAddSkills = dialog.findViewById(R.id.btn_add_skills);
@@ -280,6 +282,8 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
             Constant.snackBar(mainLayout, "Please Select Date");
         } else if (Validation.isEmpty(etBudget)) {
             Constant.snackBar(mainLayout, "Please enter Budget");
+        } else if (etBudget.getText().toString().trim().equals("0")) {
+            Constant.snackBar(mainLayout, "Please enter correct Budget");
         } else if (Validation.isEmpty(tvLocation)) {
             Constant.snackBar(mainLayout, "Please enter your Location");
         } else if (Validation.isEmpty(etDescription)) {

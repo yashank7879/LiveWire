@@ -78,11 +78,13 @@
 
     <TextView
         android:id="@+id/tv_no_job_post"
-        style="@style/mediumPopinsRegularStyle"
+        style="@style/mediumPopinsMediumStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:text="@string/record_not_found"
-        android:visibility="visible" />
+        android:visibility="visible"
+        android:textColor="@color/colorGreen"
+        />
 
 </RelativeLayout>

@@ -9,13 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
-import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -25,7 +21,7 @@ import com.google.gson.Gson;
 import com.livewire.R;
 import com.livewire.databinding.ActivityNotificationJobOngoingDetailWorkerBinding;
 import com.livewire.responce.JobDetailWorkerResponce;
-import com.livewire.ui.activity.WorkerMainActivity;
+import com.livewire.ui.activity.chat.ChattingActivity;
 import com.livewire.ui.dialog.ReviewDialog;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
@@ -35,15 +31,9 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import static com.livewire.utils.ApiCollection.ADD_REVIEW_API;
 import static com.livewire.utils.ApiCollection.BASE_URL;
 import static com.livewire.utils.ApiCollection.JOBPOSTSEND_GET_WORKER_JOB_DETAIL_API;
-import static com.livewire.utils.ApiCollection.JOBPOSTSEND_REQUEST_2_API;
 
 public class CompleteJobOnGoingDetailWorkerActivity extends AppCompatActivity implements View.OnClickListener {
     ActivityNotificationJobOngoingDetailWorkerBinding binding;
@@ -55,6 +45,7 @@ public class CompleteJobOnGoingDetailWorkerActivity extends AppCompatActivity im
     private JobDetailWorkerResponce workerResponce;
     private String name = "";
     private String userId = "";
+    private String clientProfileImg="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,18 +61,24 @@ public class CompleteJobOnGoingDetailWorkerActivity extends AppCompatActivity im
         detailMainLayout = findViewById(R.id.detail_main_layout);
 
         binding.btnGiveReview.setOnClickListener(this);
+        binding.llChat.setOnClickListener(this);
         findViewById(R.id.btn_ignore).setOnClickListener(this);
         findViewById(R.id.btn_accept).setOnClickListener(this);
 
         if (getIntent().getStringExtra("JobIdKey") != null) {
             jobId = getIntent().getStringExtra("JobIdKey");
-            getJobDetailApi();
             binding.btnAcceptRejectLayout.setVisibility(View.GONE);
+            binding.rlPaidAmount.setVisibility(View.GONE);
+            binding.paymentInfoLayout.setVisibility(View.GONE);
+            binding.tvJobStatus.setVisibility(View.VISIBLE);
 
             if (getIntent().getStringExtra("CompleteJobKey") != null) {
+                binding.rlPaidAmount.setVisibility(View.VISIBLE);
                 binding.paymentInfoLayout.setVisibility(View.VISIBLE);
                 binding.btnGiveReview.setVisibility(View.VISIBLE);
             }
+
+            getJobDetailApi();
         }
     }
 
@@ -106,7 +103,6 @@ public class CompleteJobOnGoingDetailWorkerActivity extends AppCompatActivity im
                                 if (status.equals("success")) {
                                     workerResponce = new Gson().fromJson(String.valueOf(response), JobDetailWorkerResponce.class);
                                     binding.setWorkerResponcd(workerResponce.getData());
-                                    userId = workerResponce.getData().getUserId();
                                     setJobDetailData();
                                 } else {
                                     Constant.snackBar(binding.detailMainLayout, message);
@@ -134,12 +130,20 @@ public class CompleteJobOnGoingDetailWorkerActivity extends AppCompatActivity im
             case R.id.btn_give_review:
                 openReviewDialog();
                 break;
+            case R.id.ll_chat: {
+                Intent intent = new Intent(this, ChattingActivity.class);
+                intent.putExtra("otherUID", userId);
+                intent.putExtra("titleName", binding.tvName.getText().toString().trim());
+                intent.putExtra("profilePic", clientProfileImg);
+                startActivity(intent);
+            }
             default:
         }
     }
 
     private void setJobDetailData() {
-
+        userId = workerResponce.getData().getUserId();
+        clientProfileImg = workerResponce.getData().getProfileImage();
        /* RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 binding.rlProfileDetails.getHeight());
         binding.svMoreInfo.setLayoutParams(layoutParams);*/
@@ -179,6 +183,7 @@ public class CompleteJobOnGoingDetailWorkerActivity extends AppCompatActivity im
             float adminCommision = (totalPaid * 3) / 100;
             binding.tvCommisionPrice.setText("$" + adminCommision);
             binding.tvTotalPrice.setText("$" + totalPaid);
+            binding.tvAmount.setText("$" + totalPaid);
         }
 
         //********"2018-07-04" date format converted into "04 jul 2018"***********//

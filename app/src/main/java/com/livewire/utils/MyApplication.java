@@ -1,6 +1,7 @@
 package com.livewire.utils;
 
 import android.app.Application;
+import android.support.multidex.MultiDex;
 
 import com.androidnetworking.AndroidNetworking;
 import com.crashlytics.android.Crashlytics;

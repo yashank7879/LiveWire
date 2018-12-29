@@ -43,7 +43,6 @@ public class SingleJobCompleteJobDetailActivity extends AppCompatActivity implem
         progressDialog = new ProgressDialog(this);
         binding.ivBack.setOnClickListener(this);
         binding.btnDilog.setOnClickListener(this);
-
         if (getIntent().getStringExtra("JobIdKey") != null) {
             jobId = getIntent().getStringExtra("JobIdKey");
         }

@@ -30,12 +30,13 @@
 
     <TextView
         android:id="@+id/tv_no_record"
-        style="@style/SmallPopinsMediumStyle"
+        style="@style/mediumPopinsRegularStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/record_not_found"
         android:layout_centerInParent="true"
-        android:visibility="gone"
+        android:visibility="visible"
+        android:textColor="@color/colorGreen"
         />
 
     <!--android:elevation="8dp"

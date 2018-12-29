@@ -3,7 +3,6 @@ package com.livewire.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,10 +12,9 @@ import android.widget.TextView;
 
 import com.livewire.R;
 import com.livewire.model.Chat;
-import com.livewire.ui.activity.ChattingActivity;
+import com.livewire.ui.activity.chat.ChattingActivity;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -44,11 +42,16 @@ public class ChatHistoryAdapter extends RecyclerView.Adapter<ChatHistoryAdapter.
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int i) {
         Chat chat = historyList.get(i);
+        if (chat.image == 1) {
+            holder.tvMsg.setText("Image");
+        } else {
+            holder.tvMsg.setText(chat.message);
+        }
         holder.tvName.setText(chat.name);
-        holder.tvMsg.setText(chat.lastMsg);
-        Picasso.with(mContext).load(chat.profilePic).into(holder.ivProfileImage);
-    }
+        //holder.tvMsg.setText(chat.lastMsg);
 
+        Picasso.with(holder.ivProfileImage.getContext()).load(chat.profilePic).fit().into(holder.ivProfileImage);
+    }
 
     @Override
     public int getItemCount() {
@@ -56,7 +59,6 @@ public class ChatHistoryAdapter extends RecyclerView.Adapter<ChatHistoryAdapter.
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-
         private LinearLayout chatCellLayout;
         private CircleImageView ivProfileImage;
         private TextView tvName;
