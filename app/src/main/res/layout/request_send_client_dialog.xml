@@ -67,7 +67,7 @@
         android:layout_toEndOf="@+id/tv_dollar"
         android:background="@null"
         android:hint="@string/enter_offer_rate_per_hour"
-        android:inputType="number"
+        android:inputType="numberDecimal"
         android:textColor="@color/colorDarkBlack"
         android:textColorHint="@color/colorLightGray" />
 

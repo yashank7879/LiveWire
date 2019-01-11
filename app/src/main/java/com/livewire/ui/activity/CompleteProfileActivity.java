@@ -25,7 +25,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -34,6 +36,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -144,7 +147,6 @@ public class CompleteProfileActivity extends AppCompatActivity implements View.O
     private ProgressBar progressbar;
     private TextView tv_for_videoP;
     private NotificationManager mNotifyManager;
-    private static int ID = 100;
     private LatLng locationLatLng;
     private String placeLatitude;
     private String placeLongitude;
@@ -171,6 +173,8 @@ public class CompleteProfileActivity extends AppCompatActivity implements View.O
         binding = DataBindingUtil.setContentView(this, R.layout.activity_complete_profile);
 
         removeVideoImg = findViewById(R.id.iv_remove_video);
+
+
 
       /*  Log.e("Auth token", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""));
         if (getIntent().getStringExtra("EditProfileKey") != null) { // if user come from profile setting
@@ -453,8 +457,8 @@ public class CompleteProfileActivity extends AppCompatActivity implements View.O
             dialog.getWindow().setLayout((width * 10) / 11, WindowManager.LayoutParams.WRAP_CONTENT);
             TextView tvCancel = dialog.findViewById(R.id.tv_cancel);
             final RelativeLayout addSkillsLayout = dialog.findViewById(R.id.add_skills_layout);
-            final TextView etMinPrice = dialog.findViewById(R.id.et_min_price);
-            final TextView etMaxPrice = dialog.findViewById(R.id.et_max_price);
+            final EditText etMinPrice = dialog.findViewById(R.id.et_min_price);
+            final EditText etMaxPrice = dialog.findViewById(R.id.et_max_price);
             Button btnAddSkills = dialog.findViewById(R.id.btn_add_skills);
             final Spinner categorySpinner = dialog.findViewById(R.id.category_spinner);
             subCategorySpinner = dialog.findViewById(R.id.sub_category_spinner);
@@ -480,10 +484,91 @@ public class CompleteProfileActivity extends AppCompatActivity implements View.O
                     dialog.dismiss();
                 }
             });
+
+            etMaxPrice.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    String str = etMaxPrice.getText().toString();
+                    if (str.isEmpty()) return;
+                    String str2 = perfectDecimal(str, 6, 2);
+                    if (!str2.equals(str)) {
+                        etMaxPrice.setText(str2);
+                        int pos = etMaxPrice.getText().length();
+                        etMaxPrice.setSelection(pos);
+                    }
+                }
+            });
+            etMinPrice.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    String str = etMinPrice.getText().toString();
+                    if (str.isEmpty()) return;
+                    String str2 = perfectDecimal(str, 6, 2);
+                    if (!str2.equals(str)) {
+                        etMinPrice.setText(str2);
+                        int pos = etMinPrice.getText().length();
+                        etMinPrice.setSelection(pos);
+                    }
+                }
+            });
+
+
+
+
             dialog.setCancelable(false);
             dialog.show();
         } else loadSkillsData();
     }
+
+
+    public String perfectDecimal(String str, int maxBeforePoint, int maxDecimal) { //price format "15455.15"
+        if (str.charAt(0) == '.') str = "0" + str;
+        int max = str.length();
+
+        String rFinal = "";
+        boolean after = false;
+        int i = 0;
+        int up = 0;
+        int decimal = 0;
+        char t;
+        while (i < max) {
+            t = str.charAt(i);
+            if (t != '.' && !after) {
+                up++;
+                if (up > maxBeforePoint) return rFinal;
+            } else if (t == '.') {
+                after = true;
+            } else {
+                decimal++;
+                if (decimal > maxDecimal)
+                    return rFinal;
+            }
+            rFinal = rFinal + t;
+            i++;
+        }
+        return rFinal;
+    }
+
 
     ///"""""""""""" dialog validationd""""""""""""
     private void dialogValidations(Spinner categorySpinner, TextView minPrice, TextView maxPrice, RelativeLayout addSkillsLayout, Dialog dialog) {
@@ -502,7 +587,7 @@ public class CompleteProfileActivity extends AppCompatActivity implements View.O
         }/*else if ((maxPric-minPric) < 0){
             Constant.snackBar(addSkillsLayout, "Min price and Max price can't be same");
             maxPrice.requestFocus();
-        }*/ else if (Integer.parseInt(minPrice.getText().toString()) >= Integer.parseInt(maxPrice.getText().toString())) {
+        }*/ else if (Float.parseFloat(minPrice.getText().toString()) >= Float.parseFloat(maxPrice.getText().toString())) {
             Constant.snackBar(addSkillsLayout, "Min price always less than Max price");
             minPrice.requestFocus();
         } else {

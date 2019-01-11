@@ -637,7 +637,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         } else if (etPass.getText().toString().length() < 6) {
             Constant.snackBar(mainLayout, getString(R.string.pass_should_have_minimum_six_char));
             etPass.startAnimation(shake);
-        } else {
+        }  else if (etPass.getText().toString().length() > 10) {
+            etPass.startAnimation(shake);
+            etPass.requestFocus();
+            Constant.snackBar(mainLayout, getString(R.string.password_should_not_be_more_than_ten_characters));
+        }else {
             Constant.hideSoftKeyBoard(this, etMail);
             UserModel model = new UserModel();
             model.email = etMail.getText().toString().trim();

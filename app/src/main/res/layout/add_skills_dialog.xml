@@ -152,7 +152,7 @@
                 style="@style/SmallPopinsLightStyle"
                 android:background="@null"
                 android:singleLine="true"
-                android:inputType="number"
+                android:inputType="numberDecimal"
                 android:layout_toEndOf="@+id/tv_doll"
                 />
             <View
@@ -182,7 +182,7 @@
                 style="@style/SmallPopinsLightStyle"
                 android:background="@null"
                 android:singleLine="true"
-                android:inputType="number"
+                android:inputType="numberDecimal"
                 android:layout_toRightOf="@+id/tv_doll1"
                 />
 

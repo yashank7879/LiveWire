@@ -39,6 +39,7 @@ import com.livewire.pagination.EndlessRecyclerViewScrollListener;
 import com.livewire.responce.MyjobResponceClient;
 import com.livewire.ui.activity.MyOnGoingJobDetailClientActivity;
 import com.livewire.ui.activity.MySingleJobDetailClientActivity;
+import com.livewire.ui.activity.WorkerProfileDetailClientActivity;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
 import com.livewire.utils.ProgressDialog;
@@ -99,6 +100,7 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
         super.onViewCreated(view, savedInstanceState);
         progressDialog = new ProgressDialog(mContext);
 
+        Constant.printLogMethod(Constant.LOG_VALUE,"token",PreferenceConnector.readString(mContext,PreferenceConnector.AUTH_TOKEN,""));
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         width = displaymetrics.widthPixels;
@@ -376,6 +378,13 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
             intent.putExtra("jobrequestId", dataBean.getJobrequestId());
             startActivity(intent);
         }
+    }
+
+    @Override
+    public void workerProfileDetail(MyjobResponceClient.DataBean dataBean) {
+        Intent intent = new Intent(mContext, WorkerProfileDetailClientActivity.class);
+        intent.putExtra("UserIdKey", dataBean.getRequestedUserData().get(0).getUserId());
+        mContext.startActivity(intent);
     }
 }
 

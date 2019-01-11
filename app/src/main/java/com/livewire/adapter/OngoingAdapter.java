@@ -143,22 +143,22 @@ public class OngoingAdapter extends RecyclerView.Adapter<OngoingAdapter.MyViewHo
             llMoreInfo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onItemClickListner(ongoingList.get(getAdapterPosition()), "MoreInfo");
+                    listener.onItemClickListner(ongoingList.get(getAdapterPosition()), "MoreInfo",getAdapterPosition());
                 }
             });
             btnAccept.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onItemClickListner(ongoingList.get(getAdapterPosition()), "Accept");
-                    ongoingList.remove(getAdapterPosition());
+                    listener.onItemClickListner(ongoingList.get(getAdapterPosition()), "Accept",getAdapterPosition());
+                   // ongoingList.remove(getAdapterPosition());
                 }
             });
 
             btnIgnore.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onItemClickListner(ongoingList.get(getAdapterPosition()), "Reject");
-                    ongoingList.remove(getAdapterPosition());
+                    listener.onItemClickListner(ongoingList.get(getAdapterPosition()), "Reject",getAdapterPosition());
+                   // ongoingList.remove(getAdapterPosition());
                 }
             });
 
@@ -185,7 +185,7 @@ public class OngoingAdapter extends RecyclerView.Adapter<OngoingAdapter.MyViewHo
     }
 
     public interface OnGoingItemOnClick {
-        void onItemClickListner(OnGoingWorkerResponce.DataBean dataBean, String moreInfo);
+        void onItemClickListner(OnGoingWorkerResponce.DataBean dataBean, String moreInfo, int pos);
         void userInfoDetailOnClick(String userId);
     }
 }

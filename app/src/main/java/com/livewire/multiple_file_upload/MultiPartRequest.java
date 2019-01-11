@@ -125,7 +125,6 @@ public class MultiPartRequest extends Request<String> {
             builder.addPart(Template.Query.VIDEO_THUMB_IMAGE, fileBody);
         }
 
-
         for (Map.Entry<String, String> entry : mParams.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
@@ -140,7 +139,6 @@ public class MultiPartRequest extends Request<String> {
     public String getBodyContentType() {
         return mHttpEntity.getContentType().getValue();
     }
-
 
     @Override
     public Map<String, String> getHeaders() throws AuthFailureError {

@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.livewire.BR;
@@ -63,7 +64,7 @@ public class HelpOfferedAdapter extends RecyclerView.Adapter<HelpOfferedAdapter.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
 
         if (dataBeanList.size() != 0){
             HelpOfferedResponce.DataBean dataBean = dataBeanList.get(position);
@@ -108,6 +109,21 @@ public class HelpOfferedAdapter extends RecyclerView.Adapter<HelpOfferedAdapter.
                holder.btnSendRequest.setText(R.string.send_request);
                holder.btnSendRequest.setTextColor(ContextCompat.getColor(mContext,R.color.colorWhite));
            }
+
+
+            holder.btnSendRequest.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (Constant.isNetworkAvailable(mContext,manLayout)) {
+                        listener.sendRequestOnClick(dataBeanList.get(position), mContext.getString(R.string.sendrequest),position);
+                       /* btnSendRequest.setBackground(null);
+                        btnSendRequest.setText(R.string.pending_request);
+                        btnSendRequest.setTextColor(ContextCompat.getColor(mContext, R.color.colorOrange));
+                        //   btnSendRequest.setVisibility(View.GONE);
+                        btnSendRequest.setClickable(false);*/
+                    }
+                }
+            });
         }
     }
 
@@ -162,19 +178,7 @@ public class HelpOfferedAdapter extends RecyclerView.Adapter<HelpOfferedAdapter.
                 }
             });
 
-            btnSendRequest.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.helpOfferItemOnClick(dataBeanList.get(getAdapterPosition()), mContext.getString(R.string.sendrequest),getAdapterPosition());
-                    if (Constant.isNetworkAvailable(mContext,manLayout)) {
-                       /* btnSendRequest.setBackground(null);
-                        btnSendRequest.setText(R.string.pending_request);
-                        btnSendRequest.setTextColor(ContextCompat.getColor(mContext, R.color.colorOrange));
-                        //   btnSendRequest.setVisibility(View.GONE);
-                        btnSendRequest.setClickable(false);*/
-                    }
-                }
-            });
+
 
             rlUserDetail.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -217,6 +221,7 @@ public class HelpOfferedAdapter extends RecyclerView.Adapter<HelpOfferedAdapter.
     public interface HelpOfferItemListener{
         void helpOfferItemOnClick(HelpOfferedResponce.DataBean dataBean,String helpoffer, int pos);
         void userInfoDetailOnClick(String userId);
+        void sendRequestOnClick(HelpOfferedResponce.DataBean dataBean, String key, int pos);
     }
 
 }

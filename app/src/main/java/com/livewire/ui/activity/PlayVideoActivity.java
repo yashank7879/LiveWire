@@ -1,6 +1,5 @@
 package com.livewire.ui.activity;
 
-import android.app.ProgressDialog;
 import android.databinding.DataBindingUtil;
 import android.graphics.PixelFormat;
 import android.media.MediaPlayer;
@@ -8,13 +7,12 @@ import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.MediaController;
 
 import com.livewire.R;
 import com.livewire.databinding.ActivityPlayVideoBinding;
 import com.livewire.utils.Constant;
-import com.squareup.picasso.Picasso;
+import com.livewire.utils.ProgressDialog;
 
 public class PlayVideoActivity extends AppCompatActivity {
     ActivityPlayVideoBinding binding;
@@ -25,9 +23,8 @@ public class PlayVideoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getWindow().setFormat(PixelFormat.TRANSLUCENT);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_play_video);
-        progressDialog = new com.livewire.utils.ProgressDialog(this);
+        progressDialog = new ProgressDialog(this);
         progressDialog.show();
-        progressDialog.setCancelable(true);
 
         if (Constant.isNetworkAvailable(this, binding.playvideoLayout)) {
             if (getIntent().getStringExtra("VideoUrlKey") != null) {

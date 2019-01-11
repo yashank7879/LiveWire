@@ -128,11 +128,11 @@ public class RequestClientActivity extends AppCompatActivity implements View.OnC
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-
                         }
 
                         @Override
                         public void onError(ANError anError) {
+                            progressDialog.dismiss();
                             Constant.errorHandle(anError, RequestClientActivity.this);
 
                         }

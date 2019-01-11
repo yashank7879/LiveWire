@@ -196,7 +196,7 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
     @Override
     public void onResume() {
         super.onResume();
-        // helpOfferedApi();
+        helpOfferedApi();
     }
 
     //"""""""""" sub category list api """""""""""""//
@@ -542,16 +542,20 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
             intent.putExtra("type", dataBean.getJobId());
             startActivity(intent);
 
-        } else if (key.equals(getString(R.string.sendrequest))) {
-            if (PreferenceConnector.readString(mContext, PreferenceConnector.IS_BANK_ACC, "0").equals("1")) {
-                dataBean.setJob_confirmed("0");
-                offeredAdapter.notifyDataSetChanged();
-                sendRequestApi(dataBean.getJobId(), dataBean.getUserId(), pos);
-            } else {
-                showAddBankAccountDialog();
-            }
         }
     }
+
+    @Override
+    public void sendRequestOnClick(HelpOfferedResponce.DataBean dataBean, String key, int pos) {
+        if (PreferenceConnector.readString(mContext, PreferenceConnector.IS_BANK_ACC, "0").equals("1")) {
+            dataBean.setJob_confirmed("0");
+            offeredAdapter.notifyDataSetChanged();
+            sendRequestApi(dataBean.getJobId(), dataBean.getUserId(), pos);
+        } else {
+            showAddBankAccountDialog();
+        }
+    }
+
     @Override
     public void userInfoDetailOnClick(String userId) {
         if (Constant.isNetworkAvailable(mContext, mainLayout)) {

@@ -142,7 +142,7 @@
                 android:layout_marginStart="@dimen/_2sdp"
                 android:background="@null"
                 android:hint="@string/budget"
-                android:inputType="number"
+                android:inputType="numberDecimal"
                 android:singleLine="true"
                 android:textColorHint="@color/colorLightGray" />
 
@@ -234,6 +234,19 @@
             android:background="@drawable/button_green_bg"
             android:fontFamily="@font/poppins_light"
             android:text="@string/share_on_live_wire"
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/_14sdp" />
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="@dimen/_200sdp"
+            android:layout_height="@dimen/_32sdp"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/_10sdp"
+            android:background="@drawable/button_green_bg"
+            android:fontFamily="@font/poppins_light"
+            android:text="@string/cancel"
             android:textAllCaps="false"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/_14sdp" />

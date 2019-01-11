@@ -21,6 +21,7 @@ import com.google.gson.Gson;
 import com.livewire.R;
 import com.livewire.databinding.ActivityNotificationJobOngoingDetailWorkerBinding;
 import com.livewire.responce.JobDetailWorkerResponce;
+import com.livewire.ui.activity.ClientProfileDetailWorkerActivity;
 import com.livewire.ui.activity.chat.ChattingActivity;
 import com.livewire.ui.dialog.ReviewDialog;
 import com.livewire.utils.Constant;
@@ -62,6 +63,7 @@ public class CompleteJobOnGoingDetailWorkerActivity extends AppCompatActivity im
 
         binding.btnGiveReview.setOnClickListener(this);
         binding.llChat.setOnClickListener(this);
+        binding.rlUserData.setOnClickListener(this);
         findViewById(R.id.btn_ignore).setOnClickListener(this);
         findViewById(R.id.btn_accept).setOnClickListener(this);
 
@@ -136,6 +138,12 @@ public class CompleteJobOnGoingDetailWorkerActivity extends AppCompatActivity im
                 intent.putExtra("titleName", binding.tvName.getText().toString().trim());
                 intent.putExtra("profilePic", clientProfileImg);
                 startActivity(intent);
+            } case R.id.rl_user_data: {
+                if (Constant.isNetworkAvailable(this,binding.detailMainLayout)) {
+                    Intent intent = new Intent(this, ClientProfileDetailWorkerActivity.class);
+                    intent.putExtra("UserIdKey", userId);
+                    startActivity(intent);
+                }
             }
             default:
         }

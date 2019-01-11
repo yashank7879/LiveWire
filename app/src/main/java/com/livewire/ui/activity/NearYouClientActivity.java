@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.Window;
@@ -216,10 +218,65 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
             }
         });
 
+        //"""""" textWacher for bid price e.g "12345.99"
+        etOfferPrice.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                /*this method is not used*/
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            /*this method is not used*/
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) { //""""""""" price format "15455.15"
+                String str = etOfferPrice.getText().toString();
+                if (str.isEmpty()) return;
+                String str2 = perfectDecimal(str, 6, 2);
+                if (!str2.equals(str)) {
+                    etOfferPrice.setText(str2);
+                    int pos = etOfferPrice.getText().length();
+                    etOfferPrice.setSelection(pos);
+                }
+            }
+        });
+
+
         dialog.show();
         dialog.setCancelable(false);
 
     }
+
+    public String perfectDecimal(String str, int maxBeforePoint, int maxDecimal) { //price format "15455.15"
+        if (str.charAt(0) == '.') str = "0" + str;
+        int max = str.length();
+
+        String rFinal = "";
+        boolean after = false;
+        int i = 0;
+        int up = 0;
+        int decimal = 0;
+        char t;
+        while (i < max) {
+            t = str.charAt(i);
+            if (t != '.' && !after) {
+                up++;
+                if (up > maxBeforePoint) return rFinal;
+            } else if (t == '.') {
+                after = true;
+            } else {
+                decimal++;
+                if (decimal > maxDecimal)
+                    return rFinal;
+            }
+            rFinal = rFinal + t;
+            i++;
+        }
+        return rFinal;
+    }
+
 
     private void sendOfferRequestApi(String offerPrice, RelativeLayout mainLayout1, String userId) {
         if (Constant.isNetworkAvailable(this, mainLayout1)) {

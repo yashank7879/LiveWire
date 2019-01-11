@@ -260,7 +260,6 @@ public class AddCreditCardActivity extends AppCompatActivity implements View.OnC
                         progressDialog.dismiss();
                         Constant.snackBar(binding.llPaymentLayout, e.getLocalizedMessage());
                     }
-
                     return customer;
                 }
 

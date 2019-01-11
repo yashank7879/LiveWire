@@ -1,5 +1,6 @@
 package com.livewire.ui.activity;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -103,6 +104,7 @@ public class ClientProfileDetailWorkerActivity extends AppCompatActivity impleme
                 onBackPressed();
                 break;
                 default:
+
         }
     }
 }

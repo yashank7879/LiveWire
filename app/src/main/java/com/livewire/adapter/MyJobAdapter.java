@@ -261,7 +261,6 @@ public class MyJobAdapter extends RecyclerView.Adapter {
             holder.tvTime.setText(Constant.getDayDifference(dataBean.getCrd(), dataBean.getCurrentDateTime()));
 
 
-
             //********"2018-07-04" date format converted into "04 july 2018"***********//
             DateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
             String start = dataBean.getJob_start_date();
@@ -382,6 +381,12 @@ public class MyJobAdapter extends RecyclerView.Adapter {
             requestPending = (TextView) view.findViewById(R.id.request_pending);
             llMoreInfo = (LinearLayout) view.findViewById(R.id.ll_more_info);
             tvMoreInfo = (TextView) view.findViewById(R.id.tv_more_info);
+            prfileLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.workerProfileDetail(myJobList.get(getAdapterPosition()));
+                }
+            });
             llMoreInfo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -443,6 +448,12 @@ public class MyJobAdapter extends RecyclerView.Adapter {
             tvMoreInfo = (TextView) view3.findViewById(R.id.tv_more_info);
             tvOfferRequest = (TextView) view3.findViewById(R.id.tv_offer_request);
             rlOfferRange = view3.findViewById(R.id.rl_offer_range);
+            rlData.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.workerProfileDetail(myJobList.get(getAdapterPosition()));
+                }
+            });
             llMoreInfo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -487,6 +498,8 @@ public class MyJobAdapter extends RecyclerView.Adapter {
 
     public interface OnClickMoreInfoListener {
         void moreInfoOnClickClient(MyjobResponceClient.DataBean dataBean);
+
+        void workerProfileDetail(MyjobResponceClient.DataBean dataBean);
     }
 }
 

@@ -52,6 +52,7 @@ public class MyJobWorkerFragment extends Fragment {
         view.setClickable(true);
         view.requestFocus();
         viewPager = view.findViewById(R.id.viewpager);
+
         MyJobWorkerFragmentAdapter adapter = new MyJobWorkerFragmentAdapter(getChildFragmentManager(),getActivity());
         viewPager.setAdapter(adapter);
         tabLayout = view.findViewById(R.id.sliding_tabs);

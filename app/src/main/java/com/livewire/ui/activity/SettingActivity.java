@@ -255,30 +255,39 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
 
     private void dialogValidation(EditText etCurrentPass, EditText etNewPass, EditText etConfirmPass, RelativeLayout dilogParentLayout, Dialog dialog) {
         if (Validation.isEmpty(etCurrentPass)) {
-            Constant.snackBar(dilogParentLayout, "Please Enter Current Password");
+            Constant.snackBar(dilogParentLayout, getString(R.string.please_enter_current_pass));
             etCurrentPass.startAnimation(shake);
         } else if (!etCurrentPass.getText().toString().trim().equals(PreferenceConnector.readString(this, PreferenceConnector.PASS_WORD, ""))) {
-            Constant.snackBar(dilogParentLayout, "Please Enter Current Password");
+            Constant.snackBar(dilogParentLayout, getString(R.string.please_enter_current_pass));
             etCurrentPass.requestFocus();
             etCurrentPass.startAnimation(shake);
         } else if (Validation.isEmpty(etNewPass)) {
-            Constant.snackBar(dilogParentLayout, "Please Enter New Password");
+            Constant.snackBar(dilogParentLayout, getString(R.string.please_enter_new_pass));
             etNewPass.requestFocus();
             etNewPass.startAnimation(shake);
         } else if (etNewPass.getText().toString().trim().length() < 6) {
-            Constant.snackBar(dilogParentLayout, "New Password should be 6 character");
+            Constant.snackBar(dilogParentLayout, getString(R.string.new_pass_should_be_six_charactere));
             etNewPass.requestFocus();
             etNewPass.startAnimation(shake);
-        } else if (Validation.isEmpty(etConfirmPass)) {
-            Constant.snackBar(dilogParentLayout, "Please Again Enter New Password");
+        } else if (etNewPass.getText().toString().trim().contains(" ")) {
+            Constant.snackBar(dilogParentLayout, getString(R.string.pass_can_hold_space));
+            etNewPass.requestFocus();
+            etNewPass.startAnimation(shake);
+        } else if (etNewPass.getText().toString().length() > 10) {
+            etNewPass.startAnimation(shake);
+            etNewPass.requestFocus();
+            Constant.snackBar(dilogParentLayout, getString(R.string.password_should_not_be_more_than_ten_characters));
+        }
+        else if (Validation.isEmpty(etConfirmPass)) {
+            Constant.snackBar(dilogParentLayout, getString(R.string.please_again_enter_new_pass));
             etConfirmPass.requestFocus();
             etConfirmPass.startAnimation(shake);
         } else if (!etNewPass.getText().toString().equals(etConfirmPass.getText().toString())) {
-            Constant.snackBar(dilogParentLayout, "Please Enter New Password");
+            Constant.snackBar(dilogParentLayout, getString(R.string.please_enter_new_pass));
             etConfirmPass.requestFocus();
             etConfirmPass.startAnimation(shake);
         } else if (etCurrentPass.getText().toString().trim().equals(etConfirmPass.getText().toString().trim())) {
-            Constant.snackBar(dilogParentLayout, "Current Password and new Password can't be same");
+            Constant.snackBar(dilogParentLayout, getString(R.string.current_pass_and_new_pass_can_same));
             etNewPass.requestFocus();
             etNewPass.startAnimation(shake);
         } else {

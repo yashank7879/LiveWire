@@ -42,7 +42,6 @@ import com.livewire.responce.OnGoingWorkerResponce;
 import com.livewire.responce.SubCategoryResponse;
 import com.livewire.ui.activity.AddBankAccountActivity;
 import com.livewire.ui.activity.ClientProfileDetailWorkerActivity;
-import com.livewire.ui.activity.JobHelpOfferedDetailWorkerActivity;
 import com.livewire.ui.activity.JobOnGoingDetailWorkerActivity;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
@@ -197,6 +196,7 @@ public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapte
                             ongoingList.addAll(workerResponce.getData());
                             adapter.notifyDataSetChanged();
                             subCategoryAdapterList.notifyDataSetChanged();
+
                         } else {
                             ongoingList.clear();
                             adapter.notifyDataSetChanged();
@@ -438,7 +438,7 @@ public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapte
     }
 
     @Override
-    public void onItemClickListner(OnGoingWorkerResponce.DataBean dataBean, String key) {
+    public void onItemClickListner(OnGoingWorkerResponce.DataBean dataBean, String key, int pos) {
         switch (key) {
             case "MoreInfo":
                 Intent intent = new Intent(mContext, JobOnGoingDetailWorkerActivity.class);
@@ -447,14 +447,16 @@ public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapte
                 break;
             case "Accept":
                 if (PreferenceConnector.readString(mContext,PreferenceConnector.IS_BANK_ACC,"").equals("1")) {
-                    acceptRejectrequestApi(dataBean.getUserId(), dataBean.getJobId(), "1");
+                    acceptRejectrequestApi(dataBean.getUserId(), dataBean.getJobId(), "1",pos);
+
                 }else {
                     showAddBankAccountDialog();
                 }
                 break;
             case "Reject":
                 if (PreferenceConnector.readString(mContext,PreferenceConnector.IS_BANK_ACC,"").equals("1")) {
-                    acceptRejectrequestApi(dataBean.getUserId(), dataBean.getJobId(), "2");
+                    acceptRejectrequestApi(dataBean.getUserId(), dataBean.getJobId(), "2", pos);
+
                 }else {
                     showAddBankAccountDialog();
                 }
@@ -494,7 +496,7 @@ public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapte
         dialog.show();
     }
     //""""""" accept ignore request """"""""""//
-    private void acceptRejectrequestApi(String userId, String jobId, String requestStatus) {
+    private void acceptRejectrequestApi(String userId, String jobId, String requestStatus, final int pos) {
     if (Constant.isNetworkAvailable(mContext,mainLayout)){
         progressDialog.show();
         AndroidNetworking.post(BASE_URL + JOBPOSTSEND_REQUEST_2_API)
@@ -512,11 +514,13 @@ public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapte
                     status = response.getString("status");
                     String message = response.getString("message");
                     if (status.equals("success")) {
+                        ongoingList.remove(pos);
                         Constant.snackBar(mainLayout, message);
                         adapter.notifyDataSetChanged();
-                        //"""""' if user successfully created on going post """""""""""//
 
-                        // first time replace home fragment
+                        if (ongoingList.size() == 0){
+                            tvNoJobPost.setVisibility(View.VISIBLE);
+                        }
 
                     } else {
                         Constant.snackBar(mainLayout, message);

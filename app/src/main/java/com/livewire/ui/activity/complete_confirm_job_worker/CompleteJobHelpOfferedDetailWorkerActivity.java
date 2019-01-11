@@ -56,6 +56,7 @@ public class CompleteJobHelpOfferedDetailWorkerActivity extends AppCompatActivit
             binding.btnSendRequest.setVisibility(View.GONE);
             binding.tvJobReview.setVisibility(View.VISIBLE);
             binding.tvJobStatus.setVisibility(View.VISIBLE);
+            binding.rlUserData.setVisibility(View.VISIBLE);
 
             if (getIntent().getStringExtra("CompleteJobKey") != null) {
                 binding.tvOfferRate.setText(R.string.paid_amount);
@@ -192,6 +193,8 @@ public class CompleteJobHelpOfferedDetailWorkerActivity extends AppCompatActivit
                 intent.putExtra("titleName", binding.tvName.getText().toString().trim());
                 intent.putExtra("profilePic", clientProfileImg);
                 startActivity(intent);
+            }   case R.id.rl_user_data: {
+
             }
             default:
         }

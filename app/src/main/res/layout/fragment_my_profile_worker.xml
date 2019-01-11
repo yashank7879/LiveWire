@@ -108,14 +108,12 @@
                             android:layout_width="match_parent"
                             android:layout_height="100dp" />
 
-                        <com.loopeer.shadow.ShadowView
+                        <android.support.v7.widget.CardView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/_10sdp"
-                            app:shadowMargin="@dimen/_2sdp"
                             app:shadowRadius="@dimen/_5sdp"
-                            app:shadowColor="@color/colorDarkGray"
-                            app:cornerRadius="@dimen/_5sdp"
+                            app:cornerRadius="@dimen/_8sdp"
                             >
 
                             <RelativeLayout
@@ -333,7 +331,7 @@
 
                             </RelativeLayout>
 
-                        </com.loopeer.shadow.ShadowView>
+                        </android.support.v7.widget.CardView>
 
 
                     </LinearLayout>

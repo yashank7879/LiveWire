@@ -45,6 +45,7 @@
                     android:layout_marginLeft="@dimen/_5sdp"
                     android:layout_marginRight="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_20sdp"
+                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
                     android:background="@null"
                     android:hint="@string/account_holder_first_name"
                     android:inputType="textPersonName"
@@ -66,6 +67,7 @@
                     android:layout_marginLeft="@dimen/_5sdp"
                     android:layout_marginRight="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_5sdp"
+                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
                     android:background="@null"
                     android:hint="@string/account_holder_last_name"
                     android:inputType="textPersonName"
@@ -114,6 +116,7 @@
                     android:layout_marginTop="@dimen/_5sdp"
                     android:background="@null"
                     android:hint="@string/routing_number"
+                    android:inputType="number"
                     android:singleLine="true"
                     android:textColor="@color/colorDarkBlack"
                     android:textColorHint="@color/colorDarkGray" />

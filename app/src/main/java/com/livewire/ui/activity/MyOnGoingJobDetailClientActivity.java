@@ -75,6 +75,7 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
         findViewById(R.id.iv_back).setOnClickListener(this);
         binding.btnEndJob.setOnClickListener(this);
         binding.llChat.setOnClickListener(this);
+        binding.rlUserData.setOnClickListener(this);
         btnCancelJob = findViewById(R.id.btn_cancel_job);
 
         if (getIntent().getStringExtra("JobIdKey") != null) {
@@ -166,6 +167,8 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
 
                 binding.tvDistance.setText(dataBean.getRequestedUserData().get(0).getDistance_in_km() + " Km away");
 
+                userId = dataBean.getRequestedUserData().get(0).getUserId();
+
                 Picasso.with(binding.ivProfileImg.getContext())
                         .load(dataBean.getRequestedUserData()
                                 .get(0).getProfileImage()).fit().into(binding.ivProfileImg);
@@ -221,7 +224,11 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
             case R.id.btn_cancel_job:
                 cancelJobApi();
                 break;
-
+            case R.id.rl_user_data:
+                intent = new Intent(this, WorkerProfileDetailClientActivity.class);
+                intent.putExtra("UserIdKey", userId);
+                startActivity(intent);
+                break;
 
             default:
         }

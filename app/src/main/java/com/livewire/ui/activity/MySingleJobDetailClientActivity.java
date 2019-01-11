@@ -59,6 +59,7 @@ public class MySingleJobDetailClientActivity extends AppCompatActivity implement
         binding.flMultiImg.setOnClickListener(this);
         binding.btnEndJob.setOnClickListener(this);
         binding.llChat.setOnClickListener(this);
+        binding.rlUserData.setOnClickListener(this);
 
         if (getIntent().getSerializableExtra("JobIdKey") != null) {
             //MyjobResponceClient.DataBean dataBean = (MyjobResponceClient.DataBean) getIntent().getSerializableExtra("MyJobDetail");
@@ -85,7 +86,6 @@ public class MySingleJobDetailClientActivity extends AppCompatActivity implement
     private void setMyJobDetails(JobDetailClientResponce.DataBean dataBean) {
         if (dataBean.getJob_type().equals("1")) {/// """"""" SINGLE JOB
             JobId = dataBean.getJobId();
-            //usetId = dataBean.getUserId();
             budget = dataBean.getJob_budget();
             binding.tvTime.setText(Constant.getDayDifference(dataBean.getCrd(), dataBean.getCurrentDateTime()));
             binding.tvDate1.setText(Constant.DateFomatChange(dataBean.getJob_start_date()).substring(0, 2) + " ");
@@ -103,6 +103,7 @@ public class MySingleJobDetailClientActivity extends AppCompatActivity implement
                 if (!dataBean.getRequestedUserData().get(0).getRating().isEmpty()) {
                     binding.ratingBar.setRating(Float.parseFloat(dataBean.getRequestedUserData().get(0).getRating()));
                 }
+
                 binding.rlUserData.setVisibility(View.VISIBLE);
                 binding.llChat.setVisibility(View.VISIBLE);
                 binding.btnEndJob.setVisibility(View.VISIBLE);
@@ -211,6 +212,11 @@ public class MySingleJobDetailClientActivity extends AppCompatActivity implement
             intent.putExtra("titleName", workerName);
             intent.putExtra("profilePic", workerProfilePic);
             startActivity(intent);
+            break;
+            case R.id.rl_user_data:
+                 intent = new Intent(this, WorkerProfileDetailClientActivity.class);
+                intent.putExtra("UserIdKey", usetId);
+                startActivity(intent);
             break;
             default:
         }

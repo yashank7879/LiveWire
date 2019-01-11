@@ -274,11 +274,19 @@
     <string name="please_enter_fullname">Please enter Full Name</string>
     <string name="please_enter_your_location">Please enter your location</string>
     <string name="full_name_should_not_less_than_characters">Full name should not less than 2 characters</string>
+
+
     <string name="on_going3">On Going</string>
     <string name="type_here">Type here…</string>
     <string name="no_card_added">No Card Added</string>
 
     <string name="terms_and_conditions">Terms &amp; Conditions</string>
+    <string name="password_should_not_be_more_than_ten_characters">Password should not be more than 10 characters</string>
+    <string name="please_again_enter_new_pass">Please Again Enter New Password</string>
+    <string name="please_enter_new_pass">Please Enter New Password</string>
+    <string name="current_pass_and_new_pass_can_same">Current Password and new Password can\'t be same</string>
+    <string name="new_pass_should_be_six_charactere">New Password should be 6 character</string>
+    <string name="please_enter_current_pass">Please Enter Current Password</string>
 
 
 </resources>

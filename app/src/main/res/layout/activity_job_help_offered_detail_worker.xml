@@ -74,12 +74,17 @@
                 android:layout_margin="@dimen/_8sdp"
                 android:text="@string/posted_by"
                 android:textColor="@color/colorGreen" />
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_posted_by"
+                android:id="@+id/rl_user_data"
+                >
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/iv_profile_img"
                 android:layout_width="@dimen/_35sdp"
                 android:layout_height="@dimen/_35sdp"
-                android:layout_below="@+id/tv_posted_by"
                 android:layout_marginStart="@dimen/_8sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:src="@drawable/ic_user"
@@ -136,6 +141,8 @@
                     />
 
             </LinearLayout>
+
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/tv_time"

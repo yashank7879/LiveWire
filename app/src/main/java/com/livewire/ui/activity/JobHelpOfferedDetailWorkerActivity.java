@@ -46,7 +46,7 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
     private String jobId = "";
     private String userId = "";
     private String name = "";
-    private String clientProfileImg="";
+    private String clientProfileImg = "";
 
 
     @Override
@@ -62,13 +62,13 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
             } else if (extras.getString("type").equals("Once_job_rejected")) {
                 jobId = extras.getString("reference_id");
                 getJobDetailApi();
-            }else if (extras.getString("type").equals("Once_job_accepted")) {
+            } else if (extras.getString("type").equals("Once_job_accepted")) {
                 jobId = extras.getString("reference_id");
                 binding.btnSendRequest.setVisibility(View.GONE);
                 /*binding.tvStatus.setText(R.string.job_confirmed);
                 binding.tvStatus.setVisibility(View.VISIBLE);*/
                 getJobDetailApi();
-            }else if (extras.getString("type") != null){
+            } else if (extras.getString("type") != null) {
                 jobId = extras.getString("type");
                 getJobDetailApi();
             }
@@ -87,6 +87,7 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
         findViewById(R.id.iv_back).setOnClickListener(this);
         binding.btnDilog.setOnClickListener(this);
         binding.llChat.setOnClickListener(this);
+        binding.rlUserData.setOnClickListener(this);
 
     }
 
@@ -155,7 +156,7 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
                 .fit().into(binding.ivProfileImg);
         clientProfileImg = jobDetail.getProfileImage();
 
-        if (!jobDetail.getRating().isEmpty()){
+        if (!jobDetail.getRating().isEmpty()) {
             binding.ratingBar.setRating(Float.parseFloat(jobDetail.getRating()));
         }
 
@@ -180,11 +181,12 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
 
     @Override
     public void onClick(View v) {
+        Intent intent = null;
         switch (v.getId()) {
             case R.id.btn_send_request:
-                if (PreferenceConnector.readString(this,PreferenceConnector.IS_BANK_ACC,"").equals("1")) {
+                if (PreferenceConnector.readString(this, PreferenceConnector.IS_BANK_ACC, "").equals("1")) {
                     sendRequestApi();
-                }else {
+                } else {
                     showAddBankAccountDialog();
                 }
 
@@ -196,11 +198,18 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
                 openReviewDialog();
                 break;
             case R.id.ll_chat:
-                Intent intent = new Intent(this, ChattingActivity.class);
+                intent = new Intent(this, ChattingActivity.class);
                 intent.putExtra("otherUID", userId);
                 intent.putExtra("titleName", binding.tvName.getText().toString().trim());
-                intent.putExtra("profilePic",clientProfileImg );
+                intent.putExtra("profilePic", clientProfileImg);
                 startActivity(intent);
+                break;
+            case R.id.rl_user_data:
+                if (Constant.isNetworkAvailable(this, binding.detailMainLayout)) {
+                    intent = new Intent(this, ClientProfileDetailWorkerActivity.class);
+                    intent.putExtra("UserIdKey", userId);
+                    startActivity(intent);
+                }
                 break;
             default:
         }
@@ -213,7 +222,7 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(JobHelpOfferedDetailWorkerActivity.this,AddBankAccountActivity.class);
+                Intent intent = new Intent(JobHelpOfferedDetailWorkerActivity.this, AddBankAccountActivity.class);
                 startActivity(intent);
                 // logoutApiCalling();
             }
@@ -227,6 +236,7 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
         dialog.getWindow().getAttributes().windowAnimations = R.style.CustomDialog;
         dialog.show();
     }
+
     //""""""" give Review Dialog """""""""""//
     private void openReviewDialog() {
         Bundle bundle = new Bundle();

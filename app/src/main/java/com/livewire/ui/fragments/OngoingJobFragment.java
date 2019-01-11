@@ -140,6 +140,7 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
         binding.weekDaysRl.setOnClickListener(this);
         binding.locationRl.setOnClickListener(this);
         binding.btnShare.setOnClickListener(this);
+        binding.btnCancel.setOnClickListener(this);
 
         //""""  to hide keyboard """""""//
         binding.etDescription.setImeOptions(EditorInfo.IME_ACTION_DONE);
@@ -235,7 +236,20 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
             case R.id.btn_share:
                 jobValidations();
                 break;
+                case R.id.btn_cancel:
+                clearFields();
+                break;
         }
+    }
+
+    private void clearFields() {
+        binding.tvSelectedSkill.setText("");
+        binding.tvStartDate.setText("");
+        binding.tvEndDate.setText("");
+        binding.tvWeekDays.setText("");
+        binding.hourRequireSpinner.setSelection(0);
+        binding.tvLocation.setText("");
+        binding.etDescription.setText("");
     }
 
     //""""""""""" open week dialog """""""""""""""//

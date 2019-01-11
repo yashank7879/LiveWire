@@ -62,6 +62,7 @@ public class JobOnGoingDetailWorkerActivity extends AppCompatActivity implements
         findViewById(R.id.btn_ignore).setOnClickListener(this);
         findViewById(R.id.btn_accept).setOnClickListener(this);
         binding.llChat.setOnClickListener(this);
+        binding.rlUserData.setOnClickListener(this);
 
         if (getIntent().getSerializableExtra("JobDetail") != null) {
             jobId =  getIntent().getStringExtra("JobDetail");
@@ -136,6 +137,14 @@ public class JobOnGoingDetailWorkerActivity extends AppCompatActivity implements
                 intent.putExtra("titleName", binding.tvName.getText().toString().trim());
                 intent.putExtra("profilePic", clientProfileImg);
                 startActivity(intent);
+            }
+             break;
+            case R.id.rl_user_data: {
+                if (Constant.isNetworkAvailable(this, binding.detailMainLayout)) {
+                    Intent intent = new Intent(this, ClientProfileDetailWorkerActivity.class);
+                    intent.putExtra("UserIdKey", userId);
+                    startActivity(intent);
+                }
             }
                 break;
             default:

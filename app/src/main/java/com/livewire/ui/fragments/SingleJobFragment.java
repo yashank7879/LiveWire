@@ -10,7 +10,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -57,6 +59,7 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
@@ -82,6 +85,7 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
     private LatLng locationLatLng;
     private EditText etBudget;
     private EditText etDescription;
+    private Button btnCancel;
     private String skillId;
     private String locationPlace;
 
@@ -112,6 +116,7 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
         RelativeLayout locationRl =  view.findViewById(R.id.location_rl);
         tvLocation = view.findViewById(R.id.tv_location);
         etBudget = view.findViewById(R.id.et_budget);
+        btnCancel = view.findViewById(R.id.btn_cancel);
         etDescription = view.findViewById(R.id.et_description);
         //""""  to hide keyboard """""""//
         etDescription.setImeOptions(EditorInfo.IME_ACTION_DONE);
@@ -119,10 +124,65 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
         locationRl.setOnClickListener(this);
         selectSkillsRl.setOnClickListener(this);
         selectDateRl.setOnClickListener(this);
+        btnCancel.setOnClickListener(this);
         view.findViewById(R.id.btn_share).setOnClickListener(this);
+
+        //"""""" textWacher for bid price e.g "12345.99"
+        etBudget.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                /*this method is not used*/
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            /*this method is not used*/
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) { //""""""""" price format "15455.15"
+                String str = etBudget.getText().toString();
+                if (str.isEmpty()) return;
+                String str2 = perfectDecimal(str, 6, 2);
+                if (!str2.equals(str)) {
+                    etBudget.setText(str2);
+                    int pos = etBudget.getText().length();
+                    etBudget.setSelection(pos);
+                }
+            }
+        });
 
         loadSkillsData();
     }
+
+    public String perfectDecimal(String str, int maxBeforePoint, int maxDecimal) { //price format "15455.15"
+        if (str.charAt(0) == '.') str = "0" + str;
+        int max = str.length();
+
+        String rFinal = "";
+        boolean after = false;
+        int i = 0;
+        int up = 0;
+        int decimal = 0;
+        char t;
+        while (i < max) {
+            t = str.charAt(i);
+            if (t != '.' && !after) {
+                up++;
+                if (up > maxBeforePoint) return rFinal;
+            } else if (t == '.') {
+                after = true;
+            } else {
+                decimal++;
+                if (decimal > maxDecimal)
+                    return rFinal;
+            }
+            rFinal = rFinal + t;
+            i++;
+        }
+        return rFinal;
+    }
+
 
     @Override
     public void onClick(View v) {
@@ -139,8 +199,19 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
             case R.id.btn_share:
                 jobValidations();
                 break;
+                case R.id.btn_cancel:
+                clearData();
+                break;
         }
 
+    }
+
+    private void clearData() {
+        tvSelectSkill.setText("");
+        tvSelectDate.setText("");
+        tvLocation.setText("");
+        etBudget.setText("");
+        etDescription.setText("");
     }
 
     //"""""""" open date picker """""""""""'//
@@ -216,6 +287,7 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
             });
         }
     }
+
 
     //""""""""""" open skills data """""""""""//
     private void openSkillDialog() {

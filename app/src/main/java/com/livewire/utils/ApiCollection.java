@@ -6,10 +6,10 @@ package com.livewire.utils;
 
 public class ApiCollection {
     ///""""""""""' dev api  """""""""//
- // public static final String BASE_URL = "http://dev.livewire.work/service/";
+  public static final String BASE_URL = "http://dev.livewire.work/service/";
 
     ///""""""""""' live api  """""""""//
-    public static final String BASE_URL = "https://livewire.work/service/";
+  //  public static final String BASE_URL = "https://livewire.work/service/";
 
 
 
