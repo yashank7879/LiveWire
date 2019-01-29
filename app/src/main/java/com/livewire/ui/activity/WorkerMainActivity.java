@@ -29,7 +29,6 @@ import com.livewire.ui.fragments.HelpOfferedWorkerFragment;
 import com.livewire.ui.fragments.MyJobWorkerFragment;
 import com.livewire.ui.fragments.MyProfileWorkerFragment;
 import com.livewire.ui.fragments.OnGoingWorkerFragment;
-import com.livewire.ui.fragments.PostJobHomeFragment;
 import com.livewire.utils.PreferenceConnector;
 
 public class WorkerMainActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
@@ -103,7 +102,7 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
             case R.id.my_job_ll:
                 if (clickId != R.id.my_job_ll) {
                     inActiveTab();
-                    binding.tvHeading.setText(R.string.my_jobs);
+                    binding.tvHeading.setText(R.string.my_work);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         binding.ivMyJobs.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorGreen)));
                     }

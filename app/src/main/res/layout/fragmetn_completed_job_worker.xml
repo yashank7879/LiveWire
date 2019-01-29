@@ -82,7 +82,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="@string/record_not_found"
+        android:text="@string/no_work_completed_yet"
         android:visibility="visible"
         android:textColor="@color/colorGreen"
         />

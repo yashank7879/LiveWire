@@ -1,6 +1,7 @@
 package com.livewire.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.graphics.Typeface;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 import com.livewire.BR;
 import com.livewire.R;
 import com.livewire.responce.HelpOfferedResponce;
+import com.livewire.ui.activity.ClientProfileDetailWorkerActivity;
 import com.livewire.utils.Constant;
 import com.squareup.picasso.Picasso;
 
@@ -73,32 +75,31 @@ public class ConfirmJobWorkerAdapter extends RecyclerView.Adapter<ConfirmJobWork
             Picasso.with(holder.ivProfileImg.getContext()).load(dataBean.getProfileImage()).fit().into(holder.ivProfileImg);
 
 
-            if (dataBean.getJob_type().equals("1") && dataBean.getRequest_status().equals("4") ){
+            if (dataBean.getJob_type().equals("1") && dataBean.getRequest_status().equals("4")) {
                 holder.budget.setText(R.string.paid_amount);
                 holder.budget.setTextColor(ContextCompat.getColor(mContext, R.color.colorGreen));
                 holder.tvDate.setText(Constant.dateTextColorChange(mContext, Constant.DateFomatChange(dataBean.getJob_start_date())));
 
-            } else if ( dataBean.getJob_type().equals("2") && dataBean.getRequest_status().equals("4")) {
+            } else if (dataBean.getJob_type().equals("2") && dataBean.getRequest_status().equals("4")) {
                 holder.budget.setText(R.string.paid_amount);
                 holder.budget.setTextColor(ContextCompat.getColor(mContext, R.color.colorGreen));
                 holder.tvDateOngoing.setText(Constant.dateTextColorChange(mContext, Constant.DateFomatChange(dataBean.getJob_start_date())));
 
-            }else if (dataBean.getJob_type().equals("2")) {
+            } else if (dataBean.getJob_type().equals("2")) {
                 holder.budget.setTextColor(ContextCompat.getColor(mContext, R.color.colorDarkGray));
                 holder.budget.setText(R.string.offered_rate);
                 holder.tvDateOngoing.setText(Constant.dateTextColorChange(mContext, Constant.DateFomatChange(dataBean.getJob_start_date())));
 
-            }else if (dataBean.getJob_type().equals("1")) {
+            } else if (dataBean.getJob_type().equals("1")) {
                 holder.budget.setTextColor(ContextCompat.getColor(mContext, R.color.colorDarkGray));
                 holder.budget.setText(R.string.budget);
                 holder.tvDate.setText(Constant.dateTextColorChange(mContext, Constant.DateFomatChange(dataBean.getJob_start_date())));
 
             }
             //********"2018-07-04" date format converted into "04 july 2018"***********//
-            if (!dataBean.getRating().isEmpty() ) {
+            if (!dataBean.getRating().isEmpty()) {
                 holder.ratingBar.setRating(Float.parseFloat(dataBean.getRating()));
             }
-
 
 
             // @{!dataBean.job_budget.equals("") ? "$ "+dataBean.job_budget : "$ "+ dataBean.job_offer, default= "$ 0"}
@@ -127,7 +128,7 @@ public class ConfirmJobWorkerAdapter extends RecyclerView.Adapter<ConfirmJobWork
         private final ViewDataBinding binding;
         private TextView tvDate;
         private TextView tvTime;
-
+        private RelativeLayout rlUserData;
         private TextView tvCategory;
         private TextView tvSubcategory;
         private TextView tvBudget;
@@ -155,6 +156,7 @@ public class ConfirmJobWorkerAdapter extends RecyclerView.Adapter<ConfirmJobWork
             budget = view.findViewById(R.id.budget);
             tvDateOngoing = view.findViewById(R.id.tv_date1);
             llMoreInfo = view.findViewById(R.id.ll_more_info);
+            rlUserData = view.findViewById(R.id.rl_user_data);
 
             ivProfileImg = view.findViewById(R.id.iv_profile_img);
             tvName = view.findViewById(R.id.tv_name);
@@ -162,6 +164,17 @@ public class ConfirmJobWorkerAdapter extends RecyclerView.Adapter<ConfirmJobWork
             tvDistance = view.findViewById(R.id.tv_distance);
             btnSendRequest = view.findViewById(R.id.btn_send_request);
             tvMoreInfo = view.findViewById(R.id.tv_more_info);
+
+            rlUserData.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (Constant.isNetworkAvailable(mContext, manLayout)) {
+                        Intent intent = new Intent(mContext, ClientProfileDetailWorkerActivity.class);
+                        intent.putExtra("UserIdKey", dataBeanList.get(getAdapterPosition()).getUserId());
+                        mContext.startActivity(intent);
+                    }
+                }
+            });
 
             llMoreInfo.setOnClickListener(new View.OnClickListener() {
                 @Override

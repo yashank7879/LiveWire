@@ -135,7 +135,8 @@ public class AddCreditCardActivity extends AppCompatActivity implements View.OnC
             @Override
             protected ExternalAccountCollection doInBackground(Void... voids) {
 
-                Stripe.apiKey = "sk_test_82UMhsygkviBYxQmikCW9Oa1";
+               // Stripe.apiKey = "sk_test_82UMhsygkviBYxQmikCW9Oa1";
+                Stripe.apiKey = "sk_test_wPa0eyao4nuDkLZG0QvaPzec";// project client account key
 
                 ExternalAccountCollection customer = null;
                 try {
@@ -248,7 +249,8 @@ public class AddCreditCardActivity extends AppCompatActivity implements View.OnC
             new AsyncTask<Void, Void, Customer>() {
                 @Override
                 protected Customer doInBackground(Void... voids) {
-                    Stripe.apiKey = "sk_test_82UMhsygkviBYxQmikCW9Oa1";
+                  //  Stripe.apiKey = "sk_test_82UMhsygkviBYxQmikCW9Oa1";
+                    Stripe.apiKey = "sk_test_wPa0eyao4nuDkLZG0QvaPzec";// project client account key
 
                     Customer customer = null;
                     try {

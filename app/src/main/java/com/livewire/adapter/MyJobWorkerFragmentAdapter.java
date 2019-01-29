@@ -55,9 +55,9 @@ public class MyJobWorkerFragmentAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return "Confirmed Jobs";
+                return "Confirmed Work";
             case 1:
-                return "Completed Jobs";
+                return "Completed Work";
             default:
                 return null;
         }

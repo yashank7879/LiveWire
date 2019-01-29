@@ -1,5 +1,6 @@
 package com.livewire.ui.activity;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -46,6 +47,7 @@ public class CompleteOngoingJobDetailClientActivity extends AppCompatActivity im
         progressDialog = new ProgressDialog(this);
         binding.ivBack.setOnClickListener(this);
         binding.btnGiveReview.setOnClickListener(this);
+        binding.rlUserData.setOnClickListener(this);
         if (getIntent().getStringExtra("JobIdKey") != null) {
             jobId = getIntent().getStringExtra("JobIdKey");
         }
@@ -141,6 +143,11 @@ public class CompleteOngoingJobDetailClientActivity extends AppCompatActivity im
                 break;
             case R.id.btn_give_review:
                 openReviewDialog();
+                break;
+            case R.id.rl_user_data:
+               Intent intent = new Intent(this, WorkerProfileDetailClientActivity.class);
+                intent.putExtra("UserIdKey", userId);
+                startActivity(intent);
                 break;
             default:
         }

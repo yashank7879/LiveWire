@@ -33,7 +33,7 @@
         style="@style/mediumPopinsRegularStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/record_not_found"
+        android:text="@string/no_work_created_yet"
         android:layout_centerInParent="true"
         android:visibility="visible"
         android:textColor="@color/colorGreen"

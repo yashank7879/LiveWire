@@ -170,17 +170,17 @@
                 android:layout_marginLeft="@dimen/_20sdp"
                 android:layout_marginRight="@dimen/_20sdp"
                 android:layout_marginTop="@dimen/_20sdp"
-                android:weightSum="1"
-                >
+                android:weightSum="1">
 
                 <TextView
                     android:id="@+id/tv_week_days"
                     style="@style/SmallPopinsLightStyle"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:hint="@string/select_week_days"
                     android:maxLines="1"
+                    android:scrollHorizontally="true"
                     android:textColor="@color/colorDarkBlack"
                     android:textColorHint="@color/colorLightGray" />
 
@@ -189,9 +189,10 @@
                     android:layout_height="@dimen/_20sdp"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:padding="@dimen/_2sdp"
                     android:layout_marginLeft="@dimen/_10sdp"
+                    android:padding="@dimen/_2sdp"
                     app:srcCompat="@drawable/ic_calender" />
+
             </LinearLayout>
 
             <View
@@ -207,9 +208,9 @@
                 android:id="@+id/et_hour_requierd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_5sdp"
                 android:layout_marginLeft="@dimen/_20sdp"
                 android:layout_marginRight="@dimen/_20sdp"
-                android:layout_marginBottom="@dimen/_5sdp"
                 android:layout_marginTop="@dimen/_20sdp">
 
                 <android.support.v7.widget.AppCompatImageView
@@ -218,19 +219,18 @@
                     android:layout_height="@dimen/_20sdp"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    app:srcCompat="@drawable/ic_arrow_drop_down_black"
-                    />
+                    app:srcCompat="@drawable/ic_arrow_drop_down_black" />
 
 
-        <!--        <TextView
-                android:id="@+id/tv_hour_requierd"
-                style="@style/SmallPopinsLightStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/hour_required_per_day"
-                android:singleLine="true"
-                android:textColor="@color/colorDarkBlack"
-                android:textColorHint="@color/colorLightGray" />-->
+                <!--        <TextView
+                        android:id="@+id/tv_hour_requierd"
+                        style="@style/SmallPopinsLightStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/hour_required_per_day"
+                        android:singleLine="true"
+                        android:textColor="@color/colorDarkBlack"
+                        android:textColorHint="@color/colorLightGray" />-->
 
                 <Spinner
                     android:id="@+id/hour_require_spinner"
@@ -239,32 +239,31 @@
                     android:layout_gravity="center"
                     android:background="@color/colorExtraLightGray"
                     android:clickable="true"
-                    android:focusable="true"
                     android:dropDownVerticalOffset="@dimen/_10sdp"
                     android:dropDownWidth="@dimen/_240sdp"
+                    android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:fontFamily="@font/poppins_regular"
                     android:gravity="center|bottom"
-                    android:spinnerMode="dropdown"
-                    />
+                    android:spinnerMode="dropdown" />
 
             </RelativeLayout>
 
-           <!-- <EditText
-                android:id="@+id/et_hour_requierd"
-                style="@style/SmallPopinsLightStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/_5sdp"
-                android:layout_marginLeft="@dimen/_20sdp"
-                android:layout_marginRight="@dimen/_20sdp"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:background="@null"
-                android:hint="@string/hour_required_per_day"
-                android:inputType="number"
-                android:singleLine="true"
-                android:textColor="@color/colorDarkBlack"
-                android:textColorHint="@color/colorLightGray" />-->
+            <!-- <EditText
+                 android:id="@+id/et_hour_requierd"
+                 style="@style/SmallPopinsLightStyle"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_marginBottom="@dimen/_5sdp"
+                 android:layout_marginLeft="@dimen/_20sdp"
+                 android:layout_marginRight="@dimen/_20sdp"
+                 android:layout_marginTop="@dimen/_20sdp"
+                 android:background="@null"
+                 android:hint="@string/hour_required_per_day"
+                 android:inputType="number"
+                 android:singleLine="true"
+                 android:textColor="@color/colorDarkBlack"
+                 android:textColorHint="@color/colorLightGray" />-->
 
             <View
                 android:layout_width="match_parent"
@@ -296,9 +295,10 @@
                     style="@style/SmallPopinsLightStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_20sdp"
                     android:hint="@string/location"
-                    android:layout_marginEnd="@dimen/_10sdp"
-                    android:singleLine="true"
+                    android:maxLines="1"
+                    android:scrollHorizontally="true"
                     android:textColor="@color/colorDarkBlack"
                     android:textColorHint="@color/colorLightGray" />
 
@@ -355,6 +355,7 @@
                 android:textAllCaps="false"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/_14sdp" />
+
             <Button
                 android:id="@+id/btn_cancel"
                 android:layout_width="@dimen/_200sdp"

@@ -34,7 +34,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="@string/job_detail"
+                    android:text="@string/work_detail"
                     android:textColor="@color/colorGreen" />
 
                 <ImageView
@@ -75,11 +75,16 @@
                     android:text="@string/job_done_by"
                     android:textColor="@color/colorGreen" />
 
+                <RelativeLayout
+                    android:id="@+id/rl_user_data"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_posted_by"
+                    >
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/iv_profile_img"
                     android:layout_width="@dimen/_35sdp"
                     android:layout_height="@dimen/_35sdp"
-                    android:layout_below="@+id/tv_posted_by"
                     android:layout_marginEnd="@dimen/_10sdp"
                     android:layout_marginStart="@dimen/_8sdp"
                     android:src="@drawable/ic_user"
@@ -90,7 +95,6 @@
                     android:id="@+id/tv_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_posted_by"
                     android:layout_toEndOf="@+id/iv_profile_img"
                     android:fontFamily="@font/poppins_semibold"
                     android:text='@{jobDetail.requestedUserData.get(0).name, default= "N/A"}'
@@ -137,6 +141,7 @@
 
                 </LinearLayout>
 
+                </RelativeLayout>
                 <TextView
                     android:id="@+id/tv_time"
                     style="@style/SmallPopinsMediumStyle"

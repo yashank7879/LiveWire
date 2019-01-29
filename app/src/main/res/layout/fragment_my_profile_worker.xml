@@ -1,8 +1,9 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:card_view="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
+        <import type="android.view.View" />
 
         <variable
             name="userResponce"
@@ -12,9 +13,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
         android:background="@color/colorExtraLightGray"
-        >
+        android:fitsSystemWindows="true">
 
         <com.loopeer.shadow.ShadowView
             android:id="@+id/action_bar"
@@ -112,9 +112,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/_10sdp"
-                            app:shadowRadius="@dimen/_5sdp"
-                            app:cornerRadius="@dimen/_8sdp"
-                            >
+                            app:cardBackgroundColor="@color/colorWhite"
+                            app:cardCornerRadius="10dp">
 
                             <RelativeLayout
                                 android:layout_width="match_parent"
@@ -145,24 +144,23 @@
 
                                     />
 
-                            <RelativeLayout
-                                android:id="@+id/rl_rating_bar"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/tv_name"
-                                android:layout_centerHorizontal="true">
-
-                                <RatingBar
-                                    android:id="@+id/rating_bar"
-                                    android:theme="@style/RatingBarTheme"
-                                    style="@style/Widget.AppCompat.RatingBar.Small"
+                                <RelativeLayout
+                                    android:id="@+id/rl_rating_bar"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:numStars="5"
-                                    android:progressTint="@color/coloryellow"
-                                    />
+                                    android:layout_below="@+id/tv_name"
+                                    android:layout_centerHorizontal="true">
 
-                            </RelativeLayout>
+                                    <RatingBar
+                                        android:id="@+id/rating_bar"
+                                        style="@style/Widget.AppCompat.RatingBar.Small"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:numStars="5"
+                                        android:progressTint="@color/coloryellow"
+                                        android:theme="@style/RatingBarTheme" />
+
+                                </RelativeLayout>
 
                                 <TextView
                                     android:id="@+id/tv_location"
@@ -254,15 +252,36 @@
 
 
                                 <TextView
-                                    android:id="@+id/watch_intro_video"
+                                    android:id="@+id/tv_about_me"
                                     style="@style/smallPopinsRegularStyle"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_below="@+id/view2"
+                                    android:text="About me"
+                                    android:textColor="@color/colorGreen"
                                     android:layout_marginStart="@dimen/_10sdp"
-                                    android:text="@string/watch_intro_video"
+                                    />
+                                <TextView
+                                    android:id="@+id/about_me"
+                                    style="@style/SmallPopinsLightStyle"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/tv_about_me"
+                                    android:text='@{userResponce.intro_discription.empty ? "NA" : userResponce.intro_discription ,default = "NA"}'
+                                    android:layout_marginStart="@dimen/_10sdp"
+                                    />
+
+                                <TextView
+                                    android:id="@+id/watch_intro_video"
+                                    style="@style/smallPopinsRegularStyle"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/about_me"
+                                    android:layout_marginStart="@dimen/_10sdp"
+                                    android:text='@{userResponce.intro_video.empty ? "No video post" : "Watch Intro Video"}'
                                     android:textColor="@color/colorGreen" />
 
+                                <!-- android:text="@string/watch_intro_video"-->
 
                                 <RelativeLayout
                                     android:id="@+id/rl_video_img"
@@ -271,15 +290,15 @@
                                     android:layout_below="@+id/watch_intro_video"
                                     android:alpha="9"
                                     android:background="@color/colorTransparent"
+                                    android:visibility="gone"
                                     app:srcCompat="@drawable/ic_user">
-
+                                    <!--                                    android:visibility='@{userResponce.intro_video == "" ?View.GONE  :  View.VISIBLE}'-->
                                     <ImageView
                                         android:id="@+id/video_thumb_img"
                                         android:layout_width="match_parent"
                                         android:layout_height="@dimen/_150sdp"
                                         android:layout_margin="@dimen/_5sdp"
-                                        android:background="#de8f8f8f"
-                                     />
+                                        android:background="#de8f8f8f" />
 
                                     <ImageView
                                         android:layout_width="@dimen/_30sdp"
@@ -359,8 +378,7 @@
                                 android:layout_height="@dimen/_100sdp"
                                 android:src="@color/colorWhite"
                                 app:civ_border_color="@color/colorGreen"
-                                app:civ_border_width="@dimen/_1sdp"
-                                />
+                                app:civ_border_width="@dimen/_1sdp" />
 
                             <ImageView
                                 android:id="@+id/iv_placeholder"

@@ -463,6 +463,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         otherChat.uid = otherUID;
         otherChat.lastMsg = myUid;
         otherChat.unreadCount = 0;
+        otherChat.type = "user";
 
 
         Chat myChat = new Chat();
@@ -486,6 +487,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         myChat.timestamp = ServerValue.TIMESTAMP;
         myChat.uid = myUid;
         myChat.lastMsg = myUid;
+        myChat.type = "user";
         myChat.unreadCount = ++Count;
 
       /*  if (isOtherUserOnline) {
@@ -536,6 +538,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getValue(String.class) != null) {
                     String isNotificationValue = dataSnapshot.getValue(String.class);
+                    assert isNotificationValue != null;
                     if (isNotificationValue.equals("1")) {
                         isNotification = true;
                     } else {

@@ -414,6 +414,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 checkSocialLogin(acct.getId(), "gmail");
                 personName = acct.getDisplayName();
                 email = acct.getEmail();
+
                 if (acct.getPhotoUrl() != null) {
                     imageUrl = String.valueOf(acct.getPhotoUrl());
                 }

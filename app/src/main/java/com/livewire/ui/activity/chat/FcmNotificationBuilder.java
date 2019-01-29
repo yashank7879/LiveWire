@@ -28,8 +28,12 @@ public class FcmNotificationBuilder {
     private static final String CONTENT_TYPE = "Content-Type";
     private static final String APPLICATION_JSON = "application/json";
     private static final String AUTHORIZATION = "Authorization";
-    private static final String AUTH_KEY = "key=" + "AAAAQknvbWY:APA91bFkVuKKBs-Fs89CZvetn60a9J_JP46-PONqj0LYjEu6cvRcQW4BcVvZXCLLIU-EBzQmvNmA3ZMnNwIS8UEMN02pbcO6fK-08_auO4WJ1X7WUZ1BKVAoUyIlvNSj3tZRq6YvGjGm";
-    //private static final String AUTH_KEY = "key=" + "AAAALR6zplM:APA91bGj1zisxQBRbJJVfgUNqtF12qus_dwXeEMObpOa97FwY1AwhX-kT9-1miydk2_iZfNDZ-ti77Q_70XkcP4Pq3tpAOCOY-osULZuoawj3l8Ny4ui_hHMvBdFRGVZ62039d1v9aL-hZpgbCvssPKk8AV0j4G4rQ";
+    //""""""""""""""""" livewire live """"""""""""""" //
+   // private static final String AUTH_KEY = "key=" + "AAAAQknvbWY:APA91bFkVuKKBs-Fs89CZvetn60a9J_JP46-PONqj0LYjEu6cvRcQW4BcVvZXCLLIU-EBzQmvNmA3ZMnNwIS8UEMN02pbcO6fK-08_auO4WJ1X7WUZ1BKVAoUyIlvNSj3tZRq6YvGjGm";
+
+
+    //""""""""""""""""" livewire dev """"""""""""""" //
+    private static final String AUTH_KEY = "key=" + "AAAA3IjqkEw:APA91bFGWmuP7Gi7ArGcSwcxdr0Pa8LNbNOxchKBDkgaYNDSrQ07OO1uB_sHLrutaPesSC0XWYgRslGFh6Q5BqFvcF3Mpj_n77Sfrz6Ek2C1rL6ayqd_0V0_kg907v450ccejDWUGHTM";
 
 
 

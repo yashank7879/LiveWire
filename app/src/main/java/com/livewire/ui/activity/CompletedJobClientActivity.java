@@ -156,4 +156,11 @@ public class CompletedJobClientActivity extends AppCompatActivity implements Vie
             startActivity(intent);
         }
     }
+
+    @Override
+    public void workerPorfileNavigateListener(String userId) {
+        Intent intent = new Intent(this, WorkerProfileDetailClientActivity.class);
+        intent.putExtra("UserIdKey",userId);
+        startActivity(intent);
+    }
 }

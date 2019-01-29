@@ -141,7 +141,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_2sdp"
                 android:background="@null"
-                android:hint="@string/budget"
+                android:hint="@string/specify_budget_for_project"
                 android:inputType="numberDecimal"
                 android:singleLine="true"
                 android:textColorHint="@color/colorLightGray" />
@@ -179,9 +179,10 @@
                 style="@style/SmallPopinsLightStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_20sdp"
                 android:hint="@string/location"
-                android:singleLine="true"
-                android:layout_marginEnd="@dimen/_10sdp"
+                android:maxLines="1"
+                android:scrollHorizontally="true"
                 android:textColor="@color/colorDarkBlack"
                 android:textColorHint="@color/colorLightGray" />
 

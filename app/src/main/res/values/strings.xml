@@ -47,10 +47,10 @@
     <string name="location">Location</string>
     <string name="budget">Budget</string>
     <string name="dollar">$</string>
-    <string name="select_job_date">Select Job Date</string>
+    <string name="select_job_date">Select Project Date</string>
     <string name="select_skill">Select Skill</string>
-    <string name="select_job_start_date">Select Job Start Date</string>
-    <string name="select_job_end_date">Select Job End Date</string>
+    <string name="select_job_start_date">Select Project Start Date</string>
+    <string name="select_job_end_date">Select Project End Date</string>
     <string name="select_week_days">Select Week Days</string>
     <string name="hour_required_per_day">Hour Required Per Day</string>
     <string name="cancel">Cancel</string>
@@ -69,14 +69,14 @@
     <string name="apply">Apply</string>
     <string name="filter">Filter</string>
     <string name="sort_by">Sort By</string>
-    <string name="all_jobs">All Jobs</string>
-    <string name="new_jobs">New Jobs</string>
+    <string name="all_work">All Work</string>
+    <string name="new_work">New Work</string>
     <string name="filter_by">Filter By</string>
     <string name="more_info">More Info</string>
 
 
     <string name="no_job_post_available">No job post available</string>
-    <string name="if_you_have_not_joined">If you have not joined our community yet, please sign up.</string>
+    <string name="if_you_have_not_joined">If you have not joined our community yet,</string>
     <string name="welcome_to_live_wire">WELCOME TO LIVE WIRE</string>
 
     <!--JobDetailActivity at workers side-->
@@ -85,7 +85,7 @@
     <string name="deatils_of_help_needed">Details Of Help Needed</string>
     <string name="house_amp_needed"><![CDATA[House & Needed]]></string>
 
-    <string name="job_detail">JOB DETAIL</string>
+    <string name="work_detail">WORK DETAIL</string>
     <string name="moreinfo">MoreInfo</string>
     <string name="sendrequest">SendRequest</string>
     <string name="pending_request">Request Pending</string>
@@ -100,8 +100,8 @@
     <string name="hr">/hr</string>
     <string name="rate_i_can_offer">RATE I CAN OFFER</string>
     <string name="enter_offer_rate_per_hour">Enter Offer Rate (Per hour)</string>
-    <string name="job_confirmed">Job Confirmed</string>
-    <string name="my_jobs">MY JOBS</string>
+    <string name="job_confirmed">Work Confirmed</string>
+    <string name="my_work">MY WORK</string>
 
 
     <!--MyjobFragment at client side-->
@@ -170,7 +170,7 @@
     <string name="my_profile">MY PROFILE</string>
     <string name="total_income">Total Income</string>
     <string name="completed">Completed</string>
-    <string name="jobs">Jobs</string>
+    <string name="jobs">Works</string>
     <string name="watch_intro_video">Watch Intro Video</string>
     <string name="skills">Skills</string>
     <string name="hourly_rate">Hourly Rate</string>
@@ -206,7 +206,7 @@
 
 
     <string name="total_expense">Total Expense</string>
-    <string name="completed_jobs">Completed Jobs</string>
+    <string name="completed_jobs">Completed Work</string>
 
     <string name="notifications">NOTIFICATIONS</string>
 
@@ -218,7 +218,7 @@
     <string name="total_working_days">Total Working Days</string>
     <string name="offered_price">Offered Price</string>
     <string name="total_amount">Total Amount</string>
-    <string name="job_reviews">Job Reviews</string>
+    <string name="job_reviews">Work Reviews</string>
     <string name="by_you">By You</string>
 
 
@@ -251,10 +251,10 @@
     <string name="client_profile">CLIENT PROFILE</string>
     <string name="reviews">REVIEWS</string>
     <string name="no_review">No review</string>
-    <string name="end_job">End Job</string>
+    <string name="end_job">End Work</string>
     <string name="save_this_card">Save this card</string>
     <string name="paid_amount">Paid Amount</string>
-    <string name="job_done_by">Job Done By</string>
+    <string name="job_done_by">Work Done By</string>
     <string name="start_from">Start From:</string>
     <string name="admin_commission">Admin Commission</string>
     <string name="paid_to_you">Paid To You</string>
@@ -287,6 +287,15 @@
     <string name="current_pass_and_new_pass_can_same">Current Password and new Password can\'t be same</string>
     <string name="new_pass_should_be_six_charactere">New Password should be 6 character</string>
     <string name="please_enter_current_pass">Please Enter Current Password</string>
+    <string name="no_near_by_workers_found_matching_your_project_skills_check_again_later">No near by workers found matching your project skills. Check again later.</string>
+    <string name="no_work_completed_yet">No work completed yet.</string>
+    <string name="tell_something_about_yourself">Tell something about yourself</string>
+    <string name="about_you">About you</string>
+    <string name="no_work_confirmed_yet">No work confirmed yet</string>
+    <string name="specify_budget_for_project">Specify budget for project</string>
+    <string name="no_work_created_yet">No work created yet</string>
+    <string name="no_work_request_yet">No work request yet</string>
+    <string name="your_project_has_been_successfully_shared">Your project has been successfully shared</string>
 
 
 </resources>

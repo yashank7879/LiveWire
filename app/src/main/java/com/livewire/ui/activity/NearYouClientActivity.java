@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -300,12 +301,13 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
                         if (status.equals("success")) {
                             Constant.snackBar(mainLayout, message);
                             //"""""' if user successfully created on going post """""""""""//
+                            Toast.makeText(NearYouClientActivity.this, R.string.your_project_has_been_successfully_shared, Toast.LENGTH_SHORT).show();
+                          //  Constant.snackBar(mainLayout,getString(R.string.your_project_has_been_successfully_shared));
                             Intent intent = new Intent(NearYouClientActivity.this, ClientMainActivity.class);
                             intent.putExtra("NearYouKey", "MyJobs");
                             startActivity(intent);
                             finish();
                             // first time replace home fragment
-
                         } else {
                             Constant.snackBar(mainLayout, message);
                         }

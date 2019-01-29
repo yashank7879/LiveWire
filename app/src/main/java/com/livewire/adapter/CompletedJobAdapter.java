@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.livewire.BR;
@@ -91,6 +92,7 @@ public class CompletedJobAdapter extends RecyclerView.Adapter<CompletedJobAdapte
         TextView tv_offer_rate;
         ImageView ivProfileImg;
         LinearLayout llMoreInfo;
+        RelativeLayout rlUserData;
         RatingBar ratingBar ;
 
         public MyViewHolder(@NonNull View itemView) {
@@ -102,6 +104,13 @@ public class CompletedJobAdapter extends RecyclerView.Adapter<CompletedJobAdapte
             llMoreInfo = itemView.findViewById(R.id.ll_more_info);
             tv_offer_rate = itemView.findViewById(R.id.tv_offer_rate);
             ratingBar = itemView.findViewById(R.id.rating_bar);
+            rlUserData = itemView.findViewById(R.id.rl_user_data);
+            rlUserData.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.workerPorfileNavigateListener(completeJobList.get(getAdapterPosition()).getUserId());
+                }
+            });
             llMoreInfo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -117,6 +126,7 @@ public class CompletedJobAdapter extends RecyclerView.Adapter<CompletedJobAdapte
 
     public interface CompleteJobClientListener {
         void singlejobcompleteMoreInfoListener(String jobType, String jobId);
+        void workerPorfileNavigateListener(String userId);
         // void onGoingjobcompleteMoreInfoListener(String jobType, String jobId);
     }
 }

@@ -157,8 +157,12 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_edit_profile_worker);
 
-        removeVideoImg = findViewById(R.id.iv_remove_video);
-        Log.e("Auth token", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""));
+      //  removeVideoImg = findViewById(R.id.iv_remove_video);
+       // Log.e("Auth token", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""));
+
+        PermissionAll permissionAll = new PermissionAll();
+        permissionAll.checkWriteStoragePermission(this);
+
         if (getIntent().getStringExtra("EditProfileKey") != null) { // if user come from profile setting
             MyProfileResponce userData = (MyProfileResponce) getIntent().getSerializableExtra("CategoryListKey");
             //  ArrayList<CategoryBean> categoryList = (ArrayList<CategoryBean>) getIntent().getSerializableExtra("CategoryListKey");
@@ -198,26 +202,37 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
             placeLatitude = userData.getData().getLatitude();
             placeLongitude = userData.getData().getLongitude();
 
-            finalVideoUri = Uri.parse(userData.getData().getIntro_video());
-            isvideoUrl = true;
-            if (!userData.getData().getVideo_thumb().isEmpty()) {
+           /* if (!userData.getData().getIntro_video().isEmpty() || userData.getData().getIntro_video() != null ){
+                finalVideoUri = Uri.parse(userData.getData().getIntro_video());
+                isvideoUrl = true;
+            }*/
+
+            if (!userData.getData().getIntro_video().isEmpty()) {
+                binding.ivRemoveVideo.setVisibility(View.VISIBLE);
+                finalVideoUri = Uri.parse(userData.getData().getIntro_video());
+
                 Picasso.with(binding.videoImg.getContext()).load(userData.getData().getVideo_thumb())
                         .fit().into(binding.videoImg);
-            } else
-                binding.videoImg.setImageDrawable(ContextCompat.getDrawable(this, R.color.colorDarkBlack));
-
+                isvideoUrl = true;
+            } else {
+                binding.videoImg.setClickable(true);
+                isvideoUrl = false;
+                binding.ivRemoveVideo.setVisibility(View.GONE);
+              //  binding.videoImg.setImageDrawable(ContextCompat.getDrawable(this, R.color.colorDarkBlack));
+            }
             if (!userData.getData().getProfileImage().isEmpty()) {
                 Picasso.with(binding.ivProfileImg.getContext())
                         .load(userData.getData().getProfileImage())
                         .fit().into(binding.ivProfileImg);
             }
+
+            binding.etDescription.setText(userData.getData().getIntro_discription());
             binding.inactiveUserImg.setVisibility(View.GONE);
 
 
             binding.llNameEmail.setVisibility(View.VISIBLE);
             binding.btnSaveAndUpdate.setVisibility(View.VISIBLE);
-            removeVideoImg.setVisibility(View.VISIBLE);
-            removeVideoImg.setOnClickListener(this);
+            binding.ivRemoveVideo.setOnClickListener(this);
             binding.btnSaveAndUpdate.setOnClickListener(this);
             binding.videoImg.setClickable(false);
 
@@ -312,6 +327,7 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
 
         binding.addSkillsRl.setOnClickListener(this);
         binding.flUserProfile.setOnClickListener(this);
+        binding.videoImg.setOnClickListener(this);
 
 
         if (getIntent().hasExtra("imageKey")) {
@@ -358,7 +374,7 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
                 updateProfileValidations();
                 break;
             case R.id.iv_remove_video:
-                removeVideoImg.setVisibility(View.GONE);
+                binding.ivRemoveVideo.setVisibility(View.GONE);
                 binding.videoImg.setClickable(true);
                 finalVideoUri = null;
                 isvideoUrl = false;
@@ -383,9 +399,9 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
             Constant.snackBar(binding.mainLayout, "please add your skills");
         } else if (placeLongitude == null) {
             Constant.snackBar(binding.mainLayout, "please enter loation");
-        } else if (finalVideoUri == null) {
+        } /*else if (finalVideoUri == null) {
             Constant.snackBar(binding.mainLayout, "please add introvideo");
-        } else {
+        }*/ else {
             profileImageFileList = new ArrayList<>();
             videoThumbFileList = new ArrayList<>();
 
@@ -404,8 +420,9 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
             mPram.put("town", locationPlace);
             mPram.put("name", binding.etFullName.getText().toString().trim());
             mPram.put("email", binding.etEmail1.getText().toString().trim());
+            mPram.put("intro_discription", binding.etDescription.getText().toString().trim());
 
-            if (isvideoUrl) {
+            if (isvideoUrl || finalVideoUri == null) {
                 mPram.put(Template.Query.INTRO_VIDEO_KEY,"");
                 apiCallForUpdateUserData();
 
@@ -603,7 +620,8 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
     @SuppressLint("StaticFieldLeak")
     private void uploadVideo() {
         
-        videoDialog();
+        //videoDialog();
+        progressDialog.show();
 
         new AsyncTask<Void, Void, Void>() {
             @Override
@@ -643,11 +661,10 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
     //""""""" show progress """""""""""""""//
     private void videoDialog() {
 
-        PermissionAll permissionAll = new PermissionAll();
-        permissionAll.checkWriteStoragePermission(this);
 
 
-        progressDialog.show();
+
+
 
        /* pDialog = new Dialog(CompleteProfileActivity.this);
         pDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -739,6 +756,7 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
         if (requestCode == Constant.GALLERY && resultCode == RESULT_OK && null != data) {
             //isCamera = false;
             tmpUri = data.getData();
+           // Log.e(TAG, tmpUri.toString());
             if (tmpUri != null) { // it will go to the CropImageActivity
                 CropImage.activity(tmpUri).setCropShape(CropImageView.CropShape.OVAL).setMinCropResultSize(200, 200)
                         .setMaxCropResultSize(4000, 4000)
@@ -805,11 +823,11 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
 
                 if (videoFilePath.endsWith(".mp4") | videoFilePath.endsWith(".3gp")) {
                     File videoFile = new File(videoFilePath);
-// Get length of file in bytes
+                    // Get length of file in bytes
                     long fileSizeInBytes = videoFile.length();
-// Convert the bytes to Kilobytes (1 KB = 1024 Bytes)
+                    // Convert the bytes to Kilobytes (1 KB = 1024 Bytes)
                     long fileSizeInKB = fileSizeInBytes / 1024;
-// Convert the KB to MegaBytes (1 MB = 1024 KBytes)
+                    // Convert the KB to MegaBytes (1 MB = 1024 KBytes)
                     long fileSizeInMB = fileSizeInKB / 1024;
 
                     if (fileSizeInMB < 30) {
@@ -822,9 +840,8 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
                         int rotation = ImageRotator.getRotation(this, finalVideoUri, true);
                         thumbBitmap = ImageRotator.rotate(thumbBitmap, rotation);
 
-
                         videoThumbFile = savebitmap(this, thumbBitmap, UUID.randomUUID() + ".jpg");
-// productImages.add(file);
+                        // productImages.add(file);
                         IntroVideoModal carsImageBean = new IntroVideoModal();
                         carsImageBean.setmUri(finalVideoUri);
                         carsImageBean.setmFile(videoFile);
@@ -840,9 +857,9 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
                         // profileImageFileList.add(bitmapToFile(thumbBitmap));
 
                         // mediaFilesList.add(1, carsImageBean);
-/*if (mediaFilesList.size() == 5) {
-mediaFilesList.remove(0);
-}*/
+                        /*if (mediaFilesList.size() == 5) {
+                        mediaFilesList.remove(0);
+                            }*/
                     } else {
                         Toast.makeText(this, "Please take less than 30 Mb file", Toast.LENGTH_SHORT).show();
                     }
@@ -1266,7 +1283,6 @@ mediaFilesList.remove(0);
 
             String filePath = null;
             try {
-
                 //"""""""  silicon compressor video""""""""""""//
                 filePath = SiliCompressor.with(mContext).compressVideo(strings[0], strings[1]);
 
@@ -1336,6 +1352,7 @@ mediaFilesList.remove(0);
                         Constant.snackBar(binding.mainLayout, message);
                     }
                 } catch (JSONException e) {
+                    progressDialog.dismiss();
                     Log.d(TAG, e.getMessage());
                 }
 

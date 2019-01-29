@@ -13,6 +13,7 @@ import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.text.method.ScrollingMovementMethod;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -118,6 +119,12 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
         etBudget = view.findViewById(R.id.et_budget);
         btnCancel = view.findViewById(R.id.btn_cancel);
         etDescription = view.findViewById(R.id.et_description);
+
+        tvLocation.setSelected(true);
+        tvLocation.setHorizontallyScrolling(true);
+        tvLocation.setMovementMethod(new ScrollingMovementMethod());
+
+
         //""""  to hide keyboard """""""//
         etDescription.setImeOptions(EditorInfo.IME_ACTION_DONE);
         etDescription.setRawInputType(InputType.TYPE_CLASS_TEXT);
@@ -225,19 +232,23 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
 
-                startDateTime = Calendar.getInstance();
-                startDateTime.set(Calendar.YEAR, year);
-                startDateTime.set(Calendar.MONTH, month);
-                startDateTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                //********Date time Format**************//
-                SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy ");
-                tvSelectDate.setText(sdf1.format(startDateTime.getTime()));
+                    startDateTime = Calendar.getInstance();
+                    startDateTime.set(Calendar.YEAR, year);
+                    startDateTime.set(Calendar.MONTH, month);
+                    startDateTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                    //********Date time Format**************//
+                    SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy ");
+                if (startDateTime.getTimeInMillis() >=  System.currentTimeMillis() - 1000 ) {
+                    tvSelectDate.setText(sdf1.format(startDateTime.getTime()));
 
+                }else {
+                    Toast.makeText(mContext, "Can't select past date", Toast.LENGTH_SHORT).show();
+                }
                 //  startDateString = sdf1.format(startDateTime.getTime());
 
             }
         }, mYear, mMonth, mDay);
-        startDateDialog.getDatePicker().setMinDate(System.currentTimeMillis());
+        startDateDialog.getDatePicker().setMinDate( System.currentTimeMillis() - 1000);
 
         startDateDialog.show();
     }
@@ -310,7 +321,6 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
             categoryAdapter.setDropDownViewResource(R.layout.spinner_drop_down);
             categorySpinner.setOnItemSelectedListener(this);
             categorySpinner.setAdapter(categoryAdapter);
-
 
             tvCancel.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -393,7 +403,7 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
                         String status = response.getString("status");
                         String message = response.getString("message");
                         if (status.equals("success")) {
-                            Constant.snackBar(mainLayout,"Your job successfully post");
+                            Constant.snackBar(mainLayout,getString(R.string.your_project_has_been_successfully_shared));
                             tvSelectSkill.setText("");
                             tvLocation.setText("");
                             tvSelectDate.setText("");

@@ -54,8 +54,7 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
     private String jobId = "";
     private String userId = "";
     private String workerProfilePic = "";
-    private Button btnCancelJob;
-    private String jobRequestId="";
+    private String jobRequestId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +75,8 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
         binding.btnEndJob.setOnClickListener(this);
         binding.llChat.setOnClickListener(this);
         binding.rlUserData.setOnClickListener(this);
-        btnCancelJob = findViewById(R.id.btn_cancel_job);
+        binding.btnSendOffer.setOnClickListener(this);
+
 
         if (getIntent().getStringExtra("JobIdKey") != null) {
             jobId = getIntent().getStringExtra("JobIdKey");
@@ -105,16 +105,21 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
                 binding.rlRange.setVisibility(View.GONE);
 
                 binding.tvNoRequest.setText(R.string.no_offer_request_yet);
+                binding.tvStartDate.setText(Constant.DateFomatChange(dataBean.getJob_start_date()));
+                binding.tvEndDate.setText(Constant.DateFomatChange(dataBean.getJob_end_date()));
 
-                binding.btnSendOffer.setOnClickListener(new View.OnClickListener() {
+                jobId = dataBean.getJobId();
+
+
+              /*  binding.btnSendOffer.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                         jobId = dataBean.getJobId();
-                        Intent intent = new Intent(MyOnGoingJobDetailClientActivity.this, NearYouClientActivity.class);
+
+                       *//* Intent intent = new Intent(MyOnGoingJobDetailClientActivity.this, NearYouClientActivity.class);
                         intent.putExtra("JobIdKey", jobId);
-                        startActivity(intent);
+                        startActivity(intent);*//*
                     }
-                });
+                });*/
 
             } else if (dataBean.getTotal_request().equals("1")) {
                 // JOB CONFIRM OR PENDING REQUEST OR IN PROGRESS
@@ -127,8 +132,8 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
                             binding.tvJobStatus.setText(R.string.request_pending);
                             binding.tvJobStatus.setBackground(getResources().getDrawable(R.drawable.doteted_orange_shape));
                             binding.tvJobStatus.setTextColor(ContextCompat.getColor(this, R.color.colorOrange));
-                            btnCancelJob.setVisibility(View.VISIBLE);
-                            btnCancelJob.setOnClickListener(this);
+                           binding.btnCancelJob.setVisibility(View.VISIBLE);
+                            binding.btnCancelJob.setOnClickListener(this);
                             getWorkerData(dataBean);
 
                         } else if (dataBean.getRequestedUserData().get(0).getRequest_status().equals("2")) {
@@ -173,6 +178,8 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
                         .load(dataBean.getRequestedUserData()
                                 .get(0).getProfileImage()).fit().into(binding.ivProfileImg);
 
+                binding.tvStartDate.setText(Constant.DateFomatChange(dataBean.getJob_start_date()));
+                binding.tvEndDate.setText(Constant.DateFomatChange(dataBean.getJob_end_date()));
 
                 SpannableStringBuilder builder = new SpannableStringBuilder();
                 SpannableString minprice = new SpannableString("$ " + dataBean.getRequestedUserData().get(0).getMin_rate());
@@ -227,6 +234,11 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
             case R.id.rl_user_data:
                 intent = new Intent(this, WorkerProfileDetailClientActivity.class);
                 intent.putExtra("UserIdKey", userId);
+                startActivity(intent);
+                break;
+            case R.id.btn_send_offer:
+                intent = new Intent(MyOnGoingJobDetailClientActivity.this, NearYouClientActivity.class);
+                intent.putExtra("JobIdKey", jobId);
                 startActivity(intent);
                 break;
 

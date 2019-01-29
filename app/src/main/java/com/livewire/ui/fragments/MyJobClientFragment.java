@@ -150,7 +150,7 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
         View actionBar = view.findViewById(R.id.action_bar1);
         TextView header = actionBar.findViewById(R.id.tv_live_wire);
 
-        header.setText(R.string.my_jobs);
+        header.setText(R.string.my_work);
         header.setTextColor(ContextCompat.getColor(mContext, R.color.colorGreen));
         ImageView ivFilter = actionBar.findViewById(R.id.iv_filter);
         ImageView ivSetting = actionBar.findViewById(R.id.iv_setting);

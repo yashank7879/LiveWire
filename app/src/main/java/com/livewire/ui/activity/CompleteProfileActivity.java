@@ -124,7 +124,7 @@ import static com.livewire.utils.Constant.MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_
 import static com.livewire.utils.Constant.RECORD_AUDIO;
 
 public class CompleteProfileActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener, AdapterView.OnItemClickListener,
-        AdapterView.OnItemSelectedListener {
+    AdapterView.OnItemSelectedListener {
     ActivityCompleteProfileBinding binding;
     private static final String TAG = CompleteProfileActivity.class.getName();
     private Uri tmpUri;
@@ -173,7 +173,6 @@ public class CompleteProfileActivity extends AppCompatActivity implements View.O
         binding = DataBindingUtil.setContentView(this, R.layout.activity_complete_profile);
 
         removeVideoImg = findViewById(R.id.iv_remove_video);
-
 
 
       /*  Log.e("Auth token", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""));
@@ -308,7 +307,6 @@ public class CompleteProfileActivity extends AppCompatActivity implements View.O
         progressDialog = new ProgressDialog(this);
 
 
-
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         binding.recyclerView.setLayoutManager(layoutManager);
         addSkillsAdapter = new CategaryAdapter(this, addedSkillBeans);
@@ -355,7 +353,7 @@ public class CompleteProfileActivity extends AppCompatActivity implements View.O
                 autoCompletePlacePicker();
                 break;
             case R.id.btn_save:
-                Log.e("SubCategory: ", getWorkerSkillData());
+               // Log.e("SubCategory: ", getWorkerSkillData());
                 profileValidations();
                 break;
             case R.id.tv_skip:
@@ -382,9 +380,9 @@ public class CompleteProfileActivity extends AppCompatActivity implements View.O
             Constant.snackBar(binding.mainLayout, "please add your Sub category");
         } else if (locationLatLng == null) {
             Constant.snackBar(binding.mainLayout, "please enter loation");
-        } else if (finalVideoUri == null) {
+        } /*else if (finalVideoUri == null) {
             Constant.snackBar(binding.mainLayout, "please add introvideo");
-        } else {
+        }*/ else {
             profileImageFileList = new ArrayList<>();
             videoThumbFileList = new ArrayList<>();
 
@@ -401,9 +399,73 @@ public class CompleteProfileActivity extends AppCompatActivity implements View.O
             mPram.put("latitude", placeLatitude);
             mPram.put("longitude", placeLongitude);
             mPram.put("town", locationPlace);
-            uploadVideo();
+            mPram.put("intro_discription", binding.etDescription.getText().toString().trim());
+
+
+            if (videoThumbFile != null) {
+                // video send from the volly multi part
+                uploadVideo();
+            }else {
+                // profile image and skills and location send
+                sendOtherData();
+            }
         }
 
+    }
+
+    private void sendOtherData() {
+        if (Constant.isNetworkAvailable(this,binding.mainLayout)){
+            progressDialog.show();
+            AndroidNetworking.upload(BASE_URL+ "user/updateWorkerProfile")
+                    .addMultipartFile("profileImage",imageFile)
+                    .addMultipartParameter(mPram)
+                    .addHeaders("authToken", PreferenceConnector.readString(this,PreferenceConnector.AUTH_TOKEN,""))
+                    .setPriority(Priority.MEDIUM)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            progressDialog.dismiss();
+                            //  progressBar.setVisibility(View.GONE);
+                            String status = null;
+                            try {
+                                status = response.getString("status");
+                                String message = response.getString("message");
+                                if (status.equals("success")) {
+                                    SignUpResponce userResponce = new Gson().fromJson(String.valueOf(response), SignUpResponce.class);
+                                    //Log.e("sign up response", userResponce.getData().toString());
+
+                                    PreferenceConnector.writeString(CompleteProfileActivity.this, PreferenceConnector.COMPLETE_PROFILE_STATUS, "1");
+                                    PreferenceConnector.writeString(CompleteProfileActivity.this, PreferenceConnector.MY_USER_ID, userResponce.getData().getUserId());
+                                    PreferenceConnector.writeString(CompleteProfileActivity.this, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
+                                    PreferenceConnector.writeString(CompleteProfileActivity.this, PreferenceConnector.PROFILE_IMG, userResponce.getData().getProfileImage());
+                                    PreferenceConnector.writeString(CompleteProfileActivity.this, PreferenceConnector.Name, userResponce.getData().getName());
+                                    PreferenceConnector.writeString(CompleteProfileActivity.this, PreferenceConnector.Email, userResponce.getData().getEmail());
+
+                                    addUserFirebaseDatabase();
+
+                                    Intent intent = new Intent(CompleteProfileActivity.this, WorkerMainActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                } else {
+                                    Constant.snackBar(binding.mainLayout, message);
+                                }
+                            } catch (JSONException e) {
+                                progressDialog.dismiss();
+                               // Log.e(TAG, e.getMessage());
+                            }
+
+                        }
+
+                        @Override
+                        public void onError(ANError anError) {
+                            progressDialog.dismiss();
+                            Constant.errorHandle(anError,CompleteProfileActivity.this);
+                          //  Log.e(TAG, anError.getErrorDetail());
+                        }
+                    });
+
+        }
     }
 
 
@@ -647,27 +709,28 @@ public class CompleteProfileActivity extends AppCompatActivity implements View.O
                 mBuilder.setSmallIcon(R.drawable.livelogo);*/
 
                 // String path = ImageVideoUtil.generatePath(videoUri, AddVideosActivity.this);
-                File file = new File(finalVideoFilePath);
+                    File file = new File(finalVideoFilePath);
 
-                // Get length of file in bytes
-                long fileSizeInBytes = file.length();
-                // Convert the bytes to Kilobytes (1 KB = 1024 Bytes)
-                long fileSizeInKB = fileSizeInBytes / 1024;
-                // Convert the KB to MegaBytes (1 MB = 1024 KBytes)
-                long fileSizeInMB = fileSizeInKB / 1024;
+                    // Get length of file in bytes
+                    long fileSizeInBytes = file.length();
+                    // Convert the bytes to Kilobytes (1 KB = 1024 Bytes)
+                    long fileSizeInKB = fileSizeInBytes / 1024;
+                    // Convert the KB to MegaBytes (1 MB = 1024 KBytes)
+                    long fileSizeInMB = fileSizeInKB / 1024;
 
-                if (fileSizeInMB > 10) {
-                    compressVideo(finalVideoUri, file);
-                } else {
-                    videoFile = new ArrayList<>();
-                    videoFile.add(file);
-                    if (!isUpdateProfile) {// if user is come from sign up
-                        apiCallForUploadVideo(videoFile);
+                    if (fileSizeInMB > 10) {
+                        compressVideo(finalVideoUri, file);
+                    } else {
+                        videoFile = new ArrayList<>();
+                        videoFile.add(file);
+                        if (!isUpdateProfile) {// if user is come from sign up
+                            apiCallForUploadVideo(videoFile);
 
-                    }else{ // if user come from edit profile
-                       //apiCallForUpdateProfile(videoFile);
+                        } else { // if user come from edit profile
+                            //apiCallForUpdateProfile(videoFile);
+                        }
                     }
-                }
+
                 return null;
             }
         }.execute();
@@ -1240,7 +1303,7 @@ mediaFilesList.remove(0);
                         PreferenceConnector.writeString(CompleteProfileActivity.this, PreferenceConnector.MY_USER_ID, userResponce.getData().getUserId());
                         PreferenceConnector.writeString(CompleteProfileActivity.this, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
                         PreferenceConnector.writeString(CompleteProfileActivity.this, PreferenceConnector.PROFILE_IMG, userResponce.getData().getProfileImage());
-                        PreferenceConnector.writeString(CompleteProfileActivity.this, PreferenceConnector.Name, userResponce.getData().getUserId());
+                        PreferenceConnector.writeString(CompleteProfileActivity.this, PreferenceConnector.Name, userResponce.getData().getName());
                         PreferenceConnector.writeString(CompleteProfileActivity.this, PreferenceConnector.Email, userResponce.getData().getEmail());
 
                         addUserFirebaseDatabase();

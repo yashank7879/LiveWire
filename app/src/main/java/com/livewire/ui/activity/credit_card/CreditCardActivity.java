@@ -212,7 +212,9 @@ public class CreditCardActivity extends AppCompatActivity implements View.OnClic
             new AsyncTask<Void, Void, com.stripe.model.Token>() {
                 @Override
                 protected com.stripe.model.Token doInBackground(Void... voids) {
-                    com.stripe.Stripe.apiKey = "sk_test_82UMhsygkviBYxQmikCW9Oa1";
+                   // com.stripe.Stripe.apiKey = "sk_test_82UMhsygkviBYxQmikCW9Oa1";
+                    Stripe.apiKey = "sk_test_wPa0eyao4nuDkLZG0QvaPzec";// project client account key
+
                     com.stripe.model.Token token = null;
                     Map<String, Object> tokenParams = new HashMap<String, Object>();
                     Map<String, Object> cardParams = new HashMap<String, Object>();
@@ -373,7 +375,9 @@ public class CreditCardActivity extends AppCompatActivity implements View.OnClic
             new AsyncTask<Void, Void, com.stripe.model.Token>() {
                 @Override
                 protected com.stripe.model.Token doInBackground(Void... voids) {
-                    com.stripe.Stripe.apiKey = "sk_test_82UMhsygkviBYxQmikCW9Oa1";
+                 //   com.stripe.Stripe.apiKey = "sk_test_82UMhsygkviBYxQmikCW9Oa1";
+                    Stripe.apiKey = "sk_test_wPa0eyao4nuDkLZG0QvaPzec";// project client account key
+
                     com.stripe.model.Token token = null;
                     Map<String, Object> tokenParams = new HashMap<String, Object>();
                     Map<String, Object> cardParams = new HashMap<String, Object>();
@@ -458,7 +462,8 @@ public class CreditCardActivity extends AppCompatActivity implements View.OnClic
         new AsyncTask<Void, Void, Customer>() {
             @Override
             protected Customer doInBackground(Void... voids) {
-                Stripe.apiKey = "sk_test_82UMhsygkviBYxQmikCW9Oa1";
+              //  Stripe.apiKey = "sk_test_82UMhsygkviBYxQmikCW9Oa1";
+                Stripe.apiKey = "sk_test_wPa0eyao4nuDkLZG0QvaPzec";// project client account key
 
                 Customer customer = null;
                 try {

@@ -17,6 +17,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.text.method.ScrollingMovementMethod;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,6 +33,7 @@ import android.widget.DatePicker;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -124,6 +126,7 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
         progressDialog.setCancelable(false);
 
 
+
         weekList = new ArrayList<>();
         weekList.add(new WeekListModel("Monday", false));
         weekList.add(new WeekListModel("Tuesday", false));
@@ -155,6 +158,16 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
         binding.hourRequireSpinner.setOnItemSelectedListener(this);
         binding.hourRequireSpinner.setAdapter(hourRequireAdapter);
 
+
+
+
+        binding.tvLocation.setSelected(true);
+        binding.tvLocation.setHorizontallyScrolling(true);
+        binding.tvLocation.setMovementMethod(new ScrollingMovementMethod());
+
+        binding.tvWeekDays.setSelected(true);
+        binding.tvWeekDays.setHorizontallyScrolling(true);
+        binding.tvWeekDays.setMovementMethod(new ScrollingMovementMethod());
 
         loadSkillsData();
     }
@@ -281,7 +294,7 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
                         sb.append(",");
                     }
                 }
-                Log.e("week list ss: ", ss);
+             //   Log.e("week list ss: ", ss);
                 binding.tvWeekDays.setText(sb);
                 dialog.dismiss();
             }
@@ -359,13 +372,13 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
                             Constant.snackBar(binding.svOngoingJob, message);
                         }
                     } catch (JSONException e) {
-                        Log.d(TAG, e.getMessage());
+                      //  Log.d(TAG, e.getMessage());
                     }
                 }
 
                 @Override
                 public void onError(ANError anError) {
-                    Log.d(TAG, anError.getErrorDetail());
+                 //   Log.d(TAG, anError.getErrorDetail());
                     Constant.errorHandle(anError, getActivity());
                     progressDialog.dismiss();
                 }
@@ -392,12 +405,17 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
 
                     //********Date time Format**************//
                     SimpleDateFormat sdf2 = new SimpleDateFormat("dd-MM-yyyy ");
-                    binding.tvEndDate.setText(sdf2.format(endDateTime.getTime()));
                     endDateString = sdf2.format(endDateTime.getTime());
+                    if (startDateTime.getTimeInMillis() < endDateTime.getTimeInMillis()) {
+                        binding.tvEndDate.setText(sdf2.format(endDateTime.getTime()));
+                    }else {
+                        Toast.makeText(mContext, "Can't select past date", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
 
             }, mYear, mMonth, mDay);
-            endDateDialog.getDatePicker().setMinDate(startDateTime.getTimeInMillis()); //set min date
+            endDateDialog.getDatePicker().setMinDate(startDateTime.getTimeInMillis() + (24*60*60*1000) ); //set min date
             endDateDialog.show();
         } else {
             Constant.snackBar(binding.svOngoingJob, "Please select start date first");
@@ -421,8 +439,13 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
                 startDateTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 //********Date time Format**************//
                 SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy ");
-                binding.tvStartDate.setText(sdf1.format(startDateTime.getTime()));
                 startDateString = sdf1.format(startDateTime.getTime());
+                if (startDateTime.getTimeInMillis() >=  System.currentTimeMillis() - 1000 ) {
+                    binding.tvStartDate.setText(sdf1.format(startDateTime.getTime()));
+
+                }else {
+                    Toast.makeText(mContext, "Can't select past date", Toast.LENGTH_SHORT).show();
+                }
 
             }
         }, mYear, mMonth, mDay);
@@ -445,7 +468,7 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
                     .build(getActivity());
             startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
         } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
-            Log.d(TAG, e.getMessage());
+         //   Log.d(TAG, e.getMessage());
         }
     }
 
@@ -527,7 +550,7 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
             dialog.dismiss();
             binding.tvSelectedSkill.setText(skillsResponce.getData().get(categorySpinner.getSelectedItemPosition()).getSubcat().get(subCategorySpinner.getSelectedItemPosition()).getCategoryName());
             skillId = skillsResponce.getData().get(categorySpinner.getSelectedItemPosition()).getSubcat().get(subCategorySpinner.getSelectedItemPosition()).getCategoryId();
-            Log.e("openSkillDialog: ", skillsResponce.getData().get(categorySpinner.getSelectedItemPosition()).getSubcat().get(subCategorySpinner.getSelectedItemPosition()).getCategoryName());
+         //   Log.e("openSkillDialog: ", skillsResponce.getData().get(categorySpinner.getSelectedItemPosition()).getSubcat().get(subCategorySpinner.getSelectedItemPosition()).getCategoryName());
         }
     }
 
@@ -570,7 +593,7 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
                 @Override
                 public void onError(ANError anError) {
                     progressDialog.dismiss();
-                    Log.e(TAG, anError.getErrorDetail());
+                   // Log.e(TAG, anError.getErrorDetail());
                 }
             });
         }
@@ -586,7 +609,7 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
                 subCateoryAdapter.setDropDownViewResource(R.layout.spinner_drop_down);
                 subCategorySpinner.setOnItemSelectedListener(this);
                 subCategorySpinner.setAdapter(subCateoryAdapter);
-                Log.d("onItemSelected: ", parent.getSelectedItem().toString());
+              ///  Log.d("onItemSelected: ", parent.getSelectedItem().toString());
                 // ivCategorySpin.startAnimation(AnimationUtils.loadAnimation(this, R.anim.spinner_icon_rotator));
                 //   }
                 break;

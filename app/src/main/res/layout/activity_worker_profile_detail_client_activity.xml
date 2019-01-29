@@ -234,15 +234,36 @@
                                     android:layout_marginTop="@dimen/_10sdp"
                                     android:background="@color/colorExtraLightGray" />
 
+                                <TextView
+                                    android:id="@+id/tv_about_me"
+                                    style="@style/smallPopinsRegularStyle"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/view2"
+                                    android:text="About me"
+                                    android:textColor="@color/colorGreen"
+                                    android:layout_marginStart="@dimen/_10sdp"
+                                    />
+                                <TextView
+                                    android:id="@+id/about_me"
+                                    style="@style/SmallPopinsLightStyle"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/tv_about_me"
+                                    android:text='@{userResponce.intro_discription.empty ? "NA" : userResponce.intro_discription ,default = "NA"}'
+                                    android:layout_marginStart="@dimen/_10sdp"
+                                    />
+
 
                                 <TextView
                                     android:id="@+id/watch_intro_video"
                                     style="@style/smallPopinsRegularStyle"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_below="@+id/view2"
+                                    android:layout_below="@+id/about_me"
+                                    android:layout_marginTop="@dimen/_8sdp"
                                     android:layout_marginStart="@dimen/_10sdp"
-                                    android:text="@string/watch_intro_video"
+                                    android:text='@{userResponce.intro_video.empty ? "No video post" : "Watch Intro Video"}'
                                     android:textColor="@color/colorGreen" />
 
 
@@ -253,7 +274,9 @@
                                     android:layout_below="@+id/watch_intro_video"
                                     android:alpha="9"
                                     android:background="@color/colorTransparent"
-                                    app:srcCompat="@drawable/ic_user">
+                                    app:srcCompat="@drawable/ic_user"
+                                    android:visibility="gone"
+                                    >
 
                                     <ImageView
                                         android:id="@+id/video_thumb_img"
@@ -313,10 +336,7 @@
                             </RelativeLayout>
 
                         </android.support.v7.widget.CardView>
-
-
                     </LinearLayout>
-
 
                     <LinearLayout
                         android:layout_width="match_parent"

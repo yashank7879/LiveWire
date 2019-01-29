@@ -25,6 +25,7 @@ public class PlayVideoActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_play_video);
         progressDialog = new ProgressDialog(this);
         progressDialog.show();
+        progressDialog.setCancelable(true);
 
         if (Constant.isNetworkAvailable(this, binding.playvideoLayout)) {
             if (getIntent().getStringExtra("VideoUrlKey") != null) {

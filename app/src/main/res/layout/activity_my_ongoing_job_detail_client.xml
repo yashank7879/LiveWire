@@ -36,7 +36,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="@string/job_detail"
+                    android:text="@string/work_detail"
                     android:textColor="@color/colorGreen" />
 
                 <ImageView
@@ -476,7 +476,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/start_date"
-                        android:text='@{dataBean.job_start_date, default = "N/A"}'
                         android:textColor="@color/colorDarkGray" />
 
                     <TextView
@@ -500,7 +499,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_below="@+id/end_date"
                         android:layout_marginEnd="@dimen/_8sdp"
-                        android:text='@{dataBean.job_end_date, default = "N/A"}'                        android:textColor="@color/colorDarkGray" />
+                        android:textColor="@color/colorDarkGray" />
 
                     <TextView
                         android:id="@+id/week_days"

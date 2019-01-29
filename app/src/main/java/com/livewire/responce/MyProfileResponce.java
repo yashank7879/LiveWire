@@ -100,6 +100,7 @@ public class MyProfileResponce implements Serializable {
         private String thumbImage="";
         private String totalIncome="";
         private String rating="";
+        private String intro_discription="";
         private List<CategoryBean> category;
 
         public String getUserId() {
@@ -324,6 +325,14 @@ public class MyProfileResponce implements Serializable {
 
         public void setRating(String rating) {
             this.rating = rating;
+        }
+
+        public String getIntro_discription() {
+            return intro_discription;
+        }
+
+        public void setIntro_discription(String intro_discription) {
+            this.intro_discription = intro_discription;
         }
 
         public static class CategoryBean implements Serializable{

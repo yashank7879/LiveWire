@@ -2,6 +2,7 @@ package com.livewire.ui.activity;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
@@ -86,13 +87,15 @@ public class WorkerProfileDetailClientActivity extends AppCompatActivity impleme
                                     userResponce = new Gson().fromJson(String.valueOf(response), MyProfileResponce.class);
                                     videoUrl = userResponce.getData().getIntro_video();
 
-                                    if (!userResponce.getData().getVideo_thumb().isEmpty()) {
 
+                                    if (!videoUrl.isEmpty()) {
+                                        binding.rlVideoImg.setVisibility(View.VISIBLE);
+                                    }
+                                    if (!userResponce.getData().getVideo_thumb().isEmpty()) {
                                         Picasso.with(binding.videoThumbImg.getContext()).load(userResponce.getData().getVideo_thumb()).fit()
                                                 .error(R.color.colorWhite)
                                                 .into(binding.videoThumbImg);
                                     }
-
                                   /*  for (MyProfileResponce.DataBean.CategoryBean categoryBean : userResponce.getData().getCategory()) {
 
                                         CategoryBean catgoryData = new CategoryBean();
@@ -148,9 +151,12 @@ public class WorkerProfileDetailClientActivity extends AppCompatActivity impleme
         switch (view.getId()) {
             case R.id.rl_video_img:
                 if (Constant.isNetworkAvailable(this, binding.svProfile)) {
-                    Intent intent = new Intent(this, PlayVideoActivity.class);
+                 /*   Intent intent = new Intent(this, PlayVideoActivity.class);
                     intent.putExtra("VideoUrlKey", videoUrl);
-                    startActivity(intent);
+                    startActivity(intent);*/
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setDataAndType(Uri.parse(videoUrl), "video/mp4");
+                    startActivity(i);
                 }
                 break;
 

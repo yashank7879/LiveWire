@@ -70,8 +70,10 @@
         style="@style/mediumPopinsRegularStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_15sdp"
+        android:gravity="center"
         android:layout_centerInParent="true"
-        android:text="@string/record_not_found"
+        android:text="@string/no_near_by_workers_found_matching_your_project_skills_check_again_later"
         android:visibility="visible"
         android:textColor="@color/colorGreen"
         />

@@ -17,6 +17,7 @@ import com.google.gson.Gson;
 import com.livewire.R;
 import com.livewire.databinding.ActivityNotificationJobHelpOfferedDetailWorkerBinding;
 import com.livewire.responce.JobDetailWorkerResponce;
+import com.livewire.ui.activity.ClientProfileDetailWorkerActivity;
 import com.livewire.ui.activity.chat.ChattingActivity;
 import com.livewire.ui.dialog.ReviewDialog;
 import com.livewire.utils.Constant;
@@ -58,11 +59,13 @@ public class CompleteJobHelpOfferedDetailWorkerActivity extends AppCompatActivit
             binding.tvJobStatus.setVisibility(View.VISIBLE);
             binding.rlUserData.setVisibility(View.VISIBLE);
 
+
             if (getIntent().getStringExtra("CompleteJobKey") != null) {
                 binding.tvOfferRate.setText(R.string.paid_amount);
-                binding.tvOfferRate.setTextColor(ContextCompat.getColor(this,R.color.colorGreen));
+                binding.tvOfferRate.setTextColor(ContextCompat.getColor(this, R.color.colorGreen));
                 binding.paymentInfoLayout.setVisibility(View.VISIBLE);
                 binding.btnGiveReview.setVisibility(View.VISIBLE);
+
             }
         }
 
@@ -74,6 +77,7 @@ public class CompleteJobHelpOfferedDetailWorkerActivity extends AppCompatActivit
         findViewById(R.id.iv_back).setOnClickListener(this);
         binding.btnGiveReview.setOnClickListener(this);
         binding.llChat.setOnClickListener(this);
+        binding.rlUserData.setOnClickListener(this);
 
     }
 
@@ -180,6 +184,7 @@ public class CompleteJobHelpOfferedDetailWorkerActivity extends AppCompatActivit
 
     @Override
     public void onClick(View v) {
+        Intent intent;
         switch (v.getId()) {
             case R.id.iv_back:
                 onBackPressed();
@@ -188,13 +193,19 @@ public class CompleteJobHelpOfferedDetailWorkerActivity extends AppCompatActivit
                 openReviewDialog();
                 break;
             case R.id.ll_chat: {
-                Intent intent = new Intent(this, ChattingActivity.class);
+                intent = new Intent(this, ChattingActivity.class);
                 intent.putExtra("otherUID", userId);
                 intent.putExtra("titleName", binding.tvName.getText().toString().trim());
                 intent.putExtra("profilePic", clientProfileImg);
                 startActivity(intent);
-            }   case R.id.rl_user_data: {
-
+            }
+            case R.id.rl_user_data: {
+                if (Constant.isNetworkAvailable(this, binding.detailMainLayout)) {
+                    intent = new Intent(this, ClientProfileDetailWorkerActivity.class);
+                    intent.putExtra("UserIdKey", userId);
+                    startActivity(intent);
+                }
+                break;
             }
             default:
         }

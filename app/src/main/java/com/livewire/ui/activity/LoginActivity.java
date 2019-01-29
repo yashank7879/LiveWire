@@ -10,6 +10,9 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -104,6 +107,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private GraphRequest data_request;
     private String personName = "";
     private String email = "";
+    private SpannableString please;
+    private TextView tvSignup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,6 +161,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         TextView btnSignup = findViewById(R.id.btn_signup);
         Button btnLogin = findViewById(R.id.btn_login);
         etMail = findViewById(R.id.et_email);
+        tvSignup = findViewById(R.id.btn_signup1);
         etPass = findViewById(R.id.et_pass);
         ivCheckBox = findViewById(R.id.iv_cBox);
         mainLayout = findViewById(R.id.loginMainlayout);
@@ -173,12 +179,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         forgotpassId.setOnClickListener(this);
         googleLogInBtn.setOnClickListener(this);
+        tvSignup.setOnClickListener(this);
         fbLogInBtn.setOnClickListener(this);
         fb_btn.setOnClickListener(this);
         btnLogin.setOnClickListener(this);
         btnSignup.setOnClickListener(this);
         ivCheckBox.setOnClickListener(this);
         tvLiveWire.setText(Constant.liveWireText(this));
+
+
+        please = new SpannableString(" Please ");
+        please.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorDarkGray)), 0, please.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tvSignup.append(please);
+        SpannableString Signup = new SpannableString(getResources().getString(R.string.sign_up));
+        Signup.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorGreen)), 0, Signup.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tvSignup.append(Signup);
 
         //""""""it check user type remember login credential""""""""""
         if (PreferenceConnectorRem.readBoolean(LoginActivity.this, PreferenceConnectorRem.IS_CHECKED, false)) {
@@ -209,13 +224,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
+        Intent intent;
         int id = v.getId();
         switch (id) {
             case R.id.iv_cBox:
                 checkBoxSelector();
                 break;
             case R.id.btn_signup:
-                Intent intent = new Intent(this, SignupActivity.class);
+                intent = new Intent(this, SignupActivity.class);
+                intent.putExtra("UserTypeKey", key);
+                startActivity(intent);
+                finish();
+                break;
+            case R.id.btn_signup1:
+                intent = new Intent(this, SignupActivity.class);
                 intent.putExtra("UserTypeKey", key);
                 startActivity(intent);
                 finish();
@@ -637,11 +659,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         } else if (etPass.getText().toString().length() < 6) {
             Constant.snackBar(mainLayout, getString(R.string.pass_should_have_minimum_six_char));
             etPass.startAnimation(shake);
-        }  else if (etPass.getText().toString().length() > 10) {
+        } else if (etPass.getText().toString().length() > 10) {
             etPass.startAnimation(shake);
             etPass.requestFocus();
             Constant.snackBar(mainLayout, getString(R.string.password_should_not_be_more_than_ten_characters));
-        }else {
+        } else {
             Constant.hideSoftKeyBoard(this, etMail);
             UserModel model = new UserModel();
             model.email = etMail.getText().toString().trim();
@@ -757,27 +779,27 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     //""""""""" register user in Firebase data base  """""""""""""""//
-   private void addUserFirebaseDatabase(){
-       DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-       Log.e(TAG, database.toString());
-       UserInfoFcm infoFcm = new UserInfoFcm();
-       infoFcm.email = PreferenceConnector.readString(this,PreferenceConnector.Email,"");
-       infoFcm.firebaseToken = FirebaseInstanceId.getInstance().getToken();
-       infoFcm.name = PreferenceConnector.readString(this,PreferenceConnector.Name,"");
-       infoFcm.notificationStatus = "";
-       infoFcm.profilePic = PreferenceConnector.readString(this,PreferenceConnector.PROFILE_IMG,"");
-       infoFcm.uid = PreferenceConnector.readString(this,PreferenceConnector.MY_USER_ID,"");
-       infoFcm.userType = PreferenceConnector.readString(this,PreferenceConnector.USER_TYPE,"");
-       infoFcm.authToken = PreferenceConnector.readString(this,PreferenceConnector.AUTH_TOKEN,"");
+    private void addUserFirebaseDatabase() {
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        Log.e(TAG, database.toString());
+        UserInfoFcm infoFcm = new UserInfoFcm();
+        infoFcm.email = PreferenceConnector.readString(this, PreferenceConnector.Email, "");
+        infoFcm.firebaseToken = FirebaseInstanceId.getInstance().getToken();
+        infoFcm.name = PreferenceConnector.readString(this, PreferenceConnector.Name, "");
+        infoFcm.notificationStatus = "";
+        infoFcm.profilePic = PreferenceConnector.readString(this, PreferenceConnector.PROFILE_IMG, "");
+        infoFcm.uid = PreferenceConnector.readString(this, PreferenceConnector.MY_USER_ID, "");
+        infoFcm.userType = PreferenceConnector.readString(this, PreferenceConnector.USER_TYPE, "");
+        infoFcm.authToken = PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, "");
 
-       database.child(Constant.ARG_USERS)
-               .child(PreferenceConnector.readString(this,PreferenceConnector.MY_USER_ID,""))
-               .setValue(infoFcm)
-               .addOnCompleteListener(new OnCompleteListener<Void>() {
-                   @Override
-                   public void onComplete(Task<Void> task) {
-                       if (task.isSuccessful()) {
-                           //Utils.goToOnlineStatus(SignInActivity.this, Constant.online);
+        database.child(Constant.ARG_USERS)
+                .child(PreferenceConnector.readString(this, PreferenceConnector.MY_USER_ID, ""))
+                .setValue(infoFcm)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            //Utils.goToOnlineStatus(SignInActivity.this, Constant.online);
 
                           /* if (isProfileUpdate.equals("1")) {
                                MainActivity.start(SignInActivity.this, false);
@@ -790,10 +812,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                               *//*  MainActivity.start(SignInActivity.this, false);
                                 finish();*//*
                            }*/
-                       } else {
-                           Toast.makeText(LoginActivity.this, "Not Store", Toast.LENGTH_SHORT).show();
-                       }
-                   }
-               });
+                        } else {
+                            Toast.makeText(LoginActivity.this, "Not Store", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 }

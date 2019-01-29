@@ -3,17 +3,16 @@ package com.livewire.ui.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -26,7 +25,6 @@ import com.livewire.adapter.ShowSkillsAdapter;
 import com.livewire.databinding.FragmentMyProfileWorkerBinding;
 import com.livewire.model.CategoryBean;
 import com.livewire.responce.MyProfileResponce;
-import com.livewire.ui.activity.CompleteProfileActivity;
 import com.livewire.ui.activity.EditProfileWorkerActivity;
 import com.livewire.ui.activity.NotificationListWorkerActivity;
 import com.livewire.ui.activity.PlayVideoActivity;
@@ -40,7 +38,6 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -127,16 +124,19 @@ public class MyProfileWorkerFragment extends Fragment implements View.OnClickLis
                                 if (status.equals("success")) {
                                     userResponce = new Gson().fromJson(String.valueOf(response), MyProfileResponce.class);
                                     videoUrl = userResponce.getData().getIntro_video();
-                                    if (!userResponce.getData().getVideo_thumb().isEmpty()) {
 
+                                    if (!videoUrl.isEmpty()) {
+                                    binding.rlVideoImg.setVisibility(View.VISIBLE);
+                                    }
+                                    if (!userResponce.getData().getVideo_thumb().isEmpty()) {
                                         Picasso.with(binding.videoThumbImg.getContext()).load(userResponce.getData().getVideo_thumb()).fit()
                                                 .error(R.color.colorWhite)
                                                 .into(binding.videoThumbImg);
-                                        if (!userResponce.getData().getRating().isEmpty()) {
-                                            binding.ratingBar.setRating(Float.parseFloat(userResponce.getData().getRating()));
-                                        }
                                     }
 
+                                    if (!userResponce.getData().getRating().isEmpty()) {
+                                        binding.ratingBar.setRating(Float.parseFloat(userResponce.getData().getRating()));
+                                    }
                                     showSkillBeans.clear();
                                     showSkillBeans.addAll(userResponce.getData().getCategory());
                                     showSkillsAdapter.notifyDataSetChanged();
@@ -178,9 +178,12 @@ public class MyProfileWorkerFragment extends Fragment implements View.OnClickLis
                 break;
             case R.id.rl_video_img:
                 if (Constant.isNetworkAvailable(mContext, binding.svProfile)) {
-                    intent = new Intent(mContext, PlayVideoActivity.class);
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setDataAndType(Uri.parse(videoUrl),"video/mp4");
+                    startActivity(i);
+                  /*  intent = new Intent(mContext, PlayVideoActivity.class);
                     intent.putExtra("VideoUrlKey", videoUrl);
-                    startActivity(intent);
+                    startActivity(intent);*/
                 }
                 break;
             case R.id.iv_setting:

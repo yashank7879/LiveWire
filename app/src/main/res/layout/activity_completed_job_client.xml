@@ -35,8 +35,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/no_job_post_available"
-            android:visibility="gone" />
+            android:text="@string/no_work_completed_yet"
+            android:visibility="gone"
+            android:textColor="@color/colorGreen"
+            />
 
     </RelativeLayout>
 

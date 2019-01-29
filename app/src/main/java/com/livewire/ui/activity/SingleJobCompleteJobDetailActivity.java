@@ -1,5 +1,6 @@
 package com.livewire.ui.activity;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -42,6 +43,7 @@ public class SingleJobCompleteJobDetailActivity extends AppCompatActivity implem
         binding = DataBindingUtil.setContentView(this, R.layout.activity_single_job_complete_job_detail);
         progressDialog = new ProgressDialog(this);
         binding.ivBack.setOnClickListener(this);
+        binding.rlUserData.setOnClickListener(this);
         binding.btnDilog.setOnClickListener(this);
         if (getIntent().getStringExtra("JobIdKey") != null) {
             jobId = getIntent().getStringExtra("JobIdKey");
@@ -140,7 +142,13 @@ public class SingleJobCompleteJobDetailActivity extends AppCompatActivity implem
             case R.id.btn_dilog:
                 openReviewDialog();
                 break;
-            default:
+            case R.id.rl_user_data:
+                Intent intent = new Intent(this, WorkerProfileDetailClientActivity.class);
+                intent.putExtra("UserIdKey", userId);
+                startActivity(intent);
+                break;
+                default:
+
         }
     }
 

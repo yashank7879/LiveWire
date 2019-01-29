@@ -77,7 +77,7 @@
         android:layout_height="@dimen/_22sdp"
         android:layout_toStartOf="@+id/btn_accept"
         android:background="@drawable/btn_black_bg"
-        android:text="Ignor"
+        android:text="@string/ignor"
         android:layout_alignBottom="@+id/ll_km_away"
         android:textAllCaps="false"
         android:textColor="@color/colorWhite"

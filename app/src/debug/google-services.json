@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "947189878860",
+    "firebase_url": "https://livewire-dev-4a69d.firebaseio.com",
+    "project_id": "livewire-dev-4a69d",
+    "storage_bucket": "livewire-dev-4a69d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:947189878860:android:7bceb80a26acbe90",
+        "android_client_info": {
+          "package_name": "com.livewire.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "947189878860-niiq2e3dsfh2dgmeskmk4fop5t875mr9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-KUQlVzX_HZSNM4OjBXWTCxhwzToEBVI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

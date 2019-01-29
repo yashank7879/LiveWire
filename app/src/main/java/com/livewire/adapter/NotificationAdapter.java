@@ -59,6 +59,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             holder.getBinding().executePendingBindings();
             Picasso.with(holder.ivProfileImg.getContext()).load(dataBean.getProfileImage()).fit().into(holder.ivProfileImg);
             holder.tvName.setText(dataBean.getName());
+
             holder.tvDescription.setText(" " + dataBean.getNotification_message().getBody());
             holder.tvDate.setText(Constant.getDayDifference(dataBean.getCrd(), currentTime));
         }

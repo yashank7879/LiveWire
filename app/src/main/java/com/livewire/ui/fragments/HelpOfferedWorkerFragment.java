@@ -219,7 +219,6 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
 
                                     addItemsInSubCategoryTempList();
 
-
                                 } else {
                                     Constant.snackBar(mainLayout, message);
                                 }

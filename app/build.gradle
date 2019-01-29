@@ -28,10 +28,15 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
-        release {
+        /*release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
+        }*/
+
+
+        debug {
+           applicationIdSuffix ".debug"
+       }
     }
 
     dataBinding {
@@ -89,7 +94,7 @@ dependencies {
 
     implementation 'com.android.volley:volley:1.1.0'
     compile('com.crashlytics.sdk.android:crashlytics:2.9.5@aar') {
-        transitive = true;
+        transitive = true
     }
 }
 apply plugin: 'com.google.gms.google-services'
