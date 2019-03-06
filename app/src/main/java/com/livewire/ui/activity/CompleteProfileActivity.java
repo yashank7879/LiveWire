@@ -389,7 +389,6 @@ public class CompleteProfileActivity extends AppCompatActivity implements View.O
             if (videoThumbFile != null) {
                 videoThumbFileList.add(videoThumbFile);
             }
-
             if (imageFile != null) {
                 profileImageFileList.add(imageFile);
             }
@@ -410,7 +409,6 @@ public class CompleteProfileActivity extends AppCompatActivity implements View.O
                 sendOtherData();
             }
         }
-
     }
 
     private void sendOtherData() {

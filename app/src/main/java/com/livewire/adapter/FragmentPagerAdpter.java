@@ -56,9 +56,9 @@ public class FragmentPagerAdpter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return "SINGLE PROJECT / TASK";
+                return "Short Term";
             case 1:
-                return "ONGOING HELP NEEDED";
+                return "Long Term";
             default:
                 return null;
         }

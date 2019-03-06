@@ -38,6 +38,7 @@ import com.livewire.adapter.MyJobAdapter;
 import com.livewire.pagination.EndlessRecyclerViewScrollListener;
 import com.livewire.responce.MyjobResponceClient;
 import com.livewire.ui.activity.MyOnGoingJobDetailClientActivity;
+import com.livewire.ui.activity.MyProfileClientActivity;
 import com.livewire.ui.activity.MySingleJobDetailClientActivity;
 import com.livewire.ui.activity.WorkerProfileDetailClientActivity;
 import com.livewire.utils.Constant;
@@ -110,7 +111,6 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
         RecyclerView rvMyjob = view.findViewById(R.id.rv_myjob);
 
-
         myJobList = new ArrayList<>();
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         rvMyjob.setLayoutManager(layoutManager);
@@ -143,20 +143,24 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
         rvMyjob.addOnScrollListener(scrollListener);
         actionBarIntialize(view);
         myJobListApi();
-
     }
 
     private void actionBarIntialize(View view) {
         View actionBar = view.findViewById(R.id.action_bar1);
         TextView header = actionBar.findViewById(R.id.tv_live_wire);
 
-        header.setText(R.string.my_work);
+        header.setText("My livewire posts");
+        header.setAllCaps(true);
         header.setTextColor(ContextCompat.getColor(mContext, R.color.colorGreen));
         ImageView ivFilter = actionBar.findViewById(R.id.iv_filter);
         ImageView ivSetting = actionBar.findViewById(R.id.iv_setting);
+        ImageView ivProfile= actionBar.findViewById(R.id.iv_profile);
         ivFilter.setVisibility(View.VISIBLE);
         ivSetting.setVisibility(View.GONE);
+        ivProfile.setVisibility(View.VISIBLE);
+
         ivFilter.setOnClickListener(this);
+        ivProfile.setOnClickListener(this);
     }
 
     @Override
@@ -228,6 +232,11 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
                     cbPending.setChecked(false);
                 }
                 break;
+                case R.id.iv_profile: {
+                    Intent intent = new Intent(mContext, MyProfileClientActivity.class);
+                    startActivity(intent);
+                }
+                break;
             default:
         }
     }
@@ -268,6 +277,9 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
         tvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                jobType="";
+                requestStatus="";
+                myJobListApi();
                 dialog.dismiss();
             }
         });

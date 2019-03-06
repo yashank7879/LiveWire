@@ -61,6 +61,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
+import static com.livewire.utils.Constant.MY_UID;
+
 public class ChattingActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = ChattingActivity.class.getName();
     ActivityChattingBinding binding;
@@ -102,7 +104,9 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
             otherprofilePic = getIntent().getStringExtra("profilePic");
             String titleName = getIntent().getStringExtra("titleName");
             binding.titleName.setText(titleName);
+
             otherUID = getIntent().getStringExtra("otherUID");
+            MY_UID  = getIntent().getStringExtra("otherUID");
             if (!otherprofilePic.isEmpty()) {
                 Picasso.with(binding.headerImage.getContext()).load(otherprofilePic).error(R.drawable.ic_user).fit().into(binding.headerImage);
             }
@@ -724,6 +728,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
                 }
                 break;
             case R.id.iv_back:
+                MY_UID = "";
                 onBackPressed();
                 break;
             case R.id.iv_popup_menu: {
@@ -770,6 +775,13 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
             default:
 
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Constant.hideSoftKeyBoard(this,binding.edMessage);
+        MY_UID = "";
     }
 
     private void getBlockUserData() {

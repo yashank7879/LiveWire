@@ -540,7 +540,6 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
             Intent intent = new Intent(mContext, JobHelpOfferedDetailWorkerActivity.class);
             intent.putExtra("type", dataBean.getJobId());
             startActivity(intent);
-
         }
     }
 

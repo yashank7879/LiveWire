@@ -79,7 +79,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_regular"
-                    android:hint="@string/select_job_start_date"
+                    android:hint="Select Start Date"
                     android:textColor="@color/colorDarkBlack"
                     android:textColorHint="@color/colorLightGray" />
                 <!-- <Spinner
@@ -124,14 +124,14 @@
                     android:layout_centerVertical="true"
                     app:srcCompat="@drawable/ic_arrow_drop_down_black"
                     tools:ignore="VectorDrawableCompat" />
-
+@string/select_job_end_date
                 <TextView
                     android:id="@+id/tv_end_date"
                     style="@style/SmallPopinsLightStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_regular"
-                    android:hint="@string/select_job_end_date"
+                    android:hint="Select End Date"
                     android:textColor="@color/colorDarkBlack"
                     android:textColorHint="@color/colorLightGray"
 

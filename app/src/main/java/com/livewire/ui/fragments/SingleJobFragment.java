@@ -66,6 +66,8 @@ import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 import static com.livewire.ui.activity.CompleteProfileActivity.PLACE_AUTOCOMPLETE_REQUEST_CODE;
 import static com.livewire.utils.ApiCollection.BASE_URL;
+import static com.livewire.utils.ApiCollection.CLIENT_JOB_POST_API;
+import static com.livewire.utils.ApiCollection.GET_CATEGORY_LIST_API;
 
 /**
  * Created by mindiii on 9/28/18.
@@ -257,7 +259,7 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
     private void loadSkillsData() {
         if (Constant.isNetworkAvailable(mContext, mainLayout)) {
             progressDialog.show();
-            AndroidNetworking.get(BASE_URL + "getCategoryList")
+            AndroidNetworking.get(BASE_URL + GET_CATEGORY_LIST_API)
                     .setPriority(Priority.MEDIUM)
                     .build().getAsJSONObject(new JSONObjectRequestListener() {
                 @Override
@@ -381,7 +383,6 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
             model.job_type = "1";
             model.job_title = "test";
             model.job_description = etDescription.getText().toString();
-
             singleJobCreationApi(model);
         }
 
@@ -391,7 +392,7 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
     private void singleJobCreationApi(JobCreationModel model) {
         if (Constant.isNetworkAvailable(mContext, mainLayout)) {
             progressDialog.show();
-            AndroidNetworking.post(BASE_URL + "Jobpost/clientJobPost")
+            AndroidNetworking.post(BASE_URL + CLIENT_JOB_POST_API)
                     .addHeaders("authToken", PreferenceConnector.readString(mContext, PreferenceConnector.AUTH_TOKEN, ""))
                     .addBodyParameter(model)
                     .setPriority(Priority.MEDIUM)

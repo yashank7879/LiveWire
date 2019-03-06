@@ -1,6 +1,7 @@
 package com.livewire.ui.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,6 +11,8 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
@@ -23,6 +26,7 @@ import com.livewire.databinding.FragmentChatClientBinding;
 import com.livewire.databinding.FragmentChatWorkerBinding;
 import com.livewire.model.Chat;
 import com.livewire.model.UserInfoFcm;
+import com.livewire.ui.activity.MyProfileClientActivity;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
 import com.livewire.utils.ProgressDialog;
@@ -34,12 +38,12 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ChatClientFragment extends Fragment {
+public class ChatClientFragment extends Fragment implements View.OnClickListener {
     FragmentChatClientBinding binding;
     private ChatHistoryAdapter adapter;
     private Context mContext;
     private ProgressDialog progressDialog;
-    private String myUid="";
+    private String myUid = "";
     private ArrayList<Chat> historyList;
     private ArrayList<UserInfoFcm> userList;
     private Map<String, Chat> mapList;
@@ -59,6 +63,19 @@ public class ChatClientFragment extends Fragment {
         // return inflater.inflate(R.layout.fragment_chat_worker, container, false);
     }
 
+    private void actionBarIntialize(View view) {
+        View actionBar = view.findViewById(R.id.action_bar1);
+        TextView header = actionBar.findViewById(R.id.tv_live_wire);
+
+        header.setText(R.string.chat);
+        header.setAllCaps(true);
+        header.setTextColor(ContextCompat.getColor(mContext, R.color.colorGreen));
+        ImageView ivProfile = actionBar.findViewById(R.id.iv_profile);
+        ivProfile.setVisibility(View.VISIBLE);
+
+        ivProfile.setOnClickListener(this);
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -66,17 +83,17 @@ public class ChatClientFragment extends Fragment {
         historyList = new ArrayList<>();
         userList = new ArrayList<>();
         mapList = new HashMap<>();
+        actionBarIntialize(view);
 
-        adapter = new ChatHistoryAdapter(mContext,historyList);
+        adapter = new ChatHistoryAdapter(mContext, historyList);
         binding.recyclerView.setAdapter(adapter);
         progressDialog = new ProgressDialog(mContext);
-        myUid = PreferenceConnector.readString(mContext,PreferenceConnector.MY_USER_ID,"");
+        myUid = PreferenceConnector.readString(mContext, PreferenceConnector.MY_USER_ID, "");
 
         binding.tvNoData.setVisibility(View.VISIBLE);
         if (Constant.isNetworkAvailable(mContext, binding.chatLayout)) {
             getChatHistoryList();
         } else Toast.makeText(mContext, "No internet connection", Toast.LENGTH_SHORT).show();
-
 
     }
 
@@ -100,9 +117,9 @@ public class ChatClientFragment extends Fragment {
         FirebaseDatabase.getInstance().getReference().child(Constant.ARG_HISTORY).child(myUid).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if(dataSnapshot.getValue(Chat.class) != null){
+                if (dataSnapshot.getValue(Chat.class) != null) {
                     Chat chat = dataSnapshot.getValue(Chat.class);
-                   gettingDataFromUserTable(dataSnapshot.getKey(), chat);
+                    gettingDataFromUserTable(dataSnapshot.getKey(), chat);
 
                     binding.tvNoData.setVisibility(View.GONE);
                     progressDialog.dismiss();
@@ -111,7 +128,7 @@ public class ChatClientFragment extends Fragment {
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if(dataSnapshot.getValue(Chat.class) != null){
+                if (dataSnapshot.getValue(Chat.class) != null) {
 
                     Chat chat = dataSnapshot.getValue(Chat.class);
                     gettingDataFromUserTable(dataSnapshot.getKey(), chat);
@@ -124,8 +141,8 @@ public class ChatClientFragment extends Fragment {
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
 
-                for(int i = 0 ; i<historyList.size();i++){
-                    if(historyList.get(i).uid.equals(dataSnapshot.getKey())){
+                for (int i = 0; i < historyList.size(); i++) {
+                    if (historyList.get(i).uid.equals(dataSnapshot.getKey())) {
                         historyList.remove(i);
                     }
                 }
@@ -136,9 +153,9 @@ public class ChatClientFragment extends Fragment {
                     }
                 }*/
 
-                if(historyList.size() == 0){
+                if (historyList.size() == 0) {
                     binding.tvNoData.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     binding.tvNoData.setVisibility(View.GONE);
                 }
 
@@ -163,7 +180,7 @@ public class ChatClientFragment extends Fragment {
                 addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.getValue(UserInfoFcm.class) != null){
+                        if (dataSnapshot.getValue(UserInfoFcm.class) != null) {
                             UserInfoFcm infoFCM = dataSnapshot.getValue(UserInfoFcm.class);
                             userList.add(infoFCM);
 
@@ -193,7 +210,7 @@ public class ChatClientFragment extends Fragment {
     }
 
     private void shortList() {
-        Collections.sort(historyList,new Comparator<Chat>(){
+        Collections.sort(historyList, new Comparator<Chat>() {
 
             @Override
             public int compare(Chat a1, Chat a2) {
@@ -215,4 +232,14 @@ public class ChatClientFragment extends Fragment {
         this.mContext = context;
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.iv_profile:
+                Intent intent = new Intent(mContext, MyProfileClientActivity.class);
+                startActivity(intent);
+                break;
+            default:
+        }
+    }
 }

@@ -2,55 +2,60 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/main_layout"
-    >
-
-    <com.loopeer.shadow.ShadowView
-        android:id="@+id/action_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:shadowColor="#666666"
-        app:shadowMarginBottom="3dp"
-        app:shadowRadius="@dimen/_5sdp">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp">
-
-            <TextView
-                style="@style/mediumPopinsMediumStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="@string/notifications"
-                android:textColor="@color/colorGreen"
-                />
-
-        </RelativeLayout>
-
-    </com.loopeer.shadow.ShadowView>
-
-
-    <android.support.v7.widget.RecyclerView
-        android:layout_below="@id/action_bar"
-        android:id="@+id/recycler_view"
+    <RelativeLayout
+        android:id="@+id/main_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </android.support.v7.widget.RecyclerView>
-    <TextView
-        android:id="@+id/tv_no_data"
-        style="@style/mediumPopinsRegularStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="@string/you_don_t_have_any_notification_yet"
-        android:textColor="@color/colorGreen"
-        />
+        <include
+            android:id="@+id/action_bar1"
+            layout="@layout/action_bar_client_layout"
+            android:visibility="gone"
+            />
 
-</RelativeLayout>
+        <!--   <com.loopeer.shadow.ShadowView
+               android:id="@+id/action_bar"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               app:shadowColor="#666666"
+               app:shadowMarginBottom="3dp"
+               app:shadowRadius="@dimen/_5sdp">
+
+               <RelativeLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="@dimen/_40sdp">
+
+                   <TextView
+                       style="@style/mediumPopinsMediumStyle"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_centerInParent="true"
+                       android:text="@string/notifications"
+                       android:textColor="@color/colorGreen"
+                       />
+
+               </RelativeLayout>
+
+           </com.loopeer.shadow.ShadowView>-->
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/action_bar1">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/tv_no_data"
+            style="@style/mediumPopinsRegularStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/you_don_t_have_any_notification_yet"
+            android:textColor="@color/colorGreen" />
+
+    </RelativeLayout>
 
 </layout>

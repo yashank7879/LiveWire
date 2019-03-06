@@ -69,13 +69,13 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         TextView tvBankAcc = findViewById(R.id.tv_bank_account);
         binding.llAddCreditCard.setOnClickListener(this);
 
-        if (PreferenceConnector.readString(this, PreferenceConnector.USER_TYPE, "").equals("worker")) {// show Bank acc
+        if (PreferenceConnector.readString(this, PreferenceConnector.USER_MODE, "").equals("worker")) {// show Bank acc
             if (PreferenceConnector.readString(this, PreferenceConnector.IS_BANK_ACC, "").equals("1")) {
                 tvBankAcc.setText(R.string.edit_bank_account);
             }
             binding.llAddBankAcc.setVisibility(View.VISIBLE);
             binding.rlAvailable.setVisibility(View.VISIBLE);
-        } else if (PreferenceConnector.readString(this, PreferenceConnector.USER_TYPE, "").equals("client")) {// show credit card
+        } else if (PreferenceConnector.readString(this, PreferenceConnector.USER_MODE, "").equals("client")) {// show credit card
             binding.llAddCreditCard.setVisibility(View.VISIBLE);
         }
 
@@ -196,7 +196,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                             FirebaseDatabase.getInstance().getReference().child(Constant.ARG_USERS).child(f_id).child("firebaseToken").setValue("");
                             PreferenceConnector.clear(SettingActivity.this);
                             finishAffinity();
-                            Intent intent = new Intent(SettingActivity.this, UserSelectionActivity.class);
+                            Intent intent = new Intent(SettingActivity.this, LoginActivity.class);
                             startActivity(intent);
                             finish();
                             SettingActivity.this.overridePendingTransition(R.anim.slide_right_out, R.anim.slide_right_in);

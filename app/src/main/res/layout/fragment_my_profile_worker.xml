@@ -31,6 +31,7 @@
                     android:id="@+id/iv_setting"
                     android:layout_width="@dimen/_35sdp"
                     android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:background="?android:attr/selectableItemBackground"
                     android:padding="@dimen/_8sdp"
@@ -57,14 +58,15 @@
                     android:textColor="@color/colorGreen" />
 
                 <ImageView
-                    android:id="@+id/iv_notification"
+                    android:id="@+id/iv_back"
                     android:layout_width="@dimen/_25sdp"
-                    android:layout_height="@dimen/_25sdp"
-                    android:layout_alignParentEnd="true"
+                    android:layout_height="match_parent"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="@dimen/_5sdp"
+                    android:background="?android:attr/selectableItemBackground"
                     android:padding="@dimen/_3sdp"
-                    app:srcCompat="@drawable/ic_active_notification" />
+                    android:tint="@color/colorDarkBlack"
+                    app:srcCompat="@drawable/ic_left_arrow" />
 
             </RelativeLayout>
 
@@ -186,15 +188,148 @@
                                     android:layout_marginTop="@dimen/_10sdp"
                                     android:background="@color/colorExtraLightGray" />
 
+
+                                <TextView
+                                    android:id="@+id/tv_switch_user"
+                                    style="@style/SmallPopinsMediumStyle"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/view1"
+                                    android:layout_margin="@dimen/_8sdp"
+                                    android:text="@string/select_switch_user_type"
+                                    android:textColor="@color/colorDarkBlack" />
+
+                                <LinearLayout
+                                    android:id="@+id/ll_change_user"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/tv_switch_user"
+                                    android:gravity="center"
+                                    android:orientation="horizontal">
+
+                                    <com.loopeer.shadow.ShadowView
+                                        android:id="@+id/sv_hirer"
+                                        android:layout_width="0dp"
+                                        android:layout_height="@dimen/_35sdp"
+                                        android:layout_marginEnd="@dimen/_4sdp"
+                                        android:layout_marginStart="@dimen/_8sdp"
+                                        android:layout_weight="1"
+                                        app:cornerRadius="@dimen/_2sdp"
+                                        app:shadowColor="@color/colorDarkGray"
+                                        app:shadowMargin="@dimen/_2sdp"
+                                        app:shadowRadius="@dimen/_5sdp">
+
+                                        <!-- <RelativeLayout
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+
+                                             >-->
+                                        <LinearLayout
+                                            android:id="@+id/ll_hirer"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_centerInParent="true"
+                                            android:background="@color/colorWhite"
+                                            android:gravity="center"
+                                            android:orientation="horizontal"
+                                            app:layout_gravity="center">
+
+
+                                            <ImageView
+                                                android:id="@+id/iv_client"
+                                                android:layout_width="@dimen/_20sdp"
+                                                android:layout_height="@dimen/_20sdp"
+                                                android:tint="@color/colorDarkGray"
+                                                app:srcCompat="@drawable/ic_team" />
+
+                                            <TextView
+                                                android:id="@+id/tv_hirer"
+                                                style="@style/SmallPopinsMediumStyle"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_gravity="center_vertical"
+                                                android:layout_margin="@dimen/_5sdp"
+                                                android:text="@string/hirer"
+                                                android:textColor="@color/colorDarkGray" />
+
+
+                                        </LinearLayout>
+                                        <!--  </RelativeLayout>-->
+
+                                    </com.loopeer.shadow.ShadowView>
+
+                                    <com.loopeer.shadow.ShadowView
+                                        android:id="@+id/sv_worker"
+                                        android:layout_width="0dp"
+                                        android:layout_height="@dimen/_35sdp"
+                                        android:layout_marginEnd="@dimen/_8sdp"
+                                        android:layout_marginStart="@dimen/_4sdp"
+                                        android:layout_weight="1"
+                                        app:cornerRadius="@dimen/_2sdp"
+                                        app:shadowColor="@color/colorDarkGray"
+                                        app:shadowMargin="@dimen/_2sdp"
+                                        app:shadowRadius="@dimen/_5sdp">
+
+                                        <!-- <RelativeLayout
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+                                             >-->
+
+                                        <LinearLayout
+                                            android:id="@+id/ll_worker"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_centerInParent="true"
+                                            android:background="@color/colorDarkBlack"
+                                            android:gravity="center"
+                                            android:orientation="horizontal"
+                                            app:layout_gravity="center">
+
+                                            <ImageView
+                                                android:id="@+id/iv_worker"
+                                                android:layout_width="@dimen/_20sdp"
+                                                android:layout_height="@dimen/_20sdp"
+                                                android:tint="@color/colorWhite"
+                                                app:srcCompat="@drawable/ic_worker" />
+
+                                            <TextView
+                                                android:id="@+id/tv_worker"
+                                                style="@style/SmallPopinsMediumStyle"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_gravity="center_vertical"
+                                                android:layout_margin="@dimen/_5sdp"
+                                                android:text="@string/worker"
+                                                android:textColor="@color/colorWhite" />
+
+
+                                        </LinearLayout>
+                                        <!--  </RelativeLayout>-->
+
+                                    </com.loopeer.shadow.ShadowView>
+
+
+                                </LinearLayout>
+
+                                <View
+                                    android:id="@+id/view8"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:layout_below="@+id/ll_change_user"
+                                    android:layout_marginBottom="@dimen/_8sdp"
+                                    android:layout_marginTop="@dimen/_8sdp"
+                                    android:background="@color/colorLightGray" />
+
+
                                 <TextView
                                     android:id="@+id/total_income"
                                     style="@style/SmallPopinsLightStyle"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_below="@+id/view1"
+                                    android:layout_below="@+id/view8"
                                     android:layout_marginStart="@dimen/_10sdp"
                                     android:drawablePadding="@dimen/_2sdp"
-                                    android:text="@string/total_income"
+                                    android:text="@string/total_earned"
                                     android:textColor="@color/colorDarkBlack" />
 
                                 <TextView
@@ -214,7 +349,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentEnd="true"
-                                    android:layout_below="@+id/view1"
+                                    android:layout_below="@+id/view8"
                                     android:layout_marginEnd="@dimen/_10sdp"
                                     android:text="@string/completed"
                                     android:textColor="@color/colorDarkBlack" />
@@ -257,19 +392,18 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_below="@+id/view2"
-                                    android:text="About me"
-                                    android:textColor="@color/colorGreen"
                                     android:layout_marginStart="@dimen/_10sdp"
-                                    />
+                                    android:text="About me"
+                                    android:textColor="@color/colorGreen" />
+
                                 <TextView
                                     android:id="@+id/about_me"
                                     style="@style/SmallPopinsLightStyle"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_below="@+id/tv_about_me"
-                                    android:text='@{userResponce.intro_discription.empty ? "NA" : userResponce.intro_discription ,default = "NA"}'
                                     android:layout_marginStart="@dimen/_10sdp"
-                                    />
+                                    android:text='@{userResponce.intro_discription.empty ? "NA" : userResponce.intro_discription ,default = "NA"}' />
 
                                 <TextView
                                     android:id="@+id/watch_intro_video"

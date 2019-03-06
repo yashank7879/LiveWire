@@ -239,7 +239,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginBottom="@dimen/_2sdp"
                     android:layout_marginStart="@dimen/_5sdp"
-                    android:background="@drawable/button_green_bg"
+                    android:background="@drawable/button_black_bg"
                     android:text="@string/accept"
                     android:textAllCaps="false"
                     android:textColor="@color/colorWhite"

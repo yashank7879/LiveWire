@@ -199,14 +199,16 @@ public class CompleteJobHelpOfferedDetailWorkerActivity extends AppCompatActivit
                 intent.putExtra("profilePic", clientProfileImg);
                 startActivity(intent);
             }
+            break;
             case R.id.rl_user_data: {
                 if (Constant.isNetworkAvailable(this, binding.detailMainLayout)) {
                     intent = new Intent(this, ClientProfileDetailWorkerActivity.class);
                     intent.putExtra("UserIdKey", userId);
                     startActivity(intent);
                 }
-                break;
+
             }
+            break;
             default:
         }
     }

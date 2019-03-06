@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/main_layout"
+    >
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:orientation="vertical"
+    tools:context="com.livewire.ui.activity.AddYourSkillsActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_35sdp">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:padding="@dimen/_5sdp"
+            android:tint="@color/colorDarkBlack"
+            app:srcCompat="@drawable/ic_left_arrow" />
+
+        <TextView
+            android:id="@+id/tv_cancel"
+            style="@style/mediumPopinsLightStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/_3sdp"
+            android:padding="@dimen/_5sdp"
+            android:text="@string/cancel" />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_80sdp"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/user_ico" />
+
+    <TextView
+        style="@style/mediumPopinsMediumStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/add_your_skills"
+        android:textColor="@color/colorDarkBlack" />
+
+    <TextView
+        style="@style/SmallPopinsLightStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="@dimen/_20sdp"
+        android:layout_marginRight="@dimen/_20sdp"
+        android:gravity="center_horizontal"
+        android:text="@string/there_are_many_variations_of_passages_of_loreal_ipsum_available_humour"
+        android:textColor="@color/colorDarkGray" />
+
+
+    <RelativeLayout
+        android:id="@+id/add_skills_rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:layout_marginLeft="@dimen/_20sdp"
+        android:layout_marginRight="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:background="@drawable/bg_pay_card_item"
+        android:padding="@dimen/_7sdp">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            app:srcCompat="@drawable/ic_arrow_drop_down_black" />
+
+        <TextView
+            style="@style/mediumPopinsLightStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_regular"
+            android:text="@string/add_skill"
+            android:textColor="@color/colorLightGray" />
+
+
+        <!-- <Spinner
+             android:id="@+id/language_spinner"
+             android:layout_width="@dimen/_220sdp"
+             android:layout_height="wrap_content"
+             android:layout_gravity="center"
+             android:background="@color/colorBlackTransparent"
+             android:clickable="true"
+             android:dropDownVerticalOffset="@dimen/_30sdp"
+             android:dropDownWidth="@dimen/_240sdp"
+             android:focusable="true"
+             android:focusableInTouchMode="true"
+             android:fontFamily="@font/poppins_regular"
+             android:gravity="center"
+             android:spinnerMode="dropdown"
+             />-->
+
+    </RelativeLayout>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_skills"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_150sdp"
+        android:layout_marginLeft="@dimen/_20sdp"
+        android:layout_marginRight="@dimen/_20sdp"
+        android:background="@drawable/bg_pay_card_item"
+        android:padding="@dimen/_5sdp"
+
+        >
+
+    </android.support.v7.widget.RecyclerView>
+
+
+    <Button
+        android:id="@+id/btn_next"
+        style="@style/mediumPopinsMediumStyle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_30sdp"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginLeft="@dimen/_40sdp"
+        android:layout_marginRight="@dimen/_40sdp"
+        android:background="@drawable/button_black_bg"
+        android:text="@string/next"
+        android:textAllCaps="false"
+        android:textColor="@color/colorWhite" />
+
+</LinearLayout>
+
+    <!--<FrameLayout
+        android:id="@+id/fl_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </FrameLayout>-->
+</RelativeLayout>
+</layout>

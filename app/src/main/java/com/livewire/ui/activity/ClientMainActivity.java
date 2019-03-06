@@ -1,9 +1,9 @@
 package com.livewire.ui.activity;
 
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -17,137 +17,117 @@ import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import com.facebook.login.LoginManager;
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
+
 import com.livewire.R;
+import com.livewire.databinding.ActivityClientMainBinding;
 import com.livewire.ui.activity.chat.ChattingActivity;
 import com.livewire.ui.fragments.ChatClientFragment;
-import com.livewire.ui.fragments.ChatWorkerFragment;
 import com.livewire.ui.fragments.MyJobClientFragment;
-import com.livewire.ui.fragments.MyProfileClientFragment;
+import com.livewire.ui.fragments.NearByClientFragment;
 import com.livewire.ui.fragments.NotificationClientFragment;
 import com.livewire.ui.fragments.PostJobHomeFragment;
-import com.livewire.utils.PreferenceConnector;
 
 public class ClientMainActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
-
-
-    private TextView textView;
-    private LinearLayout tabbar;
-    private ImageView ivMyJob;
-    private ImageView ivNotification;
-    private ImageView addImg;
-    private ImageView ivChat;
-    private LinearLayout userSettingLl;
-    private ImageView ivUser;
+    ActivityClientMainBinding binding;
     private int clickId;
     private android.support.v4.app.FragmentManager fm;
     private boolean doubleBackToExitPressedOnce = false;
     private Runnable runnable;
-    private TextView tvLiveWire;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_client_main);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_client_main);
         intializeViews();
-
-
+        actionBarIntialize();
     }
 
     private void intializeViews() {
         fm = getSupportFragmentManager();
+        binding.myJobLl.setOnClickListener(this);
+        binding.notificationLl.setOnClickListener(this);
+        binding.addLl.setOnClickListener(this);
+        binding.chatLl.setOnClickListener(this);
+        binding.nearyouLl.setOnClickListener(this);
 
-//        findViewById(R.id.btn_logout).setOnClickListener(this);
-        tabbar =  findViewById(R.id.tabbar);
-        LinearLayout myJobLl = findViewById(R.id.my_job_ll);
-        ivMyJob =  findViewById(R.id.iv_my_job);
-        LinearLayout notificationLl = findViewById(R.id.notification_ll);
-        ivNotification =  findViewById(R.id.iv_notification);
-        LinearLayout addLl = findViewById(R.id.add_ll);
-        addImg = findViewById(R.id.add_img);
-        LinearLayout chatLl = findViewById(R.id.chat_ll);
-        ivChat =  findViewById(R.id.iv_chat);
-        userSettingLl =  findViewById(R.id.user_setting_ll);
-        ivUser =  findViewById(R.id.iv_user);
-        FrameLayout containerId = findViewById(R.id.fl_container);
-      //   tvLiveWire = findViewById(R.id.tv_live_wire);
-//        tvLiveWire.setText(liveWireText(this));
-
-
-        myJobLl.setOnClickListener(this);
-        notificationLl.setOnClickListener(this);
-        addLl.setOnClickListener(this);
-        chatLl.setOnClickListener(this);
-        userSettingLl.setOnClickListener(this);
+        binding.actionBar.setVisibility(View.VISIBLE);
 
         //get intent from NearYouClientActivity || from After completing payment
-        if (getIntent().getStringExtra("NearYouKey") != null){
+        if (getIntent().getStringExtra("NearYouKey") != null) {
             replaceFragment(new MyJobClientFragment(), false, R.id.fl_container); // first time replace home fragment
             inActiveTab();
+            binding.actionBar.setVisibility(View.GONE);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                ivMyJob.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorGreen)));
+                binding.ivMyJob.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorGreen)));
             }
             clickId = R.id.my_job_ll;
-        }else if (getIntent().getStringExtra("opponentChatId") != null){
-            String  oponnetId =  getIntent().getStringExtra("opponentChatId");
-            String  name =  getIntent().getStringExtra("titleName");
-
+        } else if (getIntent().getStringExtra("opponentChatId") != null) {
+            String oponnetId = getIntent().getStringExtra("opponentChatId");
+            String name = getIntent().getStringExtra("titleName");
             Intent intent = new Intent(this, ChattingActivity.class);
-            intent.putExtra("otherUID",oponnetId);
-            intent.putExtra("titleName",name);
-            intent.putExtra("profilePic","");
+            intent.putExtra("otherUID", oponnetId);
+            intent.putExtra("titleName", name);
+            intent.putExtra("profilePic", "");
             startActivity(intent);
+            binding.tvHeading.setText(R.string.creat_project);
             replaceFragment(new PostJobHomeFragment(), false, R.id.fl_container); // first time replace home fragment
             clickId = R.id.add_ll;
-        }else {
+        } else {
+            binding.tvHeading.setText(R.string.creat_project);
             replaceFragment(new PostJobHomeFragment(), false, R.id.fl_container); // first time replace home fragment
             clickId = R.id.add_ll;
         }
+    }
 
-
+    private void actionBarIntialize() {
+        binding.ivFilter.setVisibility(View.GONE);
+        binding.ivProfile.setVisibility(View.VISIBLE);
+        binding.ivProfile.setOnClickListener(this);
+        binding.ivFilter.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.iv_profile: {
+                Intent intent = new Intent(this, MyProfileClientActivity.class);
+                startActivity(intent);
+            }
+            break;
             case R.id.my_job_ll:
                 if (clickId != R.id.my_job_ll) {
                     inActiveTab();
+                    binding.actionBar.setVisibility(View.GONE);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        ivMyJob.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorGreen)));
+                        binding.ivMyJob.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorGreen)));
                     }
 //                    tvLiveWire.setText("MY JOBS");
-                  //  tvLiveWire.setTextColor(ContextCompat.getColor(this,R.color.colorGreen));
+                    //  tvLiveWire.setTextColor(ContextCompat.getColor(this,R.color.colorGreen));
                     replaceFragment(new MyJobClientFragment(), false, R.id.fl_container); // first time replace home fragment
-
                     clickId = R.id.my_job_ll;
                 }
                 break;
             case R.id.notification_ll:
                 if (clickId != R.id.notification_ll) {
                     inActiveTab();
+                    binding.actionBar.setVisibility(View.VISIBLE);
+                    binding.tvHeading.setText(R.string.notifications);
+                    binding.tvHeading.setAllCaps(true);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        ivNotification.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorGreen)));
+                        binding.ivNotification.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorGreen)));
                     }
-                    replaceFragment(new NotificationClientFragment(),false,R.id.fl_container);
+                    replaceFragment(new NotificationClientFragment(), false, R.id.fl_container);
                     clickId = R.id.notification_ll;
                 }
                 break;
 
             case R.id.add_ll:
-              //  tvLiveWire.setText(liveWireText(this));
+                //  tvLiveWire.setText(liveWireText(this));
+                binding.actionBar.setVisibility(View.VISIBLE);
+                binding.tvHeading.setText(R.string.creat_project);
                 replaceFragment(new PostJobHomeFragment(), false, R.id.fl_container);
                 if (clickId != R.id.add_ll) {
                     inActiveTab();
@@ -158,23 +138,28 @@ public class ClientMainActivity extends AppCompatActivity implements View.OnClic
             case R.id.chat_ll:
                 if (clickId != R.id.chat_ll) {
                     inActiveTab();
+                    binding.actionBar.setVisibility(View.VISIBLE);
+                    binding.tvHeading.setText(R.string.chat);
+                    binding.tvHeading.setAllCaps(true);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        ivChat.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorGreen)));
+                        binding.ivChat.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorGreen)));
                     }
-                    replaceFragment(new ChatClientFragment(),false,R.id.fl_container);
-
+                    replaceFragment(new ChatClientFragment(), false, R.id.fl_container);
                     clickId = R.id.chat_ll;
                 }
                 break;
 
-            case R.id.user_setting_ll:
-                if (clickId != R.id.user_setting_ll) {
+            case R.id.nearyou_ll:
+                if (clickId != R.id.nearyou_ll) {
                     inActiveTab();
+                    binding.actionBar.setVisibility(View.VISIBLE);
+                    binding.tvHeading.setText(R.string.nearby);
+                    binding.tvHeading.setAllCaps(true);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        ivUser.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorGreen)));
+                        binding.ivNearYou.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorGreen)));
                     }
-                    replaceFragment(new MyProfileClientFragment(),false,R.id.fl_container);
-                    clickId = R.id.user_setting_ll;
+                    replaceFragment(new NearByClientFragment(), false, R.id.fl_container);
+                    clickId = R.id.nearyou_ll;
                 }
                 break;
 
@@ -184,10 +169,10 @@ public class ClientMainActivity extends AppCompatActivity implements View.OnClic
 
     private void inActiveTab() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            ivMyJob.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorLightGray)));
-            ivChat.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorLightGray)));
-            ivUser.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorLightGray)));
-            ivNotification.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorLightGray)));
+            binding.ivMyJob.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorLightGray)));
+            binding.ivChat.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorLightGray)));
+            binding.ivNearYou.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorLightGray)));
+            binding.ivNotification.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorLightGray)));
         }
     }
 
@@ -224,8 +209,8 @@ public class ClientMainActivity extends AppCompatActivity implements View.OnClic
                 transaction.addToBackStack(backStackName);
             transaction.commit();
         }
-
     }
+
     @Override
     public void onBackPressed() {
         try {

@@ -105,7 +105,7 @@ public class HelpOfferedAdapter extends RecyclerView.Adapter<HelpOfferedAdapter.
            }else if (dataBean.getJob_confirmed().equals("2")){// job not accepted
             holder.btnSendRequest.setClickable(false);*/
             }else if (dataBean.getJob_confirmed().equals("3")){// job not send
-               holder.btnSendRequest.setBackground(mContext.getResources().getDrawable(R.drawable.button_green_bg));
+               holder.btnSendRequest.setBackground(mContext.getResources().getDrawable(R.drawable.button_black_bg));
                holder.btnSendRequest.setText(R.string.send_request);
                holder.btnSendRequest.setTextColor(ContextCompat.getColor(mContext,R.color.colorWhite));
            }

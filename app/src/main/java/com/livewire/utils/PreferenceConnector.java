@@ -24,14 +24,24 @@ public class PreferenceConnector {
     public static final String PASS_WORD = "Password";
     public static final String IS_BANK_ACC = "BnakAcc";
     public static final String SOCIAL_LOGIN = "Social";
+    public static final String STRIPE_FEES = "StripeFees";
+    public static final String STRIPE_TRANSACTION_FEES = "StripeTransactionFees";
 
 
     public static final String Email = "email";
     public static final String AUTH_TOKEN = "AuthToken1";
     public static final String USER_TYPE = "userType";
+    public static final String USER_MODE = "userMode";
     public static final String MY_USER_ID = "MyUserId";
     public static final String PROFILE_IMG = "ProfileImg";
     public static final String Name = "name";
+
+
+
+    public static final String SELECTED_VIDEO = "SELECTED_VIDEO";
+    public static final String USER_DOB = "USER_DOB";
+    public static final String ABOUT_ME = "ABOUT_ME";
+
 
 
 

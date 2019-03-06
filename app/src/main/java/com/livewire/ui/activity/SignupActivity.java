@@ -14,6 +14,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -82,6 +83,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.UUID;
 
@@ -171,16 +173,13 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 .build();
 
 
-        key = getIntent().getStringExtra("UserTypeKey");
+     /*   key = getIntent().getStringExtra("UserTypeKey");
         if (getIntent().getStringExtra("UserTypeKey").equals("client")) {// if client side
             flUserProfile.setVisibility(View.VISIBLE);
             tvTownResidence.setVisibility(View.VISIBLE);
             horizontalLine.setVisibility(View.VISIBLE);
             btnClientSignup.setVisibility(View.VISIBLE);
-            btnWorkerSignup.setVisibility(View.GONE);
-            flUserProfile.setOnClickListener(this);
-            btnClientSignup.setOnClickListener(this);
-            tvTownResidence.setOnClickListener(this);
+
         } else if (getIntent().getStringExtra("UserTypeKey").equals("worker")) {// if worker side
             flUserProfile.setVisibility(View.GONE);
             tvTownResidence.setVisibility(View.GONE);
@@ -188,7 +187,12 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             btnClientSignup.setVisibility(View.GONE);
             btnWorkerSignup.setVisibility(View.VISIBLE);
             btnWorkerSignup.setOnClickListener(this);
-        }
+        }*/
+
+        btnWorkerSignup.setVisibility(View.GONE);
+        flUserProfile.setOnClickListener(this);
+        btnClientSignup.setOnClickListener(this);
+        tvTownResidence.setOnClickListener(this);
 
         tvLiveWire.setText(Constant.liveWireText(this));
         ivBack.setOnClickListener(this);
@@ -197,6 +201,10 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         googleLogInBtn.setOnClickListener(this);
         fbLogInBtn.setOnClickListener(this);
         fb_btn.setOnClickListener(this);
+
+        tvTownResidence.setSelected(true);
+        tvTownResidence.setHorizontallyScrolling(true);
+        tvTownResidence.setMovementMethod(new ScrollingMovementMethod());
 
     }
 
@@ -283,7 +291,15 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 if (graphObject.has("email")) {
                     String fb_mail = null;
                     try {
-                        if (key.equals("client")) {
+                        email = graphObject.getString("email");
+                        personName = graphObject.getString("name");
+                        String fbId = graphObject.getString("id");
+                        if (graphObject.getString("picture") != null) {
+                            imageUrl = object.getJSONObject("picture").getJSONObject("data").getString("url");
+                        }
+                        checkSocialLogin(fbId, "fb");
+
+                     /*   if (key.equals("client")) {
                             email = graphObject.getString("email");
                             personName = graphObject.getString("name");
                             String fbId = graphObject.getString("id");
@@ -308,7 +324,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                             model.socialId = graphObject.getString("id");
                             model.socialType = "fb";
                             signUpApiForSocial(model);
-                        }
+                        }*/
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -409,8 +425,15 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
+            checkSocialLogin(acct.getId(), "gmail");
+            personName = acct.getDisplayName();
+            email = acct.getEmail();
 
-            if (key.equals("client")) {
+            if (acct.getPhotoUrl() != null) {
+                imageUrl = String.valueOf(acct.getPhotoUrl());
+            }
+
+          /*  if (key.equals("client")) {
                 checkSocialLogin(acct.getId(), "gmail");
                 personName = acct.getDisplayName();
                 email = acct.getEmail();
@@ -430,7 +453,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 model.socialId = acct.getId();
                 model.socialType = "gmail";
                 signUpApiForSocial(model);
-            }
+            }*/
 
         }
     }
@@ -456,7 +479,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                             SignUpResponce userResponce = new Gson().fromJson(String.valueOf(response), SignUpResponce.class);
                             PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.USER_INFO_JSON, response.toString());
                             setSocialResponceData(userResponce);
-
                         /*    Intent intent = new Intent(LoginActivity.this, CompleteProfileActivity.class);
                             startActivity(intent);
                             finish();*/
@@ -492,15 +514,17 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.MY_USER_ID, userResponce.getData().getUserId());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
+        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.USER_MODE, userResponce.getData().getUser_mode());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.PROFILE_IMG, userResponce.getData().getThumbImage());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.Name, userResponce.getData().getName());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.Email, userResponce.getData().getEmail());
+        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.COMPLETE_PROFILE_STATUS, userResponce.getData().getCompleteProfile());
        // addUserFirebaseDatabase();
 
         Log.d("Responce", userResponce.toString());
         if (userResponce.getData().getUserType().equals("worker")) {// if user is worker
             Intent intent = null;
-            if (userResponce.getData().getCompleteProfile().equals("0")) { // if worker not complete own profile
+            if (userResponce.getData().getCompleteProfile().equals("0")){ // if worker not complete own profile
                 finishAffinity();
                 intent = new Intent(SignupActivity.this, CompleteProfileActivity.class);
                 intent.putExtra("imageKey", imageUrl);
@@ -660,6 +684,12 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+    @Override
+    public void onStop() {
+        mGoogleApiClient.disconnect();
+        super.onStop();
+    }
+
     //"""""""""" create bitmap to file """"""""//
     public File savebitmap(Context mContext, Bitmap bitmap, String name) {
         File filesDir = mContext.getApplicationContext().getFilesDir();
@@ -697,11 +727,13 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             etEmail.startAnimation(shake);
             etEmail.requestFocus();
             Constant.snackBar(mainLayout, getString(R.string.please_enter_valid_email_id));
-        } else if (tvTownResidence.getText().toString().equals("")) {
+        }
+       /* else if (tvTownResidence.getText().toString().equals("")) {
             tvTownResidence.startAnimation(shake);
             tvTownResidence.requestFocus();
             Constant.snackBar(mainLayout, getString(R.string.please_enter_your_location));
-        } else if (Validation.isEmpty(etPass)) {
+        } */
+        else if (Validation.isEmpty(etPass)) {
             etPass.startAnimation(shake);
             Constant.snackBar(mainLayout, getString(R.string.pass_can_hold_space));
         } else if (etPass.getText().toString().length() < 6) {
@@ -717,12 +749,14 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             model.name = etFullName.getText().toString();
             model.email = etEmail.getText().toString();
             model.password = etPass.getText().toString();
-            model.latitude = String.valueOf(locationLatLng.latitude);
-            model.longitude = String.valueOf(locationLatLng.longitude);
             model.town = locationPlace;
             model.userType = "client";
             model.deviceType = "2";
             model.deviceToken = FirebaseInstanceId.getInstance().getToken();
+            if (locationLatLng!= null) {
+                model.latitude = String.valueOf(locationLatLng.latitude);
+                model.longitude = String.valueOf(locationLatLng.longitude);
+            }
             signUpClientApi(model);
         }
     }
@@ -746,7 +780,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                         String message = response.getString("message");
                         if (status.equals("success")) {
                             SignUpResponce userResponce = new Gson().fromJson(String.valueOf(response), SignUpResponce.class);
-                            Log.e("sign up response", userResponce.getData().toString());
+                          //  Log.e("sign up response", userResponce.getData().toString());
                             PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.USER_INFO_JSON, response.toString());
                             setSignUpClientData(userResponce);
 
@@ -778,9 +812,14 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.MY_USER_ID, userResponce.getData().getUserId());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
+        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.USER_MODE, userResponce.getData().getUser_mode());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.PROFILE_IMG, userResponce.getData().getThumbImage());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.Name, userResponce.getData().getName());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.Email, userResponce.getData().getEmail());
+        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.COMPLETE_PROFILE_STATUS, userResponce.getData().getCompleteProfile());
+
+        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.STRIPE_FEES, userResponce.getStripe_fees());
+        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.STRIPE_TRANSACTION_FEES, userResponce.getStripe_transaction_fees());
         addUserFirebaseDatabase();
 
         finishAffinity();
@@ -792,6 +831,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     /*******Auto comple place picker***************/
     private void autoCompletePlacePicker() {
         try {
+            // Set the fields to specify which types of place data to
             Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
                     .build(this);
             startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
@@ -886,6 +926,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.AUTH_TOKEN, userResponce.getData().getAuthToken());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.COMPLETE_PROFILE_STATUS, userResponce.getData().getCompleteProfile());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
+        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.USER_MODE, userResponce.getData().getUser_mode());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.PASS_WORD, etPass.getText().toString());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.STRIPE_CUSTOMER_ID, userResponce.getData().getStripe_customer_id());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.IS_BANK_ACC, userResponce.getData().getIs_bank_account());
@@ -939,6 +980,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         infoFcm.profilePic = PreferenceConnector.readString(this,PreferenceConnector.PROFILE_IMG,"");
         infoFcm.uid = PreferenceConnector.readString(this,PreferenceConnector.MY_USER_ID,"");
         infoFcm.userType = PreferenceConnector.readString(this,PreferenceConnector.USER_TYPE,"");
+        infoFcm.userType = PreferenceConnector.readString(this,PreferenceConnector.USER_MODE,"");
         infoFcm.authToken = PreferenceConnector.readString(this,PreferenceConnector.AUTH_TOKEN,"");
 
         database.child(Constant.ARG_USERS)

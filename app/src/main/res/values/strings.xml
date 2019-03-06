@@ -20,14 +20,14 @@
     <string name="login">Login</string>
     <string name="more_info_about">More info about</string>
     <string name="lorem_ipsum">Lorem Ipsum</string>
-    <string name="forgot_password">Forgot Password ?</string>
+    <string name="forgot_password">Forgot Password?</string>
     <string name="remember_me">Remember Me</string>
     <string name="login_with_google">Login With Google</string>
     <string name="don_t_have_an_account">Don\'t have an account?</string>
     <string name="or">OR</string>
     <string name="skip">Skip</string>
     <string name="complete_your_profile">Complete Your Profile</string>
-    <string name="upload_a_intro_video">Upload A Intro Video</string>
+    <string name="upload_a_intro_video">Upload an intro video</string>
     <string name="town_of_residence">Town Of Residence</string>
 
     <string name="valide_email">Please enter valid Email!</string>
@@ -47,7 +47,7 @@
     <string name="location">Location</string>
     <string name="budget">Budget</string>
     <string name="dollar">$</string>
-    <string name="select_job_date">Select Project Date</string>
+    <string name="select_job_date">Select Date</string>
     <string name="select_skill">Select Skill</string>
     <string name="select_job_start_date">Select Project Start Date</string>
     <string name="select_job_end_date">Select Project End Date</string>
@@ -62,8 +62,8 @@
     <string name="hourly_rate_range">Hourly Rate Range</string>
     <string name="min_price">Min Price</string>
     <string name="max_price">Max Price</string>
-    <string name="help_offered">HELP OFFERED</string>
-    <string name="help_offered1">Help Offered</string>
+    <string name="short_term">SHORT TERM</string>
+    <string name="short_term1">Short term</string>
 
     <!-- filter dialog  -->
     <string name="apply">Apply</string>
@@ -150,8 +150,8 @@
 
     <!-- MyJobDeatail Activity client side -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="ongoing">ONGOING</string>
-    <string name="ongoing1">Ongoing</string>
+    <string name="long_term">LONG TERM</string>
+    <string name="long_term1">Long term</string>
     <string name="ignor">Ignore</string>
     <string name="requests">Requests</string>
     <string name="n_a">N/A</string>
@@ -296,6 +296,26 @@
     <string name="no_work_created_yet">No work created yet</string>
     <string name="no_work_request_yet">No work request yet</string>
     <string name="your_project_has_been_successfully_shared">Your project has been successfully shared</string>
+    <string name="no_near_by_you">No Live Wires near you now.</string>
+    <string name="nearby">NEAR BY</string>
+    <string name="total_paid">Total Paid</string>
+    <string name="hirer">Hirer</string>
+    <string name="worker">Worker</string>
+    <string name="select_switch_user_type">Select / switch user type?</string>
+    <string name="add_your_skills">Add Your Skills</string>
+    <string name="there_are_many_variations_of_passages_of_loreal_ipsum_available_humour">There are many variations of passages of loreal ipsum available humour.</string>
+    <string name="next">Next</string>
+    <string name="add_video">ADD VIDEO</string>
+    <string name="write_something_about_yourself">Write something about yourself</string>
+    <string name="minimum_age_is_40_years">Minimum age is 40 years</string>
+    <string name="write_here">Write here…</string>
+    <string name="total_earned">Total Earned</string>
+    <string name="job_request">Job Request</string>
+    <string name="no_skills_added">No skills added</string>
+    <string name="work_opportunity">WORK OPPORTUNITIES</string>
+    <string name="creat_project">CREATE PROJECT</string>
+    <string name="please_update_your_location_to_know_live_wires_near_you">Please update your location to know Live Wires near you.</string>
+    <string name="update_profile">Update Profile</string>
 
 
 </resources>

@@ -7,11 +7,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -26,6 +29,7 @@ import com.livewire.databinding.FragmentNotificationClientBinding;
 import com.livewire.responce.NotificationResponce;
 import com.livewire.responce.SubCategoryResponse;
 import com.livewire.ui.activity.MyOnGoingJobDetailClientActivity;
+import com.livewire.ui.activity.MyProfileClientActivity;
 import com.livewire.ui.activity.MySingleJobDetailClientActivity;
 import com.livewire.ui.activity.notification_activity.NotificationJobHelpOfferedDetailWorkerActivity;
 import com.livewire.ui.activity.notification_activity.NotificationJobOnGoingDetailWorkerActivity;
@@ -44,7 +48,7 @@ import java.util.List;
 import static com.livewire.utils.ApiCollection.BASE_URL;
 import static com.livewire.utils.ApiCollection.NOTIFICATION_LIST_API;
 
-public class NotificationClientFragment extends Fragment implements NotificationAdapter.NotificationOnItemClickListener {
+public class NotificationClientFragment extends Fragment implements View.OnClickListener, NotificationAdapter.NotificationOnItemClickListener {
     FragmentNotificationClientBinding binding;
     private Context mContext;
     private NotificationAdapter notificationAdapter;
@@ -81,12 +85,27 @@ public class NotificationClientFragment extends Fragment implements Notification
                 DividerItemDecoration(mContext,
                 DividerItemDecoration.VERTICAL));
         notificationListApi();
+
+        actionBarIntialize(view);
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
+    }
+
+    private void actionBarIntialize(View view) {
+        View actionBar = view.findViewById(R.id.action_bar1);
+        TextView header = actionBar.findViewById(R.id.tv_live_wire);
+
+        header.setText(R.string.notifications);
+        header.setAllCaps(true);
+        header.setTextColor(ContextCompat.getColor(mContext, R.color.colorGreen));
+        ImageView ivProfile = actionBar.findViewById(R.id.iv_profile);
+        ivProfile.setVisibility(View.VISIBLE);
+
+        ivProfile.setOnClickListener(this);
     }
 
     //"""""""""" notification list api """""""""""""//
@@ -179,6 +198,16 @@ public class NotificationClientFragment extends Fragment implements Notification
         }
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.iv_profile:
+                Intent intent = new Intent(mContext, MyProfileClientActivity.class);
+                startActivity(intent);
+                break;
+            default:
+        }
+    }
 }
 
  /*  switch (type) {

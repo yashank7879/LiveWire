@@ -25,6 +25,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -119,12 +120,9 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
     private Spinner subCategorySpinner;
     private ArrayAdapter<AddSkillsResponce.DataBean.SubcatBean> subCateoryAdapter;
 
-    //private Uri VideoUri;
-    //private String videoFilePath;
     private ArrayList<AddedSkillBean> addedSkillBeans = new ArrayList<>();
     private ArrayList<SubCategoryModel> subCategoryModelList = new ArrayList<>();
     private EditCategaryAdapter addSkillsAdapter;
-
     public static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
     private String locationPlace;
     private Notification.Builder mBuilder;
@@ -143,13 +141,12 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
     private ArrayList<File> profileImageFileList;
     private File videoThumbFile;
     private List<File> videoThumbFileList;
-
-
     private Uri finalVideoUri;
+    private String videoUrl;
     private String finalVideoFilePath;
     private File imageFile;
     private ImageView removeVideoImg;
-    private boolean isvideoUrl=false;
+    private boolean isvideoUrl = false;
 
 
     @Override
@@ -157,8 +154,8 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_edit_profile_worker);
 
-      //  removeVideoImg = findViewById(R.id.iv_remove_video);
-       // Log.e("Auth token", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""));
+        //  removeVideoImg = findViewById(R.id.iv_remove_video);
+        // Log.e("Auth token", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""));
 
         PermissionAll permissionAll = new PermissionAll();
         permissionAll.checkWriteStoragePermission(this);
@@ -209,7 +206,7 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
 
             if (!userData.getData().getIntro_video().isEmpty()) {
                 binding.ivRemoveVideo.setVisibility(View.VISIBLE);
-                finalVideoUri = Uri.parse(userData.getData().getIntro_video());
+                videoUrl = userData.getData().getIntro_video();
 
                 Picasso.with(binding.videoImg.getContext()).load(userData.getData().getVideo_thumb())
                         .fit().into(binding.videoImg);
@@ -218,7 +215,7 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
                 binding.videoImg.setClickable(true);
                 isvideoUrl = false;
                 binding.ivRemoveVideo.setVisibility(View.GONE);
-              //  binding.videoImg.setImageDrawable(ContextCompat.getDrawable(this, R.color.colorDarkBlack));
+                //  binding.videoImg.setImageDrawable(ContextCompat.getDrawable(this, R.color.colorDarkBlack));
             }
             if (!userData.getData().getProfileImage().isEmpty()) {
                 Picasso.with(binding.ivProfileImg.getContext())
@@ -237,6 +234,30 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
             binding.videoImg.setClickable(false);
 
         }
+        binding.etDescription.setFilters(new InputFilter[]{new InputFilter.LengthFilter(200)});
+
+        binding.etDescription.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String str = binding.etDescription.getText().toString();
+                if (str.length() < 200) {
+                 //   Toast.makeText(EditProfileWorkerActivity.this, "max", Toast.LENGTH_SHORT).show();
+                } else {
+                 //   Toast.makeText(EditProfileWorkerActivity.this, "max lenght is 200", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
 
         intializeView();
         loadSkillsData();
@@ -357,7 +378,12 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
                     i.setDataAndType(data, "video/*");
                     i.putExtra(MediaStore.EXTRA_FINISH_ON_COMPLETION, false);
                     startActivity(i);
-                } else showSetIntroVideoDialog();
+                }else if (videoUrl != null){
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setDataAndType(Uri.parse(videoUrl), "video/mp4");
+                    startActivity(i);
+                }
+                else showSetIntroVideoDialog();
                 break;
             case R.id.tv_location:
                 autoCompletePlacePicker();
@@ -367,7 +393,7 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
                 startActivity(intent1);
                 finish();
             case R.id.iv_back:
-               finish();
+                finish();
                 break;
             case R.id.btn_save_and_update:
                 Log.e("SubCategory: ", getWorkerSkillData());
@@ -377,6 +403,7 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
                 binding.ivRemoveVideo.setVisibility(View.GONE);
                 binding.videoImg.setClickable(true);
                 finalVideoUri = null;
+                videoUrl = null;
                 isvideoUrl = false;
                 binding.videoImg.setImageDrawable(ContextCompat.getDrawable(this, R.color.colorWhite));
                 binding.videoImg.setOnClickListener(this);
@@ -393,9 +420,9 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
             Constant.snackBar(binding.mainLayout, "please enter your Name");
         } else if (Validation.isEmpty(binding.etEmail1)) {
             Constant.snackBar(binding.mainLayout, "please enter Email Id");
-        }  else if (!Validation.isEmailValid(binding.etEmail1)) {
+        } else if (!Validation.isEmailValid(binding.etEmail1)) {
             Constant.snackBar(binding.mainLayout, "please enter valid Email Id");
-        }else if (subCategoryModelList.size() == 0) {
+        } else if (subCategoryModelList.size() == 0) {
             Constant.snackBar(binding.mainLayout, "please add your skills");
         } else if (placeLongitude == null) {
             Constant.snackBar(binding.mainLayout, "please enter loation");
@@ -413,7 +440,6 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
                 profileImageFileList.add(imageFile);
             }
             mPram = new HashMap<>();
-
             mPram.put("workerSkillData", getWorkerSkillData());
             mPram.put("latitude", placeLatitude);
             mPram.put("longitude", placeLongitude);
@@ -423,10 +449,10 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
             mPram.put("intro_discription", binding.etDescription.getText().toString().trim());
 
             if (isvideoUrl || finalVideoUri == null) {
-                mPram.put(Template.Query.INTRO_VIDEO_KEY,"");
+                mPram.put(Template.Query.INTRO_VIDEO_KEY, "");
                 apiCallForUpdateUserData();
 
-            }else {
+            } else {
                 uploadVideo();
             }
 
@@ -619,7 +645,7 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
     //"""""""""" upload video  """"""""""""""//
     @SuppressLint("StaticFieldLeak")
     private void uploadVideo() {
-        
+
         //videoDialog();
         progressDialog.show();
 
@@ -628,9 +654,9 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
             protected Void doInBackground(Void... voids) {
                 File file = null;
 
-               // if(isvideoUrl){
-                    file = new File(finalVideoFilePath);
-               // }
+                // if(isvideoUrl){
+                file = new File(finalVideoFilePath);
+                // }
                 // Get length of file in bytes
                 long fileSizeInBytes = file.length();
                 // Convert the bytes to Kilobytes (1 KB = 1024 Bytes)
@@ -738,9 +764,9 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
     }
 
     @Override
-    public void onDestroy(){
+    public void onDestroy() {
         super.onDestroy();
-        if ( progressDialog!=null && progressDialog.isShowing() ){
+        if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.cancel();
         }
     }
@@ -756,7 +782,7 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
         if (requestCode == Constant.GALLERY && resultCode == RESULT_OK && null != data) {
             //isCamera = false;
             tmpUri = data.getData();
-           // Log.e(TAG, tmpUri.toString());
+            // Log.e(TAG, tmpUri.toString());
             if (tmpUri != null) { // it will go to the CropImageActivity
                 CropImage.activity(tmpUri).setCropShape(CropImageView.CropShape.OVAL).setMinCropResultSize(200, 200)
                         .setMaxCropResultSize(4000, 4000)
@@ -1411,6 +1437,7 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
 
         mRequest.add(mMultiPartRequest);
     }
+
     //Respon dari volley, untuk menampilkan keterengan upload, seperti error, message dari server
     void setResponse(Object response, VolleyError error) {
         Log.e(TAG, error.getLocalizedMessage());

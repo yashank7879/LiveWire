@@ -1,0 +1,80 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.livewire.ui.fragments.JobRequestFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <com.loopeer.shadow.ShadowView
+        android:id="@+id/sv_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:shadowColor="@color/colorDarkGray"
+        app:shadowMarginBottom="3dp"
+        app:shadowRadius="@dimen/_2sdp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:gravity="center"
+            android:weightSum="2"
+            app:layout_gravity="center">
+
+            <LinearLayout
+                android:id="@+id/exchange_btn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="vertical">
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_gravity="center"
+                android:background="@color/colorLightGray"
+
+                />
+
+            <LinearLayout
+                android:id="@+id/auction_btn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="vertical">
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </com.loopeer.shadow.ShadowView>
+
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/sliding_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_35sdp"
+        app:tabIndicatorColor="@color/colorGreen"
+        app:tabIndicatorFullWidth="false"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/colorGreen"
+        app:tabTextAppearance="@style/MyTabLayoutTextAppearance"
+        app:tabTextColor="@color/colorDarkBlack"
+        />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/sliding_tabs" />
+
+</RelativeLayout>

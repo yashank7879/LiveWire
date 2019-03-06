@@ -2,12 +2,15 @@ package com.livewire.ui.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,11 +28,15 @@ import com.livewire.adapter.ShowSkillsAdapter;
 import com.livewire.databinding.FragmentMyProfileWorkerBinding;
 import com.livewire.model.CategoryBean;
 import com.livewire.responce.MyProfileResponce;
+import com.livewire.ui.activity.AddYourSkillsActivity;
+import com.livewire.ui.activity.ClientMainActivity;
 import com.livewire.ui.activity.EditProfileWorkerActivity;
+import com.livewire.ui.activity.MyProfileClientActivity;
 import com.livewire.ui.activity.NotificationListWorkerActivity;
 import com.livewire.ui.activity.PlayVideoActivity;
 import com.livewire.ui.activity.ReviewListActivity;
 import com.livewire.ui.activity.SettingActivity;
+import com.livewire.ui.activity.WorkerMainActivity;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
 import com.livewire.utils.ProgressDialog;
@@ -42,6 +49,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.livewire.utils.ApiCollection.BASE_URL;
+import static com.livewire.utils.ApiCollection.CHANGE_USER_MODE_API;
 import static com.livewire.utils.ApiCollection.GET_MY_PROFILE_API;
 
 
@@ -87,8 +95,10 @@ public class MyProfileWorkerFragment extends Fragment implements View.OnClickLis
         binding.ivSetting.setOnClickListener(this);
         binding.rlVideoImg.setOnClickListener(this);
         binding.ivProfile.setOnClickListener(this);
-        binding.ivNotification.setOnClickListener(this);
+        binding.ivBack.setOnClickListener(this);
         binding.rlRatingBar.setOnClickListener(this);
+        binding.llHirer.setOnClickListener(this);
+        binding.llWorker.setOnClickListener(this);
 
         myProfileApi();
 
@@ -202,7 +212,85 @@ public class MyProfileWorkerFragment extends Fragment implements View.OnClickLis
                 intent = new Intent(mContext, ReviewListActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.ll_worker: {
+                binding.llWorker.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorDarkBlack));
+                binding.tvWorker.setTextColor(ContextCompat.getColor(mContext, R.color.colorWhite));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    binding.ivWorker.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.colorWhite)));
+                }
+                binding.llHirer.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorWhite));
+                binding.tvHirer.setTextColor(ContextCompat.getColor(mContext, R.color.colorDarkGray));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    binding.ivClient.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.colorDarkGray)));
+                }
+
+
+
+            }
+            break;
+            case R.id.ll_hirer: {
+                binding.llWorker.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorWhite));
+                binding.tvWorker.setTextColor(ContextCompat.getColor(mContext, R.color.colorDarkGray));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    binding.ivWorker.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.colorDarkGray)));
+                }
+                binding.llHirer.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorLightGreen));
+                binding.tvHirer.setTextColor(ContextCompat.getColor(mContext, R.color.colorWhite));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    binding.ivClient.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.colorWhite)));
+                }
+                ChangeModeApi();
+            }
             default:
+        }
+    }
+
+    private void ChangeModeApi() {
+        if (Constant.isNetworkAvailable(mContext, binding.svProfile)) {
+            progressDialog.show();
+            AndroidNetworking.post(BASE_URL + CHANGE_USER_MODE_API)
+                    .addHeaders("authToken", PreferenceConnector.readString(mContext, PreferenceConnector.AUTH_TOKEN, ""))
+                    .addBodyParameter("user_mode", PreferenceConnector.readString(mContext, PreferenceConnector.USER_MODE, ""))
+                    .setPriority(Priority.MEDIUM)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                progressDialog.dismiss();
+                                String status = response.getString("status");
+                                String message = response.getString("message");
+                                if (status.equals("success")) {
+                                    if (PreferenceConnector.readString(mContext, PreferenceConnector.USER_MODE, "").equals("worker")) {
+                                        PreferenceConnector.writeString(mContext, PreferenceConnector.USER_MODE, "client");
+                                        getActivity().finishAffinity();
+                                        Intent intent = new Intent(mContext, ClientMainActivity.class);
+                                        startActivity(intent);
+                                        getActivity().finish();
+                                    } else {
+                                        PreferenceConnector.writeString(mContext, PreferenceConnector.USER_MODE, "worker");
+                                        getActivity().finishAffinity();
+                                        Intent intent = new Intent(mContext, WorkerMainActivity.class);
+                                        startActivity(intent);
+                                        getActivity().finish();
+                                    }
+
+                                } else {
+                                    Constant.snackBar(binding.svProfile, message);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void onError(ANError anError) {
+                            Constant.errorHandle(anError, getActivity());
+                            progressDialog.dismiss();
+                        }
+                    });
+
+
         }
     }
 }

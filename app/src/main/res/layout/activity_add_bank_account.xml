@@ -286,7 +286,7 @@
                     android:layout_gravity="center"
                     android:layout_marginBottom="@dimen/_30sdp"
                     android:layout_marginTop="@dimen/_20sdp"
-                    android:background="@drawable/button_green_bg"
+                    android:background="@drawable/button_black_bg"
                     android:text="@string/add_bank_account"
                     android:textAllCaps="false"
                     android:textColor="@color/colorWhite" />

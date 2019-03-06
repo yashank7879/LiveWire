@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
@@ -8,6 +9,54 @@
     tools:context=".ui.activity.ClientMainActivity"
     android:background="@color/colorWhite"
     >
+
+
+    <com.loopeer.shadow.ShadowView
+        android:id="@+id/action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:shadowColor="#666666"
+        app:shadowMarginBottom="3dp"
+        app:shadowRadius="@dimen/_5sdp"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp">
+
+            <TextView
+                android:id="@+id/tv_heading"
+                style="@style/mediumPopinsMediumStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text=""
+                android:textColor="@color/colorGreen" />
+
+            <ImageView
+                android:id="@+id/iv_profile"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:padding="@dimen/_3sdp"
+                android:background="?android:attr/selectableItemBackground"
+                app:srcCompat="@drawable/ic_user_profile" />
+
+
+            <ImageView
+                android:id="@+id/iv_filter"
+                android:layout_width="@dimen/_35sdp"
+                android:layout_height="match_parent"
+                android:background="?android:attr/selectableItemBackground"
+                android:padding="@dimen/_7sdp"
+                app:srcCompat="@drawable/ic_filter_level"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+    </com.loopeer.shadow.ShadowView>
+
 
  <!--   <com.loopeer.shadow.ShadowView
         android:id="@+id/sv_action_bar"
@@ -49,6 +98,7 @@
 
     <FrameLayout
         android:id="@+id/fl_container"
+        android:layout_below="@id/action_bar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/sv_tabbar"
@@ -116,7 +166,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/notification_ll"
+                android:id="@+id/nearyou_ll"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -128,12 +178,11 @@
                 >
 
                 <ImageView
-                    android:id="@+id/iv_notification"
+                    android:id="@+id/iv_near_you"
                     android:layout_width="@dimen/_25sdp"
                     android:layout_height="@dimen/_25sdp"
-                    app:srcCompat="@drawable/ic_inactive_notification"
+                    app:srcCompat="@drawable/ic_location_place"
                     android:tint="@color/colorLightGray"/>
-
 
             </LinearLayout>
 
@@ -180,7 +229,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/user_setting_ll"
+                android:id="@+id/notification_ll"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -192,10 +241,10 @@
                 >
 
                 <ImageView
-                    android:id="@+id/iv_user"
+                    android:id="@+id/iv_notification"
                     android:layout_width="@dimen/_25sdp"
                     android:layout_height="@dimen/_25sdp"
-                    app:srcCompat="@drawable/ic_user_setting"
+                    app:srcCompat="@drawable/ic_inactive_notification"
                     android:tint="@color/colorLightGray"
                     />
 
@@ -207,3 +256,4 @@
     </com.loopeer.shadow.ShadowView>
 
 </RelativeLayout>
+</layout>

@@ -48,7 +48,7 @@ public class NotificationListWorkerActivity extends AppCompatActivity implements
         binding = DataBindingUtil.setContentView(this, R.layout.activity_notification_list_worker);
         progressDialog = new ProgressDialog(this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        binding.ivBack.setOnClickListener(this);
+     //   binding.ivBack.setOnClickListener(this);
         binding.recyclerView.setLayoutManager(layoutManager);
         notificationAdapter = new NotificationAdapter(this, notifiList, this);
         binding.recyclerView.setAdapter(notificationAdapter);

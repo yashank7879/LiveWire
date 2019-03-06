@@ -49,22 +49,22 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
 
                 Intent intent =null;
+                //""""""' by default user is client """""""""//
                         if (PreferenceConnector.readBoolean(SplashActivity.this,PreferenceConnector.IS_LOG_IN,false)){// is login
-                            if (PreferenceConnector.readString(SplashActivity.this,PreferenceConnector.USER_TYPE,"").equals("worker")){//if user is worker
-                                if (PreferenceConnector.readString(SplashActivity.this,PreferenceConnector.COMPLETE_PROFILE_STATUS,"").equals("0")){//if user not complete profile
-                                    intent = new Intent(SplashActivity.this,CompleteProfileActivity.class);
-                                }else { //"""" if worker complete profile
+
+                            if (PreferenceConnector.readString(SplashActivity.this,PreferenceConnector.USER_MODE,"").equals("worker")){//if user is worker
+                                //"""" if worker complete profile
                                     intent = new Intent(SplashActivity.this,WorkerMainActivity.class);
-                                }
-                            }else { //""""""" if user is Client
+                            }else { //""""""" if user is Client """"""//
                                 intent = new Intent(SplashActivity.this,ClientMainActivity.class);
                             }
                         }else {//""""" if user not login
-                            intent = new Intent(SplashActivity.this,UserSelectionActivity.class);
+                            intent = new Intent(SplashActivity.this,LoginActivity.class);
                         }
 
                 startActivity(intent);
                 finish();
+
             }
         };
          mHandlers.postDelayed(mRunnable,2000);

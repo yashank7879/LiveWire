@@ -69,7 +69,7 @@
             android:layout_marginTop="@dimen/_5sdp"
             android:text="@string/single_project_task"
             android:gravity="center"
-            android:textColor="@color/colorDarkBlack"
+            android:textColor="@color/colorLightGray"
             android:textSize="@dimen/_10sdp"
             />
     </LinearLayout>

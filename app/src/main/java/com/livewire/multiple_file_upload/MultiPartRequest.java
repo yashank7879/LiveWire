@@ -1,5 +1,6 @@
 package com.livewire.multiple_file_upload;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
@@ -34,10 +35,10 @@ public class MultiPartRequest extends Request<String> {
     private Response.Listener<String> mListener;
     private HttpEntity mHttpEntity;
     private Map<String, String> mParams;
-    private CompleteProfileActivity activity;
+    private Context activity;
 
 
-    public MultiPartRequest(Response.ErrorListener errorListener, Response.Listener listener, List<File> file, int numberOfFiles, Map<String, String> params, CompleteProfileActivity activity) {
+    public MultiPartRequest(Response.ErrorListener errorListener, Response.Listener listener, List<File> file, int numberOfFiles, Map<String, String> params, Context activity) {
         super(Method.POST, BASE_URL + "user/updateWorkerProfile", errorListener);
         mListener = listener;
         mParams = params;
@@ -100,7 +101,7 @@ public class MultiPartRequest extends Request<String> {
 
          return builder.build();
      }*/
-    public MultiPartRequest(Response.ErrorListener errorListener, Response.Listener listener, ArrayList<File> tmpFile, int size, ArrayList<File> profileImageFileList, int size1, List<File> videoThumb, HashMap<String, String> mPram, CompleteProfileActivity activity) {
+    public MultiPartRequest(Response.ErrorListener errorListener, Response.Listener listener, ArrayList<File> tmpFile, int size, ArrayList<File> profileImageFileList, int size1, List<File> videoThumb, HashMap<String, String> mPram, Context activity) {
         super(Method.POST, BASE_URL + "user/updateWorkerProfile", errorListener);
         mListener = listener;
         mParams = mPram;

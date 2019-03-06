@@ -1,0 +1,71 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:id="@+id/main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="com.livewire.ui.fragments.NearByClientFragment">
+
+        <include
+            android:id="@+id/action_bar1"
+            layout="@layout/action_bar_client_layout"
+            android:visibility="gone" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_near_you"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/action_bar1">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/tv_no_data"
+            style="@style/mediumPopinsRegularStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/no_near_by_you"
+            android:textColor="@color/colorGreen" />
+
+
+
+        <RelativeLayout
+            android:id="@+id/rl_update_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            >
+
+            <Button
+                android:id="@+id/btn_update"
+                style="@style/SmallPopinsLightStyle"
+                android:layout_width="@dimen/_120sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:background="@drawable/button_green_bg"
+                android:text="@string/update_profile"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="@dimen/_8sdp"
+                />
+
+        <TextView
+            android:id="@+id/tv_add_loc"
+            style="@style/mediumPopinsRegularStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btn_update"
+            android:text="@string/please_update_your_location_to_know_live_wires_near_you"
+            android:textColor="@color/colorGreen"
+            android:gravity="center"
+
+            />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+</layout>

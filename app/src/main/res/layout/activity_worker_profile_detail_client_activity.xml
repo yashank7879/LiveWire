@@ -115,6 +115,7 @@
                                     android:layout_height="@dimen/_30sdp"
                                     android:layout_alignParentEnd="true"
                                     android:layout_margin="@dimen/_8sdp"
+                                    android:visibility="gone"
                                     app:srcCompat="@drawable/ic_star_icon" />
 
                                 <TextView
@@ -138,7 +139,6 @@
                                     android:layout_centerHorizontal="true"
                                     android:numStars="5"
                                     android:progressTint="@color/coloryellow"
-                                    android:rating="3"
                                     android:theme="@style/RatingBarTheme" />
 
                                 <TextView
@@ -301,12 +301,18 @@
                                     android:layout_marginTop="@dimen/_10sdp"
                                     android:background="@color/colorExtraLightGray" />
 
+
+                                <RelativeLayout
+                                    android:id="@+id/rl_skills"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/view3"
+                                    >
                                 <TextView
                                     android:id="@+id/skills"
                                     style="@style/smallPopinsRegularStyle"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_below="@+id/view3"
                                     android:layout_marginStart="@dimen/_10sdp"
                                     android:text="@string/skills"
                                     android:textColor="@color/colorGreen" />
@@ -317,7 +323,6 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentEnd="true"
-                                    android:layout_below="@+id/view3"
                                     android:layout_marginEnd="@dimen/_10sdp"
                                     android:text="@string/hourly_rate"
                                     android:textColor="@color/colorGreen" />
@@ -333,7 +338,23 @@
 
                                 </android.support.v7.widget.RecyclerView>
 
+                                </RelativeLayout>
+
+                                <TextView
+                                    android:id="@+id/tv_no_skills"
+                                    style="@style/smallPopinsRegularStyle"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_marginEnd="@dimen/_10sdp"
+                                    android:text="@string/no_skills_added"
+                                    android:layout_below="@id/view3"
+                                    android:textColor="@color/colorGreen"
+                                    android:visibility="gone"
+                                    />
+
                             </RelativeLayout>
+
 
                         </android.support.v7.widget.CardView>
                     </LinearLayout>

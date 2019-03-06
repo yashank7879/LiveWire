@@ -26,6 +26,8 @@ import com.livewire.ui.activity.notification_activity.NotificationMySingleJobDet
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
 
+import static com.livewire.utils.Constant.MY_UID;
+
 
 /**
  * Created by mindiii on 6/23/18.
@@ -54,10 +56,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
 
         Constant.printLogMethod(Constant.LOG_VALUE, "notifcation", remoteMessage.getData().toString());
-
-       /* Log.e("firebase message body", remoteMessage.getData().get("body"));
-        Log.e("firebase message body", remoteMessage.getData().toString());
-        Log.e("firebase message body", remoteMessage.getData().get("title"));*/
         sendNotification(userId, message, currentTime, tittle, type, opponentChatId,titleName);
     }
 
@@ -74,6 +72,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 intent.putExtra("body", message);
                 intent.putExtra(CONSTANTTYPE, type);
                 pendingIntent = PendingIntent.getActivity(this, iUniqueId, intent, PendingIntent.FLAG_ONE_SHOT);
+                sendNotification(tittle,message,pendingIntent);
                 break;
             }
          /*   case "Once_job_created": {
@@ -95,7 +94,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 intent.putExtra("body", message);
                 intent.putExtra(CONSTANTTYPE, type);
                 pendingIntent = PendingIntent.getActivity(this, iUniqueId, intent, PendingIntent.FLAG_ONE_SHOT);
-
+                sendNotification(tittle,message,pendingIntent);
                 break;
             }
             case "Once_job_request": {
@@ -105,7 +104,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 intent.putExtra("body", message);
                 intent.putExtra(CONSTANTTYPE, type);
                 pendingIntent = PendingIntent.getActivity(this, iUniqueId, intent, PendingIntent.FLAG_ONE_SHOT);
-
+                sendNotification(tittle,message,pendingIntent);
                 break;
             }
             case "Ongoing_job_accepted":
@@ -116,7 +115,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 intent.putExtra("body", message);
                 intent.putExtra(CONSTANTTYPE, type);
                 pendingIntent = PendingIntent.getActivity(this, iUniqueId, intent, PendingIntent.FLAG_ONE_SHOT);
-
+                sendNotification(tittle,message,pendingIntent);
                 break;
             }
             case "Once_job_completed": {
@@ -126,7 +125,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 intent.putExtra("body", message);
                 intent.putExtra(CONSTANTTYPE, type);
                 pendingIntent = PendingIntent.getActivity(this, iUniqueId, intent, PendingIntent.FLAG_ONE_SHOT);
-
+                sendNotification(tittle,message,pendingIntent);
                 break;
             }
             case "Ongoing_job_completed": {
@@ -136,38 +135,43 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 intent.putExtra("body", message);
                 intent.putExtra(CONSTANTTYPE, type);
                 pendingIntent = PendingIntent.getActivity(this, iUniqueId, intent, PendingIntent.FLAG_ONE_SHOT);
-
+                sendNotification(tittle,message,pendingIntent);
                 break;
             }
             case "chat": {
-                if (PreferenceConnector.readString(this, PreferenceConnector.USER_TYPE, "").equalsIgnoreCase("worker")) {
-                    Intent intent = new Intent(this, WorkerMainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    //intent.putExtra(USER_ID, userId);
-                    intent.putExtra("opponentChatId", opponentChatId);
-                    intent.putExtra("titleName", titleName);
-                    intent.putExtra(CONSTANTTYPE, type);
-                    pendingIntent = PendingIntent.getActivity(this, iUniqueId, intent, PendingIntent.FLAG_ONE_SHOT);
-                } else {
-                    Intent intent = new Intent(this, ClientMainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                   // intent.putExtra(USER_ID, userId);
-                    intent.putExtra("opponentChatId", opponentChatId);
-                    intent.putExtra("titleName", titleName);
-                    intent.putExtra(CONSTANTTYPE, type);
-                    pendingIntent = PendingIntent.getActivity(this, iUniqueId, intent, PendingIntent.FLAG_ONE_SHOT);
+                if (!MY_UID.equals(opponentChatId)) {
+                    if (PreferenceConnector.readString(this, PreferenceConnector.USER_TYPE, "").equalsIgnoreCase("worker")) {
+                        Intent intent = new Intent(this, WorkerMainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        //intent.putExtra(USER_ID, userId);
+                        intent.putExtra("opponentChatId", opponentChatId);
+                        intent.putExtra("titleName", titleName);
+                        intent.putExtra(CONSTANTTYPE, type);
+                        pendingIntent = PendingIntent.getActivity(this, iUniqueId, intent, PendingIntent.FLAG_ONE_SHOT);
+                        sendNotification(tittle,message,pendingIntent);
+                    } else {
+                        Intent intent = new Intent(this, ClientMainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        // intent.putExtra(USER_ID, userId);
+                        intent.putExtra("opponentChatId", opponentChatId);
+                        intent.putExtra("titleName", titleName);
+                        intent.putExtra(CONSTANTTYPE, type);
+                        pendingIntent = PendingIntent.getActivity(this, iUniqueId, intent, PendingIntent.FLAG_ONE_SHOT);
+                        sendNotification(tittle,message,pendingIntent);
+                    }
                 }
                 break;
             }
 
             default: {
-                if (PreferenceConnector.readString(this, PreferenceConnector.USER_TYPE, "").equalsIgnoreCase("worker")) {
+                if (PreferenceConnector.readString(this, PreferenceConnector.USER_TYPE,"").equalsIgnoreCase("worker")) {
                     Intent intent = new Intent(this, WorkerMainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intent.putExtra(USER_ID, userId);
                     intent.putExtra("body", message);
                     intent.putExtra(CONSTANTTYPE, type);
                     pendingIntent = PendingIntent.getActivity(this, iUniqueId, intent, PendingIntent.FLAG_ONE_SHOT);
+                    sendNotification(tittle,message,pendingIntent);
                 } else {
                     Intent intent = new Intent(this, ClientMainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -175,11 +179,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     intent.putExtra("body", message);
                     intent.putExtra(CONSTANTTYPE, type);
                     pendingIntent = PendingIntent.getActivity(this, iUniqueId, intent, PendingIntent.FLAG_ONE_SHOT);
+                sendNotification(tittle,message,pendingIntent);
                 }
                 break;
             }
         }
 
+
+    }
+
+    private void sendNotification(String tittle, String message, PendingIntent pendingIntent){
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         String channelId = "my_channel_01";// The id of the channel.
         CharSequence name = "Abc";// The user-visible name of the channel.

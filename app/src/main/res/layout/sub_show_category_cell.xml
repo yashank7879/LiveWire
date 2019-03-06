@@ -6,11 +6,12 @@
     <TextView
         android:id="@+id/tv_sub_category"
         style="@style/SmallPopinsLightStyle"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/_120sdp"
         android:layout_height="wrap_content"
         android:textSize="@dimen/_12sdp"
         android:layout_centerVertical="true"
         android:text="@string/n_a"
+        android:singleLine="true"
         />
 
     <TextView
@@ -23,7 +24,6 @@
         android:layout_alignParentEnd="true"
         android:textColor="@color/colorDarkBlack"
         />
-
 
 
 </RelativeLayout>

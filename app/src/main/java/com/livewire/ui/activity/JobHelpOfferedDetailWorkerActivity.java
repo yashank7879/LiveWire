@@ -147,7 +147,7 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
             binding.btnSendRequest.setTextColor(ContextCompat.getColor(this, R.color.colorOrange));
             binding.btnSendRequest.setClickable(false);
         } else if (jobDetail.getJob_confirmed().equals("3")) {// job not send
-            binding.btnSendRequest.setBackground(this.getResources().getDrawable(R.drawable.button_green_bg));
+            binding.btnSendRequest.setBackground(this.getResources().getDrawable(R.drawable.button_black_bg));
             binding.btnSendRequest.setText(R.string.send_request);
             binding.btnSendRequest.setTextColor(ContextCompat.getColor(this, R.color.colorWhite));
         }

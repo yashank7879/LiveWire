@@ -36,6 +36,13 @@
         android:fontFamily="@font/opensans_regular"
         />
 
+      <!--  <Button
+            android:id="@+id/startButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="yes"
+            />-->
+
     </LinearLayout>
     </FrameLayout>
 </RelativeLayout>

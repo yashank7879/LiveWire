@@ -174,7 +174,7 @@
             android:layout_width="@dimen/_120sdp"
             android:layout_height="@dimen/_32sdp"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/button_green_bg"
+            android:background="@drawable/button_black_bg"
             android:layout_marginTop="@dimen/_10sdp"
             android:text="@string/apply"
             android:textAllCaps="false"

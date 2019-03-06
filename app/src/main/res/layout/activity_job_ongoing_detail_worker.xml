@@ -570,7 +570,7 @@
                         style="@style/smallPopinsRegularStyle"
                         android:layout_width="@dimen/_65sdp"
                         android:layout_height="@dimen/_22sdp"
-                        android:background="@drawable/button_green_bg"
+                        android:background="@drawable/button_black_bg"
                         android:text="@string/accept"
                         android:textAllCaps="false"
                         android:layout_alignParentEnd="true"

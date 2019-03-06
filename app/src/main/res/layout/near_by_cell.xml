@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/_8sdp"
+    android:id="@+id/rl_profile"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+        <RelativeLayout
+            android:id="@+id/rl_profile_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_profile_img"
+                android:layout_width="@dimen/_35sdp"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginEnd="@dimen/_8sdp"
+                android:src="@drawable/ic_user"
+                app:civ_border_color="@color/colorGreen"
+                app:civ_border_width="1dp" />
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/iv_profile_img"
+                android:fontFamily="@font/poppins_semibold"
+                android:text=""
+                android:textColor="@color/colorDarkBlack"
+                android:textSize="@dimen/_11sdp" />
+
+            <RatingBar
+                android:id="@+id/rating_bar"
+                style="@style/Widget.AppCompat.RatingBar.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_name"
+                android:layout_toEndOf="@+id/iv_profile_img"
+                android:numStars="5"
+                android:progressTint="@color/coloryellow"
+                android:rating="0" />
+
+
+
+        </RelativeLayout>
+
+     <!--   <Button
+            android:id="@+id/btn_send_request"
+            style="@style/smallPopinsRegularStyle"
+            android:layout_width="@dimen/_85sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:background="@drawable/button_green_bg"
+            android:text="@string/send_request"
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/_10sdp"
+            android:layout_centerInParent="true"
+            />-->
+        <LinearLayout
+            android:id="@+id/llkm_away"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            >
+
+            <TextView
+                android:id="@+id/tv_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:text="1 km away"
+                android:textColor="@color/colorDarkGray"
+                android:textSize="@dimen/_9sdp" />
+
+            <ImageView
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="@dimen/_10sdp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/_3sdp"
+                app:srcCompat="@drawable/ic_sent_mail"
+                />
+
+        </LinearLayout>
+</RelativeLayout>

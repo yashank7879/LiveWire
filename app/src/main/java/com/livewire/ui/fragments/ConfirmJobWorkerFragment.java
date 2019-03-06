@@ -57,6 +57,7 @@ import java.util.ArrayList;
 import static com.facebook.FacebookSdk.getApplicationContext;
 import static com.livewire.utils.ApiCollection.BASE_URL;
 import static com.livewire.utils.ApiCollection.CONFIRM_OR_COMPLETED_JOB_LIST_API;
+import static com.livewire.utils.ApiCollection.GET_SUBCATEGORY_LIST_API;
 
 
 public class ConfirmJobWorkerFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener, SubCategoryAdapter.SubCategoryLisner, ConfirmJobWorkerAdapter.ConfirmJobListener {
@@ -192,7 +193,7 @@ public class ConfirmJobWorkerFragment extends Fragment implements View.OnClickLi
     //"""""""""" sub category list api """""""""""""//
     private void SubCategoryListApi() {
         if (Constant.isNetworkAvailable(mContext, mainLayout)) {
-            AndroidNetworking.get(BASE_URL + "getSubcategoryList")
+            AndroidNetworking.get(BASE_URL + GET_SUBCATEGORY_LIST_API)
                     .setPriority(Priority.MEDIUM)
                     .build()
                     .getAsJSONObject(new JSONObjectRequestListener() {
@@ -353,8 +354,8 @@ public class ConfirmJobWorkerFragment extends Fragment implements View.OnClickLi
             tvAllJobs = dialog.findViewById(R.id.tv_all_jobs);
             tvOnGoingJob = dialog.findViewById(R.id.tv_new_jobs);
             tvHelpOffred = dialog.findViewById(R.id.tv_pending_request);
-            tvHelpOffred.setText(R.string.help_offered1);
-            tvOnGoingJob.setText(R.string.ongoing1);
+            tvHelpOffred.setText(R.string.short_term1);
+            tvOnGoingJob.setText(R.string.long_term1);
 
             //""""""" Filter value """""""""//
             checkSelectedField();

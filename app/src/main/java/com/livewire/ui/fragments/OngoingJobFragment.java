@@ -70,6 +70,8 @@ import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 import static com.livewire.ui.activity.CompleteProfileActivity.PLACE_AUTOCOMPLETE_REQUEST_CODE;
 import static com.livewire.utils.ApiCollection.BASE_URL;
+import static com.livewire.utils.ApiCollection.CLIENT_JOB_POST_API;
+import static com.livewire.utils.ApiCollection.GET_CATEGORY_LIST_API;
 
 /**
  * Created by mindiii on 9/28/18.
@@ -159,8 +161,6 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
         binding.hourRequireSpinner.setAdapter(hourRequireAdapter);
 
 
-
-
         binding.tvLocation.setSelected(true);
         binding.tvLocation.setHorizontallyScrolling(true);
         binding.tvLocation.setMovementMethod(new ScrollingMovementMethod());
@@ -177,8 +177,6 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
         new AsyncTask<Void, Void, List<String>>() {
             @Override
             protected List<String> doInBackground(Void... voids) {
-
-
                hourList.add(0, "Hours Required Per Day");
                 double hour = 0.5;
                 for (int i = 0; i <= 48; i++) {
@@ -189,13 +187,10 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
                 }
                 return hourList;
             }
-
             @Override
             protected void onPostExecute(List<String> hour) {
                 super.onPostExecute(hour);
-
                 hourRequireAdapter.notifyDataSetChanged();
-
             }
         }.execute();
     }
@@ -294,6 +289,10 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
                         sb.append(",");
                     }
                 }
+                if (!sb.toString().isEmpty()) {
+                    sb.deleteCharAt(sb.length() - 1);
+                    // Log.e("favroit team", stringBuffer.toString());
+                }
              //   Log.e("week list ss: ", ss);
                 binding.tvWeekDays.setText(sb);
                 dialog.dismiss();
@@ -340,7 +339,7 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
     private void onGoingJobCreationApi(JobCreationModel model) {
         if (Constant.isNetworkAvailable(mContext, binding.svOngoingJob)) {
             progressDialog.show();
-            AndroidNetworking.post(BASE_URL + "Jobpost/clientJobPost")
+            AndroidNetworking.post(BASE_URL + CLIENT_JOB_POST_API )
                     .addHeaders("authToken", PreferenceConnector.readString(mContext, PreferenceConnector.AUTH_TOKEN, ""))
                     .addBodyParameter(model)
                     .setPriority(Priority.MEDIUM)
@@ -558,7 +557,7 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
     private void loadSkillsData() {
         if (Constant.isNetworkAvailable(mContext, binding.svOngoingJob)) {
             progressDialog.show();
-            AndroidNetworking.get(BASE_URL + "getCategoryList")
+            AndroidNetworking.get(BASE_URL + GET_CATEGORY_LIST_API)
                     .setPriority(Priority.MEDIUM)
                     .build().getAsJSONObject(new JSONObjectRequestListener() {
                 @Override

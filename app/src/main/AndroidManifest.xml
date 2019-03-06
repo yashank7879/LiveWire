@@ -49,10 +49,16 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorDarkBlack" />
+        <!-- //""""live  """""// -->
+        <!--
+            <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBXpnvpXkyQzRem7Rr9hcjpiS24AYdMTnA" />
+        -->
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBXpnvpXkyQzRem7Rr9hcjpiS24AYdMTnA" />
+            android:value="AIzaSyB20iWo0NdlMyRoEVEZaTmi_mQwy3PWssw" />
 
         <!-- [START firebase_service] -->
         <service android:name=".firebaseservises.MyFirebaseMessagingService">
@@ -267,7 +273,23 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.notification_activity.AboutUsActivity" />
+        <activity
+            android:name=".ui.activity.notification_activity.AboutUsActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.activity.MyProfileClientActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.activity.AddYourSkillsActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.activity.UploadIntroVideoActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity android:name=".ui.activity.ProfileWorkerActivity"></activity>
     </application>
 
 </manifest>

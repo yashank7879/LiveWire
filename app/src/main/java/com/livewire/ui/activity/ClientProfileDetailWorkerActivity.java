@@ -1,6 +1,5 @@
 package com.livewire.ui.activity;
 
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -15,7 +14,6 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.google.gson.Gson;
 import com.livewire.R;
 import com.livewire.databinding.ActivityClientProfileDetailWorkerBinding;
-import com.livewire.responce.MyProfileResponce;
 import com.livewire.responce.SignUpResponce;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;

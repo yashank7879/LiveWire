@@ -65,6 +65,7 @@ public class Constant {
     public static final int RECORD_AUDIO = 15;
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 13;
     public static final boolean LOG_VALUE= true;
+    public static String MY_UID= "";
 
 
     public static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 12;
@@ -340,6 +341,7 @@ public class Constant {
         AlertDialog alert11 = builder1.create();
         alert11.show();
     }
+
     private static void logout(Activity con) {
         PreferenceConnector.writeBoolean(con, PreferenceConnector.IS_LOG_IN, false);
         PreferenceConnector.writeString(con, PreferenceConnector.USER_INFO_JSON, "");
@@ -348,7 +350,7 @@ public class Constant {
         PreferenceConnector.writeString(con, PreferenceConnector.COMPLETE_PROFILE_STATUS, "");
         PreferenceConnector.writeString(con, PreferenceConnector.PASS_WORD, "");
         PreferenceConnector.writeString(con, PreferenceConnector.SOCIAL_LOGIN, "");
-        Intent intent = new Intent(con, UserSelectionActivity.class);
+        Intent intent = new Intent(con, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         con.startActivity(intent);
         con.finish();

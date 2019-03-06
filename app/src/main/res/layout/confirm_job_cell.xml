@@ -21,6 +21,7 @@
             android:orientation="horizontal"
             android:visibility='@{dataBean.job_type.equals("2") ? View.VISIBLE : View.GONE}'
             >
+
             <TextView
                 android:id="@+id/tv_start_from"
                 style="@style/SmallPopinsMediumStyle"
@@ -208,7 +209,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_below="@+id/view1_id"
                 android:background="@drawable/doteted_balck_shape"
-                android:text='@{dataBean.job_type.equals("1") ? "Help Offered" : "On Going",default = "N/A"}'
+                android:text='@{dataBean.job_type.equals("1") ? "Short term" : "Long term",default = "N/A"}'
                 android:textAllCaps="false"
                 android:layout_marginEnd="@dimen/_minus2sdp"
                 android:textColor="@color/colorDarkBlack"

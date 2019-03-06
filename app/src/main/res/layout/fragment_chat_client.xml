@@ -10,7 +10,11 @@
 
         >
 
-
+        <include layout="@layout/action_bar_client_layout"
+            android:id="@+id/action_bar1"
+            android:visibility="gone"
+            />
+<!--
         <com.loopeer.shadow.ShadowView
             android:id="@+id/action_bar"
             android:layout_width="match_parent"
@@ -32,7 +36,7 @@
                     android:textAllCaps="true"
                     android:textColor="@color/colorGreen" />
 
-               <!-- <ImageView
+               &lt;!&ndash; <ImageView
                     android:layout_width="@dimen/_25sdp"
                     android:layout_height="match_parent"
                     android:layout_alignParentStart="true"
@@ -42,12 +46,12 @@
                     app:srcCompat="@drawable/ic_left_arrow"
                     android:tint="@color/colorDarkBlack"
                     android:id="@+id/iv_back"
-                    />-->
+                    />&ndash;&gt;
 
 
             </RelativeLayout>
 
-        </com.loopeer.shadow.ShadowView>
+        </com.loopeer.shadow.ShadowView>-->
 
 
 
@@ -55,7 +59,7 @@
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/action_bar"
+            android:layout_below="@+id/action_bar1"
             app:reverseLayout="true"
             app:stackFromEnd="true"
             app:layoutManager="android.support.v7.widget.LinearLayoutManager" />

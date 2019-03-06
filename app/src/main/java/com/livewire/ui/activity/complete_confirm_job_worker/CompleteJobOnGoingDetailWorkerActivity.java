@@ -138,13 +138,16 @@ public class CompleteJobOnGoingDetailWorkerActivity extends AppCompatActivity im
                 intent.putExtra("titleName", binding.tvName.getText().toString().trim());
                 intent.putExtra("profilePic", clientProfileImg);
                 startActivity(intent);
-            } case R.id.rl_user_data: {
+            }
+            break;
+            case R.id.rl_user_data: {
                 if (Constant.isNetworkAvailable(this,binding.detailMainLayout)) {
                     Intent intent = new Intent(this, ClientProfileDetailWorkerActivity.class);
                     intent.putExtra("UserIdKey", userId);
                     startActivity(intent);
                 }
             }
+            break;
             default:
         }
     }

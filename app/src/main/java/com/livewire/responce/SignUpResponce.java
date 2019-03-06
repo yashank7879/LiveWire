@@ -10,8 +10,8 @@ public class SignUpResponce implements Serializable {
     /**
      * status : success
      * message : Registration successfully done
-     *  "stripe_fees": "2.9",
-     "stripe_transaction_fees": "0.30"
+     *  "STRIPE_FEES": "2.9",
+     "STRIPE_TRANSACTION_FEES": "0.30"
      * data : {"userId":"22","name":"yash","email":"yash1@gmail.com",
      * "password":"$2y$10$Jk3DURGnpSOlJbqxjH0Urerv4uDAQGSIZDMITcj8MRNbFEXHSE0Qi",
      * "userType":"worker","firebase_id":"","Is_notify":"1","completeProfile":"0",
@@ -116,6 +116,8 @@ public class SignUpResponce implements Serializable {
         private String stripe_customer_id ="";
         private String rating ="";
         private String complete_job ="";
+        private String app_user_mode ="";
+
 
         public String getUserId() {
             return userId;
@@ -331,6 +333,14 @@ public class SignUpResponce implements Serializable {
 
         public void setComplete_job(String complete_job) {
             this.complete_job = complete_job;
+        }
+
+        public String getUser_mode() {
+            return app_user_mode;
+        }
+
+        public void setUser_mode(String user_mode) {
+            this.app_user_mode = user_mode;
         }
     }
 }

@@ -117,7 +117,14 @@ public class WorkerProfileDetailClientActivity extends AppCompatActivity impleme
 
                                     }*/
                                     showSkillBeans.clear();
-                                    showSkillBeans.addAll(userResponce.getData().getCategory());
+
+                                    if (userResponce.getData().getCategory().size()>0) {
+                                        showSkillBeans.addAll(userResponce.getData().getCategory());
+
+                                    }else {
+                                        binding.rlSkills.setVisibility(View.GONE);
+                                        binding.tvNoSkills.setVisibility(View.VISIBLE);
+                                    }
                                     showSkillsAdapter.notifyDataSetChanged();
 
                                     if (!userResponce.getData().getProfileImage().isEmpty()) {

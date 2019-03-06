@@ -1,6 +1,5 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
- >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
@@ -86,6 +85,7 @@
                                     android:layout_width="@dimen/_30sdp"
                                     android:layout_height="@dimen/_30sdp"
                                     android:layout_alignParentEnd="true"
+                                    android:visibility="gone"
                                     android:layout_margin="@dimen/_8sdp"
                                     app:srcCompat="@drawable/ic_star_icon" />
 
@@ -111,7 +111,7 @@
                                     android:layout_centerHorizontal="true"
                                     android:numStars="5"
                                     android:progressTint="@color/coloryellow"
-                                    android:rating="3" />
+                                    />
 
                                 <TextView
                                     android:id="@+id/tv_location"

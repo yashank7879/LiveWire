@@ -3,8 +3,15 @@ package com.livewire.adapter;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,10 +65,23 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             holder.getBinding().setVariable(BR.dataBean, dataBean);
             holder.getBinding().executePendingBindings();
             Picasso.with(holder.ivProfileImg.getContext()).load(dataBean.getProfileImage()).fit().into(holder.ivProfileImg);
-            holder.tvName.setText(dataBean.getName());
-
-            holder.tvDescription.setText(" " + dataBean.getNotification_message().getBody());
+           // holder.tvName.setText(dataBean.getName());
+///
+           // holder.tvDescription.setText(" " + dataBean.getNotification_message().getBody());
             holder.tvDate.setText(Constant.getDayDifference(dataBean.getCrd(), currentTime));
+
+            SpannableStringBuilder builder = new SpannableStringBuilder();
+            SpannableString userName = new SpannableString(dataBean.getName());
+            userName.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.colorDarkBlack)), 0, userName.length(), 0);
+            userName.setSpan(new StyleSpan(Typeface.BOLD), 0, userName.length(), 0);
+            builder.append(userName);
+            SpannableString interesString = new SpannableString(" " + dataBean.getNotification_message().getBody());
+            userName.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.colorDarkGray)), 0, userName.length(), 0);
+
+           // userName.setSpan(new StyleSpan(Typeface.NORMAL), 0, userName.length(), 0);
+
+            builder.append(interesString);
+            holder.tvName.setText(builder);
         }
     }
 

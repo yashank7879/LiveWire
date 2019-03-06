@@ -1,6 +1,7 @@
 package com.livewire.ui.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -23,13 +24,14 @@ import android.widget.TextView;
 
 import com.livewire.R;
 import com.livewire.adapter.FragmentPagerAdpter;
+import com.livewire.ui.activity.MyProfileClientActivity;
 import com.livewire.utils.Constant;
 
 /**
  * Created by mindiii on 9/28/18.
  */
 
-public class PostJobHomeFragment extends Fragment {
+public class PostJobHomeFragment extends Fragment implements View.OnClickListener {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private Context mContext;
@@ -59,9 +61,11 @@ public class PostJobHomeFragment extends Fragment {
 
         View actionBar = view.findViewById(R.id.action_bar);
         TextView header = actionBar.findViewById(R.id.tv_live_wire);
-        header.setText(liveWireText(mContext));
         ImageView ivFilter = actionBar.findViewById(R.id.iv_filter);
+        ImageView ivProfile = actionBar.findViewById(R.id.iv_profile);
         ivFilter.setVisibility(View.GONE);
+        ivProfile.setVisibility(View.VISIBLE);
+        ivProfile.setOnClickListener(this);
 
         // decrease width of indicator
         for (int i = 0; i < tabLayout.getTabCount(); i++) {
@@ -104,12 +108,13 @@ public class PostJobHomeFragment extends Fragment {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-
+             /*this method is not used*/
             }
+
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
+             /*this method is not used*/
             }
 
             @Override
@@ -117,6 +122,17 @@ public class PostJobHomeFragment extends Fragment {
             /*this method is not used*/
             }
         });
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.iv_profile:
+                Intent intent = new Intent(mContext, MyProfileClientActivity.class);
+                startActivity(intent);
+                break;
+            default:
+        }
     }
 
     public static SpannableStringBuilder liveWireText(Context mContext) {

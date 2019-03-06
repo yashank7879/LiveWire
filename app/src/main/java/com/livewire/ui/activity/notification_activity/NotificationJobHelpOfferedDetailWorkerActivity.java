@@ -136,7 +136,7 @@ public class NotificationJobHelpOfferedDetailWorkerActivity extends AppCompatAct
            }else if (dataBean.getJob_confirmed().equals("2")){// job not accepted
             holder.btnSendRequest.setClickable(false);*/
         } else if (jobDetail.getJob_confirmed().equals("3")) {// job not send
-            binding.btnSendRequest.setBackground(this.getResources().getDrawable(R.drawable.button_green_bg));
+            binding.btnSendRequest.setBackground(this.getResources().getDrawable(R.drawable.button_black_bg));
             binding.btnSendRequest.setText(R.string.send_request);
             binding.btnSendRequest.setTextColor(ContextCompat.getColor(this, R.color.colorWhite));
         }

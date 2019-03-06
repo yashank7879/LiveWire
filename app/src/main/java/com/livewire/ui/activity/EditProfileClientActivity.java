@@ -62,6 +62,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import static com.livewire.utils.ApiCollection.BASE_URL;
+import static com.livewire.utils.ApiCollection.GET_CLIENT_PROFILE_API;
 import static com.livewire.utils.ApiCollection.UPDATE_CLIENT_PROFILE_API;
 
 public class EditProfileClientActivity extends AppCompatActivity implements View.OnClickListener {
@@ -81,29 +82,74 @@ public class EditProfileClientActivity extends AppCompatActivity implements View
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_edit_profile_client);
+        intializeView();
 
-        SignUpResponce userResponce = (SignUpResponce) getIntent().getSerializableExtra("ClientProfileInfo");
-        binding.setUserInfo(userResponce.getData());
+        if (getIntent().getSerializableExtra("ClientProfileInfo") != null) {
+            SignUpResponce userResponce = (SignUpResponce) getIntent().getSerializableExtra("ClientProfileInfo");
+            binding.setUserInfo(userResponce.getData());
 
-        if (!userResponce.getData().getLatitude().isEmpty()) {
-            locationLat = Double.parseDouble(userResponce.getData().getLatitude());
-            locationLng = Double.parseDouble(userResponce.getData().getLongitude());
+            if (!userResponce.getData().getLatitude().isEmpty()) {
+                locationLat = Double.parseDouble(userResponce.getData().getLatitude());
+                locationLng = Double.parseDouble(userResponce.getData().getLongitude());
+            }
+
+            locationPlace = userResponce.getData().getTown();
+            Picasso.with(binding.ivProfileImg.getContext())
+                    .load(userResponce.getData().getProfileImage())
+                    .into(binding.ivProfileImg);
+            binding.inactiveUserImg.setVisibility(View.GONE);
+        }else {
+            myProfileApi();
         }
 
-        locationPlace = userResponce.getData().getTown();
-        Picasso.with(binding.ivProfileImg.getContext())
-                .load(userResponce.getData().getProfileImage())
-                .into(binding.ivProfileImg);
-        binding.inactiveUserImg.setVisibility(View.GONE);
 
-        intializeView();
+    }
+
+        //"""""""""' my profile worker side""""""""""""""//
+        private void myProfileApi() {// help offer api calling
+            if (Constant.isNetworkAvailable(this, binding.editProfileLayout)) {
+                progressDialog.show();
+                AndroidNetworking.get(BASE_URL + GET_CLIENT_PROFILE_API)
+                        .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
+                        .setPriority(Priority.MEDIUM)
+                        .build()
+                        .getAsJSONObject(new JSONObjectRequestListener() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                try {
+                                    progressDialog.dismiss();
+                                    String status = response.getString("status");
+                                    String message = response.getString("message");
+                                    if (status.equals("success")) {
+                                        SignUpResponce userResponce = new Gson().fromJson(String.valueOf(response), SignUpResponce.class);
+
+                                        Picasso.with(binding.ivProfileImg.getContext()).load(userResponce.getData().getProfileImage())
+                                                .fit().into(binding.ivProfileImg);
+                                       binding.inactiveUserImg.setVisibility(View.GONE);
+                                        binding.setUserInfo(userResponce.getData());
+
+                                    } else {
+                                        Constant.snackBar(binding.editProfileLayout, message);
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            @Override
+                            public void onError(ANError anError) {
+                                Constant.errorHandle(anError, EditProfileClientActivity.this);
+                                progressDialog.dismiss();
+                            }
+                        });
+
+        }
     }
 
     private void intializeView() {
         progressDialog = new ProgressDialog(this);
         binding.actionBarWorker.ivBack.setOnClickListener(this);
         binding.actionBarWorker.tvLiveWire.setText(R.string.edit_profile);
-
         binding.btnSaveAndUpdate.setOnClickListener(this);
         binding.flUserProfile.setOnClickListener(this);
         binding.tvTownResident.setOnClickListener(this);

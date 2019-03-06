@@ -26,8 +26,6 @@ public class MyJobWorkerFragmentAdapter extends FragmentPagerAdapter {
         this.activity = activity;
     }
 
-
-
     @Override
     public Fragment getItem(int position) {
         if (position == 0) {
@@ -38,6 +36,7 @@ public class MyJobWorkerFragmentAdapter extends FragmentPagerAdapter {
             if (view == null) {
                 view = new View(activity);
             }
+            assert imm != null;
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             return new ConfirmJobWorkerFragment();
         } else
