@@ -131,10 +131,8 @@ public class MultiPartRequest extends Request<String> {
             String value = entry.getValue();
             builder.addTextBody(key, value);
         }
-
         return builder.build();
     }
-
 
     @Override
     public String getBodyContentType() {
@@ -154,6 +152,7 @@ public class MultiPartRequest extends Request<String> {
         header.put("authToken", PreferenceConnector.readString(activity, PreferenceConnector.AUTH_TOKEN, ""));
         return header;
     }*/
+
 
     @Override
     public byte[] getBody() throws AuthFailureError {

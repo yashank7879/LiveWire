@@ -84,8 +84,7 @@ public class AddYourSkillsActivity extends AppCompatActivity implements View.OnC
         binding.rvSkills.setVisibility(View.GONE);
         progressDialog = new ProgressDialog(this);
 
-
-       /* categoryAdapter = new ArrayAdapter<>(AddYourSkillsActivity.this, R.layout.spinner_item, skillsResponce.getData());
+        /* categoryAdapter = new ArrayAdapter<>(AddYourSkillsActivity.this, R.layout.spinner_item, skillsResponce.getData());
         categoryAdapter.setDropDownViewResource(R.layout.spinner_drop_down);*/
         binding.btnNext.setOnClickListener(this);
         binding.ivBack.setOnClickListener(this);
@@ -418,6 +417,5 @@ public class AddYourSkillsActivity extends AppCompatActivity implements View.OnC
         PreferenceConnector.writeString(this, PreferenceConnector.USER_DOB, "");
         PreferenceConnector.writeString(this, PreferenceConnector.SELECTED_VIDEO, "");
         PreferenceConnector.writeString(this, PreferenceConnector.ABOUT_ME, "");
-
     }
 }

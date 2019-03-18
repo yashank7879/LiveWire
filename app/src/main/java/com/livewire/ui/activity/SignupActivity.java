@@ -462,7 +462,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private void signUpApiForSocial(UserModel model) {
         if (Constant.isNetworkAvailable(this, mainLayout)) {
             progressDialog.show();
-            // progressBar.setVisibility(View.VISIBLE);
             AndroidNetworking.post(BASE_URL + USER_REGISTRATION_API)
                     .addBodyParameter(model)
                     .setPriority(Priority.MEDIUM).
@@ -765,7 +764,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private void signUpClientApi(UserModel model) {
         if (Constant.isNetworkAvailable(this, mainLayout)) {
             progressDialog.show();
-            //  progressBar.setVisibility(View.VISIBLE);
             AndroidNetworking.upload(BASE_URL+USER_REGISTRATION_API)
                     .addMultipartFile("profileImage", userImageFile)
                     .addMultipartParameter(model)

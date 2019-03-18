@@ -37,7 +37,7 @@ import static com.livewire.utils.ApiCollection.BASE_URL;
 import static com.livewire.utils.ApiCollection.CHANGE_USER_MODE_API;
 import static com.livewire.utils.ApiCollection.GET_MY_PROFILE_API;
 
-public class ProfileWorkerActivity extends AppCompatActivity implements View.OnClickListener {
+public class MyProfileWorkerActivity extends AppCompatActivity implements View.OnClickListener {
     FragmentMyProfileWorkerBinding binding;
     private ProgressDialog progressDialog;
     private String videoUrl;
@@ -128,7 +128,7 @@ public class ProfileWorkerActivity extends AppCompatActivity implements View.OnC
                         @Override
                         public void onError(ANError anError) {
                             Log.e("getErrorBody: ", anError.getErrorBody());
-                            Constant.errorHandle(anError, ProfileWorkerActivity.this);
+                            Constant.errorHandle(anError, MyProfileWorkerActivity.this);
                             progressDialog.dismiss();
                         }
                     });
@@ -218,16 +218,16 @@ public class ProfileWorkerActivity extends AppCompatActivity implements View.OnC
                                 String status = response.getString("status");
                                 String message = response.getString("message");
                                 if (status.equals("success")) {
-                                    if (PreferenceConnector.readString(ProfileWorkerActivity.this, PreferenceConnector.USER_MODE, "").equals("worker")) {
-                                        PreferenceConnector.writeString(ProfileWorkerActivity.this, PreferenceConnector.USER_MODE, "client");
+                                    if (PreferenceConnector.readString(MyProfileWorkerActivity.this, PreferenceConnector.USER_MODE, "").equals("worker")) {
+                                        PreferenceConnector.writeString(MyProfileWorkerActivity.this, PreferenceConnector.USER_MODE, "client");
                                         finishAffinity();
-                                        Intent intent = new Intent(ProfileWorkerActivity.this, ClientMainActivity.class);
+                                        Intent intent = new Intent(MyProfileWorkerActivity.this, ClientMainActivity.class);
                                         startActivity(intent);
                                         finish();
                                     } else {
-                                        PreferenceConnector.writeString(ProfileWorkerActivity.this, PreferenceConnector.USER_MODE, "worker");
+                                        PreferenceConnector.writeString(MyProfileWorkerActivity.this, PreferenceConnector.USER_MODE, "worker");
                                         finishAffinity();
-                                        Intent intent = new Intent(ProfileWorkerActivity.this, WorkerMainActivity.class);
+                                        Intent intent = new Intent(MyProfileWorkerActivity.this, WorkerMainActivity.class);
                                         startActivity(intent);
                                         finish();
                                     }
@@ -242,7 +242,7 @@ public class ProfileWorkerActivity extends AppCompatActivity implements View.OnC
 
                         @Override
                         public void onError(ANError anError) {
-                            Constant.errorHandle(anError, ProfileWorkerActivity.this);
+                            Constant.errorHandle(anError, MyProfileWorkerActivity.this);
                             progressDialog.dismiss();
                         }
                     });

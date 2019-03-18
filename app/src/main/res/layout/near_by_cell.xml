@@ -46,25 +46,25 @@
 
         </RelativeLayout>
 
-     <!--   <Button
-            android:id="@+id/btn_send_request"
-            style="@style/smallPopinsRegularStyle"
-            android:layout_width="@dimen/_85sdp"
-            android:layout_height="@dimen/_25sdp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginBottom="@dimen/_10sdp"
-            android:background="@drawable/button_green_bg"
-            android:text="@string/send_request"
-            android:textAllCaps="false"
-            android:textColor="@color/colorWhite"
-            android:textSize="@dimen/_10sdp"
-            android:layout_centerInParent="true"
-            />-->
-        <LinearLayout
+    <ImageView
+        android:id="@+id/iv_chat"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:layout_gravity="center"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:layout_marginStart="@dimen/_3sdp"
+        android:background="@drawable/circle_green_bg"
+        android:padding="@dimen/_5sdp"
+        app:srcCompat="@drawable/ic_chat"
+        android:layout_alignParentEnd="true"
+        />
+
+    <LinearLayout
             android:id="@+id/llkm_away"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
+        android:layout_below="@id/iv_chat"
             >
 
             <TextView

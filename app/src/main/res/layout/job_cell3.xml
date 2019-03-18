@@ -237,11 +237,13 @@
                     style="@style/smallPopinsRegularStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:gravity="end"
                     android:layout_below="@+id/btn_send_request"
                     android:layout_toStartOf="@+id/hr1"
-                    android:text="$ 400.80 to 700.00/" />
+                    android:text="$ 40.80 to 70.00/hr"
+                    android:layout_alignParentEnd="true"/>
 
-                <TextView
+              <!--  <TextView
                     android:id="@+id/hr1"
                     style="@style/SmallPopinsLightStyle"
                     android:layout_width="wrap_content"
@@ -250,7 +252,7 @@
                     android:layout_alignParentEnd="true"
                     android:text="@string/hr"
                     android:textColor="@color/colorDarkBlack"
-                    android:textSize="@dimen/_8sdp" />
+                    android:textSize="@dimen/_8sdp" />-->
 
             </RelativeLayout>
 
@@ -281,6 +283,7 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="@dimen/_3sdp"
                     app:srcCompat="@drawable/ic_right_arrow_copy" />
+
             </LinearLayout>
 
             <TextView
@@ -291,7 +294,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:padding="@dimen/_5sdp"
-                android:text="@string/no_offer_request_yet"
+                android:text="@string/no_offer_application_yet"
                 android:textSize="@dimen/_10sdp"
                 android:visibility="visible" />
 

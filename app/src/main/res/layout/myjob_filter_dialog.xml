@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/c_dialog_main_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/dialog_bg"
-    android:id="@+id/c_dialog_main_layout"
-    >
+    android:background="@drawable/dialog_bg">
 
     <TextView
         android:id="@+id/heading"
@@ -30,13 +29,12 @@
         style="@style/SmallPopinsMediumStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/sort_by"
-        android:textSize="@dimen/_10sdp"
         android:layout_below="@+id/view1_id"
         android:layout_marginStart="@dimen/_15sdp"
-        android:textColor="@color/colorGreen"
         android:layout_marginTop="@dimen/_10sdp"
-        />
+        android:text="@string/sort_by"
+        android:textColor="@color/colorGreen"
+        android:textSize="@dimen/_10sdp" />
 
 
     <LinearLayout
@@ -44,70 +42,66 @@
         android:layout_width="@dimen/_70sdp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/id_sort_by"
+        android:layout_marginBottom="@dimen/_5sdp"
         android:layout_marginStart="@dimen/_40sdp"
         android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginBottom="@dimen/_5sdp"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/iv_once"
-        android:layout_width="@dimen/_60sdp"
-        android:layout_height="@dimen/_60sdp"
-        app:srcCompat="@drawable/ic_active_once"
-        android:padding="@dimen/_15sdp"
-        android:tint="@color/colorLightGray"
-        android:layout_gravity="center"
-        android:background="@drawable/inactive_btn_gray_bg"
-        />
+        <ImageView
+            android:id="@+id/iv_once"
+            android:layout_width="@dimen/_60sdp"
+            android:layout_height="@dimen/_60sdp"
+            android:layout_gravity="center"
+            android:background="@drawable/inactive_btn_gray_bg"
+            android:padding="@dimen/_15sdp"
+            android:tint="@color/colorLightGray"
+            app:srcCompat="@drawable/ic_active_once" />
 
         <TextView
             android:id="@+id/tv_once"
             style="@style/SmallPopinsLightStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginTop="@dimen/_5sdp"
-            android:text="@string/single_project_task"
             android:gravity="center"
+            android:text="@string/short_term1"
             android:textColor="@color/colorLightGray"
-            android:textSize="@dimen/_10sdp"
-            />
+            android:textSize="@dimen/_10sdp" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/ll_ongoing"
         android:layout_width="@dimen/_70sdp"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
         android:layout_below="@+id/id_sort_by"
+        android:layout_marginBottom="@dimen/_5sdp"
         android:layout_marginEnd="@dimen/_40sdp"
         android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginBottom="@dimen/_5sdp"
-        android:orientation="vertical"
-        android:layout_alignParentEnd="true"
-        >
+        android:orientation="vertical">
 
         <ImageView
             android:id="@+id/iv_ongoing"
             android:layout_width="@dimen/_60sdp"
             android:layout_height="@dimen/_60sdp"
-            app:srcCompat="@drawable/ic_active_ongoing"
-            android:padding="@dimen/_15sdp"
             android:layout_gravity="center"
-            android:tint="@color/colorLightGray"
             android:background="@drawable/inactive_btn_gray_bg"
-            />
+            android:padding="@dimen/_15sdp"
+            android:tint="@color/colorLightGray"
+            app:srcCompat="@drawable/ic_active_ongoing" />
 
         <TextView
             android:id="@+id/tv_ongoing"
             style="@style/SmallPopinsLightStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/ongoing_help"
+            android:layout_gravity="center"
             android:layout_marginTop="@dimen/_5sdp"
             android:gravity="center"
+            android:text="@string/long_term1"
             android:textColor="@color/colorLightGray"
-            android:textSize="@dimen/_10sdp"
-            />
+            android:textSize="@dimen/_10sdp" />
     </LinearLayout>
 
     <TextView
@@ -115,38 +109,49 @@
         style="@style/SmallPopinsMediumStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/filter_by"
-        android:textSize="@dimen/_10sdp"
         android:layout_below="@+id/ll_once"
         android:layout_marginStart="@dimen/_15sdp"
+        android:text="@string/filter_by"
         android:textColor="@color/colorGreen"
-        />
+        android:textSize="@dimen/_10sdp" />
 
+    <LinearLayout
+        android:id="@+id/check_box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/id_filter"
+        android:orientation="horizontal"
 
+        >
 
         <android.support.v7.widget.AppCompatCheckBox
             android:id="@+id/cb_pending"
-            android:layout_width="wrap_content"
+            style="@style/smallPopinsRegularStyle"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/id_filter"
             android:layout_marginStart="@dimen/_15sdp"
-            android:text="@string/pending_request"
-            android:textColor="@color/colorDarkGray"
             android:layout_marginTop="@dimen/_5sdp"
-            />
+            android:layout_weight="1"
+            android:singleLine="true"
+            android:text="@string/application_pending"
+            android:textColor="@color/colorDarkGray"
+            android:textSize="@dimen/_9sdp" />
 
-    <android.support.v7.widget.AppCompatCheckBox
-        android:id="@+id/cb_confirm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/id_filter"
-        android:layout_marginStart="@dimen/_15sdp"
-        android:text="@string/confirm_request"
-        android:textColor="@color/colorDarkGray"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="@dimen/_15sdp"
-        android:layout_marginTop="@dimen/_5sdp"
-        />
+        <android.support.v7.widget.AppCompatCheckBox
+            android:id="@+id/cb_confirm"
+            style="@style/smallPopinsRegularStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_weight="1"
+            android:singleLine="true"
+            android:text="@string/confirm_application"
+            android:textColor="@color/colorDarkGray"
+            android:textSize="@dimen/_9sdp" />
+
+    </LinearLayout>
 
 
     <Button
@@ -154,7 +159,7 @@
         style="@style/mediumPopinsLightStyle"
         android:layout_width="@dimen/_120sdp"
         android:layout_height="@dimen/_30sdp"
-        android:layout_below="@+id/cb_pending"
+        android:layout_below="@+id/check_box"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/_25sdp"
@@ -166,12 +171,12 @@
     <TextView
         android:id="@+id/tv_cancel"
         style="@style/mediumPopinsLightStyle"
-        android:background="?android:attr/selectableItemBackground"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/btn_send_request"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/_10sdp"
+        android:background="?android:attr/selectableItemBackground"
         android:padding="@dimen/_5sdp"
         android:text="@string/cancel"
         android:textColor="@color/colorGreen" />

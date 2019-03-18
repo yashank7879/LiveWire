@@ -1319,7 +1319,6 @@ mediaFilesList.remove(0);
 
             }
         }, tmpFile, tmpFile.size(), profileImageFileList, profileImageFileList.size(), videoThumbFileList, mPram, CompleteProfileActivity.this);
-
         mMultiPartRequest.setTag("MultiRequest");
         mMultiPartRequest.setRetryPolicy(new DefaultRetryPolicy(Template.VolleyRetryPolicy.SOCKET_TIMEOUT,
                 Template.VolleyRetryPolicy.RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));

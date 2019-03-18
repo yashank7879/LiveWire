@@ -1,9 +1,13 @@
 package com.livewire.ui.activity;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.View;
 
@@ -13,8 +17,12 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.google.gson.Gson;
 import com.livewire.R;
+import com.livewire.adapter.ShowSkillsAdapter;
 import com.livewire.databinding.ActivityClientProfileDetailWorkerBinding;
+import com.livewire.databinding.ActivityWorkerProfileDetailClientActivityBinding;
+import com.livewire.responce.MyProfileResponce;
 import com.livewire.responce.SignUpResponce;
+import com.livewire.ui.activity.chat.ChattingActivity;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
 import com.livewire.utils.ProgressDialog;
@@ -23,27 +31,37 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import static com.livewire.utils.ApiCollection.BASE_URL;
 
-public class ClientProfileDetailWorkerActivity extends AppCompatActivity implements View.OnClickListener{
-    ActivityClientProfileDetailWorkerBinding binding;
+public class ClientProfileDetailWorkerActivity extends AppCompatActivity implements View.OnClickListener {
+    ActivityWorkerProfileDetailClientActivityBinding binding;
     private ProgressDialog progressDialog;
-    private String userId="";
+    private String userId = "";
+    private MyProfileResponce userResponce;
+    private ShowSkillsAdapter showSkillsAdapter;
+    private ArrayList<MyProfileResponce.DataBean.CategoryBean> showSkillBeans = new ArrayList<>();
+    private String videoUrl;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_client_profile_detail_worker);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_worker_profile_detail_client_activity);
         progressDialog = new ProgressDialog(this);
 
-        binding.actionBar1.ivBack.setVisibility(View.VISIBLE);
-        binding.actionBar1.ivBack.setOnClickListener(this);
-        binding.actionBar1.tvLiveWire.setText(R.string.client_profile);
-        binding.actionBar1.tvLiveWire.setTextColor(ContextCompat.getColor(this,R.color.colorGreen));
-
-        if (getIntent().getStringExtra("UserIdKey") != null){
+        if (getIntent().getStringExtra("UserIdKey") != null) {
             userId = getIntent().getStringExtra("UserIdKey");
+            binding.rlWorkInfo.setVisibility(View.VISIBLE);
         }
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        binding.rvSkillData.setLayoutManager(layoutManager);
+        showSkillsAdapter = new ShowSkillsAdapter(this, showSkillBeans);
+        binding.rvSkillData.setAdapter(showSkillsAdapter);
+        binding.rlVideoImg.setOnClickListener(this);
+        binding.ivBack.setOnClickListener(this);
+        binding.ivChat.setOnClickListener(this);
+
         profileDetail();
     }
 
@@ -66,8 +84,48 @@ public class ClientProfileDetailWorkerActivity extends AppCompatActivity impleme
                                 String status = response.getString("status");
                                 String message = response.getString("message");
                                 if (status.equals("success")) {
-                                    SignUpResponce userResponce = new Gson().fromJson(String.valueOf(response), SignUpResponce.class);
+                                    userResponce = new Gson().fromJson(String.valueOf(response), MyProfileResponce.class);
+                                    videoUrl = userResponce.getData().getIntro_video();
 
+
+                                    if (!videoUrl.isEmpty()) {
+                                        binding.rlVideoImg.setVisibility(View.VISIBLE);
+                                    }
+                                    if (!userResponce.getData().getVideo_thumb().isEmpty()) {
+                                        Picasso.with(binding.videoThumbImg.getContext()).load(userResponce.getData().getVideo_thumb()).fit()
+                                                .error(R.color.colorWhite)
+                                                .into(binding.videoThumbImg);
+                                    }
+                                  /*  for (MyProfileResponce.DataBean.CategoryBean categoryBean : userResponce.getData().getCategory()) {
+
+                                        CategoryBean catgoryData = new CategoryBean();
+                                        catgoryData.setCategoryName(categoryBean.getCategoryName());
+                                        catgoryData.setParent_id(categoryBean.getParent_id());
+                                        catgoryData.setParentCategoryId(categoryBean.getParentCategoryId());
+
+                                        for (int i = 0; i < categoryBean.getSubcat().size(); i++) {
+                                            CategoryBean.SubcatBean subcatBean = new CategoryBean.SubcatBean();
+                                            subcatBean.setCategoryId(categoryBean.getSubcat().get(i).getCategoryId());
+                                            subcatBean.setCategoryName(categoryBean.getSubcat().get(i).getCategoryName());
+                                            subcatBean.setParent_id(categoryBean.getSubcat().get(i).getParent_id());
+                                            subcatBean.setMax_rate(categoryBean.getSubcat().get(i).getMax_rate());
+                                            subcatBean.setMin_rate(categoryBean.getSubcat().get(i).getMin_rate());
+                                            subcatBeanList.add(subcatBean);
+                                            catgoryData.setSubcat(subcatBeanList);
+
+                                        }
+
+                                    }*/
+                                    showSkillBeans.clear();
+
+                                    if (userResponce.getData().getCategory().size() > 0) {
+                                        showSkillBeans.addAll(userResponce.getData().getCategory());
+
+                                    } else {
+                                        binding.rlSkills.setVisibility(View.GONE);
+                                        binding.tvNoSkills.setVisibility(View.VISIBLE);
+                                    }
+                                    showSkillsAdapter.notifyDataSetChanged();
 
                                     if (!userResponce.getData().getProfileImage().isEmpty()) {
                                         Picasso.with(binding.ivProfile.getContext())
@@ -86,7 +144,7 @@ public class ClientProfileDetailWorkerActivity extends AppCompatActivity impleme
 
                         @Override
                         public void onError(ANError anError) {
-                            Log.e("getErrorBody: ", anError.getErrorBody());
+                            //Log.e("getErrorBody: ", anError.getErrorBody());
                             Constant.errorHandle(anError, ClientProfileDetailWorkerActivity.this);
                             progressDialog.dismiss();
                         }
@@ -97,12 +155,30 @@ public class ClientProfileDetailWorkerActivity extends AppCompatActivity impleme
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
+            case R.id.rl_video_img:
+                if (Constant.isNetworkAvailable(this, binding.svProfile)) {
+                 /*   Intent intent = new Intent(this, PlayVideoActivity.class);
+                    intent.putExtra("VideoUrlKey", videoUrl);
+                    startActivity(intent);*/
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setDataAndType(Uri.parse(videoUrl), "video/mp4");
+                    startActivity(i);
+                }
+                break;
+
             case R.id.iv_back:
                 onBackPressed();
                 break;
-                default:
-
+            case R.id.iv_chat: {
+                Intent intent = new Intent(this, ChattingActivity.class);
+                intent.putExtra("otherUID", userResponce.getData().getUserId());
+                intent.putExtra("titleName", userResponce.getData().getName());
+                if (!userResponce.getData().getProfileImage().isEmpty())
+                    intent.putExtra("profilePic", userResponce.getData().getProfileImage());
+                startActivity(intent);
+            }
+            default:
         }
     }
 }

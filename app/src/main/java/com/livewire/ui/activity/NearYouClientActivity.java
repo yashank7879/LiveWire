@@ -210,7 +210,6 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
             }
         });
 
-
         tvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

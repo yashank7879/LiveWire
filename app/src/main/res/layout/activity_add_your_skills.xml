@@ -36,6 +36,7 @@
             android:layout_centerVertical="true"
             android:layout_marginEnd="@dimen/_3sdp"
             android:padding="@dimen/_5sdp"
+            android:visibility="gone"
             android:text="@string/cancel" />
 
     </RelativeLayout>

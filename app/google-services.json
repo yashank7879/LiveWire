@@ -44,10 +44,10 @@
               "client_type": 3
             },
             {
-              "client_id": "284708269414-0q26umn54ba4uv91nrr5ui6vbju3v8qq.apps.googleusercontent.com",
+              "client_id": "284708269414-39u2ddor9gmvs8deo8ujpi29sr56b7hu.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "mindiii.com.LiveWire"
+                "bundle_id": "com.mindiii.LiveWire"
               }
             }
           ]

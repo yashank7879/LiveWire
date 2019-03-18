@@ -1,5 +1,7 @@
 package com.livewire.ui.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.databinding.DataBindingUtil;
@@ -33,7 +35,6 @@ import com.livewire.utils.PreferenceConnector;
 
 public class WorkerMainActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
     ActivityWorkerMainBinding binding;
-
     private TextView tvHeading;
     private int clickId;
     private android.support.v4.app.FragmentManager fm;
@@ -80,6 +81,13 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
             binding.tvHeading.setText(R.string.work_opportunity);
             replaceFragment(new JobRequestFragment(), false, R.id.fl_container); // first time replace home fragment
             clickId = R.id.home_ll;
+        } else if (getIntent().getStringExtra("MyProfile") != null) {
+            binding.tvHeading.setText(R.string.work_opportunity);
+            replaceFragment(new JobRequestFragment(), false, R.id.fl_container); // first time replace home fragment
+            clickId = R.id.home_ll;
+
+            showAlertWorkerDialog();
+
         } else {
             binding.tvHeading.setText(R.string.work_opportunity);
             replaceFragment(new JobRequestFragment(), false, R.id.fl_container); // first time replace home fragment
@@ -104,6 +112,7 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         binding.ivMyJobs.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorBlack)));
                     }
+                    binding.ivMyjobDot.setVisibility(View.VISIBLE);
                     replaceFragment(new MyJobWorkerFragment(), false, R.id.fl_container);
                     clickId = R.id.my_job_ll;
                 }
@@ -111,10 +120,11 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
             case R.id.ll_near_by:
                 if (clickId != R.id.ll_near_by) {
                     inActiveTab();
-                    binding.tvHeading.setText(R.string.nearby);
+                    binding.tvHeading.setText(R.string.near_you);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         binding.ivNearBy.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorBlack)));
                     }
+                    binding.ivNearDot.setVisibility(View.VISIBLE);
                     replaceFragment(new NearByWorkerFragment(), false, R.id.fl_container);
                     clickId = R.id.ll_near_by;
                 }
@@ -126,6 +136,7 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
                     binding.tvHeading.setText(R.string.work_opportunity);
                     replaceFragment(new JobRequestFragment(), false, R.id.fl_container);
                     clickId = R.id.home_ll;
+                    binding.ivHomeDot.setVisibility(View.VISIBLE);
                 }
                 break;
 
@@ -137,6 +148,7 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         binding.ivChat.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorBlack)));
                     }
+                    binding.ivChatDot.setVisibility(View.VISIBLE);
                     replaceFragment(new ChatWorkerFragment(), false, R.id.fl_container);
                     clickId = R.id.chat_ll;
                 }
@@ -149,20 +161,21 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         binding.ivNotification.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorBlack)));
                     }
+                    binding.ivNotificationDot.setVisibility(View.VISIBLE);
                     replaceFragment(new NotificationWorkerFragment(), false, R.id.fl_container);
                     clickId = R.id.ll_notificaton;
                 }
                 break;
-            case R.id.iv_notification: {
+          /*  case R.id.iv_notification: {
                 intent = new Intent(this, NotificationListWorkerActivity.class);
                 startActivity(intent);
-            }
-                break;
+            }*/
+            //break;
             case R.id.iv_profile: {
-                intent = new Intent(this, ProfileWorkerActivity.class);
+                intent = new Intent(this, MyProfileWorkerActivity.class);
                 startActivity(intent);
             }
-                break;
+            break;
             default:
         }
     }
@@ -174,6 +187,12 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
             binding.ivNearBy.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorLightGray)));
             binding.ivChat.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorLightGray)));
             binding.ivNotification.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorLightGray)));
+
+            binding.ivMyjobDot.setVisibility(View.INVISIBLE);
+            binding.ivNearDot.setVisibility(View.INVISIBLE);
+            binding.ivHomeDot.setVisibility(View.INVISIBLE);
+            binding.ivChatDot.setVisibility(View.INVISIBLE);
+            binding.ivNotificationDot.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -181,6 +200,43 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
+
+    public void showAlertWorkerDialog() {
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(WorkerMainActivity.this);
+        builder1.setTitle("Alert");
+        builder1.setMessage("You Need To Switch Your Profile");
+        builder1.setCancelable(true);
+        builder1.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent intent = new Intent(WorkerMainActivity.this, MyProfileWorkerActivity.class);
+                        startActivity(intent);
+                        /*Intent intent = new Intent(this, WorkerMainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.putExtra("MyProfile", "MyProfile");
+                        intent.putExtra(USER_ID, userId);
+                        intent.putExtra("body", message);
+                        intent.putExtra(CONSTANTTYPE, type);
+                        pendingIntent = PendingIntent.getActivity(this, iUniqueId, intent, PendingIntent.FLAG_ONE_SHOT);
+                        sendNotification(tittle, message, pendingIntent);*/
+                        dialog.cancel();
+
+                    }
+                });
+        builder1.setNegativeButton("No",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert11 = builder1.create();
+        if (WorkerMainActivity.this != null)
+            alert11.show();
+    }
+
 
     //*********   replace Fragment  ************//
     public void replaceFragment(Fragment fragment, boolean addToBackStack, int containerId) {

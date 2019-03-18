@@ -133,7 +133,6 @@ public class MultiPartRequestForUpdateProfile extends Request<String> {
             String value = entry.getValue();
             builder.addTextBody(key, value);
         }
-
         return builder.build();
     }
 

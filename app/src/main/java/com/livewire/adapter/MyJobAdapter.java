@@ -143,7 +143,7 @@ public class MyJobAdapter extends RecyclerView.Adapter {
                     switch (dataBean.getJob_confirmed()) {
                         case "0": // request zero
                             if (dataBean.getRequestedUserData().get(0).getRequest_status().equals("0")) {// request pending job
-                                holder.tvPendingRequest.setText(R.string.request_pending);
+                                holder.tvPendingRequest.setText(R.string.application_pending);
                                 holder.tvPendingRequest.setTextColor(ContextCompat.getColor(mContext, R.color.colorOrange));
 
                             } else if (dataBean.getRequestedUserData().get(0).getRequest_status().equals("2")) {// request cancel by worker
@@ -172,11 +172,12 @@ public class MyJobAdapter extends RecyclerView.Adapter {
                     SpannableString toString = new SpannableString(" to ");
                     builder.append(toString);
 
-
                     SpannableString maxprice = new SpannableString("$ " + dataBean.getRequestedUserData().get(0).getMax_rate());
                     maxprice.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.colorDarkBlack)), 0, maxprice.length(), 0);
                     //  userName.setSpan(new StyleSpan(Typeface.BOLD), 0, userName.length(), 0);
                     builder.append(maxprice);
+
+                    builder.append("/hr");
 
                     holder.tvRangePrice.setText(builder);
                 }
@@ -257,7 +258,7 @@ public class MyJobAdapter extends RecyclerView.Adapter {
             holder.tvCategory.setText(dataBean.getSub_category());
             holder.tvSubcategory.setText(dataBean.getParent_category());
             holder.tvBudget.setText("$ " + dataBean.getJob_budget());
-            holder.tvRequested.setText("" + dataBean.getTotal_request() + " Members Requested");
+            holder.tvRequested.setText("" + dataBean.getTotal_request() + " Members Applied");
             holder.tvTime.setText(Constant.getDayDifference(dataBean.getCrd(), dataBean.getCurrentDateTime()));
 
 

@@ -167,23 +167,37 @@
             <Button
                 android:id="@+id/btn_send_request"
                 style="@style/smallPopinsRegularStyle"
-                android:layout_width="@dimen/_85sdp"
+                android:layout_width="@dimen/_65sdp"
                 android:layout_height="@dimen/_25sdp"
                 android:layout_alignParentEnd="true"
                 android:layout_below="@+id/view1_id"
                 android:background="@drawable/button_black_bg"
-                android:text="@string/send_request"
+                android:text="@string/apply"
                 android:textAllCaps="false"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/_10sdp"
                 />
 
-            <!-- <TextView
+           <!-- <Button
+                android:id="@+id/btn_send_request"
+                style="@style/smallPopinsRegularStyle"
+                android:layout_width="@dimen/_85sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/view1_id"
+                android:background="null"
+                android:text="@string/application_pending"
+                android:textAllCaps="false"
+                android:textColor="@color/colorOrange"
+                android:textSize="@dimen/_10sdp"
+                />-->
+
+             <!--<TextView
                  android:id="@+id/request_pending"
                  style="@style/smallPopinsRegularStyle"
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
-                 android:text="Request Pending"
+                 android:text="@string/application_pending"
                  android:layout_alignParentRight="true"
                  android:layout_below="@+id/view1_id"
                  android:layout_marginRight="@dimen/_8sdp"

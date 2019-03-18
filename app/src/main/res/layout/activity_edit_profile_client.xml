@@ -7,7 +7,7 @@
     <data>
     <variable
         name="userInfo"
-        type="com.livewire.responce.SignUpResponce.DataBean"/>
+        type="com.livewire.responce.MyProfileResponce.DataBean"/>
     </data>
 
 <LinearLayout
@@ -128,7 +128,6 @@
             android:fontFamily="@font/poppins_light"
             android:hint="@string/town_of_residence"
             android:singleLine="true"
-            android:text='@{userInfo.town != "" ? userInfo.town : "N/A", default="N/A"}'
             android:textColorHint="@color/colorDarkGray"
             android:textColor="@color/colorDarkBlack"
             android:textSize="@dimen/_12sdp"

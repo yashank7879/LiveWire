@@ -101,6 +101,26 @@ public class MyProfileResponce implements Serializable {
         private String totalIncome="";
         private String rating="";
         private String intro_discription="";
+        private String job_created="";
+        private String complete_job="";
+
+        public String getComplete_job() {
+            return complete_job;
+        }
+
+        public void setComplete_job(String complete_job) {
+            this.complete_job = complete_job;
+        }
+
+        public String getJob_created() {
+            return job_created;
+        }
+
+        public void setJob_created(String job_created) {
+            this.job_created = job_created;
+        }
+
+
         private List<CategoryBean> category;
 
         public String getUserId() {

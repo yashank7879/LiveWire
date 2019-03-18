@@ -38,6 +38,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="@dimen/_3sdp"
                     android:padding="@dimen/_5sdp"
+                    android:visibility="gone"
                     android:text="@string/cancel" />
 
             </RelativeLayout>
@@ -46,7 +47,7 @@
                 android:layout_width="@dimen/_80sdp"
                 android:layout_height="@dimen/_80sdp"
                 android:layout_gravity="center_horizontal"
-                android:src="@drawable/video_camera_ico" />
+                android:src="@drawable/video_ico" />
 
             <TextView
                 style="@style/mediumPopinsMediumStyle"
@@ -145,8 +146,8 @@
             <TextView
                 android:id="@+id/btn_skip"
                 style="@style/SmallPopinsLightStyle"
-                android:layout_width="@dimen/_50sdp"
-                android:layout_height="@dimen/_15sdp"
+                android:layout_width="@dimen/_65sdp"
+                android:layout_height="@dimen/_20sdp"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="@dimen/_8sdp"
                 android:background="#dddfe1"

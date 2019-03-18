@@ -7,6 +7,8 @@ import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,8 +19,9 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.google.gson.Gson;
 import com.livewire.R;
+import com.livewire.adapter.ShowSkillsAdapter;
 import com.livewire.databinding.ActivityMyProfileClientBinding;
-import com.livewire.responce.SignUpResponce;
+import com.livewire.responce.MyProfileResponce;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
 import com.livewire.utils.ProgressDialog;
@@ -28,25 +31,35 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import static com.livewire.utils.ApiCollection.BASE_URL;
 import static com.livewire.utils.ApiCollection.CHANGE_USER_MODE_API;
-import static com.livewire.utils.ApiCollection.GET_CLIENT_PROFILE_API;
+import static com.livewire.utils.ApiCollection.GET_MY_USER_PROFILE_API;
 
 public class MyProfileClientActivity extends AppCompatActivity implements View.OnClickListener {
     ActivityMyProfileClientBinding binding;
     private ProgressDialog progressDialog;
-    private SignUpResponce userResponce;
+    private MyProfileResponce userResponce;
+    private ArrayList<MyProfileResponce.DataBean.CategoryBean> showSkillBeans = new ArrayList<>();
+    private ShowSkillsAdapter showSkillsAdapter;
+    private String videoUrl;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_my_profile_client);
 
-        progressDialog = new ProgressDialog(this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        binding.rvSkillData.setLayoutManager(layoutManager);
+        showSkillsAdapter = new ShowSkillsAdapter(this, showSkillBeans);
+        binding.rvSkillData.setAdapter(showSkillsAdapter);
 
+        progressDialog = new ProgressDialog(this);
         binding.btnLogout.setOnClickListener(this);
         binding.btnEdit.setOnClickListener(this);
-        binding.cvCompleteJob.setOnClickListener(this);
+       // binding.cvCompleteJob.setOnClickListener(this);
         binding.ivProfile.setOnClickListener(this);
         binding.rlRatingBar.setOnClickListener(this);
         binding.llHirer.setOnClickListener(this);
@@ -56,6 +69,7 @@ public class MyProfileClientActivity extends AppCompatActivity implements View.O
         PreferenceConnector.writeString(this, PreferenceConnector.ABOUT_ME, "");
         actionBarIntialize();
         myProfileApi();
+        Log.e("onCreate: ", PreferenceConnector.readString(this, PreferenceConnector.USER_TYPE, ""));
     }
 
     private void actionBarIntialize() {
@@ -202,8 +216,6 @@ public class MyProfileClientActivity extends AppCompatActivity implements View.O
                             progressDialog.dismiss();
                         }
                     });
-
-
         }
     }
 
@@ -211,7 +223,7 @@ public class MyProfileClientActivity extends AppCompatActivity implements View.O
     private void myProfileApi() {// help offer api calling
         if (Constant.isNetworkAvailable(this, binding.svProfile)) {
             progressDialog.show();
-            AndroidNetworking.get(BASE_URL + GET_CLIENT_PROFILE_API)
+            AndroidNetworking.get(BASE_URL + GET_MY_USER_PROFILE_API)
                     .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
                     .setPriority(Priority.MEDIUM)
                     .build()
@@ -223,15 +235,32 @@ public class MyProfileClientActivity extends AppCompatActivity implements View.O
                                 String status = response.getString("status");
                                 String message = response.getString("message");
                                 if (status.equals("success")) {
-                                    userResponce = new Gson().fromJson(String.valueOf(response), SignUpResponce.class);
+                                    userResponce = new Gson().fromJson(String.valueOf(response), MyProfileResponce.class);
+                                    videoUrl = userResponce.getData().getIntro_video();
 
-                                    Picasso.with(binding.ivProfile.getContext()).load(userResponce.getData().getProfileImage())
-                                            .fit().into(binding.ivProfile);
-                                    binding.ivPlaceholder.setVisibility(View.GONE);
-                                    binding.setUserResponce(userResponce.getData());
+                                    if (!videoUrl.isEmpty()) {
+                                        binding.rlVideoImg.setVisibility(View.VISIBLE);
+                                    }
+                                    if (!userResponce.getData().getVideo_thumb().isEmpty()) {
+                                        Picasso.with(binding.videoThumbImg.getContext()).load(userResponce.getData().getVideo_thumb()).fit()
+                                                .error(R.color.colorWhite)
+                                                .into(binding.videoThumbImg);
+                                    }
+
                                     if (!userResponce.getData().getRating().isEmpty()) {
                                         binding.ratingBar.setRating(Float.parseFloat(userResponce.getData().getRating()));
                                     }
+                                    showSkillBeans.clear();
+                                    showSkillBeans.addAll(userResponce.getData().getCategory());
+                                    showSkillsAdapter.notifyDataSetChanged();
+
+                                    if (!userResponce.getData().getProfileImage().isEmpty()) {
+                                        Picasso.with(binding.ivProfile.getContext())
+                                                .load(userResponce.getData().getProfileImage())
+                                                .fit().into(binding.ivProfile);
+                                    }
+                                    binding.ivPlaceholder.setVisibility(View.GONE);
+                                    binding.setUserResponce(userResponce.getData());
                                 } else {
                                     Constant.snackBar(binding.svProfile, message);
                                 }
@@ -254,6 +283,5 @@ public class MyProfileClientActivity extends AppCompatActivity implements View.O
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
     }
 }

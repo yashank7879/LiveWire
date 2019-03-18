@@ -194,7 +194,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:text="@string/no_request_yet"
+            android:text="@string/no_appication_yet"
             android:visibility="visible"
             android:textSize="@dimen/_10sdp"
             android:layout_alignBaseline="@+id/ll_more_info"

@@ -229,15 +229,13 @@ public class ConfirmJobWorkerFragment extends Fragment implements View.OnClickLi
 
                         @Override
                         public void onError(ANError anError) {
-
+                        Constant.errorHandle(anError,getActivity());
                         }
                     });
         }
     }
 
     //""""""confirmJob list api calling"""""""""""//
-
-
     //job status type: "1" == "confirm Job"    OR  "4" == "Completed job"
     //job type : "1" == "Help Offerd (Once job)"  OR "2" == "Ongoing Job"
     private void confirmJobApi() {// help offer api calling

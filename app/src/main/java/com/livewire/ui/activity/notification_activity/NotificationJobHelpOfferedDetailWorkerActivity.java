@@ -137,7 +137,7 @@ public class NotificationJobHelpOfferedDetailWorkerActivity extends AppCompatAct
             holder.btnSendRequest.setClickable(false);*/
         } else if (jobDetail.getJob_confirmed().equals("3")) {// job not send
             binding.btnSendRequest.setBackground(this.getResources().getDrawable(R.drawable.button_black_bg));
-            binding.btnSendRequest.setText(R.string.send_request);
+            binding.btnSendRequest.setText(R.string.apply);
             binding.btnSendRequest.setTextColor(ContextCompat.getColor(this, R.color.colorWhite));
         }
         Picasso.with(binding.ivProfileImg.getContext())
@@ -249,7 +249,6 @@ public class NotificationJobHelpOfferedDetailWorkerActivity extends AppCompatAct
                         e.printStackTrace();
                     }
                 }
-
                 @Override
                 public void onError(ANError anError) {
                     progressDialog.dismiss();

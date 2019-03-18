@@ -68,6 +68,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         binding.ivBack.setOnClickListener(this);
         TextView tvBankAcc = findViewById(R.id.tv_bank_account);
         binding.llAddCreditCard.setOnClickListener(this);
+        binding.llShareApp.setOnClickListener(this);
 
         if (PreferenceConnector.readString(this, PreferenceConnector.USER_MODE, "").equals("worker")) {// show Bank acc
             if (PreferenceConnector.readString(this, PreferenceConnector.IS_BANK_ACC, "").equals("1")) {
@@ -151,6 +152,14 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                     startActivity(intent);
                 }
                 break;
+            case  R.id.ll_share_app: {
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "Hello welcome to livewire app.");
+                sendIntent.setType("text/plain");
+                startActivity(sendIntent);
+            }break;
+
             default:
 
         }

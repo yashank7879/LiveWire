@@ -67,12 +67,11 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/_35sdp"
         android:layout_below="@+id/action_bar"
-        app:tabIndicatorColor="@color/colorGreen"
-        app:tabIndicatorFullWidth="false"
+        app:tabIndicatorColor="@color/colorBlack"
         app:tabMode="fixed"
-        app:tabSelectedTextColor="@color/colorGreen"
+        app:tabSelectedTextColor="@color/colorBlack"
         app:tabTextAppearance="@style/MyTabLayoutTextAppearance"
-        app:tabTextColor="@color/colorDarkBlack"
+        app:tabTextColor="@color/colorDarkGray"
         />
 
     <android.support.v4.view.ViewPager

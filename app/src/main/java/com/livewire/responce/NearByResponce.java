@@ -1,12 +1,13 @@
 package com.livewire.responce;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by mindiii on 2/27/19.
  */
 
-public class NearByResponce {
+public class NearByResponce implements Serializable{
 
     /**
      * status : success
@@ -52,7 +53,7 @@ public class NearByResponce {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable {
         /**
          * userId : 2
          * name : tushar
@@ -67,9 +68,29 @@ public class NearByResponce {
         private String name;
         private String profileImage;
         private String distance_in_km;
+        private String latitude;
+        private String longitude;
         private String http;
         private String https;
         private String rating;
+
+        public String getLatitude() {
+            return latitude;
+        }
+
+        public void setLatitude(String latitude) {
+            this.latitude = latitude;
+        }
+
+        public String getLongitude() {
+            return longitude;
+        }
+
+        public void setLongitude(String longitude) {
+            this.longitude = longitude;
+        }
+
+
 
         public String getUserId() {
             return userId;

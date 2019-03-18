@@ -45,7 +45,7 @@ public class ApiCollection {
     public static final String GET_REVIEW_LIST_API = "user/getReviewList";
 
     public static final String ADD_REVIEW_API = "user/addReview";
-    public static final String GET_CLIENT_PROFILE_API = "user/getClientProfile";
+    public static final String GET_MY_USER_PROFILE_API = "user/getUserProfile";
     public static final String GET_MY_JOB_REQUEST_LIST_API = "Jobpost/getMyJobRequestList";
     public static final String CONFIRM_OR_COMPLETED_JOB_LIST_API = "Jobpost/confirmOrCompletedJobList?";
     public static final String END_JOB_API = "payment/endJob"; // single job payment

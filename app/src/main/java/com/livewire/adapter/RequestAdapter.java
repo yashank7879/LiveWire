@@ -44,7 +44,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.MyViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final MyViewHolder holder, int position) {
         if (requestList.size() != 0){
             if (requestList.get(position).getJob_confirmed().equals("0") || requestList.get(position).getJob_confirmed().equals("3")) {
                 holder.rlRequest.setVisibility(View.VISIBLE);
@@ -56,6 +56,14 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.MyViewHo
                 holder.ratingBar.setRating(Float.parseFloat(dataBean.getRating()));
             }
             }
+            holder.rlUserData.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listner.OnClickMoreInfo(requestList.get(holder.getAdapterPosition()).getUserId());
+                }
+            });
+
+
         }
     }
 
@@ -73,6 +81,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.MyViewHo
         private Button btnIgnore;
         private Button btnAccept;
         private RelativeLayout rlRequest;
+        private RelativeLayout rlUserData;
         public MyViewHolder(View itemView) {
             super(itemView);
             ivProfileImg =itemView.findViewById(R.id.iv_profile_img);
@@ -82,6 +91,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.MyViewHo
             btnIgnore =itemView.findViewById(R.id.btn_ignore);
             btnAccept =  itemView.findViewById(R.id.btn_accept);
             rlRequest =  itemView.findViewById(R.id.rl_request);
+            rlUserData =  itemView.findViewById(R.id.rl_user_data);
             btnAccept.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) { //"" request accept = 1 "
@@ -100,5 +110,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.MyViewHo
     }
    public interface RequestAcceptIgnorListner{
         void OnClickRequestAccept(String s, String userId, int position);
+        void OnClickMoreInfo(String userId);
+
     }
 }

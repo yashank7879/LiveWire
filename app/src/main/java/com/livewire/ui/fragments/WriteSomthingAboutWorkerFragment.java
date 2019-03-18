@@ -13,6 +13,8 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +40,7 @@ import com.livewire.multiple_file_upload.VolleyMySingleton;
 import com.livewire.responce.SignUpResponce;
 import com.livewire.ui.activity.ClientMainActivity;
 import com.livewire.ui.activity.CompleteProfileActivity;
+import com.livewire.ui.activity.EditProfileWorkerActivity;
 import com.livewire.ui.activity.MyProfileClientActivity;
 import com.livewire.ui.activity.UploadIntroVideoActivity;
 import com.livewire.ui.activity.WorkerMainActivity;
@@ -127,6 +130,30 @@ public class WriteSomthingAboutWorkerFragment extends Fragment implements View.O
         if (!PreferenceConnector.readString(mContext, PreferenceConnector.ABOUT_ME, "").isEmpty()){
             binding.etAboutMe.setText(PreferenceConnector.readString(mContext, PreferenceConnector.ABOUT_ME, ""));
         }
+
+        binding.etAboutMe.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String str = binding.etAboutMe.getText().toString();
+                if (str.length() >= 200) {
+                    Toast.makeText(mContext, "About yourself should not more 200 characters", Toast.LENGTH_SHORT).show();
+                } else {
+                    //   Toast.makeText(EditProfileWorkerActivity.this, "max lenght is 200", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
     }
 
     @Override
@@ -191,8 +218,6 @@ public class WriteSomthingAboutWorkerFragment extends Fragment implements View.O
                 uploadVideo();
             } else {
                 // profile image and skills and location send
-
-
                 sendOtherData();
             }
         }

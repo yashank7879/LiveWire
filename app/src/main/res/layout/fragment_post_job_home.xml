@@ -69,10 +69,11 @@
         app:tabMode="fixed"
         app:tabIndicatorColor="@color/colorGreen"
         android:layout_below="@+id/action_bar"
-        app:tabIndicatorFullWidth="false"
         app:tabTextColor="@color/colorDarkGray"
         app:tabTextAppearance="@style/MyTabLayoutTextAppearance"
         />
+<!--    app:tabIndicatorFullWidth="false"-->
+
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"

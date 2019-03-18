@@ -238,7 +238,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:fontFamily="@font/poppins_medium"
-                        android:text="@string/deatils_of_help_needed"
+                        android:text="@string/deatils"
                         android:textColor="@color/colorGreen"
                         android:layout_marginStart="@dimen/_8sdp"
                         />

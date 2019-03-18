@@ -20,6 +20,7 @@ import com.livewire.R;
 import com.livewire.adapter.ShowSkillsAdapter;
 import com.livewire.databinding.ActivityWorkerProfileDetailClientActivityBinding;
 import com.livewire.responce.MyProfileResponce;
+import com.livewire.ui.activity.chat.ChattingActivity;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
 import com.livewire.utils.ProgressDialog;
@@ -54,6 +55,11 @@ public class WorkerProfileDetailClientActivity extends AppCompatActivity impleme
 
         if (getIntent().getStringExtra("UserIdKey") != null) {
             userId = getIntent().getStringExtra("UserIdKey");
+            if (getIntent().getStringExtra("NearBy") != null && getIntent().getStringExtra("NearBy").equals("NearBy")) {//
+                binding.rlWorkInfo.setVisibility(View.GONE);
+            } else {
+                binding.rlWorkInfo.setVisibility(View.VISIBLE);
+            }
         }
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         binding.rvSkillData.setLayoutManager(layoutManager);
@@ -61,6 +67,7 @@ public class WorkerProfileDetailClientActivity extends AppCompatActivity impleme
         binding.rvSkillData.setAdapter(showSkillsAdapter);
         binding.rlVideoImg.setOnClickListener(this);
         binding.ivBack.setOnClickListener(this);
+        binding.ivChat.setOnClickListener(this);
 
         profileDetail();
     }
@@ -86,8 +93,6 @@ public class WorkerProfileDetailClientActivity extends AppCompatActivity impleme
                                 if (status.equals("success")) {
                                     userResponce = new Gson().fromJson(String.valueOf(response), MyProfileResponce.class);
                                     videoUrl = userResponce.getData().getIntro_video();
-
-
                                     if (!videoUrl.isEmpty()) {
                                         binding.rlVideoImg.setVisibility(View.VISIBLE);
                                     }
@@ -118,10 +123,10 @@ public class WorkerProfileDetailClientActivity extends AppCompatActivity impleme
                                     }*/
                                     showSkillBeans.clear();
 
-                                    if (userResponce.getData().getCategory().size()>0) {
+                                    if (userResponce.getData().getCategory().size() > 0) {
                                         showSkillBeans.addAll(userResponce.getData().getCategory());
 
-                                    }else {
+                                    } else {
                                         binding.rlSkills.setVisibility(View.GONE);
                                         binding.tvNoSkills.setVisibility(View.VISIBLE);
                                     }
@@ -170,6 +175,16 @@ public class WorkerProfileDetailClientActivity extends AppCompatActivity impleme
             case R.id.iv_back:
                 onBackPressed();
                 break;
+            case R.id.iv_chat: {
+                Intent intent = new Intent(this, ChattingActivity.class);
+                intent.putExtra("otherUID", userResponce.getData().getUserId());
+                intent.putExtra("titleName", userResponce.getData().getName());
+                if (!userResponce.getData().getProfileImage().isEmpty())
+                    intent.putExtra("profilePic", userResponce.getData().getProfileImage());
+                startActivity(intent);
+            }
+                break;
+
             default:
         }
     }

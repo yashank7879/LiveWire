@@ -14,8 +14,7 @@
             android:layout_height="wrap_content"
             app:shadowColor="#666666"
             app:shadowMarginBottom="3dp"
-            app:shadowRadius="@dimen/_5sdp"
-            >
+            app:shadowRadius="@dimen/_5sdp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -40,8 +39,7 @@
                     android:background="@null"
                     android:text="@string/logout"
                     android:textColor="@color/colorGreen"
-                    android:visibility="gone"
-                    />
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/tv_heading"
@@ -59,8 +57,8 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="@dimen/_5sdp"
-                    android:padding="@dimen/_3sdp"
                     android:background="?android:attr/selectableItemBackground"
+                    android:padding="@dimen/_3sdp"
                     app:srcCompat="@drawable/ic_user_profile" />
 
 
@@ -89,7 +87,7 @@
             <LinearLayout
                 android:id="@+id/tabbar"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_45sdp"
+                android:layout_height="@dimen/_42sdp"
                 android:orientation="horizontal"
                 android:weightSum="5">
 
@@ -106,12 +104,21 @@
 
                     <ImageView
                         android:id="@+id/iv_my_jobs"
-                        android:layout_width="@dimen/_25sdp"
-                        android:layout_height="@dimen/_25sdp"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
                         android:tint="@color/colorLightGray"
+                        android:paddingTop="@dimen/_3sdp"
+                        android:paddingLeft="@dimen/_3sdp"
+                        android:paddingRight="@dimen/_3sdp"
                         app:srcCompat="@drawable/ic_active_myjob" />
 
-
+                    <ImageView
+                        android:id="@+id/iv_myjob_dot"
+                        android:layout_width="@dimen/_5sdp"
+                        android:layout_height="@dimen/_5sdp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/circle_black_bg"
+                        android:visibility="invisible" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -127,11 +134,20 @@
 
                     <ImageView
                         android:id="@+id/iv_near_by"
-                        android:layout_width="@dimen/_25sdp"
-                        android:layout_height="@dimen/_25sdp"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:padding="@dimen/_3sdp"
                         android:tint="@color/colorLightGray"
                         app:srcCompat="@drawable/ic_location_place" />
 
+
+                    <ImageView
+                        android:id="@+id/iv_near_dot"
+                        android:layout_width="@dimen/_5sdp"
+                        android:layout_height="@dimen/_5sdp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/circle_black_bg"
+                        android:visibility="invisible" />
 
                 </LinearLayout>
 
@@ -148,11 +164,17 @@
 
                     <ImageView
                         android:id="@+id/interest_img"
-                        android:layout_width="@dimen/_40sdp"
-                        android:layout_height="@dimen/_40sdp"
-                        android:src="@drawable/home" />
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:src="@drawable/home_ico" />
 
-
+                    <ImageView
+                        android:id="@+id/iv_home_dot"
+                        android:layout_width="@dimen/_5sdp"
+                        android:layout_height="@dimen/_5sdp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/circle_black_bg"
+                        android:visibility="visible" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -168,11 +190,19 @@
 
                     <ImageView
                         android:id="@+id/iv_chat"
-                        android:layout_width="@dimen/_25sdp"
-                        android:layout_height="@dimen/_25sdp"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:padding="@dimen/_3sdp"
                         android:tint="@color/colorLightGray"
                         app:srcCompat="@drawable/ic_active_chat" />
 
+                    <ImageView
+                        android:id="@+id/iv_chat_dot"
+                        android:layout_width="@dimen/_5sdp"
+                        android:layout_height="@dimen/_5sdp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/circle_black_bg"
+                        android:visibility="invisible" />
 
                 </LinearLayout>
 
@@ -189,11 +219,19 @@
 
                     <ImageView
                         android:id="@+id/iv_notification"
-                        android:layout_width="@dimen/_25sdp"
-                        android:layout_height="@dimen/_25sdp"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
                         android:tint="@color/colorLightGray"
+                        android:padding="@dimen/_3sdp"
                         app:srcCompat="@drawable/ic_inactive_notification" />
 
+                    <ImageView
+                        android:id="@+id/iv_notification_dot"
+                        android:layout_width="@dimen/_5sdp"
+                        android:layout_height="@dimen/_5sdp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/circle_black_bg"
+                        android:visibility="invisible" />
 
                 </LinearLayout>
 

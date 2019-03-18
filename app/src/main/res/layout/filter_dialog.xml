@@ -90,7 +90,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_3sdp"
-                android:text="@string/pending_request"
+                android:text="@string/pending_application"
                 android:fontFamily="@font/poppins_light"
                 android:textSize="@dimen/_8sdp"
                 android:textColor="@color/colorDarkGray"
@@ -176,7 +176,7 @@
             android:layout_gravity="center_horizontal"
             android:background="@drawable/button_black_bg"
             android:layout_marginTop="@dimen/_10sdp"
-            android:text="@string/apply"
+            android:text="@string/filter"
             android:textAllCaps="false"
             android:textColor="@color/colorWhite" />
 

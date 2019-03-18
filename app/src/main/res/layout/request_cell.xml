@@ -10,6 +10,10 @@
     android:id="@+id/rl_request"
     >
 
+    <RelativeLayout
+        android:id="@+id/rl_user_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/iv_profile_img"
         android:layout_width="@dimen/_35sdp"
@@ -70,6 +74,7 @@
 
     </LinearLayout>
 
+    </RelativeLayout>
     <Button
         android:id="@+id/btn_ignore"
         style="@style/smallPopinsRegularStyle"
@@ -78,7 +83,7 @@
         android:layout_toStartOf="@+id/btn_accept"
         android:background="@drawable/btn_black_bg"
         android:text="@string/ignor"
-        android:layout_alignBottom="@+id/ll_km_away"
+        android:layout_alignBottom="@+id/rl_user_data"
         android:textAllCaps="false"
         android:textColor="@color/colorWhite"
         android:textSize="@dimen/_10sdp"
@@ -92,7 +97,7 @@
         android:layout_height="@dimen/_22sdp"
         android:layout_alignParentEnd="true"
         android:background="@drawable/button_green_bg"
-        android:layout_alignBottom="@+id/ll_km_away"
+        android:layout_alignBottom="@+id/rl_user_data"
         android:text="@string/accept"
         android:textAllCaps="false"
         android:textColor="@color/colorWhite"

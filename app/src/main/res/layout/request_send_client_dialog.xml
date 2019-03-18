@@ -92,7 +92,7 @@
         android:layout_marginTop="@dimen/_25sdp"
         android:background="@drawable/button_green_bg"
         android:padding="@dimen/_5sdp"
-        android:text="@string/send_request"
+        android:text="@string/apply"
         android:textAllCaps="false"
         android:textColor="@color/colorWhite" />
 

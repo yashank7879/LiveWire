@@ -1,5 +1,6 @@
 package com.livewire.ui.activity;
 
+import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -201,5 +202,12 @@ public class RequestClientActivity extends AppCompatActivity implements View.OnC
     @Override
     public void OnClickRequestAccept(String status, String userId, int pos) {
         acceptRejectrequestApi(status, userId, pos);
+    }
+
+    @Override
+    public void OnClickMoreInfo(String userId) {
+        Intent intent = new Intent(this, WorkerProfileDetailClientActivity.class);
+        intent.putExtra("UserIdKey", userId);
+        startActivity(intent);
     }
 }

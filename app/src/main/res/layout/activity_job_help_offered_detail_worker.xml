@@ -224,7 +224,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:fontFamily="@font/poppins_medium"
-                android:text="@string/deatils_of_help_needed"
+                android:text="@string/deatils"
                 android:textColor="@color/colorGreen"
                 />
 
@@ -337,7 +337,7 @@
                 android:layout_centerInParent="true"
                 android:layout_margin="@dimen/_15sdp"
                 android:background="@drawable/button_black_bg"
-                android:text="@string/send_request"
+                android:text="@string/apply"
                 android:textAllCaps="false"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/_10sdp" />

@@ -1,11 +1,13 @@
 package com.livewire.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
@@ -13,7 +15,9 @@ import android.widget.TextView;
 
 import com.livewire.R;
 import com.livewire.responce.NearByResponce;
+import com.livewire.ui.activity.chat.ChattingActivity;
 import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -27,7 +31,7 @@ public class NearByAdapterClient extends RecyclerView.Adapter<NearByAdapterClien
     private ItemonClickListener listener;
     private List<NearByResponce.DataBean> nearByList;
 
-    public NearByAdapterClient(Context mContext, List<NearByResponce.DataBean> nearByList,ItemonClickListener listener) {
+    public NearByAdapterClient(Context mContext, List<NearByResponce.DataBean> nearByList, ItemonClickListener listener) {
         this.mContext = mContext;
         this.nearByList = nearByList;
         this.listener = listener;
@@ -59,6 +63,17 @@ public class NearByAdapterClient extends RecyclerView.Adapter<NearByAdapterClien
                     listener.onItemClickWorker(dataBean.getUserId());
                 }
             });
+
+            holder.ivChat.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, ChattingActivity.class);
+                    intent.putExtra("otherUID", dataBean.getUserId());
+                    intent.putExtra("titleName", dataBean.getName());
+                    intent.putExtra("profilePic", dataBean.getProfileImage());
+                    mContext.startActivity(intent);
+                }
+            });
         }
     }
 
@@ -70,6 +85,7 @@ public class NearByAdapterClient extends RecyclerView.Adapter<NearByAdapterClien
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private RelativeLayout rlProfileDetail;
         private CircleImageView ivProfileImg;
+        private ImageView ivChat;
         private TextView tvName;
         private RatingBar ratingBar;
         private LinearLayout llkmAway;
@@ -83,10 +99,11 @@ public class NearByAdapterClient extends RecyclerView.Adapter<NearByAdapterClien
             ratingBar = (RatingBar) view.findViewById(R.id.rating_bar);
             llkmAway = (LinearLayout) view.findViewById(R.id.llkm_away);
             tvDistance = (TextView) view.findViewById(R.id.tv_distance);
+            ivChat = view.findViewById(R.id.iv_chat);
         }
     }
 
-    public interface ItemonClickListener{
+    public interface ItemonClickListener {
         void onItemClickWorker(String workerId);
     }
 }

@@ -1,7 +1,6 @@
 package com.livewire.ui.fragments;
 
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -19,21 +18,18 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -59,7 +55,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import static com.facebook.FacebookSdk.getApplicationContext;
 import static com.livewire.utils.ApiCollection.BASE_URL;
 import static com.livewire.utils.ApiCollection.GET_JOB_LIST_API;
 import static com.livewire.utils.ApiCollection.GET_SUBCATEGORY_LIST_API;
@@ -545,13 +540,17 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
 
     @Override
     public void sendRequestOnClick(HelpOfferedResponce.DataBean dataBean, String key, int pos) {
-        if (PreferenceConnector.readString(mContext, PreferenceConnector.IS_BANK_ACC, "0").equals("1")) {
+        dataBean.setJob_confirmed("0");
+        offeredAdapter.notifyDataSetChanged();
+        sendRequestApi(dataBean.getJobId(), dataBean.getUserId(), pos);
+
+      /*  if (PreferenceConnector.readString(mContext, PreferenceConnector.IS_BANK_ACC, "0").equals("1")) {
             dataBean.setJob_confirmed("0");
             offeredAdapter.notifyDataSetChanged();
             sendRequestApi(dataBean.getJobId(), dataBean.getUserId(), pos);
         } else {
             showAddBankAccountDialog();
-        }
+        }*/
     }
 
     @Override

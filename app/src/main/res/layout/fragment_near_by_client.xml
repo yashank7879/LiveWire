@@ -13,11 +13,60 @@
             layout="@layout/action_bar_client_layout"
             android:visibility="gone" />
 
-        <android.support.v7.widget.RecyclerView
+        <LinearLayout
+            android:id="@+id/rl_header"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginBottom="@dimen/_8sdp"
+            android:layout_marginLeft="@dimen/_25sdp"
+            android:layout_marginRight="@dimen/_25sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:background="@drawable/near_you_bg"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/tv_near_you"
+                style="@style/SmallPopinsMediumStyle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/map_round_bg"
+                android:gravity="center"
+                android:text="@string/near_you"
+                android:textColor="@color/colorWhite" />
+
+            <TextView
+                android:id="@+id/tv_mapview"
+                style="@style/SmallPopinsMediumStyle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/map_view"
+                android:textColor="@color/colorBlack"
+                />
+
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/fl_container1"
+            android:layout_below="@id/rl_header"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible"
+            >
+
+        </FrameLayout>
+
+
+
+       <!-- <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_near_you"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/action_bar1">
+            android:layout_below="@id/action_bar1"
+            android:visibility="gone">
 
         </android.support.v7.widget.RecyclerView>
 
@@ -31,41 +80,38 @@
             android:textColor="@color/colorGreen" />
 
 
-
         <RelativeLayout
             android:id="@+id/rl_update_profile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:visibility="gone"
-            >
+            android:visibility="gone">
 
             <Button
                 android:id="@+id/btn_update"
                 style="@style/SmallPopinsLightStyle"
                 android:layout_width="@dimen/_120sdp"
                 android:layout_height="@dimen/_30sdp"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="@dimen/_8sdp"
                 android:background="@drawable/button_green_bg"
                 android:text="@string/update_profile"
                 android:textAllCaps="false"
-                android:textColor="@color/colorWhite"
-                android:layout_centerHorizontal="true"
-                android:layout_margin="@dimen/_8sdp"
+                android:textColor="@color/colorWhite" />
+
+            <TextView
+                android:id="@+id/tv_add_loc"
+                style="@style/mediumPopinsRegularStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/btn_update"
+                android:gravity="center"
+                android:text="@string/please_update_your_location_to_know_live_wires_near_you"
+                android:textColor="@color/colorGreen"
+
                 />
 
-        <TextView
-            android:id="@+id/tv_add_loc"
-            style="@style/mediumPopinsRegularStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/btn_update"
-            android:text="@string/please_update_your_location_to_know_live_wires_near_you"
-            android:textColor="@color/colorGreen"
-            android:gravity="center"
-
-            />
-
-        </RelativeLayout>
+        </RelativeLayout>-->
 
     </RelativeLayout>
 </layout>

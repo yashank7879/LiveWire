@@ -77,7 +77,7 @@ public class NotificationMyOnGoingJobDetailClientActivity extends AppCompatActiv
                 binding.rlUserData.setVisibility(View.GONE);
                 binding.rlRange.setVisibility(View.GONE);
 
-                binding.tvNoRequest.setText(R.string.no_offer_request_yet);
+                binding.tvNoRequest.setText(R.string.no_offer_application_yet);
 
                 binding.btnSendOffer.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -95,7 +95,7 @@ public class NotificationMyOnGoingJobDetailClientActivity extends AppCompatActiv
                 switch (dataBean.getJob_confirmed()) {
                     case "0": // request pending job
                         if (dataBean.getRequestedUserData().get(0).getRequest_status().equals("0")) {
-                            binding.tvJobStatus.setText(R.string.request_pending);
+                            binding.tvJobStatus.setText(R.string.application_pending);
                             binding.tvJobStatus.setBackground(getResources().getDrawable(R.drawable.doteted_orange_shape));
                             binding.tvJobStatus.setTextColor(ContextCompat.getColor(this, R.color.colorOrange));
 

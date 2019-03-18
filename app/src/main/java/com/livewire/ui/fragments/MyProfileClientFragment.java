@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -39,8 +38,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import static com.livewire.utils.ApiCollection.BASE_URL;
-import static com.livewire.utils.ApiCollection.GET_CLIENT_PROFILE_API;
-import static com.livewire.utils.ApiCollection.GET_MY_PROFILE_API;
+import static com.livewire.utils.ApiCollection.GET_MY_USER_PROFILE_API;
 
 
 public class MyProfileClientFragment extends Fragment implements View.OnClickListener {
@@ -140,7 +138,7 @@ public class MyProfileClientFragment extends Fragment implements View.OnClickLis
     private void myProfileApi() {// help offer api calling
         if (Constant.isNetworkAvailable(mContext, binding.svProfile)) {
             progressDialog.show();
-            AndroidNetworking.get(BASE_URL + GET_CLIENT_PROFILE_API)
+            AndroidNetworking.get(BASE_URL + GET_MY_USER_PROFILE_API)
                     .addHeaders("authToken", PreferenceConnector.readString(mContext, PreferenceConnector.AUTH_TOKEN, ""))
                     .setPriority(Priority.MEDIUM)
                     .build()

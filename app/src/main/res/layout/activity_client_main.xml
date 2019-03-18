@@ -137,7 +137,7 @@
         <LinearLayout
             android:id="@+id/tabbar"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_45sdp"
+            android:layout_height="@dimen/_42sdp"
             android:orientation="horizontal"
             android:weightSum="5"
             android:background="@color/colorWhite"
@@ -157,11 +157,19 @@
 
                 <ImageView
                     android:id="@+id/iv_my_job"
-                    android:layout_width="@dimen/_25sdp"
-                    android:layout_height="@dimen/_25sdp"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
                     app:srcCompat="@drawable/ic_my_job_1"
-                    android:tint="@color/colorLightGray"/>
+                    android:tint="@color/colorLightGray"
+                    android:padding="@dimen/_3sdp"/>
 
+                <ImageView
+                    android:id="@+id/iv_myjob_dot"
+                    android:layout_width="@dimen/_5sdp"
+                    android:layout_height="@dimen/_5sdp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/circle_dark_green"
+                    android:visibility="invisible"/>
 
             </LinearLayout>
 
@@ -179,10 +187,19 @@
 
                 <ImageView
                     android:id="@+id/iv_near_you"
-                    android:layout_width="@dimen/_25sdp"
-                    android:layout_height="@dimen/_25sdp"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
                     app:srcCompat="@drawable/ic_location_place"
-                    android:tint="@color/colorLightGray"/>
+                    android:tint="@color/colorLightGray"
+                    android:padding="@dimen/_3sdp"/>
+
+                <ImageView
+                    android:id="@+id/iv_nearyou_dot"
+                    android:layout_width="@dimen/_5sdp"
+                    android:layout_height="@dimen/_5sdp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/circle_dark_green"
+                    android:visibility="invisible"/>
 
             </LinearLayout>
 
@@ -198,10 +215,16 @@
 
                 <ImageView
                     android:id="@+id/add_img"
-                    android:layout_width="@dimen/_40sdp"
-                    android:layout_height="@dimen/_40sdp"
-                    android:src="@drawable/add_tab" />
-
+                    android:layout_width="@dimen/_32sdp"
+                    android:layout_height="@dimen/_32sdp"
+                    android:src="@drawable/add__ico" />
+                <ImageView
+                    android:id="@+id/iv_home_dot"
+                    android:layout_width="@dimen/_5sdp"
+                    android:layout_height="@dimen/_5sdp"
+                    android:layout_gravity="center|bottom"
+                    android:background="@drawable/circle_dark_green"
+                    android:visibility="visible"/>
 
             </LinearLayout>
 
@@ -219,11 +242,20 @@
 
                 <ImageView
                     android:id="@+id/iv_chat"
-                    android:layout_width="@dimen/_25sdp"
-                    android:layout_height="@dimen/_25sdp"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
                     app:srcCompat="@drawable/ic_active_chat"
                     android:tint="@color/colorLightGray"
+                    android:padding="@dimen/_3sdp"
                     />
+
+                <ImageView
+                    android:id="@+id/iv_chat_dot"
+                    android:layout_width="@dimen/_5sdp"
+                    android:layout_height="@dimen/_5sdp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/circle_dark_green"
+                    android:visibility="invisible"/>
 
 
             </LinearLayout>
@@ -242,13 +274,20 @@
 
                 <ImageView
                     android:id="@+id/iv_notification"
-                    android:layout_width="@dimen/_25sdp"
-                    android:layout_height="@dimen/_25sdp"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
                     app:srcCompat="@drawable/ic_inactive_notification"
                     android:tint="@color/colorLightGray"
+                    android:padding="@dimen/_3sdp"
                     />
 
-
+                <ImageView
+                    android:id="@+id/iv_notificaton_dot"
+                    android:layout_width="@dimen/_5sdp"
+                    android:layout_height="@dimen/_5sdp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/circle_dark_green"
+                    android:visibility="invisible"/>
             </LinearLayout>
 
         </LinearLayout>

@@ -104,6 +104,7 @@ import java.util.UUID;
 
 import static com.livewire.utils.ApiCollection.BASE_URL;
 import static com.livewire.utils.ApiCollection.GET_CATEGORY_LIST_API;
+import static com.livewire.utils.ApiCollection.GET_MY_PROFILE_API;
 import static com.livewire.utils.Constant.MY_PERMISSIONS_REQUEST_CAMERA;
 import static com.livewire.utils.Constant.MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE;
 import static com.livewire.utils.Constant.RECORD_AUDIO;
@@ -147,6 +148,7 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
     private File imageFile;
     private ImageView removeVideoImg;
     private boolean isvideoUrl = false;
+    private MyProfileResponce userResponce;
 
 
     @Override
@@ -154,19 +156,22 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_edit_profile_worker);
 
+        // progressDialog = new ProgressDialog(this);
         //  removeVideoImg = findViewById(R.id.iv_remove_video);
         // Log.e("Auth token", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""));
 
         PermissionAll permissionAll = new PermissionAll();
         permissionAll.checkWriteStoragePermission(this);
 
+        intializeView();
+        loadSkillsData();
         if (getIntent().getStringExtra("EditProfileKey") != null) { // if user come from profile setting
             MyProfileResponce userData = (MyProfileResponce) getIntent().getSerializableExtra("CategoryListKey");
-            //  ArrayList<CategoryBean> categoryList = (ArrayList<CategoryBean>) getIntent().getSerializableExtra("CategoryListKey");
+            // ArrayList<CategoryBean> categoryList = (ArrayList<CategoryBean>) getIntent().getSerializableExtra("CategoryListKey");
 
             // MyProfileResponce.DataBean userData = (MyProfileResponce.DataBean) getIntent().getSerializableExtra("MyProfileKey");
-            for (MyProfileResponce.DataBean.CategoryBean categoryBean : userData.getData().getCategory()) {
 
+            /*for (MyProfileResponce.DataBean.CategoryBean categoryBean : userData.getData().getCategory()) {
                 AddedSkillBean addedCatagory = new AddedSkillBean();
                 addedCatagory.setName(categoryBean.getCategoryName());
                 addedCatagory.setCatageryId(categoryBean.getParentCategoryId());
@@ -189,9 +194,9 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
                 addedSkillBeans.add(addedCatagory);
             }
 
-         /*   binding.etFullName.setText(userData.getData().getName());
+         *//*   binding.etFullName.setText(userData.getData().getName());
             binding.etEmail1.setText(userData.getData().getEmail());
-            binding.tvLocation.setText(userData.getData().getTown());*/
+            binding.tvLocation.setText(userData.getData().getTown());*//*
             binding.setUserData(userData.getData());
 
             locationPlace = userData.getData().getTown();
@@ -199,14 +204,15 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
             placeLatitude = userData.getData().getLatitude();
             placeLongitude = userData.getData().getLongitude();
 
-           /* if (!userData.getData().getIntro_video().isEmpty() || userData.getData().getIntro_video() != null ){
+           *//* if (!userData.getData().getIntro_video().isEmpty() || userData.getData().getIntro_video() != null ){
                 finalVideoUri = Uri.parse(userData.getData().getIntro_video());
                 isvideoUrl = true;
-            }*/
+            }*//*
 
             if (!userData.getData().getIntro_video().isEmpty()) {
                 binding.ivRemoveVideo.setVisibility(View.VISIBLE);
                 videoUrl = userData.getData().getIntro_video();
+
 
                 Picasso.with(binding.videoImg.getContext()).load(userData.getData().getVideo_thumb())
                         .fit().into(binding.videoImg);
@@ -232,8 +238,14 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
             binding.ivRemoveVideo.setOnClickListener(this);
             binding.btnSaveAndUpdate.setOnClickListener(this);
             binding.videoImg.setClickable(false);
+*/
 
+            setUserData(userData);
+        } else {
+            myProfileApi();
         }
+
+
         binding.etDescription.setFilters(new InputFilter[]{new InputFilter.LengthFilter(200)});
 
         binding.etDescription.addTextChangedListener(new TextWatcher() {
@@ -250,17 +262,145 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
             @Override
             public void afterTextChanged(Editable editable) {
                 String str = binding.etDescription.getText().toString();
-                if (str.length() < 200) {
-                 //   Toast.makeText(EditProfileWorkerActivity.this, "max", Toast.LENGTH_SHORT).show();
+                if (str.length() >= 200) {
+                    Toast.makeText(EditProfileWorkerActivity.this, "intro description should not more then 200 characters", Toast.LENGTH_SHORT).show();
                 } else {
-                 //   Toast.makeText(EditProfileWorkerActivity.this, "max lenght is 200", Toast.LENGTH_SHORT).show();
+                    //   Toast.makeText(EditProfileWorkerActivity.this, "max lenght is 200", Toast.LENGTH_SHORT).show();
                 }
 
             }
         });
 
-        intializeView();
-        loadSkillsData();
+
+    }
+
+
+    //"""""""""' my profile worker side""""""""""""""//
+    private void myProfileApi() {// help offer api calling
+        if (Constant.isNetworkAvailable(this, binding.mainLayout)) {
+            progressDialog.show();
+            AndroidNetworking.get(BASE_URL + GET_MY_PROFILE_API)
+                    .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
+                    .setPriority(Priority.MEDIUM)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                progressDialog.dismiss();
+                                String status = response.getString("status");
+                                String message = response.getString("message");
+                                if (status.equals("success")) {
+                                    userResponce = new Gson().fromJson(String.valueOf(response), MyProfileResponce.class);
+                                    videoUrl = userResponce.getData().getIntro_video();
+
+                                  /*  if (!userResponce.getData().getVideo_thumb().isEmpty()) {
+                                        Picasso.with(binding.videoImg.getContext()).load(userResponce.getData().getVideo_thumb()).fit()
+                                                .error(R.color.colorWhite)
+                                                .into(binding.videoImg);
+                                    }
+
+
+                                   *//* showSkillBeans.clear();
+                                    showSkillBeans.addAll(userResponce.getData().getCategory());
+                                    showSkillsAdapter.notifyDataSetChanged();*//*
+
+                                    if (!userResponce.getData().getProfileImage().isEmpty()) {
+                                        Picasso.with(binding.ivProfileImg.getContext())
+                                                .load(userResponce.getData().getProfileImage())
+                                                .fit().into(binding.ivProfileImg);
+                                    }
+                                    binding.inactiveUserImg.setVisibility(View.GONE);*/
+                                    binding.setUserData(userResponce.getData());
+                                    setUserData(userResponce);
+                                } else {
+                                    Constant.snackBar(binding.mainLayout, message);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void onError(ANError anError) {
+                            Log.e("getErrorBody: ", anError.getErrorBody());
+                            Constant.errorHandle(anError, EditProfileWorkerActivity.this);
+                            progressDialog.dismiss();
+                        }
+                    });
+        }
+    }
+
+    private void setUserData(MyProfileResponce userData) {
+
+        // MyProfileResponce.DataBean userData = (MyProfileResponce.DataBean) getIntent().getSerializableExtra("MyProfileKey");
+
+        for (MyProfileResponce.DataBean.CategoryBean categoryBean : userData.getData().getCategory()) {
+            AddedSkillBean addedCatagory = new AddedSkillBean();
+            addedCatagory.setName(categoryBean.getCategoryName());
+            addedCatagory.setCatageryId(categoryBean.getParentCategoryId());
+            addedCatagory.setVisible(true);
+            if (!categoryBean.getSubcat().isEmpty()) {
+                addedCatagory.setSubCatagories(new ArrayList<AddedSkillBean.SubCatagory>());
+            }
+            for (int i = 0; i < categoryBean.getSubcat().size(); i++) {
+                AddedSkillBean.SubCatagory subcatBean = new AddedSkillBean.SubCatagory();
+                subcatBean.setSubName(categoryBean.getSubcat().get(i).getCategoryName());
+                //subcatBean.(categoryBean.getSubcat().get(i).getParent_id());
+                subcatBean.setSubCatId(categoryBean.getSubcat().get(i).getCategoryId());
+                subcatBean.setMin_rate(Float.parseFloat(categoryBean.getSubcat().get(i).getMin_rate()));
+                subcatBean.setMax_rate(Float.parseFloat(categoryBean.getSubcat().get(i).getMax_rate()));
+                addedCatagory.getSubCatagories().add(subcatBean);
+
+            }
+            addedSkillBeans.add(addedCatagory);
+        }
+
+         /*   binding.etFullName.setText(userData.getData().getName());
+            binding.etEmail1.setText(userData.getData().getEmail());
+            binding.tvLocation.setText(userData.getData().getTown());*/
+        binding.setUserData(userData.getData());
+
+        locationPlace = userData.getData().getTown();
+
+        placeLatitude = userData.getData().getLatitude();
+        placeLongitude = userData.getData().getLongitude();
+
+           /* if (!userData.getData().getIntro_video().isEmpty() || userData.getData().getIntro_video() != null ){
+                finalVideoUri = Uri.parse(userData.getData().getIntro_video());
+                isvideoUrl = true;
+            }*/
+
+        if (!userData.getData().getIntro_video().isEmpty()) {
+            binding.ivRemoveVideo.setVisibility(View.VISIBLE);
+            videoUrl = userData.getData().getIntro_video();
+
+
+            Picasso.with(binding.videoImg.getContext()).load(userData.getData().getVideo_thumb())
+                    .fit().into(binding.videoImg);
+            isvideoUrl = true;
+        } else {
+            binding.videoImg.setClickable(true);
+            isvideoUrl = false;
+            binding.ivRemoveVideo.setVisibility(View.GONE);
+            //  binding.videoImg.setImageDrawable(ContextCompat.getDrawable(this, R.color.colorDarkBlack));
+        }
+        if (!userData.getData().getProfileImage().isEmpty()) {
+            Picasso.with(binding.ivProfileImg.getContext())
+                    .load(userData.getData().getProfileImage())
+                    .fit().into(binding.ivProfileImg);
+        }
+
+        binding.etDescription.setText(userData.getData().getIntro_discription());
+        binding.inactiveUserImg.setVisibility(View.GONE);
+
+
+        binding.llNameEmail.setVisibility(View.VISIBLE);
+        binding.btnSaveAndUpdate.setVisibility(View.VISIBLE);
+        binding.ivRemoveVideo.setOnClickListener(this);
+        binding.btnSaveAndUpdate.setOnClickListener(this);
+        binding.videoImg.setClickable(false);
+        addSkillsAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -325,7 +465,6 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
         //""""""" all permission """"""""""""
         PermissionAll permissionAll = new PermissionAll();
         permissionAll.RequestMultiplePermission(EditProfileWorkerActivity.this);
-
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         width = displaymetrics.widthPixels;
@@ -378,12 +517,11 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
                     i.setDataAndType(data, "video/*");
                     i.putExtra(MediaStore.EXTRA_FINISH_ON_COMPLETION, false);
                     startActivity(i);
-                }else if (videoUrl != null){
+                } else if (videoUrl != null) {
                     Intent i = new Intent(Intent.ACTION_VIEW);
                     i.setDataAndType(Uri.parse(videoUrl), "video/mp4");
                     startActivity(i);
-                }
-                else showSetIntroVideoDialog();
+                } else showSetIntroVideoDialog();
                 break;
             case R.id.tv_location:
                 autoCompletePlacePicker();
@@ -676,12 +814,6 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
             }
         }.execute();
 
-           /*   mNotifyManager = (NotificationManager) getApplicationContext()
-                        .getSystemService(Context.NOTIFICATION_SERVICE);
-                mBuilder = new Notification.Builder(getApplicationContext());
-                mBuilder.setSmallIcon(R.drawable.livelogo);*/
-
-        // String path = ImageVideoUtil.generatePath(videoUri, AddVideosActivity.this);
     }
 
     //""""""" show progress """""""""""""""//
@@ -878,7 +1010,7 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
                         carsImageBean.setThumbFile((videoThumbFile == null) ? file : videoThumbFile);
 
                         binding.videoImg.setImageBitmap(thumbBitmap);
-
+                        binding.ivRemoveVideo.setVisibility(View.VISIBLE);
 
                         // profileImageFileList.add(bitmapToFile(thumbBitmap));
 

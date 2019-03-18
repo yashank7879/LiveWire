@@ -33,7 +33,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
-
         /*debug {
             applicationIdSuffix ".debug"
         }*/
@@ -69,6 +68,10 @@ dependencies {
     ///"""""""' Auto complet place """""""""""""""//
     implementation 'com.google.android.gms:play-services-places:16.0.0'
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
+    implementation 'com.google.android.gms:play-services-maps:16.1.0'
+    implementation 'com.google.android.gms:play-services-location:15.0.1'
+    implementation 'com.appolica:interactive-info-window:v1.0.6'
+
     /*implementation 'com.google.android.libraries.places:1.0.0'*/
 
 

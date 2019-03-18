@@ -143,12 +143,12 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
 
         if (jobDetail.getJob_confirmed().equals("0")) { // pending request
             binding.btnSendRequest.setBackground(null);
-            binding.btnSendRequest.setText(R.string.pending_request);
+            binding.btnSendRequest.setText(R.string.application_pending);
             binding.btnSendRequest.setTextColor(ContextCompat.getColor(this, R.color.colorOrange));
             binding.btnSendRequest.setClickable(false);
         } else if (jobDetail.getJob_confirmed().equals("3")) {// job not send
             binding.btnSendRequest.setBackground(this.getResources().getDrawable(R.drawable.button_black_bg));
-            binding.btnSendRequest.setText(R.string.send_request);
+            binding.btnSendRequest.setText(R.string.apply);
             binding.btnSendRequest.setTextColor(ContextCompat.getColor(this, R.color.colorWhite));
         }
         Picasso.with(binding.ivProfileImg.getContext())
@@ -189,7 +189,6 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
                 } else {
                     showAddBankAccountDialog();
                 }
-
                 break;
             case R.id.iv_back:
                 onBackPressed();

@@ -82,13 +82,15 @@
     <!--JobDetailActivity at workers side-->
     <string name="posted_by">Posted By</string>
     <string name="chat">Chat</string>
-    <string name="deatils_of_help_needed">Details Of Help Needed</string>
+    <string name="deatils">Details</string>
     <string name="house_amp_needed"><![CDATA[House & Needed]]></string>
 
     <string name="work_detail">WORK DETAIL</string>
     <string name="moreinfo">MoreInfo</string>
     <string name="sendrequest">SendRequest</string>
     <string name="pending_request">Request Pending</string>
+    <string name="application_pending">Application Pending</string>
+    <string name="pending_application">Pending Application</string>
     <string name="send_request">Send Request</string>
 
     <!--onGoing fragment at worker side-->
@@ -106,14 +108,14 @@
 
     <!--MyjobFragment at client side-->
     <string name="single_project_task">Single Project Task</string>
-    <string name="confirm_request">Confirm Request</string>
+    <string name="confirm_application">Confirm Application</string>
     <string name="ongoing_help">OnGoing Help</string>
     <string name="record_not_found">No Record Found</string>
     <string name="login_with_facebook">Login with Facebook</string>
     <string name="accept">Accept</string>
     <string name="request">Request</string>
-    <string name="no_request_yet">No request yet</string>
-    <string name="no_offer_request_yet">No Offer request yet</string>
+    <string name="no_appication_yet">No application yet</string>
+    <string name="no_offer_application_yet">No Offer application yet</string>
     <string name="under_devlopment_mode">Under Devlopment Mode</string>
 
     <!--  bankAccountFragment  -->
@@ -163,14 +165,16 @@
     <string name="member_requested"> Members requested</string>
     <string name="offered_rate">Offered Rate</string>
     <string name="clear_all">Clear all</string>
-    <string name="request_pending">Request Pending</string>
+    <!--<string name="application_pending">Application Pending</string>-->
+    <string name="pending_request1">Pending Request</string>
     <string name="request_confirmed">Request Confirmed</string>
     <string name="request_cancel">Request Cancel</string>
     <string name="send_offer">Send Offer</string>
     <string name="my_profile">MY PROFILE</string>
     <string name="total_income">Total Income</string>
     <string name="completed">Completed</string>
-    <string name="jobs">Works</string>
+    <string name="project_completed">Project Completed</string>
+    <string name="jobs">Work</string>
     <string name="watch_intro_video">Watch Intro Video</string>
     <string name="skills">Skills</string>
     <string name="hourly_rate">Hourly Rate</string>
@@ -263,7 +267,7 @@
 
     <string name="are_you_sure_want_to_unfriend">Are you sure want to unfriend</string>
     <string name="no_messages_yet">No messages yet</string>
-    <string name="you_don_t_have_any_notification_yet">You don\'t have any Notification yet</string>
+    <string name="you_don_t_have_any_notification_yet">You don\'t have any notifications yet</string>
     <string name="you_don_t_have_any_review_yet">You don\'t have any review yet</string>
     <string name="please_enter_email_id">Please enter Email Id</string>
     <string name="email_can_hold_space">Email can\'t hold space</string>
@@ -301,7 +305,7 @@
     <string name="total_paid">Total Paid</string>
     <string name="hirer">Hirer</string>
     <string name="worker">Worker</string>
-    <string name="select_switch_user_type">Select / switch user type?</string>
+    <string name="select_switch_user_type">Select / Switch user type?</string>
     <string name="add_your_skills">Add Your Skills</string>
     <string name="there_are_many_variations_of_passages_of_loreal_ipsum_available_humour">There are many variations of passages of loreal ipsum available humour.</string>
     <string name="next">Next</string>
@@ -316,6 +320,10 @@
     <string name="creat_project">CREATE PROJECT</string>
     <string name="please_update_your_location_to_know_live_wires_near_you">Please update your location to know Live Wires near you.</string>
     <string name="update_profile">Update Profile</string>
+    <string name="project_created">Project Created</string>
+    <string name="about_me">About me</string>
+    <string name="map_view">Map View</string>
+    <string name="share_livewire">Share LiveWire</string>
 
 
 </resources>

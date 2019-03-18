@@ -13,16 +13,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
@@ -42,6 +38,7 @@ import com.livewire.cropper.CropImageView;
 import com.livewire.databinding.ActivityEditProfileClientBinding;
 import com.livewire.model.UserInfoFcm;
 import com.livewire.model.UserModel;
+import com.livewire.responce.MyProfileResponce;
 import com.livewire.responce.SignUpResponce;
 import com.livewire.utils.Constant;
 import com.livewire.utils.ImageRotator;
@@ -62,7 +59,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import static com.livewire.utils.ApiCollection.BASE_URL;
-import static com.livewire.utils.ApiCollection.GET_CLIENT_PROFILE_API;
+import static com.livewire.utils.ApiCollection.GET_MY_USER_PROFILE_API;
 import static com.livewire.utils.ApiCollection.UPDATE_CLIENT_PROFILE_API;
 
 public class EditProfileClientActivity extends AppCompatActivity implements View.OnClickListener {
@@ -85,63 +82,66 @@ public class EditProfileClientActivity extends AppCompatActivity implements View
         intializeView();
 
         if (getIntent().getSerializableExtra("ClientProfileInfo") != null) {
-            SignUpResponce userResponce = (SignUpResponce) getIntent().getSerializableExtra("ClientProfileInfo");
+            MyProfileResponce userResponce = (MyProfileResponce) getIntent().getSerializableExtra("ClientProfileInfo");
             binding.setUserInfo(userResponce.getData());
 
             if (!userResponce.getData().getLatitude().isEmpty()) {
                 locationLat = Double.parseDouble(userResponce.getData().getLatitude());
                 locationLng = Double.parseDouble(userResponce.getData().getLongitude());
             }
+            //  android:text='@{userInfo.town != "" ? userInfo.town : "N/A", default="N/A"}'
+            String location = userResponce.getData().getTown().isEmpty() ? "" : userResponce.getData().getTown();
+            binding.tvTownResident.setText(location);
 
             locationPlace = userResponce.getData().getTown();
             Picasso.with(binding.ivProfileImg.getContext())
                     .load(userResponce.getData().getProfileImage())
                     .into(binding.ivProfileImg);
             binding.inactiveUserImg.setVisibility(View.GONE);
-        }else {
+
+        } else {
             myProfileApi();
         }
 
 
     }
 
-        //"""""""""' my profile worker side""""""""""""""//
-        private void myProfileApi() {// help offer api calling
-            if (Constant.isNetworkAvailable(this, binding.editProfileLayout)) {
-                progressDialog.show();
-                AndroidNetworking.get(BASE_URL + GET_CLIENT_PROFILE_API)
-                        .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
-                        .setPriority(Priority.MEDIUM)
-                        .build()
-                        .getAsJSONObject(new JSONObjectRequestListener() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                try {
-                                    progressDialog.dismiss();
-                                    String status = response.getString("status");
-                                    String message = response.getString("message");
-                                    if (status.equals("success")) {
-                                        SignUpResponce userResponce = new Gson().fromJson(String.valueOf(response), SignUpResponce.class);
-
-                                        Picasso.with(binding.ivProfileImg.getContext()).load(userResponce.getData().getProfileImage())
-                                                .fit().into(binding.ivProfileImg);
-                                       binding.inactiveUserImg.setVisibility(View.GONE);
-                                        binding.setUserInfo(userResponce.getData());
-
-                                    } else {
-                                        Constant.snackBar(binding.editProfileLayout, message);
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-
-                            @Override
-                            public void onError(ANError anError) {
-                                Constant.errorHandle(anError, EditProfileClientActivity.this);
+    //"""""""""' my profile worker side""""""""""""""//
+    private void myProfileApi() {// help offer api calling
+        if (Constant.isNetworkAvailable(this, binding.editProfileLayout)) {
+            progressDialog.show();
+            AndroidNetworking.get(BASE_URL + GET_MY_USER_PROFILE_API)
+                    .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
+                    .setPriority(Priority.MEDIUM)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
                                 progressDialog.dismiss();
+                                String status = response.getString("status");
+                                String message = response.getString("message");
+                                if (status.equals("success")) {
+                                    MyProfileResponce userResponce = new Gson().fromJson(String.valueOf(response), MyProfileResponce.class);
+                                    Picasso.with(binding.ivProfileImg.getContext()).load(userResponce.getData().getProfileImage())
+                                            .fit().into(binding.ivProfileImg);
+                                    binding.inactiveUserImg.setVisibility(View.GONE);
+                                    binding.setUserInfo(userResponce.getData());
+
+                                } else {
+                                    Constant.snackBar(binding.editProfileLayout, message);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                        });
+                        }
+
+                        @Override
+                        public void onError(ANError anError) {
+                            Constant.errorHandle(anError, EditProfileClientActivity.this);
+                            progressDialog.dismiss();
+                        }
+                    });
 
         }
     }

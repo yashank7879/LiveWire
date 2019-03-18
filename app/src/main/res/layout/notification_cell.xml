@@ -6,7 +6,7 @@
     <RelativeLayout
         android:id="@+id/notification_cell"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_65sdp"
+        android:layout_height="wrap_content"
         android:padding="@dimen/_8sdp"
         >
 
@@ -28,8 +28,8 @@
             android:layout_toEndOf="@+id/iv_profile_img"
             android:fontFamily="@font/poppins_regular"
             android:text='N/A'
+            android:layout_below="@id/tv_date"
             android:textSize="@dimen/_11sdp"
-            android:singleLine="true"
             android:layout_centerVertical="true"
             />
 
@@ -56,6 +56,7 @@
             android:textColor="@color/colorLightGray"
             android:textSize="@dimen/_9sdp"
             android:visibility="visible"
+            android:layout_marginBottom="@dimen/_5sdp"
             />
 
     </RelativeLayout>

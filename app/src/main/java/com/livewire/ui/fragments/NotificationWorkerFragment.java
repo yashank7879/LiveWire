@@ -1,7 +1,9 @@
 package com.livewire.ui.fragments;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -25,6 +27,7 @@ import com.livewire.databinding.ActivityNotificationListWorkerBinding;
 import com.livewire.responce.NotificationResponce;
 import com.livewire.ui.activity.JobHelpOfferedDetailWorkerActivity;
 import com.livewire.ui.activity.JobOnGoingDetailWorkerActivity;
+import com.livewire.ui.activity.MyProfileWorkerActivity;
 import com.livewire.ui.activity.complete_confirm_job_worker.CompleteJobHelpOfferedDetailWorkerActivity;
 import com.livewire.ui.activity.complete_confirm_job_worker.CompleteJobOnGoingDetailWorkerActivity;
 import com.livewire.utils.Constant;
@@ -173,8 +176,45 @@ public class NotificationWorkerFragment extends Fragment implements View.OnClick
                 intent.putExtra(CONSTANTTYPE, dataBean.getNotification_message().getType());
                 startActivity(intent);
                 break;
-
+                default:
+                    showAlertWorkerDialog();
+                    break;
         }
+    }
+
+    public void showAlertWorkerDialog() {
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(mContext);
+        builder1.setTitle("Alert");
+        builder1.setMessage("You Need To Switch Your Profile");
+        builder1.setCancelable(true);
+        builder1.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent intent = new Intent(mContext, MyProfileWorkerActivity.class);
+                        startActivity(intent);
+                        /*Intent intent = new Intent(this, WorkerMainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.putExtra("MyProfile", "MyProfile");
+                        intent.putExtra(USER_ID, userId);
+                        intent.putExtra("body", message);
+                        intent.putExtra(CONSTANTTYPE, type);
+                        pendingIntent = PendingIntent.getActivity(this, iUniqueId, intent, PendingIntent.FLAG_ONE_SHOT);
+                        sendNotification(tittle, message, pendingIntent);*/
+                        dialog.cancel();
+
+                    }
+                });
+        builder1.setNegativeButton("No",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
     }
 
     @Override
