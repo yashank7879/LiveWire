@@ -69,7 +69,7 @@
                 android:textColor="@color/colorDarkGray" />
 
 
-            <LinearLayout
+           <!-- <LinearLayout
                 android:id="@+id/rl_dob"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -116,7 +116,7 @@
                 android:layout_marginEnd="@dimen/_20sdp"
                 android:text="@string/minimum_age_is_40_years"
                 android:textColor="@color/colorDarkGray"
-                android:textSize="@dimen/_8sdp" />
+                android:textSize="@dimen/_8sdp" />-->
 
             <RelativeLayout
                 android:layout_width="match_parent"

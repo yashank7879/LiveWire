@@ -154,7 +154,7 @@ public class MyJobAdapter extends RecyclerView.Adapter {
                             break;
                         case "1":  //request_confirmed job
                             if (dataBean.getRequestedUserData().get(0).getRequest_status().equals("1")) {
-                                holder.tvPendingRequest.setText(R.string.request_confirmed);
+                                holder.tvPendingRequest.setText(R.string.application_confirmed);
                                 holder.tvPendingRequest.setTextColor(ContextCompat.getColor(mContext, R.color.colorGreen));
                             }
 
@@ -241,7 +241,6 @@ public class MyJobAdapter extends RecyclerView.Adapter {
                 newStartDate = sd.parse(start);
                 sd = new SimpleDateFormat("dd MMM yyyy");
                 start = sd.format(newStartDate);
-
                 holder.tvDate.setText(dateTextColorChange(start));
                 // holder.tvDate.setText(start);
             } catch (ParseException e) {
@@ -258,7 +257,7 @@ public class MyJobAdapter extends RecyclerView.Adapter {
             holder.tvCategory.setText(dataBean.getSub_category());
             holder.tvSubcategory.setText(dataBean.getParent_category());
             holder.tvBudget.setText("$ " + dataBean.getJob_budget());
-            holder.tvRequested.setText("" + dataBean.getTotal_request() + " Members Applied");
+            holder.tvRequested.setText("" + dataBean.getTotal_request() + mContext.getString(R.string.applications));
             holder.tvTime.setText(Constant.getDayDifference(dataBean.getCrd(), dataBean.getCurrentDateTime()));
 
 

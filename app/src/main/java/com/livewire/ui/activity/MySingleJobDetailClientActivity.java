@@ -65,19 +65,6 @@ public class MySingleJobDetailClientActivity extends AppCompatActivity implement
             //MyjobResponceClient.DataBean dataBean = (MyjobResponceClient.DataBean) getIntent().getSerializableExtra("MyJobDetail");
           JobId = getIntent().getStringExtra("JobIdKey");
             jobDetailApi();
-            /*setMyJobDetails(dataBean);
-            binding.setJobDetail(dataBean);
-
-
-            binding.tvCategory.setText(dataBean.getSub_category());
-            binding.tvSubCategory.setText(dataBean.getParent_category());
-            binding.tvBudgetPrice.setText("$ " + dataBean.getJob_budget());
-            binding.tvDescription.setText(dataBean.getJob_description());
-
-            binding.tvTime.setText(Constant.getDayDifference(dataBean.getCrd(), dataBean.getCurrentDateTime()));
-            binding.tvDate1.setText(Constant.DateFomatChange(dataBean.getJob_start_date()).substring(0, 2) + " ");
-            binding.tvDateMonth.setText(Constant.DateFomatChange(dataBean.getJob_start_date()).substring(3));
-      */
         }
     }
 
@@ -127,7 +114,7 @@ public class MySingleJobDetailClientActivity extends AppCompatActivity implement
                 binding.rlUserData.setVisibility(View.GONE);
                 binding.tvNoRequest.setVisibility(View.GONE);
                 binding.llChat.setVisibility(View.GONE);
-                binding.tvMemberRequested.setText(dataBean.getTotal_request() + " " + getString(R.string.member_requested));
+                binding.tvMemberRequested.setText(dataBean.getTotal_request() + " " + getString(R.string.applications));
 
                 int leftMargin = 0;
                 for (int i = 0; i < dataBean.getRequestedUserData().size(); i++) {
@@ -197,7 +184,6 @@ public class MySingleJobDetailClientActivity extends AppCompatActivity implement
                 break;
             case R.id.btn_end_job:
                 intent = new Intent(this, AddCreditCardActivity.class);
-
                 intent.putExtra("SingleJobPayment","SingleJob");
                 intent.putExtra("NameKey",workerName);
                 intent.putExtra("PaymentKey", budget);

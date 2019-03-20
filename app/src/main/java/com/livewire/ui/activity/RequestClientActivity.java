@@ -80,13 +80,12 @@ public class RequestClientActivity extends AppCompatActivity implements View.OnC
                 }
             }
         });
-
     }
 
     private void actionBarIntialize() {
         View actionBar = findViewById(R.id.action_bar1);
         TextView header = actionBar.findViewById(R.id.tv_live_wire);
-        header.setText(R.string.request);
+        header.setText(R.string.applicants);
         header.setTextColor(ContextCompat.getColor(this, R.color.colorGreen));
         ImageView ivFilter = actionBar.findViewById(R.id.iv_filter);
         ImageView ivBack = actionBar.findViewById(R.id.iv_back);

@@ -62,6 +62,7 @@ public class NotificationJobOnGoingDetailWorkerActivity extends AppCompatActivit
         binding.btnAcceptRejectLayout.setVisibility(View.VISIBLE);
 
         Bundle extra = getIntent().getExtras();;
+        assert extra != null;
         if (extra.getString("type").equals("Ongoing_job_request")) {
             jobId = extra.getString("reference_id");
             getJobDetailApi();

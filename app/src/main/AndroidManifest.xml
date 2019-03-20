@@ -57,10 +57,12 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBXpnvpXkyQzRem7Rr9hcjpiS24AYdMTnA" />
         -->
-
+        <!--//AIzaSyB20iWo0NdlMyRoEVEZaTmi_mQwy3PWssw
+        AIzaSyCucTprgN5-CrntVDNXCFhQpIgGHAswJo8
+        -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyB20iWo0NdlMyRoEVEZaTmi_mQwy3PWssw" />
+            android:value="AIzaSyCiDGPgr1JZQNIGW0o8JbYXY9GT1ieNGiI" />
 
         <!-- [START firebase_service] -->
         <service android:name=".firebaseservises.MyFirebaseMessagingService">

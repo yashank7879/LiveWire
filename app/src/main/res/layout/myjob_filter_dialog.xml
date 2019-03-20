@@ -4,7 +4,8 @@
     android:id="@+id/c_dialog_main_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/dialog_bg">
+    android:background="@drawable/dialog_bg"
+    >
 
     <TextView
         android:id="@+id/heading"
@@ -129,11 +130,11 @@
             style="@style/smallPopinsRegularStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_weight="1"
             android:singleLine="true"
-            android:text="@string/application_pending"
+            android:text="@string/pending_application"
             android:textColor="@color/colorDarkGray"
             android:textSize="@dimen/_9sdp" />
 
@@ -142,8 +143,6 @@
             style="@style/smallPopinsRegularStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/_15sdp"
-            android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_weight="1"
             android:singleLine="true"

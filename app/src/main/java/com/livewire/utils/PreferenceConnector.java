@@ -35,6 +35,7 @@ public class PreferenceConnector {
     public static final String MY_USER_ID = "MyUserId";
     public static final String PROFILE_IMG = "ProfileImg";
     public static final String Name = "name";
+    public static final String AVAILABILITY_1 = "availability";
 
 
 

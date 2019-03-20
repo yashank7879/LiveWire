@@ -119,27 +119,27 @@ public class WriteSomthingAboutWorkerFragment extends Fragment implements View.O
         super.onViewCreated(view, savedInstanceState);
         progressDialog = new ProgressDialog(mContext);
         binding.ivBack.setOnClickListener(this);
-        binding.rlDob.setOnClickListener(this);
+        //  binding.rlDob.setOnClickListener(this);
         binding.mainLayout.setOnClickListener(this);
         binding.btnNext.setOnClickListener(this);
         binding.tvCancel.setOnClickListener(this);
 
-        if (!PreferenceConnector.readString(mContext, PreferenceConnector.USER_DOB, "").isEmpty()){
+       /* if (!PreferenceConnector.readString(mContext, PreferenceConnector.USER_DOB, "").isEmpty()){
            binding.tvDob.setText(PreferenceConnector.readString(mContext, PreferenceConnector.USER_DOB,""));
-        }
-        if (!PreferenceConnector.readString(mContext, PreferenceConnector.ABOUT_ME, "").isEmpty()){
+        }*/
+        if (!PreferenceConnector.readString(mContext, PreferenceConnector.ABOUT_ME, "").isEmpty()) {
             binding.etAboutMe.setText(PreferenceConnector.readString(mContext, PreferenceConnector.ABOUT_ME, ""));
         }
 
         binding.etAboutMe.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+            //kjad
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+            //aksdgh
             }
 
             @Override
@@ -150,7 +150,6 @@ public class WriteSomthingAboutWorkerFragment extends Fragment implements View.O
                 } else {
                     //   Toast.makeText(EditProfileWorkerActivity.this, "max lenght is 200", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
 
@@ -170,7 +169,6 @@ public class WriteSomthingAboutWorkerFragment extends Fragment implements View.O
                 break;
             case R.id.iv_back:
                 PreferenceConnector.writeString(mContext, PreferenceConnector.ABOUT_ME, binding.etAboutMe.getText().toString().trim());
-
                 // Toast.makeText(mContext, "fragment", Toast.LENGTH_SHORT).show();
                 getActivity().onBackPressed();
                 break;
@@ -181,11 +179,12 @@ public class WriteSomthingAboutWorkerFragment extends Fragment implements View.O
                 getActivity().finish();
                 break;
             case R.id.btn_skip:
+
                 break;
-            case R.id.rl_dob:
+            /*case R.id.rl_dob:
                 openDobDialog();
                 //Toast.makeText(mContext, "124421", Toast.LENGTH_SHORT).show();
-                break;
+                break;*/
             case R.id.main_layout:
 
                 break;
@@ -193,9 +192,10 @@ public class WriteSomthingAboutWorkerFragment extends Fragment implements View.O
     }
 
     private void profileValidations() {
-        if (binding.tvDob.getText().toString().isEmpty()) {
+        /*if (binding.tvDob.getText().toString().isEmpty()) {
             Constant.snackBar(binding.mainLayout, "Please select DOB");
-        } else if (binding.etAboutMe.getText().toString().isEmpty()) {
+        } else */
+        if (binding.etAboutMe.getText().toString().isEmpty()) {
             Constant.snackBar(binding.mainLayout, "please write something about you.");
         } else {
             // profileImageFileList = new ArrayList<>();
@@ -208,8 +208,8 @@ public class WriteSomthingAboutWorkerFragment extends Fragment implements View.O
             mPram = new HashMap<>();
 
             mPram.put("workerSkillData", UploadIntroVideoActivity.uploadIntroVideoActivity.keySkills);
-           // mPram.put("date_of_birth",""+sdf2.format(startDateTime.getTime()));
-            mPram.put("date_of_birth",""+binding.tvDob.getText().toString());
+            // mPram.put("date_of_birth",""+sdf2.format(startDateTime.getTime()));
+            // mPram.put("date_of_birth",""+binding.tvDob.getText().toString());
             mPram.put("intro_discription", binding.etAboutMe.getText().toString().trim());
 
 
@@ -258,12 +258,9 @@ public class WriteSomthingAboutWorkerFragment extends Fragment implements View.O
 
     //""""""" show progress """""""""""""""//
     private void videoDialog() {
-
         PermissionAll permissionAll = new PermissionAll();
         permissionAll.checkWriteStoragePermission(getActivity());
-
         progressDialog.show();
-
     }
 
 
@@ -275,6 +272,7 @@ public class WriteSomthingAboutWorkerFragment extends Fragment implements View.O
 
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class VideoCompressAsyncTask extends AsyncTask<String, Void, String> {
         private Context mContext;
 
@@ -328,7 +326,6 @@ public class WriteSomthingAboutWorkerFragment extends Fragment implements View.O
         if (Constant.isNetworkAvailable(mContext, binding.mainLayout)) {
             progressDialog.show();
             AndroidNetworking.upload(BASE_URL + UPDATE_WORKER_PROFILEAPI)
-                    //.addMultipartFile("profileImage",imageFile)
                     .addMultipartParameter(mPram)
                     .addHeaders("authToken", PreferenceConnector.readString(mContext, PreferenceConnector.AUTH_TOKEN, ""))
                     .setPriority(Priority.MEDIUM)
@@ -343,7 +340,7 @@ public class WriteSomthingAboutWorkerFragment extends Fragment implements View.O
                                 status = response.getString("status");
                                 String message = response.getString("message");
                                 if (status.equals("success")) {
-                                    ChangeModeApi();
+                                    //ChangeModeApi();
                                     SignUpResponce userResponce = new Gson().fromJson(String.valueOf(response), SignUpResponce.class);
                                     //Log.e("sign up response", userResponce.getData().toString());
                                     PreferenceConnector.writeString(mContext, PreferenceConnector.COMPLETE_PROFILE_STATUS, "1");
@@ -359,7 +356,6 @@ public class WriteSomthingAboutWorkerFragment extends Fragment implements View.O
                                     Intent intent = new Intent(mContext, WorkerMainActivity.class);
                                     startActivity(intent);
                                     getActivity().finish();
-
 
                                 } else {
                                     Constant.snackBar(binding.mainLayout, message);
@@ -380,6 +376,71 @@ public class WriteSomthingAboutWorkerFragment extends Fragment implements View.O
                     });
 
         }
+    }
+
+
+    private void apiCallForUploadVideo(ArrayList<File> tmpFile) {
+        VolleyMySingleton volleySingleton = new VolleyMySingleton(mContext);
+        RequestQueue mRequest = volleySingleton.getInstance().getRequestQueue();
+        mRequest.start();
+        progressDialog.show();
+        // progressbar.setVisibility(View.VISIBLE);
+        MultiPartRequest mMultiPartRequest = new MultiPartRequest(new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressDialog.dismiss();
+                setResponse(null, error);
+            }
+        }, new Response.Listener() {
+            @Override
+            public void onResponse(Object response) {
+                progressDialog.dismiss();
+
+                try {
+                    // Log.e("ADDVECH", "setResponse: " + response.toString());
+                    JSONObject result;
+                    result = new JSONObject(response.toString());
+                    String status = result.getString("status");
+                    String message = result.getString("message");
+                    if (status.equalsIgnoreCase("success")) {
+                        //*************success fully status**************//
+                        //ChangeModeApi();
+                        SignUpResponce userResponce = new Gson().fromJson(String.valueOf(response), SignUpResponce.class);
+                        PreferenceConnector.writeString(mContext, PreferenceConnector.COMPLETE_PROFILE_STATUS, "1");
+                        PreferenceConnector.writeString(mContext, PreferenceConnector.MY_USER_ID, userResponce.getData().getUserId());
+                        PreferenceConnector.writeString(mContext, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
+                        PreferenceConnector.writeString(mContext, PreferenceConnector.USER_MODE, userResponce.getData().getUser_mode());
+                        PreferenceConnector.writeString(mContext, PreferenceConnector.PROFILE_IMG, userResponce.getData().getProfileImage());
+                        PreferenceConnector.writeString(mContext, PreferenceConnector.Name, userResponce.getData().getName());
+                        PreferenceConnector.writeString(mContext, PreferenceConnector.Email, userResponce.getData().getEmail());
+
+                        // addUserFirebaseDatabase();
+                        getActivity().finishAffinity();
+                        Intent intent = new Intent(mContext, WorkerMainActivity.class);
+                        startActivity(intent);
+                        getActivity().finish();
+                        // finish();
+                    } else {
+
+                        Constant.snackBar(binding.mainLayout, message);
+                    }
+                } catch (JSONException e) {
+                    Log.d(TAG, e.getMessage());
+                }
+            }
+        }, tmpFile, tmpFile.size(), profileImageFileList, profileImageFileList.size(), videoThumbFileList, mPram, mContext);
+
+        mMultiPartRequest.setTag("MultiRequest");
+        mMultiPartRequest.setRetryPolicy(new DefaultRetryPolicy(Template.VolleyRetryPolicy.SOCKET_TIMEOUT,
+                Template.VolleyRetryPolicy.RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        mRequest.add(mMultiPartRequest);
+    }
+
+    //Respon dari volley, untuk menampilkan keterengan upload, seperti error, message dari server
+    void setResponse(Object response, VolleyError error) {
+        Log.e(TAG, error.getLocalizedMessage());
+          /*not used*/
     }
 
     private void ChangeModeApi() {
@@ -432,7 +493,8 @@ public class WriteSomthingAboutWorkerFragment extends Fragment implements View.O
     }
 
 
-    //""""start date picker dialog """""""""""""
+
+ /*   //""""start date picker dialog """""""""""""
     private void openDobDialog() {
         final Calendar calendar = Calendar.getInstance();
         mYear = calendar.get(Calendar.YEAR);
@@ -447,13 +509,13 @@ public class WriteSomthingAboutWorkerFragment extends Fragment implements View.O
                 startDateTime.set(Calendar.YEAR, year);
                 startDateTime.set(Calendar.MONTH, month);
                 startDateTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                //********Date time Format**************//
+                /*//********Date time Format**************//*/
                 SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy");
                 Log.e(TAG, "onDateSet: " + sdf2.format(startDateTime.getTime()));
                 PreferenceConnector.writeString(mContext, PreferenceConnector.USER_DOB, sdf1.format(startDateTime.getTime()));
 
                 startDateString = sdf1.format(startDateTime.getTime());
-                binding.tvDob.setText(sdf2.format(startDateTime.getTime()));
+               // binding.tvDob.setText(sdf2.format(startDateTime.getTime()));
 
             }
         }, mYear - 40, mMonth, mDay);
@@ -466,72 +528,7 @@ public class WriteSomthingAboutWorkerFragment extends Fragment implements View.O
 
         startDateDialog.show();
 
-    }
-
-    private void apiCallForUploadVideo(ArrayList<File> tmpFile) {
-        VolleyMySingleton volleySingleton = new VolleyMySingleton(mContext);
-        RequestQueue mRequest = volleySingleton.getInstance().getRequestQueue();
-        mRequest.start();
-        progressDialog.show();
-        // progressbar.setVisibility(View.VISIBLE);
-        MultiPartRequest mMultiPartRequest = new MultiPartRequest(new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
-                setResponse(null, error);
-            }
-        }, new Response.Listener() {
-            @Override
-            public void onResponse(Object response) {
-                progressDialog.dismiss();
-
-                try {
-                    Log.e("ADDVECH", "setResponse: " + response.toString());
-                    JSONObject result;
-
-                    result = new JSONObject(response.toString());
-                    String status = result.getString("status");
-                    String message = result.getString("message");
-                    if (status.equalsIgnoreCase("success")) {
-                        //*************success fully status**************//
-                        ChangeModeApi();
-                        SignUpResponce userResponce = new Gson().fromJson(String.valueOf(response), SignUpResponce.class);
-                        PreferenceConnector.writeString(mContext, PreferenceConnector.COMPLETE_PROFILE_STATUS, "1");
-                        PreferenceConnector.writeString(mContext, PreferenceConnector.MY_USER_ID, userResponce.getData().getUserId());
-                        PreferenceConnector.writeString(mContext, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
-                        PreferenceConnector.writeString(mContext, PreferenceConnector.USER_MODE, userResponce.getData().getUser_mode());
-                        PreferenceConnector.writeString(mContext, PreferenceConnector.PROFILE_IMG, userResponce.getData().getProfileImage());
-                        PreferenceConnector.writeString(mContext, PreferenceConnector.Name, userResponce.getData().getName());
-                        PreferenceConnector.writeString(mContext, PreferenceConnector.Email, userResponce.getData().getEmail());
-
-                        // addUserFirebaseDatabase();
-                        getActivity().finishAffinity();
-                        Intent intent = new Intent(mContext, WorkerMainActivity.class);
-                        startActivity(intent);
-                        getActivity().finish();
-                        // finish();
-                    } else {
-
-                        Constant.snackBar(binding.mainLayout, message);
-                    }
-                } catch (JSONException e) {
-                    Log.d(TAG, e.getMessage());
-                }
-            }
-        }, tmpFile, tmpFile.size(), profileImageFileList, profileImageFileList.size(), videoThumbFileList, mPram, mContext);
-
-        mMultiPartRequest.setTag("MultiRequest");
-        mMultiPartRequest.setRetryPolicy(new DefaultRetryPolicy(Template.VolleyRetryPolicy.SOCKET_TIMEOUT,
-                Template.VolleyRetryPolicy.RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-
-        mRequest.add(mMultiPartRequest);
-    }
-
-    //Respon dari volley, untuk menampilkan keterengan upload, seperti error, message dari server
-    void setResponse(Object response, VolleyError error) {
-        Log.e(TAG, error.getLocalizedMessage());
-          /*not used*/
-    }
+    }*/
 
 
 }

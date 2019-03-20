@@ -78,7 +78,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/_8sdp"
                         android:layout_marginTop="@dimen/_8sdp"
-                        android:text="@string/requests"
+                        android:text="@string/applied_by"
                         android:textColor="@color/colorGreen" />
 
                     <RelativeLayout
@@ -457,6 +457,7 @@
                             android:layout_marginTop="@dimen/_5sdp"
                             android:fontFamily="@font/poppins_medium"
                             android:text="@string/more_details"
+                            android:visibility="gone"
                             android:textColor="@color/colorGreen" />
 
                         <TextView

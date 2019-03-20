@@ -78,7 +78,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/_8sdp"
                     android:layout_marginTop="@dimen/_8sdp"
-                    android:text="@string/requests"
+                    android:text="@string/applied_by"
                     android:textColor="@color/colorGreen" />
 
                 <RelativeLayout
@@ -188,7 +188,7 @@
                     android:layout_below="@+id/tv_time"
                     android:layout_margin="@dimen/_8sdp"
                     android:background="@drawable/button_green_bg"
-                    android:text="@string/send_offer"
+                    android:text="@string/apply"
                     android:textAllCaps="false"
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/_10sdp"

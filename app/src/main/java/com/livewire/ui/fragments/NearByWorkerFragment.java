@@ -2,10 +2,12 @@ package com.livewire.ui.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -17,6 +19,11 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.GeoDataClient;
+import com.google.android.gms.location.places.PlaceDetectionClient;
+import com.google.android.gms.location.places.Places;
 import com.google.gson.Gson;
 import com.livewire.R;
 import com.livewire.adapter.NearByAdapterWorker;
@@ -48,6 +55,7 @@ public class NearByWorkerFragment extends Fragment implements View.OnClickListen
     private NearByResponce nearByResponce;
     private String message="";
 
+
     public NearByWorkerFragment() {
      //"""""   Required empty public constructor  """""""""//
     }
@@ -75,9 +83,10 @@ public class NearByWorkerFragment extends Fragment implements View.OnClickListen
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
       //  actionBarIntialize(view);
+
+
         nearByList = new ArrayList<>();
         progressDialog = new ProgressDialog(mContext);
-
 
         binding.tvNearYou.setOnClickListener(this);
         binding.tvMapview.setOnClickListener(this);
@@ -96,6 +105,7 @@ public class NearByWorkerFragment extends Fragment implements View.OnClickListen
         binding.btnUpdate.setOnClickListener(this);*/
         getNearByListApi();
     }
+
 
     @Override
     public void onResume() {

@@ -43,7 +43,10 @@ public class MyJobWorkerFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         this.mContext = context;
+
+
     }
+
 
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
@@ -52,7 +55,6 @@ public class MyJobWorkerFragment extends Fragment {
         view.setClickable(true);
         view.requestFocus();
         viewPager = view.findViewById(R.id.viewpager);
-
         MyJobWorkerFragmentAdapter adapter = new MyJobWorkerFragmentAdapter(getChildFragmentManager(),getActivity());
         viewPager.setAdapter(adapter);
         tabLayout = view.findViewById(R.id.sliding_tabs);
@@ -63,6 +65,10 @@ public class MyJobWorkerFragment extends Fragment {
         header.setText(liveWireText(mContext));
         ImageView ivFilter = actionBar.findViewById(R.id.iv_filter);
         ivFilter.setVisibility(View.GONE);
+
+
+
+
 
         // decrease width of indicator
         for (int i = 0; i < tabLayout.getTabCount(); i++) {

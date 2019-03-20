@@ -62,8 +62,6 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.MyViewHo
                     listner.OnClickMoreInfo(requestList.get(holder.getAdapterPosition()).getUserId());
                 }
             });
-
-
         }
     }
 

@@ -56,7 +56,7 @@ public class AboutUsActivity extends AppCompatActivity {
     private void getContentApi() {
         if (Constant.isNetworkAvailable(this, binding.mainLayout)) {
             progressDialog.show();
-            AndroidNetworking.get("https://livewire.work/service/getContent")
+            AndroidNetworking.get( "https://livewire.work/service/getContent")
                     .setPriority(Priority.MEDIUM)
                     .build()
                     .getAsJSONObject(new JSONObjectRequestListener() {

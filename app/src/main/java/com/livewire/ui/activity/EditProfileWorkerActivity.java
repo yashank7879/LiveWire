@@ -1504,6 +1504,10 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
                     String message = result.getString("message");
                     if (status.equalsIgnoreCase("success")) {
                         //*************sucess fully add car status**************//
+                        if(subCategoryModelList.size()> 0){
+                            PreferenceConnector.writeString(EditProfileWorkerActivity.this, PreferenceConnector.COMPLETE_PROFILE_STATUS, "1");
+                        }
+
                         finish();
                     } else {
 
@@ -1551,6 +1555,9 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
                     String message = result.getString("message");
                     if (status.equalsIgnoreCase("success")) {
                         //*************sucess fully add car status**************//
+                        if(subCategoryModelList.size()> 0){
+                            PreferenceConnector.writeString(EditProfileWorkerActivity.this, PreferenceConnector.COMPLETE_PROFILE_STATUS, "1");
+                        }
                         finish();
                     } else {
 

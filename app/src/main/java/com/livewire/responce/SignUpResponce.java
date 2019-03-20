@@ -86,7 +86,8 @@ public class SignUpResponce implements Serializable {
          * status : 1
          * crd : 2018-09-17 12:14:01
          * upd : 0000-00-00 00:00:00
-         *
+         *confirm_dob :"0"
+         *availability :"0"
          */
 
         private String userId = "";
@@ -117,6 +118,8 @@ public class SignUpResponce implements Serializable {
         private String rating ="";
         private String complete_job ="";
         private String app_user_mode ="";
+        private String confirm_dob ="";
+        private String availability ="";
 
 
         public String getUserId() {
@@ -341,6 +344,22 @@ public class SignUpResponce implements Serializable {
 
         public void setUser_mode(String user_mode) {
             this.app_user_mode = user_mode;
+        }
+
+        public String getConfirm_dob() {
+            return confirm_dob;
+        }
+
+        public void setConfirm_dob(String confirm_dob) {
+            this.confirm_dob = confirm_dob;
+        }
+
+        public String getAvailability() {
+            return availability;
+        }
+
+        public void setAvailability(String availability) {
+            this.availability = availability;
         }
     }
 }

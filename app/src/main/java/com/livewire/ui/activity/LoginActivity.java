@@ -570,6 +570,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.SOCIAL_LOGIN, userResponce.getData().getSocialType());
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.STRIPE_CUSTOMER_ID, userResponce.getData().getStripe_customer_id());
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.IS_BANK_ACC, userResponce.getData().getIs_bank_account());
+                                    PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.AVAILABILITY_1, userResponce.getData().getAvailability());
 
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.MY_USER_ID, userResponce.getData().getUserId());
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
@@ -578,6 +579,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.Name, userResponce.getData().getName());
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.Email, userResponce.getData().getEmail());
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.COMPLETE_PROFILE_STATUS, userResponce.getData().getCompleteProfile());
+                                    PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.USER_DOB, userResponce.getData().getConfirm_dob());
 
 
                                     if (userResponce.getData().getUser_mode().equals("worker")) {// if user is worker
@@ -694,6 +696,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.PASS_WORD, etPass.getText().toString());
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.IS_BANK_ACC, userResponce.getData().getIs_bank_account());
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.STRIPE_CUSTOMER_ID, userResponce.getData().getStripe_customer_id());
+                                    PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.AVAILABILITY_1, userResponce.getData().getAvailability());
 
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.USER_MODE, userResponce.getData().getUser_mode());
@@ -702,6 +705,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.Name, userResponce.getData().getName());
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.Email, userResponce.getData().getEmail());
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.COMPLETE_PROFILE_STATUS, userResponce.getData().getCompleteProfile());
+                                    Log.e( "onResponse dob: ",userResponce.getData().getConfirm_dob() );
+                                    PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.USER_DOB, userResponce.getData().getConfirm_dob());
 
                                     addUserFirebaseDatabase();
 
@@ -733,7 +738,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                                     if (userResponce.getData().getUser_mode().equals("worker")) {// if user is worker
                                         Intent intent = null;
-                                        if (userResponce.getData().getCompleteProfile().equals("0")) { // if worker not complete own profile
+
+                                        finishAffinity();
+                                        intent = new Intent(LoginActivity.this, WorkerMainActivity.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        startActivity(intent);
+                                        finish();
+                                       /* if (userResponce.getData().getCompleteProfile().equals("0")) { // if worker not complete own profile
                                             finishAffinity();
                                             intent = new Intent(LoginActivity.this, CompleteProfileActivity.class);
                                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -745,7 +756,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                             startActivity(intent);
                                             finish();
-                                        }
+                                        }*/
                                     } else { // if user is Client
                                         finishAffinity();
                                         Intent intent = new Intent(LoginActivity.this, ClientMainActivity.class);

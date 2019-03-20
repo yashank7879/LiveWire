@@ -183,7 +183,7 @@ public class AddYourSkillsActivity extends AppCompatActivity implements View.OnC
                 nextBtnValidations();
                 break;
             case R.id.iv_back:
-                finish();
+                onBackPressed();
                 break;
             case R.id.tv_cancel:
                 finishAffinity();
@@ -195,6 +195,16 @@ public class AddYourSkillsActivity extends AppCompatActivity implements View.OnC
                 showAddSkillsDialog();
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {// it will move to the Worker main activity
+        super.onBackPressed();
+        finishAffinity();
+        Intent intent = new Intent(this,WorkerMainActivity.class);
+        intent.putExtra("workerMyProfile","workerMyProfile");
+        startActivity(intent);
+        finish();
     }
 
     //"""""""""show dialog for add skills""""""""""""""""//

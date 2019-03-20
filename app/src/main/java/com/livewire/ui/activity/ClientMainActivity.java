@@ -31,6 +31,7 @@ import com.livewire.ui.fragments.MyJobClientFragment;
 import com.livewire.ui.fragments.NearByClientFragment;
 import com.livewire.ui.fragments.NotificationClientFragment;
 import com.livewire.ui.fragments.PostJobHomeFragment;
+import com.livewire.utils.PreferenceConnector;
 
 public class ClientMainActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
     ActivityClientMainBinding binding;
@@ -49,6 +50,7 @@ public class ClientMainActivity extends AppCompatActivity implements View.OnClic
 
     private void intializeViews() {
         fm = getSupportFragmentManager();
+        Log.e( "dob date: ", PreferenceConnector.readString(this,PreferenceConnector.USER_DOB,""));
         binding.myJobLl.setOnClickListener(this);
         binding.notificationLl.setOnClickListener(this);
         binding.addLl.setOnClickListener(this);

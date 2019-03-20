@@ -114,9 +114,13 @@
     <string name="login_with_facebook">Login with Facebook</string>
     <string name="accept">Accept</string>
     <string name="request">Request</string>
+    <string name="applicants">Applicants</string>
+    <string name="applications">Applications</string>
     <string name="no_appication_yet">No application yet</string>
-    <string name="no_offer_application_yet">No Offer application yet</string>
+    <string name="no_offer_application_yet">No application yet</string>
     <string name="under_devlopment_mode">Under Devlopment Mode</string>
+    <string name="applied_by">Applied by</string>
+    <string name="members_applied">Members applied</string>
 
     <!--  bankAccountFragment  -->
     <string name="account_holder_name">Account Holder Name</string>
@@ -167,7 +171,7 @@
     <string name="clear_all">Clear all</string>
     <!--<string name="application_pending">Application Pending</string>-->
     <string name="pending_request1">Pending Request</string>
-    <string name="request_confirmed">Request Confirmed</string>
+    <string name="application_confirmed">Application Confirmed</string>
     <string name="request_cancel">Request Cancel</string>
     <string name="send_offer">Send Offer</string>
     <string name="my_profile">MY PROFILE</string>
@@ -323,7 +327,7 @@
     <string name="project_created">Project Created</string>
     <string name="about_me">About me</string>
     <string name="map_view">Map View</string>
-    <string name="share_livewire">Share LiveWire</string>
+    <string name="share_livewire">Share the LiveWire app</string>
 
 
 </resources>

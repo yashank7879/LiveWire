@@ -52,6 +52,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String tittle = remoteMessage.getData().get("title");
         userType = remoteMessage.getData().get("for_user_type");
         String type = remoteMessage.getData().get(CONSTANTTYPE);
+        Log.e( "noti usermode: ",userType);
 
         if (remoteMessage.getData().get("opponentChatId") != null) {
             opponentChatId = remoteMessage.getData().get("opponentChatId");
@@ -77,7 +78,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     intent.putExtra(CONSTANTTYPE, type);
                     pendingIntent = PendingIntent.getActivity(this, iUniqueId, intent, PendingIntent.FLAG_ONE_SHOT);
                     sendNotification(tittle, message, pendingIntent);
-
                 } else {
                     Intent intent = new Intent(this, ClientMainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

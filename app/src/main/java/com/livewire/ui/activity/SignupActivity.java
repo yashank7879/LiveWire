@@ -505,11 +505,12 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     ///""""""" set social responce data """"""""""//
     private void setSocialResponceData(SignUpResponce userResponce) {
         PreferenceConnector.writeBoolean(SignupActivity.this, PreferenceConnector.IS_LOG_IN, true);
-        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.COMPLETE_PROFILE_STATUS, userResponce.getData().getCompleteProfile());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.AUTH_TOKEN, userResponce.getData().getAuthToken());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.SOCIAL_LOGIN, userResponce.getData().getSocialType());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.STRIPE_CUSTOMER_ID, userResponce.getData().getStripe_customer_id());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.IS_BANK_ACC, userResponce.getData().getIs_bank_account());
+        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.USER_DOB, userResponce.getData().getConfirm_dob());
+        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.AVAILABILITY_1, userResponce.getData().getAvailability());
 
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.MY_USER_ID, userResponce.getData().getUserId());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
@@ -807,6 +808,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.AUTH_TOKEN, userResponce.getData().getAuthToken());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.PASS_WORD, etPass.getText().toString());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.STRIPE_CUSTOMER_ID, userResponce.getData().getStripe_customer_id());
+        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.AVAILABILITY_1, userResponce.getData().getAvailability());
 
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.MY_USER_ID, userResponce.getData().getUserId());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
@@ -815,6 +817,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.Name, userResponce.getData().getName());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.Email, userResponce.getData().getEmail());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.COMPLETE_PROFILE_STATUS, userResponce.getData().getCompleteProfile());
+        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.USER_DOB, userResponce.getData().getConfirm_dob());
 
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.STRIPE_FEES, userResponce.getStripe_fees());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.STRIPE_TRANSACTION_FEES, userResponce.getStripe_transaction_fees());
@@ -929,6 +932,9 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.STRIPE_CUSTOMER_ID, userResponce.getData().getStripe_customer_id());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.IS_BANK_ACC, userResponce.getData().getIs_bank_account());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.MY_USER_ID, userResponce.getData().getUserId());
+        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.USER_DOB, userResponce.getData().getConfirm_dob());
+        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.AVAILABILITY_1, userResponce.getData().getAvailability());
+
         finishAffinity();
         Intent intent = new Intent(SignupActivity.this, CompleteProfileActivity.class);
         startActivity(intent);

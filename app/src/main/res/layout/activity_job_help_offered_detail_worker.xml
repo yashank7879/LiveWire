@@ -332,7 +332,7 @@
                 android:id="@+id/btn_send_request"
                 style="@style/smallPopinsRegularStyle"
                 android:layout_width="@dimen/_85sdp"
-                android:layout_height="@dimen/_25sdp"
+                android:layout_height="@dimen/_28sdp"
                 android:layout_below="@id/tv_description"
                 android:layout_centerInParent="true"
                 android:layout_margin="@dimen/_15sdp"

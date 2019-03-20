@@ -1,5 +1,7 @@
 package com.livewire.ui.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.databinding.DataBindingUtil;
@@ -35,6 +37,7 @@ import java.util.ArrayList;
 
 import static com.livewire.utils.ApiCollection.BASE_URL;
 import static com.livewire.utils.ApiCollection.CHANGE_USER_MODE_API;
+import static com.livewire.utils.ApiCollection.CONFIRMATION_DATE_OF_BIRTH_API;
 import static com.livewire.utils.ApiCollection.GET_MY_USER_PROFILE_API;
 
 public class MyProfileClientActivity extends AppCompatActivity implements View.OnClickListener {
@@ -45,12 +48,10 @@ public class MyProfileClientActivity extends AppCompatActivity implements View.O
     private ShowSkillsAdapter showSkillsAdapter;
     private String videoUrl;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_my_profile_client);
-
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         binding.rvSkillData.setLayoutManager(layoutManager);
         showSkillsAdapter = new ShowSkillsAdapter(this, showSkillBeans);
@@ -59,17 +60,17 @@ public class MyProfileClientActivity extends AppCompatActivity implements View.O
         progressDialog = new ProgressDialog(this);
         binding.btnLogout.setOnClickListener(this);
         binding.btnEdit.setOnClickListener(this);
-       // binding.cvCompleteJob.setOnClickListener(this);
+        // binding.cvCompleteJob.setOnClickListener(this);
         binding.ivProfile.setOnClickListener(this);
         binding.rlRatingBar.setOnClickListener(this);
         binding.llHirer.setOnClickListener(this);
         binding.llWorker.setOnClickListener(this);
-        PreferenceConnector.writeString(this, PreferenceConnector.USER_DOB, "");
+        //PreferenceConnector.writeString(this, PreferenceConnector.USER_DOB, "");
         PreferenceConnector.writeString(this, PreferenceConnector.SELECTED_VIDEO, "");
         PreferenceConnector.writeString(this, PreferenceConnector.ABOUT_ME, "");
         actionBarIntialize();
         myProfileApi();
-        Log.e("onCreate: ", PreferenceConnector.readString(this, PreferenceConnector.USER_TYPE, ""));
+        Log.e("MyProfileCl dob: ", PreferenceConnector.readString(this, PreferenceConnector.USER_DOB, ""));
     }
 
     private void actionBarIntialize() {
@@ -133,31 +134,27 @@ public class MyProfileClientActivity extends AppCompatActivity implements View.O
 
             case R.id.iv_back:
                 onBackPressed();
+
                 break;
 
             case R.id.ll_worker: {
-                binding.llWorker.setBackgroundColor(ContextCompat.getColor(this, R.color.colorDarkBlack));
-                binding.tvWorker.setTextColor(ContextCompat.getColor(this, R.color.colorWhite));
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    binding.ivWorker.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorWhite)));
-                }
-                binding.llHirer.setBackgroundColor(ContextCompat.getColor(this, R.color.colorWhite));
-                binding.tvHirer.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray));
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    binding.ivClient.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorDarkGray)));
-                }
-
-                if (PreferenceConnector.readString(this, PreferenceConnector.COMPLETE_PROFILE_STATUS, "").equals("0")) {
-                    startActivity(new Intent(this, AddYourSkillsActivity.class));
+                String dob = PreferenceConnector.readString(this, PreferenceConnector.USER_DOB, "");
+                if (dob.equals("0")) {
+                    ageAlertDiaog();
                 } else {
                     ChangeModeApi();
                 }
-
+                /* if (PreferenceConnector.readString(this, PreferenceConnector.COMPLETE_PROFILE_STATUS, "").equals("0")) {
+                    startActivity(new Intent(this, AddYourSkillsActivity.class));
+                } else {
+                    ChangeModeApi();
+                }*/
             }
             break;
             case R.id.ll_hirer: {
                 binding.llWorker.setBackgroundColor(ContextCompat.getColor(this, R.color.colorWhite));
                 binding.tvWorker.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGray));
+
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     binding.ivWorker.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorDarkGray)));
                 }
@@ -166,11 +163,12 @@ public class MyProfileClientActivity extends AppCompatActivity implements View.O
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     binding.ivClient.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorWhite)));
                 }
-
             }
             default:
         }
     }
+
+
 
     private void ChangeModeApi() {
         if (Constant.isNetworkAvailable(this, binding.svProfile)) {
@@ -188,18 +186,22 @@ public class MyProfileClientActivity extends AppCompatActivity implements View.O
                                 String status = response.getString("status");
                                 String message = response.getString("message");
                                 if (status.equals("success")) {
-                                    if (PreferenceConnector.readString(MyProfileClientActivity.this, PreferenceConnector.USER_MODE, "").equals("worker")) {
+                                    if (PreferenceConnector.readString(MyProfileClientActivity.this, PreferenceConnector.USER_MODE, "").equals("worker")) { //switch worker to clint
                                         PreferenceConnector.writeString(MyProfileClientActivity.this, PreferenceConnector.USER_MODE, "client");
                                         finishAffinity();
                                         Intent intent = new Intent(MyProfileClientActivity.this, ClientMainActivity.class);
                                         startActivity(intent);
                                         finish();
-                                    } else {
+                                    } else {//switch client to worker
                                         PreferenceConnector.writeString(MyProfileClientActivity.this, PreferenceConnector.USER_MODE, "worker");
-                                        finishAffinity();
-                                        Intent intent = new Intent(MyProfileClientActivity.this, WorkerMainActivity.class);
-                                        startActivity(intent);
-                                        finish();
+                                        if (PreferenceConnector.readString(MyProfileClientActivity.this, PreferenceConnector.COMPLETE_PROFILE_STATUS, "").equals("0")) {
+                                            startActivity(new Intent(MyProfileClientActivity.this, AddYourSkillsActivity.class));
+                                        } else {
+                                            finishAffinity();
+                                            Intent intent = new Intent(MyProfileClientActivity.this, WorkerMainActivity.class);
+                                            startActivity(intent);
+                                            finish();
+                                        }
                                     }
 
                                 } else {
@@ -279,6 +281,77 @@ public class MyProfileClientActivity extends AppCompatActivity implements View.O
         }
     }
 
+    private void ageAlertDiaog() {
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(MyProfileClientActivity.this);
+        builder1.setTitle("Alert");
+        builder1.setMessage("Are you over 40 Years?");
+        builder1.setCancelable(true);
+        builder1.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        binding.llWorker.setBackgroundColor(ContextCompat.getColor(MyProfileClientActivity.this, R.color.colorDarkBlack));
+                        binding.tvWorker.setTextColor(ContextCompat.getColor(MyProfileClientActivity.this, R.color.colorWhite));
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            binding.ivWorker.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(MyProfileClientActivity.this, R.color.colorWhite)));
+                        }
+                        binding.llHirer.setBackgroundColor(ContextCompat.getColor(MyProfileClientActivity.this, R.color.colorWhite));
+                        binding.tvHirer.setTextColor(ContextCompat.getColor(MyProfileClientActivity.this, R.color.colorDarkGray));
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            binding.ivClient.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(MyProfileClientActivity.this, R.color.colorDarkGray)));
+                        }
+
+                        ageLimitApi();
+                        dialog.cancel();
+
+                    }
+                });
+        builder1.setNegativeButton("No",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert11 = builder1.create();
+        if (MyProfileClientActivity.this != null)
+            alert11.show();
+    }
+
+    private void ageLimitApi() {
+        if (Constant.isNetworkAvailable(this, binding.svProfile)) {
+            AndroidNetworking.post(BASE_URL + CONFIRMATION_DATE_OF_BIRTH_API)
+                    .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            progressDialog.dismiss();
+                            String status = null;
+                            try {
+                                status = response.getString("status");
+                                String message = response.getString("message");
+                                if (status.equals("success")) {
+                                    PreferenceConnector.writeString(MyProfileClientActivity.this, PreferenceConnector.USER_DOB, "1");
+                                    ChangeModeApi();
+                                } else {
+                                    Constant.snackBar(binding.svProfile, message);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+
+                        @Override
+                        public void onError(ANError anError) {
+
+                        }
+                    });
+        }
+    }
 
     @Override
     protected void onDestroy() {

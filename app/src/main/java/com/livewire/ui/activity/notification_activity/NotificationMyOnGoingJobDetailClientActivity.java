@@ -107,7 +107,7 @@ public class NotificationMyOnGoingJobDetailClientActivity extends AppCompatActiv
                         break;
                     case "1":  //request_confirmed job
                         if (dataBean.getRequestedUserData().get(0).getRequest_status().equals("1")) {
-                            binding.tvJobStatus.setText(R.string.request_confirmed);
+                            binding.tvJobStatus.setText(R.string.application_confirmed);
                             binding.tvJobStatus.setBackground(getResources().getDrawable(R.drawable.doteted_green_shape));
                             binding.tvJobStatus.setTextColor(ContextCompat.getColor(this, R.color.colorGreen));
                         }

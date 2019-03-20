@@ -86,6 +86,12 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             binding.llChangePass.setVisibility(View.VISIBLE);
         }
 
+        if (PreferenceConnector.readString(this,PreferenceConnector.AVAILABILITY_1,"").equals("1")){
+            binding.btnSwitch.setChecked(true);
+        }else {
+            binding.btnSwitch.setChecked(false);
+        }
+
         binding.btnSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -157,6 +163,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.putExtra(Intent.EXTRA_TEXT, "Hello welcome to livewire app.");
                 sendIntent.setType("text/plain");
+                sendIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
                 startActivity(sendIntent);
             }break;
 
@@ -347,7 +354,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     }
 
 
-    private void availablityUser(String s) {
+    private void availablityUser(final String s) {
         if (Constant.isNetworkAvailable(this, binding.settingMainLayout)) {
             progressDialog.show();
             AndroidNetworking.post(BASE_URL + "user/availability")
@@ -362,8 +369,11 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                         String status = response.getString("status");
                         String message = response.getString("message");
                         if (status.equals("success")) {
+                            if (s.equals("1")){
+                                PreferenceConnector.writeString(SettingActivity.this,PreferenceConnector.AVAILABILITY_1,"1");
+                            }else PreferenceConnector.writeString(SettingActivity.this,PreferenceConnector.AVAILABILITY_1,"0");
 
-                            Toast.makeText(SettingActivity.this, message, Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(SettingActivity.this, message, Toast.LENGTH_SHORT).show();
 
                         } else {
 

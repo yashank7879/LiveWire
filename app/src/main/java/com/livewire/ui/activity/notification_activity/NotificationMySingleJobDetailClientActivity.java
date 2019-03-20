@@ -105,7 +105,7 @@ public class NotificationMySingleJobDetailClientActivity extends AppCompatActivi
                 binding.rlUserData.setVisibility(View.GONE);
                 binding.tvNoRequest.setVisibility(View.GONE);
                 binding.llChat.setVisibility(View.GONE);
-                binding.tvMemberRequested.setText(dataBean.getTotal_request() + " " + getString(R.string.member_requested));
+                binding.tvMemberRequested.setText(dataBean.getTotal_request() + " " + getString(R.string.applications));
 
                 int leftMargin = 0;
                 for (int i = 0; i < dataBean.getRequestedUserData().size(); i++) {

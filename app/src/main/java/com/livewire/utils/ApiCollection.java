@@ -52,5 +52,6 @@ public class ApiCollection {
     public static final String ONGOING_END_JOB_API = "payment/ongoingEndJob"; // ongoing job payment
     public static final String NOTIFICATION_LIST_API = "user/notificationList"; //https://livewire.work/service/user/notificationList
     public static final String CANCLE_JOB_BY_CLIENT_API = "Jobpost/cancleJobByClient"; //https://livewire.work/service/Jobpost/cancleJobByClient
+    public static final String CONFIRMATION_DATE_OF_BIRTH_API = "user/confirmationDateOfBirth"; //https://livewire.work/service/Jobpost/cancleJobByClient
 
 }

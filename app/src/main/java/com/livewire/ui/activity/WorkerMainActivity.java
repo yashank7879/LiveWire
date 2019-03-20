@@ -15,10 +15,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
@@ -31,7 +36,14 @@ import com.livewire.ui.fragments.JobRequestFragment;
 import com.livewire.ui.fragments.MyJobWorkerFragment;
 import com.livewire.ui.fragments.NearByWorkerFragment;
 import com.livewire.ui.fragments.NotificationWorkerFragment;
+import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
+import com.livewire.utils.ProgressDialog;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import static com.livewire.utils.ApiCollection.BASE_URL;
 
 public class WorkerMainActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
     ActivityWorkerMainBinding binding;
@@ -41,13 +53,17 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
     private boolean doubleBackToExitPressedOnce = false;
     private Runnable runnable;
     private ImageView ivNotification;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_worker_main);
 
+
         intializeViews();
+        checkAvailability();
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -56,11 +72,74 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
+        binding.btnSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {// user available
+                    availablityUser("1");
+                } else {// user unavailable
+                    availablityUser("0");
+                }
+            }
+        });
+    }
+
+    public void checkAvailability() {
+        if (PreferenceConnector.readString(this,PreferenceConnector.AVAILABILITY_1,"").equals("1")){
+            binding.btnSwitch.setChecked(true);
+        }else {
+            binding.btnSwitch.setChecked(false);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        checkAvailability();
+    }
+
+
+    private void availablityUser(final String s) {
+        if (Constant.isNetworkAvailable(this, binding.mainLayout)) {
+            progressDialog.show();
+            AndroidNetworking.post(BASE_URL + "user/availability")
+                    .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
+                    .addBodyParameter("availability", s)
+                    .setPriority(Priority.MEDIUM)
+                    .build().getAsJSONObject(new JSONObjectRequestListener() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    progressDialog.dismiss();
+                    try {
+                        String status = response.getString("status");
+                        String message = response.getString("message");
+                        if (status.equals("success")) {
+
+                            if (s.equals("1")){
+                                PreferenceConnector.writeString(WorkerMainActivity.this,PreferenceConnector.AVAILABILITY_1,"1");
+                            }else PreferenceConnector.writeString(WorkerMainActivity.this,PreferenceConnector.AVAILABILITY_1,"0");
+                            // Toast.makeText(WorkerMainActivity.this, message, Toast.LENGTH_SHORT).show();
+
+                        } else {
+
+                            Constant.snackBar(binding.mainLayout, message);
+                        }
+                    } catch (JSONException e) {
+                        Log.d("Exception", e.getMessage());
+                    }
+                }
+
+                @Override
+                public void onError(ANError anError) {
+                    Log.d("EXception", anError.getErrorDetail());
+                    progressDialog.dismiss();
+                }
+            });
+        }
     }
 
     private void intializeViews() {
         fm = getSupportFragmentManager();
-
         binding.btnLogout.setOnClickListener(this);
         binding.llNearBy.setOnClickListener(this);
         binding.homeLl.setOnClickListener(this);
@@ -69,6 +148,8 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
         binding.myJobLl.setOnClickListener(this);
         binding.ivSetting.setOnClickListener(this);
         binding.ivProfile.setOnClickListener(this);
+
+        progressDialog = new ProgressDialog(this);
 
         if (getIntent().getStringExtra("opponentChatId") != null) {
             String oponnetId = getIntent().getStringExtra("opponentChatId");
@@ -88,11 +169,19 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
 
             showAlertWorkerDialog();
 
+        } else if (getIntent().getStringExtra("workerMyProfile") != null){
+            binding.tvHeading.setText(R.string.work_opportunity);
+            replaceFragment(new JobRequestFragment(), false, R.id.fl_container); // first time replace home fragment
+            clickId = R.id.home_ll;
+            Intent intent = new Intent(this,MyProfileWorkerActivity.class);
+            startActivity(intent);
         } else {
             binding.tvHeading.setText(R.string.work_opportunity);
             replaceFragment(new JobRequestFragment(), false, R.id.fl_container); // first time replace home fragment
             clickId = R.id.home_ll;
         }
+
+        Log.e( "inti user mode: ",PreferenceConnector.readString(this,PreferenceConnector.USER_MODE,"") );
     }
 
     @Override

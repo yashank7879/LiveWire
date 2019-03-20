@@ -446,7 +446,7 @@ public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapte
                 startActivity(intent);
                 break;
             case "Accept":
-                acceptRejectrequestApi(dataBean.getUserId(), dataBean.getJobId(), "2", pos);
+                acceptRejectrequestApi(dataBean.getUserId(), dataBean.getJobId(), "1", pos);
 
                /* if (PreferenceConnector.readString(mContext,PreferenceConnector.IS_BANK_ACC,"").equals("1")) {
                     acceptRejectrequestApi(dataBean.getUserId(), dataBean.getJobId(), "1",pos);

@@ -32,10 +32,10 @@ import static com.livewire.utils.ApiCollection.JOBPOSTSEND_GET_CLIENT_JOB_DETAIL
 public class SingleJobCompleteJobDetailActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = SingleJobCompleteJobDetailActivity.class.getName();
     ActivitySingleJobCompleteJobDetailBinding binding;
-    ProgressDialog progressDialog;
+    private ProgressDialog progressDialog;
     private String jobId = "";
-    private String userId="";
-    private String name="";
+    private String userId = "";
+    private String name = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +77,7 @@ public class SingleJobCompleteJobDetailActivity extends AppCompatActivity implem
                                     userId = dataBean.getData().getRequestedUserData().get(0).getUserId();
                                     // binding.setJobDetail(dataBean.getData());
 
-                                   } else {
+                                } else {
                                     progressDialog.dismiss();
                                     Constant.snackBar(binding.detailMainLayout, message);
                                 }
@@ -108,7 +108,7 @@ public class SingleJobCompleteJobDetailActivity extends AppCompatActivity implem
         binding.tvName.setText(data.getData().getRequestedUserData().get(0).getName());
         binding.tvDistance.setText(data.getData().getRequestedUserData().get(0).getDistance_in_km() + " Km away");
 
-        name =data.getData().getRequestedUserData().get(0).getName();
+        name = data.getData().getRequestedUserData().get(0).getName();
         for (JobDetailClientResponce.ReviewBean reviewBean : data.getReview()) {
             if (reviewBean.getReview_by().equals(PreferenceConnector.readString(this, PreferenceConnector.MY_USER_ID, ""))) {
                 binding.tvJobReview.setVisibility(View.VISIBLE);
@@ -126,7 +126,7 @@ public class SingleJobCompleteJobDetailActivity extends AppCompatActivity implem
                 binding.tvReviewUserDescription.setText(reviewBean.getReview_description());
                 binding.ratingBarUserReview.setRating(Float.parseFloat(reviewBean.getRating()));
             }
-            if (data.getData().getRequestedUserData().get(0).getReview_status().equals("1")){
+            if (data.getData().getRequestedUserData().get(0).getReview_status().equals("1")) {
                 binding.btnDilog.setVisibility(View.GONE);
 
             }
@@ -147,7 +147,7 @@ public class SingleJobCompleteJobDetailActivity extends AppCompatActivity implem
                 intent.putExtra("UserIdKey", userId);
                 startActivity(intent);
                 break;
-                default:
+            default:
 
         }
     }
