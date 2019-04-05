@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
+    android:layout_height="wrap_content"
+    >
     <TextView
         android:id="@+id/tv_sub_category"
         style="@style/SmallPopinsLightStyle"
-        android:layout_width="@dimen/_100sdp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/tv_price"
+        android:layout_alignParentStart="true"
         android:singleLine="true"
+        android:layout_marginRight="@dimen/_3sdp"
         android:text="baby sitting" />
 
     <TextView
@@ -17,9 +21,38 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginEnd="@dimen/_5sdp"
-        android:layout_toStartOf="@+id/iv_cancel"
-        android:text="$10 - $20" />
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:layout_alignParentEnd="true"
+        android:text="$10 - $20"
+        android:gravity="end"
+        />
+
+
+   <!-- <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tv_sub_category"
+        style="@style/SmallPopinsLightStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/tv_price"
+        android:layout_alignParentStart="true"
+        android:text="baby sitting" />
+
+    <TextView
+        android:id="@+id/tv_price"
+        style="@style/SmallPopinsLightStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:layout_alignParentEnd="true"
+        android:text="$10 - $20"
+        android:gravity="end"
+        />
+    </RelativeLayout>-->
 
     <ImageView
         android:id="@+id/iv_cancel"
@@ -29,7 +62,7 @@
         android:layout_centerVertical="true"
         android:background="@drawable/circle_black_bg"
         android:padding="@dimen/_2sdp"
-        android:src="@drawable/ic_close_black"
+        app:srcCompat="@drawable/ic_close_black"
         android:tint="@color/colorWhite" />
 
 </RelativeLayout>

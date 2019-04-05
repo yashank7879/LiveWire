@@ -188,7 +188,7 @@
                     android:layout_below="@+id/tv_time"
                     android:layout_margin="@dimen/_8sdp"
                     android:background="@drawable/button_green_bg"
-                    android:text="@string/apply"
+                    android:text="@string/offer_work"
                     android:textAllCaps="false"
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/_10sdp"
@@ -562,7 +562,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/description"
                     android:layout_marginEnd="@dimen/_8sdp"
-                    android:text='@{dataBean.job_description, default = "N/A"}'                    android:textSize="@dimen/_10sdp" />
+                    android:text='@{dataBean.job_description.empty ? "N/A" : dataBean.job_description ,default = "N/A"}'/>
 
                           <Button
                               android:id="@+id/btn_end_job"

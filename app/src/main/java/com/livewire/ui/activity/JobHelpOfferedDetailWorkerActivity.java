@@ -318,7 +318,7 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
                         String message = response.getString("message");
                         if (status.equals("success")) {
                             binding.btnSendRequest.setBackground(null);
-                            binding.btnSendRequest.setText(R.string.pending_request);
+                            binding.btnSendRequest.setText(R.string.application_pending);
                             binding.btnSendRequest.setTextColor(ContextCompat.getColor(JobHelpOfferedDetailWorkerActivity.this, R.color.colorOrange));
                             binding.btnSendRequest.setClickable(false);
                             Constant.snackBar(binding.detailMainLayout, message);

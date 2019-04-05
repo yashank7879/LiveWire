@@ -151,7 +151,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="@dimen/_10sdp"
         android:background="@drawable/button_green_bg"
-        android:text="@string/apply"
+        android:text="@string/offer_work"
         android:textAllCaps="false"
         android:textColor="@color/colorWhite"
         android:textSize="@dimen/_10sdp"

@@ -520,7 +520,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/description"
                     android:layout_marginEnd="@dimen/_8sdp"
-                    android:text='@{jobDetail.job_description,default = "N/A"}'
+                    android:text='@{jobDetail.job_description.empty ? "N/A" : jobDetail.job_description ,default = "N/A"}'
                     android:textSize="@dimen/_10sdp" />
 
                           <Button

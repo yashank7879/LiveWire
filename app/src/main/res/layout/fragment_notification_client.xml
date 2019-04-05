@@ -54,7 +54,9 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/you_don_t_have_any_notification_yet"
-            android:textColor="@color/colorGreen" />
+            android:textColor="@color/colorGreen"
+            android:visibility="gone"
+            />
 
     </RelativeLayout>
 

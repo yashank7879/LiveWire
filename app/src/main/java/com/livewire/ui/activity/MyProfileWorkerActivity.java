@@ -96,7 +96,8 @@ public class MyProfileWorkerActivity extends AppCompatActivity implements View.O
 
                                     if (!videoUrl.isEmpty()) {
                                         binding.rlVideoImg.setVisibility(View.VISIBLE);
-                                    }
+                                    }else binding.rlVideoImg.setVisibility(View.GONE);
+
                                     if (!userResponce.getData().getVideo_thumb().isEmpty()) {
                                         Picasso.with(binding.videoThumbImg.getContext()).load(userResponce.getData().getVideo_thumb()).fit()
                                                 .error(R.color.colorWhite)

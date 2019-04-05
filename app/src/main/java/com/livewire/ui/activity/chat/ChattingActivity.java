@@ -61,6 +61,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
+import static com.livewire.utils.ApiCollection.BASE_URL;
 import static com.livewire.utils.Constant.MY_UID;
 
 public class ChattingActivity extends AppCompatActivity implements View.OnClickListener {
@@ -100,7 +101,6 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         keyList = new ArrayList<>();
         Bundle extra = getIntent().getExtras();
         if (getIntent().getStringExtra("otherUID") != null) {
-
             otherprofilePic = getIntent().getStringExtra("profilePic");
             String titleName = getIntent().getStringExtra("titleName");
             binding.titleName.setText(titleName);
@@ -108,7 +108,9 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
             otherUID = getIntent().getStringExtra("otherUID");
             MY_UID  = getIntent().getStringExtra("otherUID");
             if (!otherprofilePic.isEmpty()) {
-                Picasso.with(binding.headerImage.getContext()).load(otherprofilePic).error(R.drawable.ic_user).fit().into(binding.headerImage);
+                Picasso.with(binding.headerImage.getContext()).load(otherprofilePic)
+                        .placeholder(R.drawable.ic_user)
+                        .error(R.drawable.ic_user).fit().into(binding.headerImage);
             }
             gettingDataFromUserTable(otherUID);
             // IsGetNotificationValue = otherUID;
@@ -127,6 +129,8 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
 
             }
         }, true);
+
+
 
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         binding.recyclerView.setLayoutManager(linearLayoutManager);
@@ -179,6 +183,21 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         binding.cameraBtn.setOnClickListener(this);
         binding.btnBlockUser.setOnClickListener(this);
         binding.lyDeleteChat.setOnClickListener(this);
+
+        firebaseDatabase.getReference().child(Constant.ARG_HISTORY).child(otherUID).child(myUid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue(Chat.class) != null) {
+                    Chat chat = dataSnapshot.getValue(Chat.class);
+                    Count = chat.unreadCount;
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
 
         getChat();
@@ -243,8 +262,11 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         firebaseDatabase.getReference().child(Constant.ARG_HISTORY).child(otherUID).child(myUid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue(Chat.class) != null) {
-                    Chat chat = dataSnapshot.getValue(Chat.class);
+                if (dataSnapshot.getValue() != null) {
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        //Log.d(TAG,ds.toString());
+                    }
+                    //Chat chat = dataSnapshot.getValue(Chat.class);
                     //Count = chat.unreadCount;
                 }
             }
@@ -321,6 +343,12 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
 
                     }
                 });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        firebaseDatabase.getReference().child(Constant.ARG_CHAT_ROOMS).child(otherUID).child(myUid).addChildEventListener(eventListener);
     }
 
     private void getChatDataInmap(String key, Chat chat) {
@@ -416,6 +444,9 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
     protected void onDestroy() {
         super.onDestroy();
         //IsGetNotificationValue = "";
+        Constant.MY_UID="";
+
+
         firebaseDatabase.getReference().child(Constant.ARG_HISTORY).child(myUid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -656,7 +687,13 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         assert app != null;
         storage = FirebaseStorage.getInstance(app);
 
-        storageRef = storage.getReference("chat_photos_LiveWire");
+        if (BASE_URL.equals("https://livewire.work/apiv2/")){
+            storageRef = storage.getReference("chat_photos_LiveWire");
+
+        }else {
+            storageRef = storage.getReference("chat_photos_LiveWire_Dev");
+        }
+
         StorageReference photoRef = storageRef.child(selectedImageUri.getLastPathSegment());
         photoRef.putFile(selectedImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -891,3 +928,19 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         _dialog.show();
     }
 }
+
+/*
+
+DataSnapshot { key = 1,
+        value =
+        {2={image=1, uid=2,
+        firebaseToken=cm27WPZOfHI:APA91bFLlXcZZQ3DaNACxJSZbRY04FOwUJxMffTKje9-_zOHhuGexmJDClq7gmVZIjyZHOhErTWX4A9lynDyADuNLNh1oR-YaaBPZNLaH0lXdilPSqPbWH9VCRstipSYMTAKDWLIABRh,
+        firebaseId=, imageUrl=,
+        profilePic=https://livewire.work/./uploads/profile/thumb/gPwJVabWFyAu7eMN.jpeg,
+// name=Purva Choudhary, deleteby=, unreadCount=0, lastMsg=1, message=, timestamp=1554184819261},
+// 3={image=0, uid=3,
+// firebaseToken=easDOGG1Dqw:APA91bEm5EBqTBwHKxHPHHVyhBrl7tQoivjBRv8QEoZM_CoiKva0t_hn4l0ayTMXYxO_lUEVcBVZBDSu_S_sfVE1UToyBC_q-ElUUyXJ_f_R9qQg4uMUVwxO4KCTJKpuj_i-xKZVYxRe,
+// firebaseId=, imageUrl=,
+// profilePic=http://graph.facebook.com/2228493370494816/picture?width=500&height=500,
+// name=Arvind Patidar, deleteby=, unreadCount=0, lastMsg=1,
+// message=Hello just a, timestamp=1554183224154}} }*/

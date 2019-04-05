@@ -563,7 +563,8 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/description"
                         android:layout_marginEnd="@dimen/_8sdp"
-                        android:text='@{dataBean.job_description, default = "N/A"}'                    android:textSize="@dimen/_10sdp" />
+                        android:text='@{dataBean.job_description.empty ? "N/A" : dataBean.job_description ,default = "N/A"}'
+                        android:textSize="@dimen/_10sdp" />
 
                     <!--          <Button
                                   android:id="@+id/btn_send_request"

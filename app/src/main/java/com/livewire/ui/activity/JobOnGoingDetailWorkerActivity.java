@@ -41,7 +41,7 @@ public class JobOnGoingDetailWorkerActivity extends AppCompatActivity implements
 
     private ProgressDialog progressDialog;
     private ScrollView detailMainLayout;
-    private OnGoingWorkerResponce.DataBean workerResponcd;
+    private JobDetailWorkerResponce workerResponcd;
     private String jobId="";
     private String userId="";
     private String clientProfileImg="";
@@ -90,9 +90,9 @@ public class JobOnGoingDetailWorkerActivity extends AppCompatActivity implements
                                 status = response.getString("status");
                                 String message = response.getString("message");
                                 if (status.equals("success")) {
-                                    JobDetailWorkerResponce  workerResponce = new Gson().fromJson(String.valueOf(response),JobDetailWorkerResponce.class);
-                                    binding.setWorkerResponcd(workerResponce.getData());
-                                    setJobDetailData(workerResponce.getData());
+                                    workerResponcd = new Gson().fromJson(String.valueOf(response),JobDetailWorkerResponce.class);
+                                    binding.setWorkerResponcd(workerResponcd.getData());
+                                    setJobDetailData(workerResponcd.getData());
                                 }else {
                                     Constant.snackBar(binding.detailMainLayout,message);
                                 }
@@ -118,18 +118,20 @@ public class JobOnGoingDetailWorkerActivity extends AppCompatActivity implements
                 onBackPressed();
                 break;
             case R.id.btn_ignore:
-                if (PreferenceConnector.readString(this,PreferenceConnector.IS_BANK_ACC,"").equals("1")) {
+                acceptRejectrequestApi(workerResponcd.getData().getUserId(), workerResponcd.getData().getJobId(), "2");
+                /*if (PreferenceConnector.readString(this,PreferenceConnector.IS_BANK_ACC,"").equals("1")) {
                     acceptRejectrequestApi(workerResponcd.getUserId(), workerResponcd.getJobId(), "2");
                 }else {
                     showAddBankAccountDialog();
-                }
+                }*/
                 break;
             case R.id.btn_accept:
-                if (PreferenceConnector.readString(this,PreferenceConnector.IS_BANK_ACC,"").equals("1")) {
+                acceptRejectrequestApi(workerResponcd.getData().getUserId(), workerResponcd.getData().getJobId(), "1");
+                /* if (PreferenceConnector.readString(this,PreferenceConnector.IS_BANK_ACC,"").equals("1")) {
                     acceptRejectrequestApi(workerResponcd.getUserId(), workerResponcd.getJobId(), "1");
                 }else {
                     showAddBankAccountDialog();
-                }
+                }*/
                 break;
             case R.id.ll_chat: {
                 Intent intent = new Intent(this, ChattingActivity.class);

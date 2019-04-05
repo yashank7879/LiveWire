@@ -99,7 +99,7 @@
                         android:background="@null"
                         android:fontFamily="@font/poppins_light"
                         android:hint="@string/full_name"
-                        android:inputType="text"
+                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
                         android:singleLine="true"
                         android:text='@{userData.name}'
                         android:textColor="@color/colorDarkBlack"
@@ -127,6 +127,8 @@
                         android:textColor="@color/colorDarkBlack"
                         android:textColorHint="@color/colorLightGray"
                         android:textSize="@dimen/_12sdp" />
+                    <!--android:text='@{userData.email}'-->
+
 
                     <View
                         android:layout_width="match_parent"
@@ -206,7 +208,7 @@
                     android:layout_marginRight="@dimen/_20sdp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:hint="@string/town_of_residence"
-                    android:text='@{userData.town}'
+                    android:text='@{userData.profile_address}'
                     android:textColor="@color/colorDarkBlack"
                     android:textColorHint="@color/colorLightGray" />
 
@@ -258,7 +260,6 @@
                         android:maxLength="200"
                         android:hint="@string/about_you"
                         android:layout_marginStart="@dimen/_5sdp"
-                        android:maxHeight="@dimen/_100sdp"
                         android:minHeight="@dimen/_25sdp"
                         android:padding="@dimen/_2sdp"
                         android:textColor="@color/colorBlack"

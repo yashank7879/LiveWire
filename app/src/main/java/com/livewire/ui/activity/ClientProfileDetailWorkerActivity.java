@@ -61,6 +61,7 @@ public class ClientProfileDetailWorkerActivity extends AppCompatActivity impleme
         binding.rlVideoImg.setOnClickListener(this);
         binding.ivBack.setOnClickListener(this);
         binding.ivChat.setOnClickListener(this);
+        binding.rlRatingBar.setOnClickListener(this);
 
         profileDetail();
     }
@@ -132,6 +133,11 @@ public class ClientProfileDetailWorkerActivity extends AppCompatActivity impleme
                                                 .load(userResponce.getData().getProfileImage())
                                                 .fit().into(binding.ivProfile);
                                     }
+
+                                    if (!userResponce.getData().getRating().isEmpty())
+                                    binding.ratingBar.setRating(Float.parseFloat(userResponce.getData().getRating()));
+
+
                                     binding.ivPlaceholder.setVisibility(View.GONE);
                                     binding.setUserResponce(userResponce.getData());
                                 } else {
@@ -178,6 +184,11 @@ public class ClientProfileDetailWorkerActivity extends AppCompatActivity impleme
                     intent.putExtra("profilePic", userResponce.getData().getProfileImage());
                 startActivity(intent);
             }
+            case R.id.rl_rating_bar://OtherReviewListActivity
+                Intent intent = new Intent(this, OtherReviewListActivity.class);
+                intent.putExtra("userId", userResponce.getData().getUserId());
+                startActivity(intent);
+                break;
             default:
         }
     }

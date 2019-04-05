@@ -553,9 +553,8 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/description"
                         android:layout_marginEnd="@dimen/_8sdp"
-                        android:text='@{workerResponcd != null ?  workerResponcd.job_description : "N/A" ,default = "N/A"}'
+                        android:text='@{workerResponcd.job_description.empty ? "N/A" : workerResponcd.job_description ,default = "N/A"}'
                         android:textSize="@dimen/_10sdp" />
-
 
                     <RelativeLayout
                         android:id="@+id/btn_accept_reject_layout"

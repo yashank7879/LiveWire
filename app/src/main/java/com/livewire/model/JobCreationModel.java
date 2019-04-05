@@ -13,7 +13,7 @@ public class JobCreationModel {
     @SerializedName("job_end_date")
     public String job_end_date = "";
     @SerializedName("job_budget")
-    public String job_budget = "";
+    public float job_budget ;
     @SerializedName("job_title")
     public String job_title = "";
     @SerializedName("job_type")

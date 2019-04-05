@@ -43,6 +43,7 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
@@ -148,6 +149,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         permissionAll.RequestMultiplePermission(LoginActivity.this);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+               // .requestIdToken(getString(R.string.server_client_id))
                 .requestEmail()
                 .build();
 
@@ -230,18 +232,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.iv_cBox:
                 checkBoxSelector();
                 break;
+
             case R.id.btn_signup:
                 intent = new Intent(this, SignupActivity.class);
                // intent.putExtra("UserTypeKey", key);
                 startActivity(intent);
                 finish();
                 break;
+
             case R.id.btn_signup1:
                 intent = new Intent(this, SignupActivity.class);
                // intent.putExtra("UserTypeKey", key);
                 startActivity(intent);
                 finish();
                 break;
+
             case R.id.btn_login:
                 fieldValidation();
                 break;
@@ -294,7 +299,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             if (graphObject.getString("picture") != null) {
                                 imageUrl = object.getJSONObject("picture").getJSONObject("data").getString("url");
                             }
-                            checkSocialLogin(fbId, "fb");
+                            //checkSocialLogin(fbId, "fb");
                      //   } else {
                       /*      UserModel model = new UserModel();
                             model.name = graphObject.getString("name");
@@ -307,6 +312,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             model.socialType = "fb";
                             signUpApiForSocial(model);*/
                    ///     }
+
+                        UserModel model = new UserModel();
+                        model.name = graphObject.getString("name");
+                        model.email = graphObject.getString("email");
+                        model.profileImage = imageUrl;
+                       // model.userType = key;
+                        model.deviceType = "2";
+                        model.deviceToken = FirebaseInstanceId.getInstance().getToken();
+                        model.socialId = graphObject.getString("id");
+                        model.socialType = "fb";
+                        signUpApiForSocial(model);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -427,12 +443,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
-            checkSocialLogin(acct.getId(), "gmail");
+            //checkSocialLogin(acct.getId(), "gmail");
             personName = acct.getDisplayName();
             email = acct.getEmail();
             if (acct.getPhotoUrl() != null) {
                 imageUrl = String.valueOf(acct.getPhotoUrl());
             }
+            UserModel model = new UserModel();
+            model.name = acct.getDisplayName();
+            model.email = acct.getEmail();
+            model.profileImage = String.valueOf(acct.getPhotoUrl());
+           // model.userType = key;
+            model.deviceType = "2";
+            model.deviceToken = FirebaseInstanceId.getInstance().getToken();
+            model.socialId = acct.getId();
+            model.socialType = "gmail";
+            signUpApiForSocial(model);
 
      /*       if (key.equals("client")) {
                 checkSocialLogin(acct.getId(), "gmail");
@@ -478,9 +504,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                                     String isSocialLogin = response.getString("socialId");
                                     if (isSocialLogin.equals("0")) {
-                                        openLocationDialog(id, socialType);
+                                       // openLocationDialog(id, socialType);
                                     } else {
-
                                         UserModel model = new UserModel();
                                         model.name = personName;
                                         model.email = email;
@@ -489,7 +514,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                         model.deviceToken = FirebaseInstanceId.getInstance().getToken();
                                         model.socialId = id;
                                         model.socialType = socialType;
-
                                         signUpApiForSocial(model);
                                     }
 
@@ -585,19 +609,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     if (userResponce.getData().getUser_mode().equals("worker")) {// if user is worker
                                         Intent intent = null;
                                         addUserFirebaseDatabase();
-                                        soicialLogOut();
                                         finishAffinity();
                                         intent = new Intent(LoginActivity.this, WorkerMainActivity.class);
                                         startActivity(intent);
                                         finish();
+                                        soicialLogOut();
                                     } else { // if user is Client
                                         addUserFirebaseDatabase();
-                                        soicialLogOut();
                                         finishAffinity();
                                         Intent intent = new Intent(LoginActivity.this, ClientMainActivity.class);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                         startActivity(intent);
                                         finish();
+                                        soicialLogOut();
                                     }
 
                         /*    Intent intent = new Intent(LoginActivity.this, CompleteProfileActivity.class);

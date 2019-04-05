@@ -45,6 +45,7 @@
                     android:layout_marginLeft="@dimen/_5sdp"
                     android:layout_marginRight="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_20sdp"
+                    android:maxLength="100"
                     android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
                     android:background="@null"
                     android:hint="@string/account_holder_first_name"
@@ -67,6 +68,7 @@
                     android:layout_marginLeft="@dimen/_5sdp"
                     android:layout_marginRight="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_5sdp"
+                    android:maxLength="100"
                     android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
                     android:background="@null"
                     android:hint="@string/account_holder_last_name"
@@ -95,9 +97,9 @@
                     android:hint="@string/account_number"
                     android:inputType="number"
                     android:singleLine="true"
+                    android:maxLength="50"
                     android:textColor="@color/colorDarkBlack"
                     android:textColorHint="@color/colorDarkGray"
-
                     />
 
                 <View
@@ -107,7 +109,7 @@
                     android:background="@color/colorExtraLightGray" />
 
                 <EditText
-                    android:id="@+id/routing_no"
+                    android:id="@+id/branch_code"
                     style="@style/SmallPopinsLightStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -115,9 +117,10 @@
                     android:layout_marginRight="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:background="@null"
-                    android:hint="@string/routing_number"
-                    android:inputType="number"
+                    android:hint="@string/branch_code"
+                    android:inputType="text"
                     android:singleLine="true"
+                    android:maxLength="20"
                     android:textColor="@color/colorDarkBlack"
                     android:textColorHint="@color/colorDarkGray" />
 
@@ -127,7 +130,7 @@
                     android:layout_margin="@dimen/_5sdp"
                     android:background="@color/colorExtraLightGray" />
 
-                <EditText
+               <!-- <EditText
                     android:id="@+id/postal_code"
                     style="@style/SmallPopinsLightStyle"
                     android:layout_width="match_parent"
@@ -202,7 +205,7 @@
 
                 </LinearLayout>
 
-                <!--<TextView
+                &lt;!&ndash;<TextView
                     android:id="@+id/acc_holder_type"
                     style="@style/SmallPopinsLightStyle"
                     android:layout_width="wrap_content"
@@ -211,7 +214,7 @@
                     android:layout_marginLeft="@dimen/_5sdp"
                     android:layout_marginRight="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_5sdp"
-                    />-->
+                    />&ndash;&gt;
 
                 <View
                     android:layout_width="match_parent"
@@ -276,7 +279,7 @@
                         android:background="@color/colorExtraLightGray" />
 
 
-                </LinearLayout>
+                </LinearLayout>-->
 
                 <Button
                     android:id="@+id/pay_now"

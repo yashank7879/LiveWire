@@ -83,7 +83,8 @@ public class CustomInfoWindowFragment extends Fragment {
         if (!userData.getRating().isEmpty())
         binding.ratingBar.setRating(Float.parseFloat(userData.getRating()));
 
-        Picasso.with(binding.ivProfileImg.getContext()).load(userData.getProfileImage())
+        Picasso.with(binding.ivProfileImg.getContext()).load(userData.getProfileImage()).error(R.drawable.ic_user)
+                .placeholder(R.drawable.ic_user)
                 .into(binding.ivProfileImg);
     }
 }

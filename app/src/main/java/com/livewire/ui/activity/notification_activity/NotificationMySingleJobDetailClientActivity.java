@@ -174,6 +174,7 @@ public class NotificationMySingleJobDetailClientActivity extends AppCompatActivi
                 intent = new Intent(this, RequestClientActivity.class);
                 intent.putExtra("JobId", JobId);
                 startActivity(intent);
+
                 break;
             case R.id.btn_end_job:
                 intent = new Intent(this, AddCreditCardActivity.class);

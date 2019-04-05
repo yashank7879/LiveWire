@@ -52,6 +52,7 @@ public class ChatClientFragment extends Fragment implements View.OnClickListener
         // Required empty public constructor
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -91,6 +92,15 @@ public class ChatClientFragment extends Fragment implements View.OnClickListener
         myUid = PreferenceConnector.readString(mContext, PreferenceConnector.MY_USER_ID, "");
 
         binding.tvNoData.setVisibility(View.VISIBLE);
+        if (Constant.isNetworkAvailable(mContext, binding.chatLayout)) {
+            getChatHistoryList();
+        } else Toast.makeText(mContext, "No internet connection", Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         if (Constant.isNetworkAvailable(mContext, binding.chatLayout)) {
             getChatHistoryList();
         } else Toast.makeText(mContext, "No internet connection", Toast.LENGTH_SHORT).show();

@@ -8,6 +8,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -28,8 +29,13 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
 import com.livewire.R;
 import com.livewire.databinding.ActivityWorkerMainBinding;
+import com.livewire.model.Chat;
 import com.livewire.ui.activity.chat.ChattingActivity;
 import com.livewire.ui.fragments.ChatWorkerFragment;
 import com.livewire.ui.fragments.JobRequestFragment;
@@ -43,6 +49,9 @@ import com.livewire.utils.ProgressDialog;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static com.livewire.utils.ApiCollection.BASE_URL;
 
 public class WorkerMainActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
@@ -53,6 +62,7 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
     private boolean doubleBackToExitPressedOnce = false;
     private Runnable runnable;
     private ImageView ivNotification;
+   private Map<String, Integer> isMsgFoundMap;
     private ProgressDialog progressDialog;
 
     @Override
@@ -60,9 +70,9 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_worker_main);
 
-
         intializeViews();
         checkAvailability();
+
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -75,7 +85,7 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
         binding.btnSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b) {// user available
+                if (b) {//// user available
                     availablityUser("1");
                 } else {// user unavailable
                     availablityUser("0");
@@ -97,7 +107,6 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
         super.onResume();
         checkAvailability();
     }
-
 
     private void availablityUser(final String s) {
         if (Constant.isNetworkAvailable(this, binding.mainLayout)) {
@@ -150,6 +159,7 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
         binding.ivProfile.setOnClickListener(this);
 
         progressDialog = new ProgressDialog(this);
+        isMsgFoundMap = new HashMap<>();
 
         if (getIntent().getStringExtra("opponentChatId") != null) {
             String oponnetId = getIntent().getStringExtra("opponentChatId");
@@ -181,6 +191,9 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
             clickId = R.id.home_ll;
         }
 
+        if (Constant.isNetworkAvailable(this,binding.mainLayout)) {
+            checkUREADmsg();
+        }
         Log.e( "inti user mode: ",PreferenceConnector.readString(this,PreferenceConnector.USER_MODE,"") );
     }
 
@@ -327,6 +340,74 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
     }
 
 
+    private void checkUREADmsg() {
+        FirebaseDatabase.getInstance().getReference().child(Constant.ARG_HISTORY).child(PreferenceConnector.readString(this,PreferenceConnector.MY_USER_ID,"")).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if (dataSnapshot.getValue(Chat.class) != null) {
+                    int unreadCount = dataSnapshot.getValue(Chat.class).unreadCount;
+
+                    if (unreadCount > 0) {
+                        isMsgFoundMap.put(dataSnapshot.getKey(), unreadCount);
+                        binding.ivUnreadMsgTab.setVisibility(View.VISIBLE);
+                        /*if (isMsgFoundMap.containsValue(myUserId)) {
+                            iv_unread_msg_tab.setVisibility(View.VISIBLE);
+                            return;
+                        } else iv_unread_msg_tab.setVisibility(View.GONE);*/
+
+
+                    } else  binding.ivUnreadMsgTab.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if (dataSnapshot.getValue(Chat.class) != null) {
+                    int unreadCount = dataSnapshot.getValue(Chat.class).unreadCount;
+                    if (unreadCount > 0) {
+                        isMsgFoundMap.put(dataSnapshot.getKey(), unreadCount);
+                        binding.ivUnreadMsgTab.setVisibility(View.VISIBLE);
+
+                       /* if (isMsgFoundMap.containsValue(myUserId)) {
+                            iv_unread_msg_tab.setVisibility(View.VISIBLE);
+                            return;
+                        } else iv_unread_msg_tab.setVisibility(View.GONE);*/
+                    }else  binding.ivUnreadMsgTab.setVisibility(View.GONE);
+                }
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue(Chat.class) != null) {
+                    int unreadCount = dataSnapshot.getValue(Chat.class).unreadCount;
+                    if (unreadCount > 0) {
+                        isMsgFoundMap.put(dataSnapshot.getKey(), unreadCount);
+                        binding.ivUnreadMsgTab.setVisibility(View.VISIBLE);
+
+                       /* if (isMsgFoundMap.containsValue(myUserId)) {
+                            iv_unread_msg_tab.setVisibility(View.VISIBLE);
+                            return;
+                        } else iv_unread_msg_tab.setVisibility(View.GONE);*/
+                    } else binding.ivUnreadMsgTab.setVisibility(View.GONE);
+
+                }
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
+
     //*********   replace Fragment  ************//
     public void replaceFragment(Fragment fragment, boolean addToBackStack, int containerId) {
         String backStackName = fragment.getClass().getName();
@@ -377,3 +458,7 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
         }
     }
 }
+
+/*
+id:-  wolfscoreapp@gmail.com
+pass:- wolfscore@1234*/

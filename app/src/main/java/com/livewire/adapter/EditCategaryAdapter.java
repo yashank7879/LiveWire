@@ -14,6 +14,7 @@ import com.livewire.model.AddedSkillBean;
 
 import java.util.ArrayList;
 
+import static com.livewire.utils.Constant.getDayDifference;
 import static com.livewire.utils.Constant.setListViewHeightBasedOnChildren;
 
 /**
@@ -42,21 +43,29 @@ public class EditCategaryAdapter extends RecyclerView.Adapter<EditCategaryAdapte
 
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final MyViewHolder holder, int position) {
         AddedSkillBean addedSkillBean = categaryList.get(position);
         holder.tv_category.setText(addedSkillBean.getName());
         holder.listView.setAdapter(new EditMySubCetAdapter(mContext, addedSkillBean.getSubCatagories(), new EditMySubCetAdapter.SubCategoryListner() {
             @Override
-            public void subCategoryOnClickListener(int pos) {
+            public void subCategoryOnClickListener(int pos, boolean value) {
                 AddedSkillBean data = categaryList.get(holder.getAdapterPosition());
                 if (data.getSubCatagories().size() == 1) {
                     categaryList.remove(holder.getAdapterPosition());
                     notifyItemChanged(holder.getAdapterPosition());
+                    notifyItemRemoved(pos);
                 } else {
                     data.getSubCatagories().remove(pos);
                     notifyItemChanged(holder.getAdapterPosition());
+                    notifyItemRemoved(pos);
                     /*holder.listView.getAdapter().notify();*/
                 }
+
+                /*if (value){
+                    holder.tv_category.setVisibility(View.GONE);
+                    notifyItemChanged(holder.getAdapterPosition());
+                }else holder.tv_category.setVisibility(View.VISIBLE);*/
+
                 /*holder.getAdapterPosition();*/
             }
         }));

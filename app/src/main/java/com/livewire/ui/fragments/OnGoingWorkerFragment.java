@@ -157,7 +157,7 @@ public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapte
         //""""""""" floating button hide when scroll down """"""""//
         rvOngoing.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 if (dy > 0 && btnFilter.getVisibility() == View.VISIBLE) {
                     btnFilter.hide();
@@ -170,6 +170,12 @@ public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapte
 
         ongoingListApi();
         subCategoryListApi();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ongoingListApi();
     }
 
     private void ongoingListApi() {

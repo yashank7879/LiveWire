@@ -128,10 +128,10 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
                 switch (dataBean.getJob_confirmed()) {
                     case "0": // request pending job
                         if (dataBean.getRequestedUserData().get(0).getRequest_status().equals("0")) {
-                            binding.tvJobStatus.setText(R.string.application_pending);
+                            binding.tvJobStatus.setText(R.string.Work_offer_pending);
                             binding.tvJobStatus.setBackground(getResources().getDrawable(R.drawable.doteted_orange_shape));
                             binding.tvJobStatus.setTextColor(ContextCompat.getColor(this, R.color.colorOrange));
-                           binding.btnCancelJob.setVisibility(View.VISIBLE);
+                            binding.btnCancelJob.setVisibility(View.VISIBLE);
                             binding.btnCancelJob.setOnClickListener(this);
                             getWorkerData(dataBean);
 
@@ -143,7 +143,7 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
                         break;
                     case "1":  //request_confirmed job
                         if (dataBean.getRequestedUserData().get(0).getRequest_status().equals("1")) {
-                            binding.tvJobStatus.setText(R.string.application_confirmed);
+                            binding.tvJobStatus.setText(R.string.work_offer_accepted);
                             binding.tvJobStatus.setBackground(getResources().getDrawable(R.drawable.doteted_green_shape));
                             binding.tvJobStatus.setTextColor(ContextCompat.getColor(this, R.color.colorGreen));
                             binding.btnEndJob.setVisibility(View.VISIBLE);

@@ -311,6 +311,7 @@ public class ChattingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public void full_screen_photo_dialog(String image_url) {
 
             final Dialog openDialog = new Dialog(mContext, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+            //final Dialog openDialog = new Dialog(mContext);
             openDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             openDialog.getWindow().getAttributes().windowAnimations = R.style.pauseDialogAnimation;
             openDialog.setContentView(R.layout.full_image_view_dialog);

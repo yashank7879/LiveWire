@@ -161,7 +161,41 @@
 
                                 </RelativeLayout>
 
-                                <TextView
+
+                                <RelativeLayout
+                                    android:id="@+id/rl_location"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/rl_rating_bar"
+                                    android:visibility='@{userResponce.profile_address.empty ? View.GONE :View.VISIBLE, default = gone}'
+                                    android:layout_marginLeft="@dimen/_40sdp"
+                                    android:layout_marginRight="@dimen/_40sdp"
+                                    android:gravity="center"
+                                    >
+
+                                    <ImageView
+                                        android:id="@+id/iv_location"
+                                        android:layout_width="@dimen/_20sdp"
+                                        android:layout_height="@dimen/_20sdp"
+                                        app:srcCompat="@drawable/ic_location"
+                                        />
+
+
+                                    <TextView
+                                        android:id="@+id/tv_location"
+                                        style="@style/smallPopinsRegularStyle"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_centerHorizontal="true"
+                                        android:gravity="start"
+                                        android:text='@{userResponce.profile_address != "" ? userResponce.profile_address : "N/A", default="N/A"}'
+                                        android:textColor="@color/colorDarkGray"
+                                        android:layout_toRightOf="@+id/iv_location"
+                                        />
+
+                                </RelativeLayout>
+
+                             <!--   <TextView
                                     android:id="@+id/tv_location"
                                     style="@style/smallPopinsRegularStyle"
                                     android:layout_width="wrap_content"
@@ -173,14 +207,17 @@
                                     android:gravity="start"
                                     android:paddingLeft="@dimen/_50sdp"
                                     android:paddingRight="@dimen/_50sdp"
-                                    android:text='@{userResponce.town != "" ? userResponce.town : "N/A", default="N/A"}'
-                                    android:textColor="@color/colorDarkGray" />
+                                    android:text='@{userResponce.profile_address != "" ? userResponce.profile_address : "N/A", default="N/A"}'
+                                    android:textColor="@color/colorDarkGray"
+                                    android:visibility='@{userResponce.profile_address.empty ? View.GONE :View.VISIBLE, default = gone}'
+
+                                    />-->
 
                                 <View
                                     android:id="@+id/view1"
                                     android:layout_width="match_parent"
                                     android:layout_height="1dp"
-                                    android:layout_below="@+id/tv_location"
+                                    android:layout_below="@+id/rl_location"
                                     android:layout_marginBottom="@dimen/_10sdp"
                                     android:layout_marginTop="@dimen/_10sdp"
                                     android:background="@color/colorExtraLightGray" />
@@ -459,7 +496,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_below="@+id/about_me"
                                     android:layout_marginStart="@dimen/_10sdp"
-                                    android:text='@{userResponce.intro_video.empty ? "No video post" : "Watch Intro Video"}'
+                                    android:text='@{userResponce.intro_video.empty ? "No video Added" : "Intro Video"}'
                                     android:textColor="@color/colorBlack" />
 
                                 <!-- android:text="@string/watch_intro_video"-->

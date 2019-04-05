@@ -52,7 +52,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String tittle = remoteMessage.getData().get("title");
         userType = remoteMessage.getData().get("for_user_type");
         String type = remoteMessage.getData().get(CONSTANTTYPE);
-        Log.e( "noti usermode: ",userType);
+       // Log.e( "noti usermode: ",userType);
 
         if (remoteMessage.getData().get("opponentChatId") != null) {
             opponentChatId = remoteMessage.getData().get("opponentChatId");
@@ -231,7 +231,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             }
             case "chat": {
                 if (!MY_UID.equals(opponentChatId)) {
-                    if (PreferenceConnector.readString(this, PreferenceConnector.USER_TYPE, "").equalsIgnoreCase("worker")) {
+                    if (PreferenceConnector.readString(this, PreferenceConnector.USER_MODE, "").equalsIgnoreCase("worker")) {
                         Intent intent = new Intent(this, WorkerMainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         //intent.putExtra(USER_ID, userId);
@@ -256,7 +256,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
             default: {
-                if (PreferenceConnector.readString(this, PreferenceConnector.USER_TYPE, "").equalsIgnoreCase("worker")) {
+                if (PreferenceConnector.readString(this, PreferenceConnector.USER_MODE, "").equalsIgnoreCase("worker")) {
                     Intent intent = new Intent(this, WorkerMainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intent.putExtra(USER_ID, userId);

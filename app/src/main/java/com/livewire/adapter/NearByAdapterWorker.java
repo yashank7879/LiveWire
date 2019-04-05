@@ -50,9 +50,8 @@ public class NearByAdapterWorker extends RecyclerView.Adapter<NearByAdapterWorke
                     .into(holder.ivProfileImg);
             assert dataBean.getDistance_in_km() != null;
             holder.tvDistance.setText(dataBean.getDistance_in_km() + " Km away");
-            if (dataBean.getRating() != null && !dataBean.getRating().isEmpty()) {
-                holder.ratingBar.setRating(Float.parseFloat(dataBean.getRating()));
-            }
+            float rating =  dataBean.getRating().isEmpty() ? 0:Float.parseFloat(dataBean.getRating());
+            holder.ratingBar.setRating(rating);
 
             holder.rlProfileDetail.setOnClickListener(new View.OnClickListener() {
                 @Override

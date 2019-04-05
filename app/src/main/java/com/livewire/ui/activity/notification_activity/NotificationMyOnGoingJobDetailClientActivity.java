@@ -95,7 +95,7 @@ public class NotificationMyOnGoingJobDetailClientActivity extends AppCompatActiv
                 switch (dataBean.getJob_confirmed()) {
                     case "0": // request pending job
                         if (dataBean.getRequestedUserData().get(0).getRequest_status().equals("0")) {
-                            binding.tvJobStatus.setText(R.string.application_pending);
+                            binding.tvJobStatus.setText(R.string.Work_offer_pending);
                             binding.tvJobStatus.setBackground(getResources().getDrawable(R.drawable.doteted_orange_shape));
                             binding.tvJobStatus.setTextColor(ContextCompat.getColor(this, R.color.colorOrange));
 

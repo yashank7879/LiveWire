@@ -74,7 +74,7 @@
         android:gravity="center"
         android:layout_centerInParent="true"
         android:text="@string/no_near_by_workers_found_matching_your_project_skills_check_again_later"
-        android:visibility="visible"
+        android:visibility="gone"
         android:textColor="@color/colorGreen"
         />
 

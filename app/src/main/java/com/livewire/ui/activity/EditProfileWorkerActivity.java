@@ -60,6 +60,11 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.iceteck.silicompressorr.SiliCompressor;
 import com.livewire.R;
@@ -71,11 +76,13 @@ import com.livewire.model.AddedSkillBean;
 import com.livewire.model.CategoryModel;
 import com.livewire.model.IntroVideoModal;
 import com.livewire.model.SubCategoryModel;
+import com.livewire.model.UserInfoFcm;
 import com.livewire.multiple_file_upload.MultiPartRequestForUpdateProfile;
 import com.livewire.multiple_file_upload.Template;
 import com.livewire.multiple_file_upload.VolleyMySingleton;
 import com.livewire.responce.AddSkillsResponce;
 import com.livewire.responce.MyProfileResponce;
+import com.livewire.responce.SignUpResponce;
 import com.livewire.utils.Constant;
 import com.livewire.utils.ImageRotator;
 import com.livewire.utils.ImageVideoUtils;
@@ -103,6 +110,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.livewire.utils.ApiCollection.BASE_URL;
+import static com.livewire.utils.ApiCollection.DELETE_VIDEO_API;
 import static com.livewire.utils.ApiCollection.GET_CATEGORY_LIST_API;
 import static com.livewire.utils.ApiCollection.GET_MY_PROFILE_API;
 import static com.livewire.utils.Constant.MY_PERMISSIONS_REQUEST_CAMERA;
@@ -241,6 +249,8 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
 */
 
             setUserData(userData);
+
+
         } else {
             myProfileApi();
         }
@@ -288,6 +298,7 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
                         public void onResponse(JSONObject response) {
                             try {
                                 progressDialog.dismiss();
+
                                 String status = response.getString("status");
                                 String message = response.getString("message");
                                 if (status.equals("success")) {
@@ -361,10 +372,17 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
             binding.tvLocation.setText(userData.getData().getTown());*/
         binding.setUserData(userData.getData());
 
-        locationPlace = userData.getData().getTown();
+        locationPlace = userData.getData().getProfile_address();
 
         placeLatitude = userData.getData().getLatitude();
         placeLongitude = userData.getData().getLongitude();
+
+        //"""""""" editable edit text """""""""""//
+        /*if (!PreferenceConnector.readString(this,PreferenceConnector.SOCIAL_LOGIN,"").isEmpty()){
+            binding.etEmail1.setText(userData.getData().getEmail());
+            binding.etEmail1.setEnabled(false);
+        }else binding.etEmail1.setText(userData.getData().getEmail());*/
+
 
            /* if (!userData.getData().getIntro_video().isEmpty() || userData.getData().getIntro_video() != null ){
                 finalVideoUri = Uri.parse(userData.getData().getIntro_video());
@@ -374,7 +392,6 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
         if (!userData.getData().getIntro_video().isEmpty()) {
             binding.ivRemoveVideo.setVisibility(View.VISIBLE);
             videoUrl = userData.getData().getIntro_video();
-
 
             Picasso.with(binding.videoImg.getContext()).load(userData.getData().getVideo_thumb())
                     .fit().into(binding.videoImg);
@@ -399,7 +416,7 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
         binding.btnSaveAndUpdate.setVisibility(View.VISIBLE);
         binding.ivRemoveVideo.setOnClickListener(this);
         binding.btnSaveAndUpdate.setOnClickListener(this);
-        binding.videoImg.setClickable(false);
+        //binding.videoImg.setClickable(false);
         addSkillsAdapter.notifyDataSetChanged();
     }
 
@@ -538,17 +555,51 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
                 updateProfileValidations();
                 break;
             case R.id.iv_remove_video:
-                binding.ivRemoveVideo.setVisibility(View.GONE);
-                binding.videoImg.setClickable(true);
-                finalVideoUri = null;
-                videoUrl = null;
-                isvideoUrl = false;
-                binding.videoImg.setImageDrawable(ContextCompat.getDrawable(this, R.color.colorWhite));
-                binding.videoImg.setOnClickListener(this);
+                if (isvideoUrl){
+                    deleteDialog();
+
+                }else {
+
+                    binding.ivRemoveVideo.setVisibility(View.GONE);
+                    binding.videoImg.setClickable(true);
+                    finalVideoUri = null;
+                    videoUrl = null;
+                    isvideoUrl = false;
+                    binding.videoImg.setImageDrawable(ContextCompat.getDrawable(this, R.color.colorWhite));
+                    binding.videoImg.setOnClickListener(this);
+                }
                 break;
 
             default:
         }
+    }
+
+    private void deleteDialog() {
+            android.app.AlertDialog.Builder builder1 = new android.app.AlertDialog.Builder(this);
+            builder1.setTitle("Alert");
+            builder1.setMessage("Are you sure you want to delete intro video?");
+            builder1.setCancelable(true);
+            builder1.setPositiveButton("Yes",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                            removeVideo();
+                            dialog.cancel();
+
+                        }
+                    });
+            builder1.setNegativeButton("No",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+
+            android.app.AlertDialog alert11 = builder1.create();
+                alert11.show();
+
+
     }
 
 
@@ -756,7 +807,7 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
                 if (bean.getCatageryId().equals(addedSkillBean.getCatageryId())) {
                     for (AddedSkillBean.SubCatagory subCatagory1 : bean.getSubCatagories()) {
                         if (subCatagory1.getSubCatId().equals(subCatagory.getSubCatId())) {
-                            Toast.makeText(EditProfileWorkerActivity.this, "Subcategory Already added.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(EditProfileWorkerActivity.this, "This subcategory is already added", Toast.LENGTH_SHORT).show();
                             return;
                         }
                     }
@@ -916,17 +967,33 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
             tmpUri = data.getData();
             // Log.e(TAG, tmpUri.toString());
             if (tmpUri != null) { // it will go to the CropImageActivity
-                CropImage.activity(tmpUri).setCropShape(CropImageView.CropShape.OVAL).setMinCropResultSize(200, 200)
+                try {
+                    // Bitmap profileImageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), tmpUri);
+                    //File file = savebitmap(this.getExternalCacheDir(), profileImageBitmap, ".jpg");
+
+                    binding.inactiveUserImg.setVisibility(View.GONE);
+                    binding.ivProfileImg.setImageURI(tmpUri);
+                    Bitmap profileImageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), tmpUri);
+                    imageFile = savebitmap(this, profileImageBitmap, UUID.randomUUID() + ".jpg");
+
+                } catch (IOException e) {
+                    Log.d(TAG, e.getMessage());
+                }
+
+
+
+              /*  CropImage.activity(tmpUri).setCropShape(CropImageView.CropShape.OVAL).setMinCropResultSize(200, 200)
                         .setMaxCropResultSize(4000, 4000)
                         .setAspectRatio(300, 300)
-                        .start(this);
+                        .start(this);*/
+
             }
         } else {
             if (requestCode == Constant.CAMERA && resultCode == RESULT_OK) {
                 // isCamera = true;
                 Bitmap bm = null;
-                File imageFile = getTemporalFile(this);
-                Uri photoURI = Uri.fromFile(imageFile);
+                File imageFile1 = getTemporalFile(this);
+                Uri photoURI = Uri.fromFile(imageFile1);
 
                 bm = Constant.getImageResized(this, photoURI); ///Image resizer
                 int rotation = ImageRotator.getRotation(this, photoURI, true);
@@ -945,10 +1012,23 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
                     Log.d(TAG, e.getMessage());
                 }
                 if (tmpUri != null) { // it will go to the CropImageActivity
-                    CropImage.activity(tmpUri).setCropShape(CropImageView.CropShape.OVAL).setMinCropResultSize(200, 200)
+                    try {
+                        // Bitmap profileImageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), tmpUri);
+                        //File file = savebitmap(this.getExternalCacheDir(), profileImageBitmap, ".jpg");
+
+                        binding.inactiveUserImg.setVisibility(View.GONE);
+                        binding.ivProfileImg.setImageURI(tmpUri);
+                        Bitmap profileImageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), tmpUri);
+                        imageFile = savebitmap(this, profileImageBitmap, UUID.randomUUID() + ".jpg");
+
+                    } catch (IOException e) {
+                        Log.d(TAG, e.getMessage());
+                    }
+
+                   /* CropImage.activity(tmpUri).setCropShape(CropImageView.CropShape.OVAL).setMinCropResultSize(200, 200)
                             .setMaxCropResultSize(4000, 4000)
                             .setAspectRatio(300, 300)
-                            .start(this);
+                            .start(this);*/
                 }
             }
         }
@@ -958,11 +1038,11 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
             if (result != null) {
                 tmpUri = result.getUri();
                 try {
-                    binding.inactiveUserImg.setVisibility(View.GONE);
-                    binding.ivProfileImg.setImageURI(tmpUri);
                     // Bitmap profileImageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), tmpUri);
                     //File file = savebitmap(this.getExternalCacheDir(), profileImageBitmap, ".jpg");
 
+                    binding.inactiveUserImg.setVisibility(View.GONE);
+                    binding.ivProfileImg.setImageURI(tmpUri);
                     Bitmap profileImageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), tmpUri);
                     imageFile = savebitmap(this, profileImageBitmap, UUID.randomUUID() + ".jpg");
 
@@ -1139,6 +1219,7 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
                 subCateoryAdapter.setDropDownViewResource(R.layout.spinner_drop_down);
                 subCategorySpinner.setOnItemSelectedListener(this);
                 subCategorySpinner.setAdapter(subCateoryAdapter);
+                addSkillsAdapter.notifyDataSetChanged();
                 // ivCategorySpin.startAnimation(AnimationUtils.loadAnimation(this, R.anim.spinner_icon_rotator));
                 //   }
                 break;
@@ -1504,11 +1585,16 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
                     String message = result.getString("message");
                     if (status.equalsIgnoreCase("success")) {
                         //*************sucess fully add car status**************//
-                        if(subCategoryModelList.size()> 0){
-                            PreferenceConnector.writeString(EditProfileWorkerActivity.this, PreferenceConnector.COMPLETE_PROFILE_STATUS, "1");
-                        }
+                        SignUpResponce userResponce = new Gson().fromJson(String.valueOf(response), SignUpResponce.class);
 
-                        finish();
+                        PreferenceConnector.writeString(EditProfileWorkerActivity.this, PreferenceConnector.MY_USER_ID, userResponce.getData().getUserId());
+                        PreferenceConnector.writeString(EditProfileWorkerActivity.this, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
+                        PreferenceConnector.writeString(EditProfileWorkerActivity.this, PreferenceConnector.PROFILE_IMG, userResponce.getData().getThumbImage());
+                        PreferenceConnector.writeString(EditProfileWorkerActivity.this, PreferenceConnector.Name, userResponce.getData().getName());
+                        PreferenceConnector.writeString(EditProfileWorkerActivity.this, PreferenceConnector.Email, userResponce.getData().getEmail());
+                        addUserFirebaseDatabase();
+
+
                     } else {
 
                         Constant.snackBar(binding.mainLayout, message);
@@ -1555,10 +1641,16 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
                     String message = result.getString("message");
                     if (status.equalsIgnoreCase("success")) {
                         //*************sucess fully add car status**************//
-                        if(subCategoryModelList.size()> 0){
-                            PreferenceConnector.writeString(EditProfileWorkerActivity.this, PreferenceConnector.COMPLETE_PROFILE_STATUS, "1");
-                        }
-                        finish();
+
+                        SignUpResponce userResponce = new Gson().fromJson(String.valueOf(response), SignUpResponce.class);
+
+                        PreferenceConnector.writeString(EditProfileWorkerActivity.this, PreferenceConnector.MY_USER_ID, userResponce.getData().getUserId());
+                        PreferenceConnector.writeString(EditProfileWorkerActivity.this, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
+                        PreferenceConnector.writeString(EditProfileWorkerActivity.this, PreferenceConnector.PROFILE_IMG, userResponce.getData().getThumbImage());
+                        PreferenceConnector.writeString(EditProfileWorkerActivity.this, PreferenceConnector.Name, userResponce.getData().getName());
+                        PreferenceConnector.writeString(EditProfileWorkerActivity.this, PreferenceConnector.Email, userResponce.getData().getEmail());
+                        addUserFirebaseDatabase();
+
                     } else {
 
                         Constant.snackBar(binding.mainLayout, message);
@@ -1583,4 +1675,75 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
           /*not used*/
     }
 
+
+    //""""""""""" remove added video """""""""""""//
+    private void removeVideo() {
+        if (Constant.isNetworkAvailable(this, binding.mainLayout)) {
+            progressDialog.show();
+            AndroidNetworking.post(BASE_URL + DELETE_VIDEO_API)
+                    .addHeaders("authToken",PreferenceConnector.readString(this,PreferenceConnector.AUTH_TOKEN,""))
+                    .setPriority(Priority.MEDIUM)
+                    .build().getAsJSONObject(new JSONObjectRequestListener() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    progressDialog.dismiss();
+                    try {
+                        String status = response.getString("status");
+                        String message = response.getString("message");
+                        if (status.equals("success")) {
+                            binding.ivRemoveVideo.setVisibility(View.GONE);
+                            binding.videoImg.setClickable(true);
+                            finalVideoUri = null;
+                            videoUrl = null;
+                            isvideoUrl = false;
+                            binding.videoImg.setImageDrawable(ContextCompat.getDrawable(EditProfileWorkerActivity.this, R.color.colorWhite));
+                            binding.videoImg.setOnClickListener(EditProfileWorkerActivity.this);
+                        } else {
+                            Constant.snackBar(binding.mainLayout, message);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                @Override
+                public void onError(ANError anError) {
+                    progressDialog.dismiss();
+                    Log.e(TAG, anError.getErrorDetail());
+                }
+            });
+        }
+    }
+
+    private void addUserFirebaseDatabase() {
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        Log.e(TAG, database.toString());
+        UserInfoFcm infoFcm = new UserInfoFcm();
+        infoFcm.email = PreferenceConnector.readString(this, PreferenceConnector.Email, "");
+        infoFcm.firebaseToken = FirebaseInstanceId.getInstance().getToken();
+        infoFcm.name = PreferenceConnector.readString(this, PreferenceConnector.Name, "");
+        infoFcm.notificationStatus = "";
+        infoFcm.profilePic = PreferenceConnector.readString(this, PreferenceConnector.PROFILE_IMG, "");
+        infoFcm.uid = PreferenceConnector.readString(this, PreferenceConnector.MY_USER_ID, "");
+        infoFcm.userType = PreferenceConnector.readString(this, PreferenceConnector.USER_TYPE, "");
+        infoFcm.authToken = PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, "");
+
+        database.child(Constant.ARG_USERS)
+                .child(PreferenceConnector.readString(this, PreferenceConnector.MY_USER_ID, ""))
+                .setValue(infoFcm)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            if(subCategoryModelList.size()> 0){
+                                PreferenceConnector.writeString(EditProfileWorkerActivity.this, PreferenceConnector.COMPLETE_PROFILE_STATUS, "1");
+                            }
+                            finish();
+                          /*  //Utils.goToOnlineStatus(SignInActivity.this, Constant.online);*/
+
+                        } else {
+                            Toast.makeText(EditProfileWorkerActivity.this, "Not Store", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
 }

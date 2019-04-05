@@ -33,7 +33,6 @@ import java.util.ArrayList;
 
 import static com.livewire.utils.ApiCollection.BASE_URL;
 
-
 /**
  * Created by mindiii on 11/29/18.
  */
@@ -68,6 +67,7 @@ public class WorkerProfileDetailClientActivity extends AppCompatActivity impleme
         binding.rlVideoImg.setOnClickListener(this);
         binding.ivBack.setOnClickListener(this);
         binding.ivChat.setOnClickListener(this);
+        binding.rlRatingBar.setOnClickListener(this);
 
         profileDetail();
     }
@@ -125,7 +125,6 @@ public class WorkerProfileDetailClientActivity extends AppCompatActivity impleme
 
                                     if (userResponce.getData().getCategory().size() > 0) {
                                         showSkillBeans.addAll(userResponce.getData().getCategory());
-
                                     } else {
                                         binding.rlSkills.setVisibility(View.GONE);
                                         binding.tvNoSkills.setVisibility(View.VISIBLE);
@@ -135,8 +134,14 @@ public class WorkerProfileDetailClientActivity extends AppCompatActivity impleme
                                     if (!userResponce.getData().getProfileImage().isEmpty()) {
                                         Picasso.with(binding.ivProfile.getContext())
                                                 .load(userResponce.getData().getProfileImage())
+                                                .placeholder(R.drawable.ic_user)
+                                                .error(R.drawable.ic_user)
                                                 .fit().into(binding.ivProfile);
                                     }
+
+                                    if (!userResponce.getData().getRating().isEmpty())
+                                        binding.ratingBar.setRating(Float.parseFloat(userResponce.getData().getRating()));
+
                                     binding.ivPlaceholder.setVisibility(View.GONE);
                                     binding.setUserResponce(userResponce.getData());
                                 } else {
@@ -183,6 +188,12 @@ public class WorkerProfileDetailClientActivity extends AppCompatActivity impleme
                     intent.putExtra("profilePic", userResponce.getData().getProfileImage());
                 startActivity(intent);
             }
+                break;
+
+            case R.id.rl_rating_bar://OtherReviewListActivity
+                Intent intent = new Intent(this, OtherReviewListActivity.class);
+                intent.putExtra("userId", userResponce.getData().getUserId());
+                startActivity(intent);
                 break;
 
             default:

@@ -23,6 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="@string/no_messages_yet"
+        android:visibility="gone"
         android:textColor="@color/colorGreen"
         />
 

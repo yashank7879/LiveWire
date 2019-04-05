@@ -10,11 +10,15 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.database.ServerValue;
 import com.livewire.R;
 import com.livewire.model.Chat;
 import com.livewire.ui.activity.chat.ChattingActivity;
+import com.livewire.utils.Constant;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -48,9 +52,29 @@ public class ChatHistoryAdapter extends RecyclerView.Adapter<ChatHistoryAdapter.
             holder.tvMsg.setText(chat.message);
         }
         holder.tvName.setText(chat.name);
+
+        if (chat.unreadCount != 0) {
+            holder.tvUnreadCount.setText("" + chat.unreadCount);
+            holder.tvUnreadCount.setVisibility(View.VISIBLE);
+        }else holder.tvUnreadCount.setVisibility(View.GONE);
         //holder.tvMsg.setText(chat.lastMsg);
 
         Picasso.with(holder.ivProfileImage.getContext()).load(chat.profilePic).fit().into(holder.ivProfileImage);
+
+
+        /*SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            Object val=ServerValue.TIMESTAMP;
+            String currentTime = sd.format(new Date((Lo ng) val));
+            String crd = sd.format(new Date((Long) chat.timestamp));
+
+           // holder.tvTime.setText(Constant.getDayDifference(crd,currentTime));
+
+            holder.tv_time.setText(Constant.getDayDifference(crd,currentTime));
+
+        } catch (Exception ignored) {
+
+        }*/
     }
 
     @Override
@@ -63,6 +87,8 @@ public class ChatHistoryAdapter extends RecyclerView.Adapter<ChatHistoryAdapter.
         private CircleImageView ivProfileImage;
         private TextView tvName;
         private TextView tvMsg;
+        private TextView tv_time;
+        private TextView tvUnreadCount;
 
         public MyViewHolder(View view) {
             super(view);
@@ -70,6 +96,8 @@ public class ChatHistoryAdapter extends RecyclerView.Adapter<ChatHistoryAdapter.
             ivProfileImage =  view.findViewById(R.id.iv_favorite_image);
             tvName =  view.findViewById(R.id.tv_name);
             tvMsg =  view.findViewById(R.id.tv_msg);
+            tv_time =  view.findViewById(R.id.tv_time);
+            tvUnreadCount =  view.findViewById(R.id.tv_unread_count);
             chatCellLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

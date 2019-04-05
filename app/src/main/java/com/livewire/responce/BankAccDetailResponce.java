@@ -1,15 +1,28 @@
 package com.livewire.responce;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by mindiii on 11/21/18.
  */
 
 public class BankAccDetailResponce {
-    /**
-     * status : success
-     * message : Ok
-     * bank_detail : {"bankAccId":"2","user_id":"146","firstName":"yash","lastName":"ratho","dob":"2000-11-21","routingNumber":"110000000","accountNumber":"000123456789","postalCode":"10001","ssnLast":"0000","accountId":"acct_1DYo67FPTRUx22n5","accountType":"Joint Account","status":"0","crd":"2018-11-21 05:17:19","upd":"2018-11-21 05:18:01"}
-     */
+   /* {
+        "status": "success",
+            "message": "Ok",
+            "bank_detail": {
+        "bankAccId": "1",
+                "user_id": "4",
+                "firstName": "anurag",
+                "lastName": "jain",
+                "accountNumber": "000123456789",
+                "branch_code": "110000000",
+                "accountType": "",
+                "status": "0",
+                "crd": "2019-04-02 05:33:10",
+                "upd": "0000-00-00 00:00:00"
+    }
+    }*/
 
     private String status;
     private String message;
@@ -39,149 +52,120 @@ public class BankAccDetailResponce {
         this.bank_detail = bank_detail;
     }
 
+
+
     public static class BankDetailBean {
         /**
-         * bankAccId : 2
-         * user_id : 146
-         * firstName : yash
-         * lastName : ratho
-         * dob : 2000-11-21
-         * routingNumber : 110000000
+         * bankAccId : 1
+         * user_id : 4
+         * firstName : anurag
+         * lastName : jain
          * accountNumber : 000123456789
-         * postalCode : 10001
-         * ssnLast : 0000
-         * accountId : acct_1DYo67FPTRUx22n5
-         * accountType : Joint Account
+         * branch_code : 110000000
+         * accountType :
          * status : 0
-         * crd : 2018-11-21 05:17:19
-         * upd : 2018-11-21 05:18:01
+         * crd : 2019-04-02 05:33:10
+         * upd : 0000-00-00 00:00:00
          */
 
-        private String bankAccId;
-        private String user_id;
-        private String firstName;
-        private String lastName;
-        private String dob;
-        private String routingNumber;
-        private String accountNumber;
-        private String postalCode;
-        private String ssnLast;
-        private String accountId;
-        private String accountType;
-        private String status;
-        private String crd;
-        private String upd;
+        @SerializedName("bankAccId")
+        private String bankAccIdX;
+        @SerializedName("user_id")
+        private String user_idX;
+        @SerializedName("firstName")
+        private String firstNameX;
+        @SerializedName("lastName")
+        private String lastNameX;
+        @SerializedName("accountNumber")
+        private String accountNumberX;
+        private String branch_code;
+        @SerializedName("accountType")
+        private String accountTypeX;
+        @SerializedName("status")
+        private String statusX;
+        @SerializedName("crd")
+        private String crdX;
+        @SerializedName("upd")
+        private String updX;
 
-        public String getBankAccId() {
-            return bankAccId;
+        public String getBankAccIdX() {
+            return bankAccIdX;
         }
 
-        public void setBankAccId(String bankAccId) {
-            this.bankAccId = bankAccId;
+        public void setBankAccIdX(String bankAccIdX) {
+            this.bankAccIdX = bankAccIdX;
         }
 
-        public String getUser_id() {
-            return user_id;
+        public String getUser_idX() {
+            return user_idX;
         }
 
-        public void setUser_id(String user_id) {
-            this.user_id = user_id;
+        public void setUser_idX(String user_idX) {
+            this.user_idX = user_idX;
         }
 
-        public String getFirstName() {
-            return firstName;
+        public String getFirstNameX() {
+            return firstNameX;
         }
 
-        public void setFirstName(String firstName) {
-            this.firstName = firstName;
+        public void setFirstNameX(String firstNameX) {
+            this.firstNameX = firstNameX;
         }
 
-        public String getLastName() {
-            return lastName;
+        public String getLastNameX() {
+            return lastNameX;
         }
 
-        public void setLastName(String lastName) {
-            this.lastName = lastName;
+        public void setLastNameX(String lastNameX) {
+            this.lastNameX = lastNameX;
         }
 
-        public String getDob() {
-            return dob;
+        public String getAccountNumberX() {
+            return accountNumberX;
         }
 
-        public void setDob(String dob) {
-            this.dob = dob;
+        public void setAccountNumberX(String accountNumberX) {
+            this.accountNumberX = accountNumberX;
         }
 
-        public String getRoutingNumber() {
-            return routingNumber;
+        public String getBranch_code() {
+            return branch_code;
         }
 
-        public void setRoutingNumber(String routingNumber) {
-            this.routingNumber = routingNumber;
+        public void setBranch_code(String branch_code) {
+            this.branch_code = branch_code;
         }
 
-        public String getAccountNumber() {
-            return accountNumber;
+        public String getAccountTypeX() {
+            return accountTypeX;
         }
 
-        public void setAccountNumber(String accountNumber) {
-            this.accountNumber = accountNumber;
+        public void setAccountTypeX(String accountTypeX) {
+            this.accountTypeX = accountTypeX;
         }
 
-        public String getPostalCode() {
-            return postalCode;
+        public String getStatusX() {
+            return statusX;
         }
 
-        public void setPostalCode(String postalCode) {
-            this.postalCode = postalCode;
+        public void setStatusX(String statusX) {
+            this.statusX = statusX;
         }
 
-        public String getSsnLast() {
-            return ssnLast;
+        public String getCrdX() {
+            return crdX;
         }
 
-        public void setSsnLast(String ssnLast) {
-            this.ssnLast = ssnLast;
+        public void setCrdX(String crdX) {
+            this.crdX = crdX;
         }
 
-        public String getAccountId() {
-            return accountId;
+        public String getUpdX() {
+            return updX;
         }
 
-        public void setAccountId(String accountId) {
-            this.accountId = accountId;
-        }
-
-        public String getAccountType() {
-            return accountType;
-        }
-
-        public void setAccountType(String accountType) {
-            this.accountType = accountType;
-        }
-
-        public String getStatus() {
-            return status;
-        }
-
-        public void setStatus(String status) {
-            this.status = status;
-        }
-
-        public String getCrd() {
-            return crd;
-        }
-
-        public void setCrd(String crd) {
-            this.crd = crd;
-        }
-
-        public String getUpd() {
-            return upd;
-        }
-
-        public void setUpd(String upd) {
-            this.upd = upd;
+        public void setUpdX(String updX) {
+            this.updX = updX;
         }
     }
 }

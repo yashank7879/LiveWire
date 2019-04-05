@@ -26,7 +26,6 @@ import com.livewire.R;
 import com.livewire.adapter.NearByAdapterClient;
 import com.livewire.databinding.FragmentNearYouBinding;
 import com.livewire.responce.NearByResponce;
-import com.livewire.ui.activity.EditProfileClientActivity;
 import com.livewire.ui.activity.EditProfileWorkerActivity;
 import com.livewire.ui.activity.MyProfileClientActivity;
 import com.livewire.ui.activity.WorkerProfileDetailClientActivity;
@@ -50,7 +49,7 @@ public class NearYouWorkerFragment extends Fragment implements View.OnClickListe
     private static final String ARG_PARAM2 = "param2";
     private NearByAdapterClient adapter;
     private ProgressDialog progressDialog;
-    private List<NearByResponce.DataBean> nearByList;
+    private List<NearByResponce.DataBean> nearByList = new ArrayList<>();
     private NearByResponce userData;
     private String message;
 
@@ -64,7 +63,6 @@ public class NearYouWorkerFragment extends Fragment implements View.OnClickListe
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             if (getArguments().getSerializable(ARG_PARAM2) != null) {
-                nearByList = new ArrayList<>();
                 userData = (NearByResponce) getArguments().getSerializable(ARG_PARAM2);
                 assert userData != null;
                 nearByList.addAll(userData.getData());
@@ -75,7 +73,7 @@ public class NearYouWorkerFragment extends Fragment implements View.OnClickListe
 
         }
     }
-    public NearYouWorkerFragment newInstance(String message, NearByResponce nearByResponce) {
+    public static NearYouWorkerFragment newInstance(String message, NearByResponce nearByResponce) {
 
         Bundle args = new Bundle();
         NearYouWorkerFragment fragment = new NearYouWorkerFragment();

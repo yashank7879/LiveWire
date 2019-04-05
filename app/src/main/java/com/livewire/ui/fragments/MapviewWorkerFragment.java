@@ -29,12 +29,10 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.PlaceDetectionClient;
 import com.google.android.gms.location.places.Places;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -43,7 +41,6 @@ import com.google.gson.Gson;
 import com.livewire.R;
 import com.livewire.databinding.FragmentMapviewBinding;
 import com.livewire.responce.NearByResponce;
-import com.livewire.ui.activity.EditProfileClientActivity;
 import com.livewire.ui.activity.EditProfileWorkerActivity;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
@@ -63,7 +60,7 @@ import static com.livewire.utils.ApiCollection.NEAR_BY_USER_API;
  * Use the {@link MapviewWorkerFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MapviewWorkerFragment extends Fragment implements OnMapReadyCallback ,View.OnClickListener, GoogleMap.OnMarkerClickListener,InfoWindowManager.WindowShowListener{
+public class MapviewWorkerFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener, GoogleMap.OnMarkerClickListener, InfoWindowManager.WindowShowListener {
     private static final String TAG = MapviewWorkerFragment.class.getName();
 
     // TODO: Rename parameter arguments, choose names that match
@@ -76,7 +73,8 @@ public class MapviewWorkerFragment extends Fragment implements OnMapReadyCallbac
     private static final String FORM_VIEW = "FORM_VIEW_MARKER";
     private InfoWindowManager infoWindowManager;
     private ProgressDialog progressDialog;
-    private List<NearByResponce.DataBean> nearByList = new ArrayList<>();;
+    private List<NearByResponce.DataBean> nearByList = new ArrayList<>();
+    ;
     private List<Marker> markerList;
     private List<InfoWindow> infoWindowList;
     private GeoDataClient mGeoDataClient;
@@ -86,8 +84,7 @@ public class MapviewWorkerFragment extends Fragment implements OnMapReadyCallbac
     private static final int DEFAULT_ZOOM = 11;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private final LatLng mDefaultLocation = new LatLng(-33.8523341, 151.2106085);
-
-
+    private MapInfoWindowFragment mapFragment;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -102,7 +99,7 @@ public class MapviewWorkerFragment extends Fragment implements OnMapReadyCallbac
     }
 
     // TODO: Rename and change types and number of parameters
-    public MapviewWorkerFragment newInstance(String mesage, NearByResponce nearByResponce) {
+    public static MapviewWorkerFragment newInstance(String mesage, NearByResponce nearByResponce) {
         Bundle args = new Bundle();
         MapviewWorkerFragment fragment = new MapviewWorkerFragment();
         args.putSerializable(ARG_PARAM1, mesage);
@@ -125,9 +122,7 @@ public class MapviewWorkerFragment extends Fragment implements OnMapReadyCallbac
                 assert userData != null;
                 nearByList.addAll(userData.getData());
             }
-
-             message = (String) getArguments().getSerializable(ARG_PARAM1);
-
+            message = (String) getArguments().getSerializable(ARG_PARAM1);
         }
     }
 
@@ -135,7 +130,7 @@ public class MapviewWorkerFragment extends Fragment implements OnMapReadyCallbac
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-       binding = DataBindingUtil.inflate(inflater,R.layout.fragment_mapview, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_mapview, container, false);
         return binding.getRoot();
     }
 
@@ -146,41 +141,46 @@ public class MapviewWorkerFragment extends Fragment implements OnMapReadyCallbac
         currentlocation();
 
         assert message != null;
-        if (message.equals("Please update your location to know Live Wires near you.")){
+        if (message.equals("Please update your location to know Live Wires near you.")) {
             binding.rlUpdateProfile.setVisibility(View.VISIBLE);
             binding.tvNoData.setVisibility(View.GONE);
-        }else if (message.equals("No near by user found")){
+        } else if (message.equals("No near by user found")) {
             binding.tvNoData.setVisibility(View.VISIBLE);
             binding.rlUpdateProfile.setVisibility(View.GONE);
-        }else {
+        } else {
             binding.rlMap.setVisibility(View.VISIBLE);
             binding.tvNoData.setVisibility(View.GONE);
             binding.rlUpdateProfile.setVisibility(View.GONE);
 
-
-            final MapInfoWindowFragment mapFragment;
-            mapFragment = (MapInfoWindowFragment) getChildFragmentManager()
-                    .findFragmentById(R.id.map);
+            if (mapFragment == null) {
+                mapFragment = (MapInfoWindowFragment) getChildFragmentManager()
+                        .findFragmentById(R.id.map);
+            }
             assert mapFragment != null;
             mapFragment.getMapAsync(this);
 
             infoWindowManager = mapFragment.infoWindowManager();
             infoWindowManager.setHideOnFling(true);
             infoWindowManager.setWindowShowListener(MapviewWorkerFragment.this);
-
-
-
         }
-        progressDialog = new ProgressDialog(mContext);
 
+        progressDialog = new ProgressDialog(mContext);
         markerList = new ArrayList<>();
         infoWindowList = new ArrayList<>();
-
-
         binding.btnUpdate.setOnClickListener(this);
 
+        //  getNearByListApi();
+    }
 
-      //  getNearByListApi();
+    @Override
+    public void onResume() {
+        super.onResume();
+      /*  if (userData != null) {
+
+            for (NearByResponce.DataBean data : userData.getData()) {
+                showMarkers(data);
+            }
+        }*/
     }
 
     private void getNearByListApi() {
@@ -211,8 +211,8 @@ public class MapviewWorkerFragment extends Fragment implements OnMapReadyCallbac
                                         NearByResponce nearByResponce = new Gson().fromJson(String.valueOf(response), NearByResponce.class);
                                         nearByList.addAll(nearByResponce.getData());
 
-                                        for (NearByResponce.DataBean data:nearByList) {
-                                            showMarkers(data);
+                                        for (NearByResponce.DataBean data : nearByList) {
+                                            //showMarkers(data);
                                         }
 
                                     }
@@ -236,17 +236,20 @@ public class MapviewWorkerFragment extends Fragment implements OnMapReadyCallbac
     }
 
     private void showMarkers(NearByResponce.DataBean data) {
-        if(mMap != null){
-
-            final Marker marker2 = mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(data.getLatitude()), Double.parseDouble(data.getLongitude()))).snippet(data.getUserId()));
-            final int offsetX = (int) getResources().getDimension(R.dimen.marker_offset_x);
-            final int offsetY = (int) getResources().getDimension(R.dimen.marker_offset_y);
-            final InfoWindow.MarkerSpecification markerSpec =
-                    new InfoWindow.MarkerSpecification(offsetX, offsetY);
-            InfoWindow formWindow = new InfoWindow(marker2, markerSpec, new CustomInfoWindowFragment().newInstance(data));
-            mMap.setOnMarkerClickListener(MapviewWorkerFragment.this);
-            markerList.add(marker2);
-            infoWindowList.add(formWindow);
+        if (mMap != null) {
+            try {
+                final Marker marker2 = mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(data.getLatitude()), Double.parseDouble(data.getLongitude()))).snippet(data.getUserId()));
+                final int offsetX = (int) getResources().getDimension(R.dimen.marker_offset_x);
+                final int offsetY = (int) getResources().getDimension(R.dimen.marker_offset_y);
+                final InfoWindow.MarkerSpecification markerSpec =
+                        new InfoWindow.MarkerSpecification(offsetX, offsetY);
+                InfoWindow formWindow = new InfoWindow(marker2, markerSpec, CustomInfoWindowFragment.newInstance(data));
+                mMap.setOnMarkerClickListener(MapviewWorkerFragment.this);
+                markerList.add(marker2);
+                infoWindowList.add(formWindow);
+            } catch (Exception e) {
+                Log.e(TAG, "showMarkers: " + e.getLocalizedMessage());
+            }
 
             //""""" move camera the markers """""""""//
            /* LatLngBounds.Builder builder = new LatLngBounds.Builder();
@@ -263,6 +266,7 @@ public class MapviewWorkerFragment extends Fragment implements OnMapReadyCallbac
 
     }
 
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -270,7 +274,7 @@ public class MapviewWorkerFragment extends Fragment implements OnMapReadyCallbac
 
         // Get the current location of the device and set the position of the map.
         getDeviceLocation();
-        if (userData!= null) {
+        if (userData != null) {
             for (NearByResponce.DataBean data : userData.getData()) {
                 showMarkers(data);
             }
@@ -293,7 +297,7 @@ public class MapviewWorkerFragment extends Fragment implements OnMapReadyCallbac
                 mLastKnownLocation = null;
                 getLocationPermission();
             }
-        } catch (SecurityException e)  {
+        } catch (SecurityException e) {
             Log.e("Exception: %s", e.getMessage());
         }
     }
@@ -325,7 +329,7 @@ public class MapviewWorkerFragment extends Fragment implements OnMapReadyCallbac
                 });
 
             }
-        } catch(SecurityException e)  {
+        } catch (SecurityException e) {
             Log.e("Exception: %s", e.getMessage());
         }
     }
@@ -376,16 +380,15 @@ public class MapviewWorkerFragment extends Fragment implements OnMapReadyCallbac
         updateLocationUI();
     }
 
+
     @Override
     public boolean onMarkerClick(Marker marker) {
         InfoWindow infoWindow = null;
-            for (int i=0 ; i < markerList.size();i++) {
-                if (markerList.get(i).getSnippet().equals(marker.getSnippet())) {
-                    infoWindowManager.toggle(infoWindowList.get(i), true);
-                }
+        for (int i = 0; i < markerList.size(); i++) {
+            if (markerList.get(i).getSnippet().equals(marker.getSnippet())) {
+                infoWindowManager.toggle(infoWindowList.get(i), true);
             }
-
-
+        }
         return true;
 
     }
@@ -417,7 +420,7 @@ public class MapviewWorkerFragment extends Fragment implements OnMapReadyCallbac
             case R.id.btn_update:
                 startActivity(new Intent(mContext, EditProfileWorkerActivity.class));
                 break;
-                default:
+            default:
         }
     }
 }

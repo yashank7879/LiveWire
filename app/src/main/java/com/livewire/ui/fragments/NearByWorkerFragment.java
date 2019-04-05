@@ -1,9 +1,15 @@
 package com.livewire.ui.fragments;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
+import android.graphics.Typeface;
+import android.location.Location;
+import com.google.android.gms.location.LocationListener;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,22 +17,30 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
-import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.GeoDataClient;
-import com.google.android.gms.location.places.PlaceDetectionClient;
-import com.google.android.gms.location.places.Places;
 import com.google.gson.Gson;
 import com.livewire.R;
 import com.livewire.adapter.NearByAdapterWorker;
+import com.livewire.adapter.NearYouClientPagerAdpter;
+import com.livewire.adapter.NearYouWorkerPagerAdpter;
 import com.livewire.databinding.FragmentNearByClientBinding;
 import com.livewire.responce.NearByResponce;
 import com.livewire.ui.activity.EditProfileWorkerActivity;
@@ -41,23 +55,37 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.support.v4.content.PermissionChecker.checkSelfPermission;
 import static com.livewire.utils.ApiCollection.BASE_URL;
 import static com.livewire.utils.ApiCollection.NEAR_BY_USER_API;
 
 
-public class NearByWorkerFragment extends Fragment implements View.OnClickListener {
+public class NearByWorkerFragment extends Fragment implements View.OnClickListener ,GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener, LocationListener {
     private FragmentNearByClientBinding binding;
     private Context mContext;
-    private NearByAdapterWorker adapter;
     private ProgressDialog progressDialog;
-    private List<NearByResponce.DataBean> nearByList;
+    private List<NearByResponce.DataBean> nearByList = new ArrayList<>();
     private int clickId;
     private NearByResponce nearByResponce;
-    private String message="";
+    private String message = "";
+    Boolean flag = true;
+    private Location location;
+
+    private GoogleApiClient googleApiClient;
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+    private LocationRequest locationRequest;
+    private static final long UPDATE_INTERVAL = 5000, FASTEST_INTERVAL = 5000; // = 5 seconds
+    // lists for permissions
+    private ArrayList<String> permissionsToRequest;
+    private ArrayList<String> permissionsRejected = new ArrayList<>();
+    private ArrayList<String> permissions = new ArrayList<>();
+    // integer for permissions results request
+    private static final int ALL_PERMISSIONS_RESULT = 1011;
 
 
     public NearByWorkerFragment() {
-     //"""""   Required empty public constructor  """""""""//
+        //"""""  Required empty public constructor  """""""""//
     }
 
     @Override
@@ -82,10 +110,12 @@ public class NearByWorkerFragment extends Fragment implements View.OnClickListen
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-      //  actionBarIntialize(view);
+        //  actionBarIntialize(view);
+
+        getCurrentLocation();
 
 
-        nearByList = new ArrayList<>();
+
         progressDialog = new ProgressDialog(mContext);
 
         binding.tvNearYou.setOnClickListener(this);
@@ -103,20 +133,24 @@ public class NearByWorkerFragment extends Fragment implements View.OnClickListen
                 DividerItemDecoration(mContext,
                 DividerItemDecoration.VERTICAL));
         binding.btnUpdate.setOnClickListener(this);*/
-        getNearByListApi();
+        //getNearByListApi();
     }
 
 
     @Override
-    public void onResume() {
-        super.onResume();
-        getNearByListApi();
+    public void onDestroy() {
+        googleApiClient.disconnect();
+
+        super.onDestroy();
+
     }
 
     private void getNearByListApi() {
         if (Constant.isNetworkAvailable(mContext, binding.mainLayout)) {
             progressDialog.show();
-            AndroidNetworking.get(BASE_URL + NEAR_BY_USER_API)
+            AndroidNetworking.post(BASE_URL + NEAR_BY_USER_API)
+                    .addBodyParameter("latitude",""+location.getLatitude())
+                    .addBodyParameter("longitude",""+location.getLongitude())
                     .addHeaders("authToken", PreferenceConnector.readString(mContext, PreferenceConnector.AUTH_TOKEN, ""))
                     .setPriority(Priority.MEDIUM)
                     .build()
@@ -124,57 +158,30 @@ public class NearByWorkerFragment extends Fragment implements View.OnClickListen
                         @Override
                         public void onResponse(JSONObject response) {
                             progressDialog.dismiss();
-                            //    mainLayout.startAnimation(mLoadAnimation);
                             String status = null;
                             try {
-                                status = response.getString("status");
-                                 message = response.getString("message");
-                                if (status.equals("success")) {
+                                if (flag) {
+                                    flag = false;
+                                    status = response.getString("status");
+                                    message = response.getString("message");
+                                    if (status.equals("success")) {
+                                        nearByResponce = new Gson().fromJson(String.valueOf(response), NearByResponce.class);
+                                        nearByAdapter();
 
-                                 /*   FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                                    transaction.replace(R.id.fl_container1, new NearYouWorkerFragment().newInstance(message,nearByResponce));
-                                    transaction.commit();*/
-                                    if (message.equals("Please update your location to know Live Wires near you.")){
-                                   replaceFragment(new NearYouWorkerFragment().newInstance(message,nearByResponce),false,R.id.fl_container1);
-                                        clickId = R.id.tv_near_you;
-                                    }else if (message.equals("No near by user found")){
-                                        replaceFragment(new NearYouWorkerFragment().newInstance(message,nearByResponce),false,R.id.fl_container1);
-                                        clickId = R.id.tv_near_you;
-                                      //  binding.tvNoData.setVisibility(View.VISIBLE);
-                                        //binding.rlUpdateProfile.setVisibility(View.GONE);
-                                    }else {
-                                        //Constant.snackBar(binding.mainLayout, message);
-                                         nearByResponce = new Gson().fromJson(String.valueOf(response), NearByResponce.class);
-                                        replaceFragment(new NearYouWorkerFragment().newInstance(message,nearByResponce),false,R.id.fl_container1);
-                                        clickId = R.id.tv_near_you;
-                                         // binding.tvNoData.setVisibility(View.GONE);
-                                        //nearByList.addAll(nearByResponce.getData());
-                                      //  adapter.notifyDataSetChanged();
+
+
+                                        //checkVisibleFragmnet(response);
+
+                                    } else {
+                                        Constant.snackBar(binding.mainLayout, message);
+
                                     }
-
-                                  /*  if (message.equals("Please update your location to know Live Wires near you.")){
-                                        binding.rlUpdateProfile.setVisibility(View.VISIBLE);
-                                        binding.tvNoData.setVisibility(View.GONE);
-                                    }else if (message.equals("No near by user found")){
-                                        binding.tvNoData.setVisibility(View.VISIBLE);
-                                        binding.rlUpdateProfile.setVisibility(View.GONE);
-                                    }else {
-                                        //Constant.snackBar(binding.mainLayout, message);
-                                        NearByResponce nearByResponce = new Gson().fromJson(String.valueOf(response), NearByResponce.class);
-                                        binding.tvNoData.setVisibility(View.GONE);
-                                        nearByList.addAll(nearByResponce.getData());
-                                        adapter.notifyDataSetChanged();
-                                    }*/
-
-                                } else {
-                                    adapter.notifyDataSetChanged();
-                                    Constant.snackBar(binding.mainLayout, message);
-
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
+
                         @Override
                         public void onError(ANError anError) {
                             progressDialog.dismiss();
@@ -185,18 +192,74 @@ public class NearByWorkerFragment extends Fragment implements View.OnClickListen
     }
 
 
-    private void actionBarIntialize(View view) {
-        View actionBar = view.findViewById(R.id.action_bar1);
-        actionBar.setVisibility(View.GONE);
+    private void nearByAdapter() {
+        NearYouWorkerPagerAdpter adapter = new NearYouWorkerPagerAdpter(getChildFragmentManager(), getActivity(), message, nearByResponce);
+        binding.viewpager.setAdapter(adapter);
+        binding.slidingTabs.setupWithViewPager(binding.viewpager);
+        // decrease width of indicator
+        for (int i = 0; i < binding.slidingTabs.getTabCount(); i++) {
+            View tab = ((ViewGroup) binding.slidingTabs.getChildAt(0)).getChildAt(i);
+
+            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) tab.getLayoutParams();
+            p.setMargins(15, 0, 15, 0);
+            tab.requestLayout();
+        }
+
+        final Typeface tf = ResourcesCompat.getFont(mContext,R.font.poppins_medium);
+        final Typeface rl = ResourcesCompat.getFont(mContext,R.font.poppins_regular);
+
+
+        //""""" Zero position selected so change fontFamily """""""""""//
+        for (int i=0;i<binding.slidingTabs.getTabCount();i++){
+            LinearLayout tabLayout1 = (LinearLayout) ((ViewGroup) binding.slidingTabs.getChildAt(0)).getChildAt(i);
+            TextView tabTextView = (TextView) tabLayout1.getChildAt(1);
+            tabTextView.setAllCaps(false);
+            tabTextView.setTypeface(tf);
+        }
+
     }
 
- /*   @Override
-    public void onItemClickClient(String clientId) {
-        Intent intent = new Intent(mContext, WorkerProfileDetailClientActivity.class);
-        intent.putExtra("NearBy","NearBy");
-        intent.putExtra("UserIdKey",clientId);
-        mContext.startActivity(intent);
-    }*/
+    private void checkVisibleFragmnet(JSONObject response) {
+        Fragment visible =getCurrentFragment();
+        if (visible instanceof MapviewWorkerFragment) {
+            binding.viewpager.setCurrentItem(1);
+
+            /*if (message.equals("Please update your location to know Live Wires near you.")){
+                replaceFragment(new MapviewWorkerFragment().newInstance(message,nearByResponce),false,R.id.fl_container1);
+                clickId = R.id.tv_mapview;
+            }else if (message.equals("No near by user found")){
+                replaceFragment(new MapviewWorkerFragment().newInstance(message,nearByResponce),false,R.id.fl_container1);
+                clickId = R.id.tv_mapview;
+            }else {
+                nearByResponce = new Gson().fromJson(String.valueOf(response), NearByResponce.class);
+                replaceFragment(new MapviewWorkerFragment().newInstance(message,nearByResponce),false,R.id.fl_container1);
+                clickId = R.id.tv_mapview;
+            }*/
+        }else {
+            binding.viewpager.setCurrentItem(0);
+
+            /*if (message.equals("Please update your location to know Live Wires near you.")){
+                replaceFragment(new NearYouWorkerFragment().newInstance(message,nearByResponce),false,R.id.fl_container1);
+                clickId = R.id.tv_near_you;
+            }else if (message.equals("No near by user found")){
+                replaceFragment(new NearYouWorkerFragment().newInstance(message,nearByResponce),false,R.id.fl_container1);
+                clickId = R.id.tv_near_you;
+            }else {
+                nearByResponce = new Gson().fromJson(String.valueOf(response), NearByResponce.class);
+                replaceFragment(new NearYouWorkerFragment().newInstance(message,nearByResponce),false,R.id.fl_container1);
+                clickId = R.id.tv_near_you;
+            }*/
+        }
+    }
+
+    Fragment getCurrentFragment()
+    {
+        Fragment currentFragment = getFragmentManager()
+                .findFragmentById(R.id.fl_container1);
+        return currentFragment;
+    }
+
+
 
     @Override
     public void onClick(View view) {
@@ -210,29 +273,30 @@ public class NearByWorkerFragment extends Fragment implements View.OnClickListen
                 startActivity(new Intent(mContext, EditProfileWorkerActivity.class));
                 break;
             case R.id.tv_near_you:
-                if (clickId != R.id.tv_near_you ) {
+                if (clickId != R.id.tv_near_you) {
                     binding.tvNearYou.setTextColor(ContextCompat.getColor(mContext, R.color.colorWhite));
                     binding.tvNearYou.setBackground(ContextCompat.getDrawable(mContext, R.drawable.map_round_bg));
                     binding.tvMapview.setTextColor(ContextCompat.getColor(mContext, R.color.colorBlack));
                     binding.tvMapview.setBackground(null);
 
-                    replaceFragment(new NearYouWorkerFragment().newInstance(message,nearByResponce),false,R.id.fl_container1);
+                    replaceFragment(new NearYouWorkerFragment().newInstance(message, nearByResponce), false, R.id.fl_container1);
                     clickId = R.id.tv_near_you;
                 }
                 break;
             case R.id.tv_mapview:
-                if (clickId != R.id.tv_mapview ) {
+                if (clickId != R.id.tv_mapview) {
                     binding.tvMapview.setTextColor(ContextCompat.getColor(mContext, R.color.colorWhite));
                     binding.tvMapview.setBackground(ContextCompat.getDrawable(mContext, R.drawable.map_round_bg));
                     binding.tvNearYou.setTextColor(ContextCompat.getColor(mContext, R.color.colorBlack));
                     binding.tvNearYou.setBackground(null);
-                    replaceFragment(new MapviewWorkerFragment().newInstance(message,nearByResponce), false, R.id.fl_container1);
+                    replaceFragment(new MapviewWorkerFragment().newInstance(message, nearByResponce), false, R.id.fl_container1);
                     clickId = R.id.tv_mapview;
                 }
                 break;
             default:
         }
     }
+
     //*********   replace Fragment  ************//
     public void replaceFragment(Fragment fragment, boolean addToBackStack, int containerId) {
         String backStackName = fragment.getClass().getName();
@@ -242,4 +306,197 @@ public class NearByWorkerFragment extends Fragment implements View.OnClickListen
 
     }
 
+
+    private void getCurrentLocation() {
+
+        permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+
+        permissionsToRequest = permissionsToRequest(permissions);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (permissionsToRequest.size() > 0) {
+                requestPermissions(permissionsToRequest.toArray(
+                        new String[permissionsToRequest.size()]), ALL_PERMISSIONS_RESULT);
+            }
+        }
+
+        // we build google api client
+        googleApiClient = new GoogleApiClient.Builder(mContext).
+                addApi(LocationServices.API).
+                addConnectionCallbacks(this).
+                addOnConnectionFailedListener(this).build();
+    }
+
+
+    private ArrayList<String> permissionsToRequest(ArrayList<String> wantedPermissions) {
+        ArrayList<String> result = new ArrayList<>();
+
+        for (String perm : wantedPermissions) {
+            if (!hasPermission(perm)) {
+                result.add(perm);
+            }
+        }
+
+        return result;
+    }
+
+    private boolean hasPermission(String permission) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return checkSelfPermission(mContext,permission) == PackageManager.PERMISSION_GRANTED;
+        }
+
+        return true;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        if (googleApiClient != null) {
+            googleApiClient.connect();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (location != null)
+        getNearByListApi();
+
+        if (!checkPlayServices()) {
+            Toast.makeText(getActivity(), "You need to install Google Play Services to use the App properly", Toast.LENGTH_SHORT).show();
+            //locationTv.setText("You need to install Google Play Services to use the App properly");
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        // stop location updates
+        if (googleApiClient != null  &&  googleApiClient.isConnected()) {
+            LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient,this);
+            googleApiClient.disconnect();
+        }
+    }
+
+    private boolean checkPlayServices() {
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = apiAvailability.isGooglePlayServicesAvailable(getActivity());
+
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (apiAvailability.isUserResolvableError(resultCode)) {
+                apiAvailability.getErrorDialog(getActivity(), resultCode, PLAY_SERVICES_RESOLUTION_REQUEST);
+            } else {
+                //finish();
+            }
+
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        if (ActivityCompat.checkSelfPermission(mContext,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                &&  ActivityCompat.checkSelfPermission(mContext,
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+
+        // Permissions ok, we get last location
+        location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+
+        if (location != null) {
+            getNearByListApi();
+           // Toast.makeText(mContext, ""+"Latitude : " + location.getLatitude() + "\nLongitude : " + location.getLongitude(), Toast.LENGTH_SHORT).show();
+           // locationTv.setText("Latitude : " + location.getLatitude() + "\nLongitude : " + location.getLongitude());
+        }
+
+        startLocationUpdates();
+    }
+
+    private void startLocationUpdates() {
+        locationRequest = new LocationRequest();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(UPDATE_INTERVAL);
+        locationRequest.setFastestInterval(FASTEST_INTERVAL);
+
+        if (ActivityCompat.checkSelfPermission(mContext,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                &&  ActivityCompat.checkSelfPermission(mContext,
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(mContext, "You need to enable permissions to display location !", Toast.LENGTH_SHORT).show();
+        }
+
+        LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        if (location != null) {
+          //  Toast.makeText(mContext, ""+"Latitude : " + location.getLatitude() + "\nLongitude : " + location.getLongitude(), Toast.LENGTH_SHORT).show();
+
+            //locationTv.setText("Latitude : " + location.getLatitude() + "\nLongitude : " + location.getLongitude());
+        }
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch(requestCode) {
+            case ALL_PERMISSIONS_RESULT:
+                for (String perm : permissionsToRequest) {
+                    if (!hasPermission(perm)) {
+                        permissionsRejected.add(perm);
+                    }
+                }
+
+                if (permissionsRejected.size() > 0) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (shouldShowRequestPermissionRationale(permissionsRejected.get(0))) {
+                            new AlertDialog.Builder(mContext).
+                                    setMessage("These permissions are mandatory to get your location. You need to allow them.").
+                                    setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                                requestPermissions(permissionsRejected.
+                                                        toArray(new String[permissionsRejected.size()]), ALL_PERMISSIONS_RESULT);
+                                            }
+                                        }
+                                    }).setNegativeButton("Cancel", null).create().show();
+
+                            return;
+                        }
+                    }
+                } else {
+                    if (googleApiClient != null) {
+                        googleApiClient.connect();
+                    }
+                }
+
+                break;
+        }
+    }
+
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+    }
 }
+
+

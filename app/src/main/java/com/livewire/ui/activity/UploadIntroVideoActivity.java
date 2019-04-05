@@ -82,7 +82,7 @@ public class UploadIntroVideoActivity extends AppCompatActivity implements View.
             case R.id.btn_next:
 
                 if (finalVideoUri == null ) {
-                    Constant.snackBar(binding.mainLayout,"Please add video.");
+                    Constant.snackBar(binding.mainLayout,getString(R.string.please_add_intro_video));
                 }else {
                     replaceFragment(new WriteSomthingAboutWorkerFragment(), true, R.id.fl_container);
                 }

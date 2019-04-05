@@ -143,7 +143,7 @@ public class MyJobAdapter extends RecyclerView.Adapter {
                     switch (dataBean.getJob_confirmed()) {
                         case "0": // request zero
                             if (dataBean.getRequestedUserData().get(0).getRequest_status().equals("0")) {// request pending job
-                                holder.tvPendingRequest.setText(R.string.application_pending);
+                                holder.tvPendingRequest.setText(R.string.Work_offer_pending);
                                 holder.tvPendingRequest.setTextColor(ContextCompat.getColor(mContext, R.color.colorOrange));
 
                             } else if (dataBean.getRequestedUserData().get(0).getRequest_status().equals("2")) {// request cancel by worker
@@ -154,7 +154,7 @@ public class MyJobAdapter extends RecyclerView.Adapter {
                             break;
                         case "1":  //request_confirmed job
                             if (dataBean.getRequestedUserData().get(0).getRequest_status().equals("1")) {
-                                holder.tvPendingRequest.setText(R.string.application_confirmed);
+                                holder.tvPendingRequest.setText(R.string.work_offer_accepted);
                                 holder.tvPendingRequest.setTextColor(ContextCompat.getColor(mContext, R.color.colorGreen));
                             }
 
@@ -257,7 +257,11 @@ public class MyJobAdapter extends RecyclerView.Adapter {
             holder.tvCategory.setText(dataBean.getSub_category());
             holder.tvSubcategory.setText(dataBean.getParent_category());
             holder.tvBudget.setText("$ " + dataBean.getJob_budget());
-            holder.tvRequested.setText("" + dataBean.getTotal_request() + mContext.getString(R.string.applications));
+
+            String textApplication = dataBean.getTotal_request().trim().equals("1") ? mContext.getString(R.string.application) : mContext.getString(R.string.applications);
+            holder.tvRequested.setText("" + dataBean.getTotal_request() + textApplication);
+
+
             holder.tvTime.setText(Constant.getDayDifference(dataBean.getCrd(), dataBean.getCurrentDateTime()));
 
 

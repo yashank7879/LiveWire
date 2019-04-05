@@ -40,6 +40,7 @@ import com.livewire.utils.Validation;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import static com.livewire.utils.ApiCollection.BASE_URL;
 import static com.livewire.utils.ApiCollection.USER_LOGOUT_API;
@@ -49,6 +50,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     private int width;
     private ProgressDialog progressDialog;
     private Animation shake;
+    private TextView tvBankAcc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +68,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         binding.llPrivacyPolicy.setOnClickListener(this);
         binding.llLogout.setOnClickListener(this);
         binding.ivBack.setOnClickListener(this);
-        TextView tvBankAcc = findViewById(R.id.tv_bank_account);
+        tvBankAcc = findViewById(R.id.tv_bank_account);
         binding.llAddCreditCard.setOnClickListener(this);
         binding.llShareApp.setOnClickListener(this);
 
@@ -86,9 +88,9 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             binding.llChangePass.setVisibility(View.VISIBLE);
         }
 
-        if (PreferenceConnector.readString(this,PreferenceConnector.AVAILABILITY_1,"").equals("1")){
+        if (PreferenceConnector.readString(this, PreferenceConnector.AVAILABILITY_1, "").equals("1")) {
             binding.btnSwitch.setChecked(true);
-        }else {
+        } else {
             binding.btnSwitch.setChecked(false);
         }
 
@@ -102,6 +104,14 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 }
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (PreferenceConnector.readString(this, PreferenceConnector.IS_BANK_ACC, "").equals("1")) {
+            tvBankAcc.setText(R.string.edit_bank_account);
+        }
     }
 
     @Override
@@ -122,7 +132,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.ll_about_us:
                 if (Constant.isNetworkAvailable(this, binding.settingMainLayout)) {
                     intent = new Intent(this, AboutUsActivity.class);
-                    intent.putExtra("Type","AboutUs");
+                    intent.putExtra("Type", "AboutUs");
                     startActivity(intent);
                 }
                 break;
@@ -130,42 +140,42 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.ll_terms_condition:
                 if (Constant.isNetworkAvailable(this, binding.settingMainLayout)) {
                     intent = new Intent(this, AboutUsActivity.class);
-                    intent.putExtra("Type","TermsCondition");
+                    intent.putExtra("Type", "TermsCondition");
                     startActivity(intent);
                 }
                 break;
 
             case R.id.ll_privacy_policy:
-                if (Constant.isNetworkAvailable(this,binding.settingMainLayout)) {
+                if (Constant.isNetworkAvailable(this, binding.settingMainLayout)) {
                     intent = new Intent(this, AboutUsActivity.class);
-                    intent.putExtra("Type","PrivacyPolicy");
+                    intent.putExtra("Type", "PrivacyPolicy");
                     startActivity(intent);
                 }
                 break;
-
             case R.id.ll_logout:
                 showDialogforLogout();
-
                 break;
-
             case R.id.iv_back:
                 onBackPressed();
                 break;
             case R.id.ll_add_credit_card:
-                if (Constant.isNetworkAvailable(this,binding.settingMainLayout)) {
+                if (Constant.isNetworkAvailable(this, binding.settingMainLayout)) {
                     intent = new Intent(this, AddCreditCardActivity.class);
                     intent.putExtra("FromSetting", "Setting");
                     startActivity(intent);
                 }
                 break;
-            case  R.id.ll_share_app: {
+            case R.id.ll_share_app: {
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, "Hello welcome to livewire app.");
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "https://livewire.work/");
                 sendIntent.setType("text/plain");
                 sendIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-                startActivity(sendIntent);
-            }break;
+                startActivity(Intent.createChooser(sendIntent, "choose one"));
+
+                //startActivity(sendIntent);
+            }
+            break;
 
             default:
 
@@ -293,8 +303,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             etNewPass.startAnimation(shake);
             etNewPass.requestFocus();
             Constant.snackBar(dilogParentLayout, getString(R.string.password_should_not_be_more_than_ten_characters));
-        }
-        else if (Validation.isEmpty(etConfirmPass)) {
+        } else if (Validation.isEmpty(etConfirmPass)) {
             Constant.snackBar(dilogParentLayout, getString(R.string.please_again_enter_new_pass));
             etConfirmPass.requestFocus();
             etConfirmPass.startAnimation(shake);
@@ -369,11 +378,12 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                         String status = response.getString("status");
                         String message = response.getString("message");
                         if (status.equals("success")) {
-                            if (s.equals("1")){
-                                PreferenceConnector.writeString(SettingActivity.this,PreferenceConnector.AVAILABILITY_1,"1");
-                            }else PreferenceConnector.writeString(SettingActivity.this,PreferenceConnector.AVAILABILITY_1,"0");
+                            if (s.equals("1")) {
+                                PreferenceConnector.writeString(SettingActivity.this, PreferenceConnector.AVAILABILITY_1, "1");
+                            } else
+                                PreferenceConnector.writeString(SettingActivity.this, PreferenceConnector.AVAILABILITY_1, "0");
 
-                           // Toast.makeText(SettingActivity.this, message, Toast.LENGTH_SHORT).show();
+                            // Toast.makeText(SettingActivity.this, message, Toast.LENGTH_SHORT).show();
 
                         } else {
 

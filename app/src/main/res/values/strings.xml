@@ -2,6 +2,7 @@
     <string name="app_name">Live Wire</string>
     <string name="facebook_app_id">238182020387506</string>
     <string name="fb_login_protocol_scheme">fb238182020387506</string>
+    <string name="server_client_id">406685131499-44916quekffn8piijsacoembl5sbb0a6.apps.googleusercontent.com</string>
 
     <!-- User Selection-->
     <string name="select_user_type">Select User Type</string>
@@ -90,6 +91,7 @@
     <string name="sendrequest">SendRequest</string>
     <string name="pending_request">Request Pending</string>
     <string name="application_pending">Application Pending</string>
+    <string name="Work_offer_pending">Work Offer pending</string>
     <string name="pending_application">Pending Application</string>
     <string name="send_request">Send Request</string>
 
@@ -116,8 +118,9 @@
     <string name="request">Request</string>
     <string name="applicants">Applicants</string>
     <string name="applications">Applications</string>
-    <string name="no_appication_yet">No application yet</string>
-    <string name="no_offer_application_yet">No application yet</string>
+    <string name="application">Application</string>
+    <string name="no_appication_yet">No Applications Yet</string>
+    <string name="no_offer_application_yet">No Applications Yet</string>
     <string name="under_devlopment_mode">Under Devlopment Mode</string>
     <string name="applied_by">Applied by</string>
     <string name="members_applied">Members applied</string>
@@ -126,6 +129,7 @@
     <string name="account_holder_name">Account Holder Name</string>
     <string name="account_number">Account Number</string>
     <string name="routing_number">Routing Number</string>
+    <string name="branch_code">Branch Code</string>
     <string name="ssn_number">SSN Number</string>
     <string name="postal_code">Postal Code</string>
     <string name="account_holder_type">Account Holder type</string>
@@ -135,7 +139,7 @@
 
     <string name="please_enter_account_holder_name">Please enter account holder name.</string>
     <string name="please_enter_account_number">Please enter account number.</string>
-    <string name="please_enter_routing_number">Please enter routing number.</string>
+    <string name="please_enter_branch_code">Please enter branch code.</string>
     <string name="please_enter_SSN_number">Please enter SSN number.</string>
     <string name="please_enter_Postal_code">Please enter Postal code.</string>
     <string name="please_select_acc_type">Please select Account Type</string>
@@ -172,12 +176,13 @@
     <!--<string name="application_pending">Application Pending</string>-->
     <string name="pending_request1">Pending Request</string>
     <string name="application_confirmed">Application Confirmed</string>
+    <string name="work_offer_accepted">Work offer accepted </string>
     <string name="request_cancel">Request Cancel</string>
     <string name="send_offer">Send Offer</string>
     <string name="my_profile">MY PROFILE</string>
     <string name="total_income">Total Income</string>
     <string name="completed">Completed</string>
-    <string name="project_completed">Project Completed</string>
+    <string name="project_completed">Projects Completed</string>
     <string name="jobs">Work</string>
     <string name="watch_intro_video">Watch Intro Video</string>
     <string name="skills">Skills</string>
@@ -190,7 +195,7 @@
     <string name="availability">Availability</string>
     <string name="logout">Logout</string>
     <string name="privacy_policy">Privacy Policy</string>
-    <string name="terms_amp_condition"><![CDATA[Terms & Condition]]></string>
+    <string name="terms_amp_condition"><![CDATA[Terms & Conditions]]></string>
     <string name="about_us">About Us</string>
     <string name="add_bank_account">Add Bank Account</string>
     <string name="change_password">Change Password</string>
@@ -225,6 +230,7 @@
     <string name="payment_info">Payment Info</string>
     <string name="total_working_days">Total Working Days</string>
     <string name="offered_price">Offered Price</string>
+    <string name="offer_work">Offer Work</string>
     <string name="total_amount">Total Amount</string>
     <string name="job_reviews">Work Reviews</string>
     <string name="by_you">By You</string>
@@ -255,8 +261,8 @@
     <string name="you_don_t_add_any_payment_card_yet">You don\'t add any payment card yet</string>
 
 
-    <string name="worker_profile">WORKER PROFILE</string>
-    <string name="client_profile">CLIENT PROFILE</string>
+    <string name="worker_profile">LIVE WIRE PROFILE</string>
+    <string name="client_profile">LIVE WIRE PROFILE</string>
     <string name="reviews">REVIEWS</string>
     <string name="no_review">No review</string>
     <string name="end_job">End Work</string>
@@ -324,10 +330,15 @@
     <string name="creat_project">CREATE PROJECT</string>
     <string name="please_update_your_location_to_know_live_wires_near_you">Please update your location to know Live Wires near you.</string>
     <string name="update_profile">Update Profile</string>
-    <string name="project_created">Project Created</string>
+    <string name="project_created">Projects Created</string>
     <string name="about_me">About me</string>
     <string name="map_view">Map View</string>
     <string name="share_livewire">Share the LiveWire app</string>
+    <string name="please_add_intro_video">Please add intro video</string>
+    <string name="maximum_200_words">Maximum 200 words</string>
+    <string name="offer_has_been_successfully_sent">Your offer has been successfully sent.</string>
+
+
 
 
 </resources>

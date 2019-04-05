@@ -68,7 +68,11 @@ public class MySingleJobDetailClientActivity extends AppCompatActivity implement
         }
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        jobDetailApi();
+    }
 
     private void setMyJobDetails(JobDetailClientResponce.DataBean dataBean) {
         if (dataBean.getJob_type().equals("1")) {/// """"""" SINGLE JOB
@@ -114,7 +118,9 @@ public class MySingleJobDetailClientActivity extends AppCompatActivity implement
                 binding.rlUserData.setVisibility(View.GONE);
                 binding.tvNoRequest.setVisibility(View.GONE);
                 binding.llChat.setVisibility(View.GONE);
-                binding.tvMemberRequested.setText(dataBean.getTotal_request() + " " + getString(R.string.applications));
+
+                String textApplication = dataBean.getTotal_request().trim().equals("1") ? getString(R.string.application) : getString(R.string.applications);
+                binding.tvMemberRequested.setText(dataBean.getTotal_request() + " " + textApplication);
 
                 int leftMargin = 0;
                 for (int i = 0; i < dataBean.getRequestedUserData().size(); i++) {

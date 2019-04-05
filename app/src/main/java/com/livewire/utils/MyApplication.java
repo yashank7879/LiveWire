@@ -14,6 +14,8 @@ import io.fabric.sdk.android.Fabric;
  */
 
 public class MyApplication extends Application{
+    public static double latitude;
+    public static double longitude;
     @Override
     public void onCreate() {
         super.onCreate();

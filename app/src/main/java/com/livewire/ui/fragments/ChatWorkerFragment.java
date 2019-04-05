@@ -60,6 +60,7 @@ public class ChatWorkerFragment extends Fragment {
        // return inflater.inflate(R.layout.fragment_chat_worker, container, false);
     }
 
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -78,6 +79,16 @@ public class ChatWorkerFragment extends Fragment {
             getChatHistoryList();
         } else Toast.makeText(mContext, "No internet connection", Toast.LENGTH_SHORT).show();
 
+
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (Constant.isNetworkAvailable(mContext, binding.chatLayout)) {
+            getChatHistoryList();
+        } else Toast.makeText(mContext, "No internet connection", Toast.LENGTH_SHORT).show();
 
     }
 

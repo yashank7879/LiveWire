@@ -62,6 +62,7 @@ public class NearYouResponce {
         private String max_rate="";
         private String min_rate="";
         private String distance_in_km="";
+        private String rating;
         private int job_confirmed;
 
         public String getUserId() {
@@ -134,6 +135,14 @@ public class NearYouResponce {
 
         public void setJob_confirmed(int job_confirmed) {
             this.job_confirmed = job_confirmed;
+        }
+
+        public String getRating() {
+            return rating;
+        }
+
+        public void setRating(String rating) {
+            this.rating = rating;
         }
     }
 }

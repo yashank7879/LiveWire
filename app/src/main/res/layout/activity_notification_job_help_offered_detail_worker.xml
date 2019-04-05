@@ -365,7 +365,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/description"
-                        android:text='@{jobDetail.job_description, default= "N/A"}'
+                        android:text='@{jobDetail.job_description.empty ? "N/A" : jobDetail.job_description ,default = "N/A"}'
                         android:textSize="@dimen/_10sdp" />
 
                     <Button
@@ -390,6 +390,7 @@
                         android:layout_below="@+id/tv_description"
                         android:layout_centerHorizontal="true"
                         android:text='N/A'
+                        android:textColor="@color/colorGreen"
                         android:textSize="@dimen/_10sdp"
                         android:visibility="gone" />
 

@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -57,9 +58,12 @@ public class MyProfileClientActivity extends AppCompatActivity implements View.O
         showSkillsAdapter = new ShowSkillsAdapter(this, showSkillBeans);
         binding.rvSkillData.setAdapter(showSkillsAdapter);
 
+
         progressDialog = new ProgressDialog(this);
         binding.btnLogout.setOnClickListener(this);
         binding.btnEdit.setOnClickListener(this);
+        binding.rlVideoImg.setOnClickListener(this);
+        binding.completed.setOnClickListener(this);
         // binding.cvCompleteJob.setOnClickListener(this);
         binding.ivProfile.setOnClickListener(this);
         binding.rlRatingBar.setOnClickListener(this);
@@ -136,6 +140,21 @@ public class MyProfileClientActivity extends AppCompatActivity implements View.O
                 onBackPressed();
 
                 break;
+            case R.id.completed:
+                intent = new Intent(this, CompletedJobClientActivity.class);
+                startActivity(intent);
+                break;
+
+            case R.id.rl_video_img:
+                if (Constant.isNetworkAvailable(this, binding.svProfile)) {
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setDataAndType(Uri.parse(videoUrl), "video/mp4");
+                    startActivity(i);
+                  /*  intent = new Intent(mContext, PlayVideoActivity.class);
+                    intent.putExtra("VideoUrlKey", videoUrl);
+                    startActivity(intent);*/
+                }
+                break;
 
             case R.id.ll_worker: {
                 String dob = PreferenceConnector.readString(this, PreferenceConnector.USER_DOB, "");
@@ -167,7 +186,6 @@ public class MyProfileClientActivity extends AppCompatActivity implements View.O
             default:
         }
     }
-
 
 
     private void ChangeModeApi() {

@@ -192,10 +192,32 @@ public class WriteSomthingAboutWorkerFragment extends Fragment implements View.O
     }
 
     private void profileValidations() {
+
+        videoThumbFileList = new ArrayList<>();
+        if (UploadIntroVideoActivity.uploadIntroVideoActivity.videoThumbFile != null) {
+            videoThumbFileList.add(UploadIntroVideoActivity.uploadIntroVideoActivity.videoThumbFile);
+        }
+
+        mPram = new HashMap<>();
+
+        mPram.put("workerSkillData", UploadIntroVideoActivity.uploadIntroVideoActivity.keySkills);
+        // mPram.put("date_of_birth",""+sdf2.format(startDateTime.getTime()));
+        // mPram.put("date_of_birth",""+binding.tvDob.getText().toString());
+        mPram.put("intro_discription", binding.etAboutMe.getText().toString().trim());
+
+
+        if (UploadIntroVideoActivity.uploadIntroVideoActivity.videoThumbFile != null) {
+            // video send from the volly multi part
+            uploadVideo();
+        } else {
+            // profile image and skills and location send
+            sendOtherData();
+        }
+
         /*if (binding.tvDob.getText().toString().isEmpty()) {
             Constant.snackBar(binding.mainLayout, "Please select DOB");
         } else */
-        if (binding.etAboutMe.getText().toString().isEmpty()) {
+       /* if (binding.etAboutMe.getText().toString().isEmpty()) {
             Constant.snackBar(binding.mainLayout, "please write something about you.");
         } else {
             // profileImageFileList = new ArrayList<>();
@@ -220,7 +242,7 @@ public class WriteSomthingAboutWorkerFragment extends Fragment implements View.O
                 // profile image and skills and location send
                 sendOtherData();
             }
-        }
+        }*/
     }
 
     //"""""""""" upload video  """"""""""""""//

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <import type="android.view.View" />
         <variable
             name="userResponce"
             type="com.livewire.responce.MyProfileResponce.DataBean" />
@@ -143,31 +143,43 @@
 
                                     />
 
-                                <RatingBar
-                                    android:id="@+id/rating_bar"
-                                    style="@style/Widget.AppCompat.RatingBar.Small"
+
+                                <RelativeLayout
+                                    android:id="@+id/rl_rating_bar"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_below="@+id/tv_name"
                                     android:layout_centerHorizontal="true"
-                                    android:numStars="5"
-                                    android:progressTint="@color/coloryellow"
-                                    android:theme="@style/RatingBarTheme" />
+
+                                    >
+
+                                    <RatingBar
+                                        android:id="@+id/rating_bar"
+                                        style="@style/Widget.AppCompat.RatingBar.Small"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:numStars="5"
+                                        android:progressTint="@color/coloryellow"
+                                        android:theme="@style/RatingBarTheme" />
+
+                                </RelativeLayout>
 
                                 <TextView
                                     android:id="@+id/tv_location"
                                     style="@style/smallPopinsRegularStyle"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_below="@+id/rating_bar"
+                                    android:layout_below="@+id/rl_rating_bar"
                                     android:layout_centerHorizontal="true"
                                     android:drawablePadding="@dimen/_2sdp"
                                     android:drawableStart="@drawable/ic_location"
                                     android:gravity="start"
-                                    android:paddingLeft="@dimen/_50sdp"
-                                    android:paddingRight="@dimen/_50sdp"
-                                    android:text='@{userResponce.town != "" ? userResponce.town : "N/A", default="N/A"}'
-                                    android:textColor="@color/colorDarkGray" />
+                                    android:paddingLeft="@dimen/_40sdp"
+                                    android:paddingRight="@dimen/_40sdp"
+                                    android:text='@{userResponce.profile_address != "" ? userResponce.profile_address : "N/A", default="N/A"}'
+                                    android:textColor="@color/colorDarkGray"
+                                    android:visibility='@{userResponce.profile_address.empty ? View.GONE :View.VISIBLE, default = gone}'
+                                    />
 
                                 <View
                                     android:id="@+id/view1"
@@ -336,7 +348,7 @@
                                     android:layout_below="@+id/about_me"
                                     android:layout_marginTop="@dimen/_8sdp"
                                     android:layout_marginStart="@dimen/_10sdp"
-                                    android:text='@{userResponce.intro_video.empty ? "No video post" : "Watch Intro Video"}'
+                                    android:text='@{userResponce.intro_video.empty ? "No video Added" : "Intro Video"}'
                                     android:textColor="@color/colorGreen" />
 
 
@@ -445,8 +457,15 @@
                         <FrameLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center">
+                            android:layout_gravity="center"
+                            >
 
+
+                            <!--<ImageView
+                                android:layout_width="@dimen/_80sdp"
+                                android:layout_height="@dimen/_80sdp"
+                                android:src="@drawable/circle_white"
+                                />-->
 
                             <de.hdodenhof.circleimageview.CircleImageView
                                 android:id="@+id/iv_profile"
@@ -454,7 +473,9 @@
                                 android:layout_height="@dimen/_100sdp"
                                 android:src="@color/colorWhite"
                                 app:civ_border_color="@color/colorGreen"
-                                app:civ_border_width="@dimen/_1sdp" />
+                                app:civ_border_width="@dimen/_1sdp"
+                                android:visibility="visible"
+                                />
 
                             <ImageView
                                 android:id="@+id/iv_placeholder"

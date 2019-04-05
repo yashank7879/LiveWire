@@ -2,370 +2,362 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <variable
             name="jobDetail"
-            type="com.livewire.responce.JobDetailWorkerResponce.DataBean"/>
+            type="com.livewire.responce.JobDetailWorkerResponce.DataBean" />
 
 
     </data>
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorWhite"
-    android:id="@+id/detail_main_layout">
 
-    <com.loopeer.shadow.ShadowView
-        android:id="@+id/action_bar"
+    <RelativeLayout
+        android:id="@+id/detail_main_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:shadowColor="@color/colorLightGray"
-        app:shadowMarginBottom="3dp"
-        app:shadowRadius="@dimen/_5sdp">
+        android:layout_height="match_parent"
+        android:background="@color/colorWhite">
 
-        <RelativeLayout
+        <com.loopeer.shadow.ShadowView
+            android:id="@+id/action_bar"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp">
+            android:layout_height="wrap_content"
+            app:shadowColor="@color/colorLightGray"
+            app:shadowMarginBottom="3dp"
+            app:shadowRadius="@dimen/_5sdp">
 
-            <TextView
-                style="@style/mediumPopinsMediumStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="@string/work_detail"
-                android:textColor="@color/colorGreen" />
-
-            <ImageView
-                android:layout_width="@dimen/_25sdp"
-                android:layout_height="match_parent"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="@dimen/_5sdp"
-                android:padding="@dimen/_4sdp"
-                app:srcCompat="@drawable/ic_left_arrow"
-                android:tint="@color/colorDarkBlack"
-                android:id="@+id/iv_back"
-                />
-
-
-        </RelativeLayout>
-
-    </com.loopeer.shadow.ShadowView>
-
-    <com.loopeer.shadow.ShadowView
-        android:id="@+id/details_id"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:shadowColor="#666666"
-        app:shadowMarginBottom="3dp"
-        app:shadowRadius="@dimen/_5sdp"
-        android:layout_below="@+id/action_bar"
-        >
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                style="@style/SmallPopinsMediumStyle"
-                android:id="@+id/tv_posted_by"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_8sdp"
-                android:text="@string/posted_by"
-                android:textColor="@color/colorGreen" />
             <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_posted_by"
-                android:id="@+id/rl_user_data"
-                >
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/iv_profile_img"
-                android:layout_width="@dimen/_35sdp"
-                android:layout_height="@dimen/_35sdp"
-                android:layout_marginStart="@dimen/_8sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:src="@drawable/ic_user"
-                app:civ_border_color="@color/colorGreen"
-                app:civ_border_width="1dp" />
-
-            <TextView
-                android:id="@+id/tv_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_posted_by"
-                android:layout_toEndOf="@+id/iv_profile_img"
-                android:fontFamily="@font/poppins_semibold"
-                android:text='@{jobDetail.name, default= "N/A"}'
-                android:textColor="@color/colorDarkBlack"
-                android:textSize="@dimen/_12sdp" />
-
-            <RatingBar
-                android:id="@+id/rating_bar"
-                android:theme="@style/RatingBarTheme"
-                style="@style/Widget.AppCompat.RatingBar.Small"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_name"
-                android:layout_toEndOf="@+id/iv_profile_img"
-                android:numStars="5"
-                android:progressTint="@color/coloryellow"
-               />
-
-            <LinearLayout
-                android:id="@+id/ll_km_away"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/rating_bar"
-                android:layout_marginBottom="@dimen/_5sdp"
-                android:layout_toEndOf="@+id/iv_profile_img">
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp">
 
                 <TextView
-                    android:id="@+id/tv_distance"
+                    style="@style/mediumPopinsMediumStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_medium"
-                    android:text='@{jobDetail.distance_in_km + " Km away" , default = "N/A"}'
-                    android:textColor="@color/colorDarkGray"
-                    android:textSize="@dimen/_9sdp" />
+                    android:layout_centerInParent="true"
+                    android:text="@string/work_detail"
+                    android:textColor="@color/colorGreen" />
 
                 <ImageView
-                    android:layout_width="@dimen/_10sdp"
-                    android:layout_height="@dimen/_10sdp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="@dimen/_3sdp"
-                    app:srcCompat="@drawable/ic_sent_mail"
+                    android:id="@+id/iv_back"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:padding="@dimen/_4sdp"
+                    android:tint="@color/colorDarkBlack"
+                    app:srcCompat="@drawable/ic_left_arrow" />
 
-                    />
-
-            </LinearLayout>
 
             </RelativeLayout>
 
-            <TextView
-                android:id="@+id/tv_time"
-                style="@style/SmallPopinsMediumStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:paddingStart="@dimen/_15sdp"
-                android:paddingTop="@dimen/_3sdp"
-                android:paddingBottom="@dimen/_3sdp"
-                android:paddingEnd="@dimen/_5sdp"
-                android:background="@drawable/time_shape"
-                android:text="@string/n_a"
-                android:textAllCaps="false"
-                android:textColor="@color/colorWhite"
-                android:textSize="@dimen/_10sdp" />
+        </com.loopeer.shadow.ShadowView>
 
-            <LinearLayout
-                android:id="@+id/ll_chat"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_below="@+id/tv_time"
-                android:layout_margin="@dimen/_3sdp"
-                android:padding="@dimen/_5sdp"
-                tools:ignore="UseCompoundDrawables">
+        <com.loopeer.shadow.ShadowView
+            android:id="@+id/details_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/action_bar"
+            app:shadowColor="#666666"
+            app:shadowMarginBottom="3dp"
+            app:shadowRadius="@dimen/_5sdp">
 
-                <ImageView
-                    android:layout_width="@dimen/_25sdp"
-                    android:layout_height="@dimen/_25sdp"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="@dimen/_3sdp"
-                    android:layout_marginEnd="@dimen/_5sdp"
-                    android:background="@drawable/circle_green_bg"
-                    android:padding="@dimen/_5sdp"
-                    app:srcCompat="@drawable/ic_chat" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/tv_chat"
+                    android:id="@+id/tv_posted_by"
+                    style="@style/SmallPopinsMediumStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_8sdp"
+                    android:text="@string/posted_by"
+                    android:textColor="@color/colorGreen" />
+
+                <RelativeLayout
+                    android:id="@+id/rl_user_data"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_posted_by">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/iv_profile_img"
+                        android:layout_width="@dimen/_35sdp"
+                        android:layout_height="@dimen/_35sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:src="@drawable/ic_user"
+                        app:civ_border_color="@color/colorGreen"
+                        app:civ_border_width="1dp" />
+
+                    <TextView
+                        android:id="@+id/tv_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_posted_by"
+                        android:layout_toEndOf="@+id/iv_profile_img"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text='@{jobDetail.name, default= "N/A"}'
+                        android:textColor="@color/colorDarkBlack"
+                        android:textSize="@dimen/_12sdp" />
+
+                    <RatingBar
+                        android:id="@+id/rating_bar"
+                        style="@style/Widget.AppCompat.RatingBar.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_name"
+                        android:layout_toEndOf="@+id/iv_profile_img"
+                        android:numStars="5"
+                        android:progressTint="@color/coloryellow"
+                        android:theme="@style/RatingBarTheme" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_km_away"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/rating_bar"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:layout_toEndOf="@+id/iv_profile_img">
+
+                        <TextView
+                            android:id="@+id/tv_distance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_medium"
+                            android:text='@{jobDetail.distance_in_km + " Km away" , default = "N/A"}'
+                            android:textColor="@color/colorDarkGray"
+                            android:textSize="@dimen/_9sdp" />
+
+                        <ImageView
+                            android:layout_width="@dimen/_10sdp"
+                            android:layout_height="@dimen/_10sdp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="@dimen/_3sdp"
+                            app:srcCompat="@drawable/ic_sent_mail"
+
+                            />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tv_time"
+                    style="@style/SmallPopinsMediumStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:background="@drawable/time_shape"
+                    android:paddingBottom="@dimen/_3sdp"
+                    android:paddingEnd="@dimen/_5sdp"
+                    android:paddingStart="@dimen/_15sdp"
+                    android:paddingTop="@dimen/_3sdp"
+                    android:text="@string/n_a"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/_10sdp" />
+
+                <LinearLayout
+                    android:id="@+id/ll_chat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_below="@+id/tv_time"
+                    android:layout_margin="@dimen/_3sdp"
+                    android:padding="@dimen/_5sdp"
+                    tools:ignore="UseCompoundDrawables">
+
+                    <ImageView
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        android:layout_marginStart="@dimen/_3sdp"
+                        android:background="@drawable/circle_green_bg"
+                        android:padding="@dimen/_5sdp"
+                        app:srcCompat="@drawable/ic_chat" />
+
+                    <TextView
+                        android:id="@+id/tv_chat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="@string/chat"
+                        android:textColor="@color/colorGreen"
+                        android:textSize="@dimen/_10sdp" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </com.loopeer.shadow.ShadowView>
+
+
+        <com.loopeer.shadow.ShadowView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/details_id"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:layout_marginTop="-1dp"
+            app:shadowColor="#666666"
+            app:shadowMarginBottom="3dp"
+            app:shadowMarginLeft="3dp"
+            app:shadowMarginRight="3dp"
+            app:shadowRadius="@dimen/_5sdp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_8sdp">
+
+                <TextView
+                    android:id="@+id/tv_details_of_help"
+                    style="@style/SmallPopinsMediumStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:fontFamily="@font/poppins_regular"
-                    android:text="@string/chat"
-                    android:textColor="@color/colorGreen"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="@string/deatils"
+                    android:textColor="@color/colorGreen" />
+
+                <TextView
+                    android:id="@+id/tv_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_details_of_help"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text='@{jobDetail.subCategoryName, default= "N/A"}'
+                    android:textColor="@color/colorDarkBlack"
+                    android:textSize="@dimen/_12sdp" />
+
+                <TextView
+                    android:id="@+id/tv_date"
+                    style="@style/mediumPopinsRegularStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/tv_category"
+                    android:layout_toStartOf="@+id/tv_date_month"
+                    android:text="@string/n_a"
+                    android:textColor="@color/colorDarkBlack" />
+
+                <TextView
+                    android:id="@+id/tv_date_month"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/tv_category"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="@font/poppins_light"
+                    android:text="@string/n_a"
+                    android:textColor="@color/colorDarkBlack"
                     android:textSize="@dimen/_10sdp" />
 
-            </LinearLayout>
+                <TextView
+                    android:id="@+id/tv_sub_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_category"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/poppins_regular"
+                    android:text='@{jobDetail.parentCategoryName, default= "N/A"}'
+                    android:textColor="@color/colorDarkGray"
+                    android:textSize="@dimen/_12sdp" />
 
-        </RelativeLayout>
+                <TextView
+                    android:id="@+id/tv_offer_rate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_sub_category"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:text="@string/budget"
+                    android:textColor="@color/colorDarkBlack"
+                    android:textSize="@dimen/_12sdp" />
 
-    </com.loopeer.shadow.ShadowView>
-
-
-    <com.loopeer.shadow.ShadowView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/details_id"
-        android:layout_marginLeft="@dimen/_5sdp"
-        android:layout_marginRight="@dimen/_5sdp"
-        app:shadowColor="#666666"
-        app:shadowMarginBottom="3dp"
-        app:shadowMarginLeft="3dp"
-        app:shadowMarginRight="3dp"
-        app:shadowRadius="@dimen/_5sdp"
-        android:layout_marginTop="-1dp"
-        >
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/_8sdp">
-
-            <TextView
-                android:id="@+id/tv_details_of_help"
-                style="@style/SmallPopinsMediumStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:fontFamily="@font/poppins_medium"
-                android:text="@string/deatils"
-                android:textColor="@color/colorGreen"
-                />
-
-            <TextView
-                android:id="@+id/tv_category"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_details_of_help"
-                android:layout_gravity="center"
-                android:text='@{jobDetail.subCategoryName, default= "N/A"}'
-                android:fontFamily="@font/poppins_semibold"
-                android:textColor="@color/colorDarkBlack"
-                android:textSize="@dimen/_12sdp"/>
-
-            <TextView
-                android:id="@+id/tv_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toStartOf="@+id/tv_date_month"
-                android:layout_alignBaseline="@id/tv_category"
-                android:text="@string/n_a"
-                style="@style/mediumPopinsRegularStyle"
-                android:textColor="@color/colorDarkBlack"
-                />
-
-            <TextView
-                android:id="@+id/tv_date_month"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:fontFamily="@font/poppins_light"
-                android:textColor="@color/colorDarkBlack"
-                android:textSize="@dimen/_10sdp"
-                android:layout_alignBaseline="@id/tv_category"
-                android:text="@string/n_a"
-                />
-
-            <TextView
-                android:id="@+id/tv_sub_category"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_category"
-                android:layout_gravity="center"
-                android:fontFamily="@font/poppins_regular"
-                android:text='@{jobDetail.parentCategoryName, default= "N/A"}'
-                android:textColor="@color/colorDarkGray"
-                android:textSize="@dimen/_12sdp"
-                />
-
-            <TextView
-                android:id="@+id/tv_offer_rate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_sub_category"
-                android:layout_marginEnd="@dimen/_5sdp"
-                android:text="@string/budget"
-                android:fontFamily="@font/poppins_regular"
-                android:textSize="@dimen/_12sdp"
-                android:textColor="@color/colorDarkBlack"
-                />
-
-            <TextView
-                android:id="@+id/tv_budget_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_semibold"
-                android:textSize="@dimen/_12sdp"
-                android:layout_alignBaseline="@id/tv_offer_rate"
-                android:layout_toEndOf="@id/tv_offer_rate"
-                android:text='@{"$ "+jobDetail.job_budget, default= "N/A"}'
-                android:textColor="@color/colorDarkBlack" />
+                <TextView
+                    android:id="@+id/tv_budget_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/tv_offer_rate"
+                    android:layout_toEndOf="@id/tv_offer_rate"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text='@{"$ "+jobDetail.job_budget, default= "N/A"}'
+                    android:textColor="@color/colorDarkBlack"
+                    android:textSize="@dimen/_12sdp" />
 
 
-            <View
-                android:id="@+id/view2_id"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@+id/tv_offer_rate"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:background="@color/colorLightGray" />
+                <View
+                    android:id="@+id/view2_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/tv_offer_rate"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:background="@color/colorLightGray" />
 
-            <TextView
-                android:id="@+id/description"
-                style="@style/SmallPopinsMediumStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/view2_id"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:text="@string/description"
-                android:textSize="@dimen/_12sdp"
-                android:textColor="@color/colorDarkBlack"
-                />
+                <TextView
+                    android:id="@+id/description"
+                    style="@style/SmallPopinsMediumStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/view2_id"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:text="@string/description"
+                    android:textColor="@color/colorDarkBlack"
+                    android:textSize="@dimen/_12sdp" />
 
-            <TextView
-                android:id="@+id/tv_description"
-                style="@style/smallPopinsRegularStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/description"
-                android:text='@{jobDetail.job_description, default= "N/A"}'                   android:textSize="@dimen/_10sdp"
-                />
+                <TextView
+                    android:id="@+id/tv_description"
+                    style="@style/smallPopinsRegularStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/description"
+                    android:text='@{jobDetail.job_description.empty ? "N/A" : jobDetail.job_description ,default = "N/A"}'
+                    android:textSize="@dimen/_10sdp" />
 
-            <Button
-                android:id="@+id/btn_send_request"
-                style="@style/smallPopinsRegularStyle"
-                android:layout_width="@dimen/_85sdp"
-                android:layout_height="@dimen/_28sdp"
-                android:layout_below="@id/tv_description"
-                android:layout_centerInParent="true"
-                android:layout_margin="@dimen/_15sdp"
-                android:background="@drawable/button_black_bg"
-                android:text="@string/apply"
-                android:textAllCaps="false"
-                android:textColor="@color/colorWhite"
-                android:textSize="@dimen/_10sdp" />
+                <Button
+                    android:id="@+id/btn_send_request"
+                    style="@style/smallPopinsRegularStyle"
+                    android:layout_width="@dimen/_85sdp"
+                    android:layout_height="@dimen/_28sdp"
+                    android:layout_below="@id/tv_description"
+                    android:layout_centerInParent="true"
+                    android:layout_margin="@dimen/_15sdp"
+                    android:background="@drawable/button_black_bg"
+                    android:text="@string/apply"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/_10sdp" />
 
-            <Button
-                android:id="@+id/btn_dilog"
-                style="@style/smallPopinsRegularStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/_25sdp"
-                android:layout_below="@id/btn_send_request"
-                android:layout_centerInParent="true"
-                android:layout_margin="@dimen/_10sdp"
-                android:paddingRight="@dimen/_10sdp"
-                android:paddingLeft="@dimen/_10sdp"
-                android:background="@drawable/button_green_bg"
-                android:text="@string/give_review"
-                android:textAllCaps="false"
-                android:textColor="@color/colorWhite"
-                android:textSize="@dimen/_10sdp"
-                android:visibility="gone"
-                />
+                <Button
+                    android:id="@+id/btn_dilog"
+                    style="@style/smallPopinsRegularStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_below="@id/btn_send_request"
+                    android:layout_centerInParent="true"
+                    android:layout_margin="@dimen/_10sdp"
+                    android:background="@drawable/button_green_bg"
+                    android:paddingLeft="@dimen/_10sdp"
+                    android:paddingRight="@dimen/_10sdp"
+                    android:text="@string/give_review"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/_10sdp"
+                    android:visibility="gone" />
 
 
-        </RelativeLayout>
+            </RelativeLayout>
 
 
-    </com.loopeer.shadow.ShadowView>
+        </com.loopeer.shadow.ShadowView>
 
 
-</RelativeLayout>
+    </RelativeLayout>
 </layout>

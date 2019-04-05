@@ -214,6 +214,9 @@
                     android:gravity="center"
                     android:orientation="vertical">
 
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
                     <ImageView
                         android:id="@+id/iv_chat"
                         android:layout_width="@dimen/_30sdp"
@@ -222,6 +225,15 @@
                         android:tint="@color/colorLightGray"
                         app:srcCompat="@drawable/ic_active_chat" />
 
+                        <ImageView
+                            android:id="@+id/iv_unread_msg_tab"
+                            android:layout_width="@dimen/_7sdp"
+                            android:layout_height="@dimen/_7sdp"
+                            android:layout_margin="@dimen/_5sdp"
+                            android:layout_gravity="top|end"
+                            android:background="@drawable/circle_black_bg"
+                            android:visibility="gone" />
+                    </FrameLayout>
                     <ImageView
                         android:id="@+id/iv_chat_dot"
                         android:layout_width="@dimen/_5sdp"

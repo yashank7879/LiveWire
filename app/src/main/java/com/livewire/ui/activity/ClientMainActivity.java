@@ -9,6 +9,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -23,15 +24,24 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
 import com.livewire.R;
 import com.livewire.databinding.ActivityClientMainBinding;
+import com.livewire.model.Chat;
 import com.livewire.ui.activity.chat.ChattingActivity;
 import com.livewire.ui.fragments.ChatClientFragment;
 import com.livewire.ui.fragments.MyJobClientFragment;
 import com.livewire.ui.fragments.NearByClientFragment;
 import com.livewire.ui.fragments.NotificationClientFragment;
 import com.livewire.ui.fragments.PostJobHomeFragment;
+import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ClientMainActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
     ActivityClientMainBinding binding;
@@ -39,6 +49,7 @@ public class ClientMainActivity extends AppCompatActivity implements View.OnClic
     private android.support.v4.app.FragmentManager fm;
     private boolean doubleBackToExitPressedOnce = false;
     private Runnable runnable;
+    private Map<String, Integer> isMsgFoundMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +70,7 @@ public class ClientMainActivity extends AppCompatActivity implements View.OnClic
 
         binding.actionBar.setVisibility(View.VISIBLE);
 
+        isMsgFoundMap = new HashMap<>();
         //get intent from NearYouClientActivity || from After completing payment
         if (getIntent().getStringExtra("NearYouKey") != null) {
             replaceFragment(new MyJobClientFragment(), false, R.id.fl_container); // first time replace home fragment
@@ -89,6 +101,9 @@ public class ClientMainActivity extends AppCompatActivity implements View.OnClic
             binding.tvHeading.setText(R.string.creat_project);
             replaceFragment(new PostJobHomeFragment(), false, R.id.fl_container); // first time replace home fragment
             clickId = R.id.add_ll;
+        }
+        if (Constant.isNetworkAvailable(this,binding.mainLayout)) {
+            checkUREADmsg();
         }
     }
 
@@ -125,6 +140,73 @@ public class ClientMainActivity extends AppCompatActivity implements View.OnClic
         binding.ivProfile.setVisibility(View.VISIBLE);
         binding.ivProfile.setOnClickListener(this);
         binding.ivFilter.setOnClickListener(this);
+    }
+
+
+    private void checkUREADmsg() {
+        FirebaseDatabase.getInstance().getReference().child(Constant.ARG_HISTORY).child(PreferenceConnector.readString(this,PreferenceConnector.MY_USER_ID,"")).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if (dataSnapshot.getValue(Chat.class) != null) {
+                    int unreadCount = dataSnapshot.getValue(Chat.class).unreadCount;
+
+                    if (unreadCount > 0) {
+                        isMsgFoundMap.put(dataSnapshot.getKey(), unreadCount);
+                        binding.ivUnreadMsgTab.setVisibility(View.VISIBLE);
+                        /*if (isMsgFoundMap.containsValue(myUserId)) {
+                            iv_unread_msg_tab.setVisibility(View.VISIBLE);
+                            return;
+                        } else iv_unread_msg_tab.setVisibility(View.GONE);*/
+
+
+                    } else  binding.ivUnreadMsgTab.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if (dataSnapshot.getValue(Chat.class) != null) {
+                    int unreadCount = dataSnapshot.getValue(Chat.class).unreadCount;
+                    if (unreadCount > 0) {
+                        isMsgFoundMap.put(dataSnapshot.getKey(), unreadCount);
+                        binding.ivUnreadMsgTab.setVisibility(View.VISIBLE);
+
+                       /* if (isMsgFoundMap.containsValue(myUserId)) {
+                            iv_unread_msg_tab.setVisibility(View.VISIBLE);
+                            return;
+                        } else iv_unread_msg_tab.setVisibility(View.GONE);*/
+                    }else  binding.ivUnreadMsgTab.setVisibility(View.GONE);
+                }
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue(Chat.class) != null) {
+                    int unreadCount = dataSnapshot.getValue(Chat.class).unreadCount;
+                    if (unreadCount > 0) {
+                        isMsgFoundMap.put(dataSnapshot.getKey(), unreadCount);
+                        binding.ivUnreadMsgTab.setVisibility(View.VISIBLE);
+
+                       /* if (isMsgFoundMap.containsValue(myUserId)) {
+                            iv_unread_msg_tab.setVisibility(View.VISIBLE);
+                            return;
+                        } else iv_unread_msg_tab.setVisibility(View.GONE);*/
+                    } else binding.ivUnreadMsgTab.setVisibility(View.GONE);
+
+                }
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override

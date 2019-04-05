@@ -122,10 +122,11 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
         btnCancel = view.findViewById(R.id.btn_cancel);
         etDescription = view.findViewById(R.id.et_description);
 
+        tvLocation.setOnClickListener(this);
         tvLocation.setSelected(true);
         tvLocation.setHorizontallyScrolling(true);
         tvLocation.setMovementMethod(new ScrollingMovementMethod());
-
+        tvLocation.setHint(R.string.location);
 
         //""""  to hide keyboard """""""//
         etDescription.setImeOptions(EditorInfo.IME_ACTION_DONE);
@@ -162,6 +163,15 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
         });
 
         loadSkillsData();
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        Log.e(TAG, "setUserVisibleHint1: "+isVisibleToUser );
+        if (isVisibleToUser){
+            clearData();
+        }
     }
 
     public String perfectDecimal(String str, int maxBeforePoint, int maxDecimal) { //price format "15455.15"
@@ -205,6 +215,9 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
             case R.id.location_rl:
                 autoCompletePlacePicker();
                 break;
+            case R.id.tv_location:
+                autoCompletePlacePicker();
+                break;
             case R.id.btn_share:
                 jobValidations();
                 break;
@@ -216,11 +229,14 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
     }
 
     private void clearData() {
-        tvSelectSkill.setText("");
-        tvSelectDate.setText("");
-        tvLocation.setText("");
-        etBudget.setText("");
-        etDescription.setText("");
+        if (tvSelectSkill!=null) {
+            tvSelectSkill.setText("");
+            tvSelectDate.setText("");
+            tvLocation.setText("");
+            etBudget.setText("");
+            etDescription.setText("");
+            tvLocation.setHint(R.string.location);
+        }
     }
 
     //"""""""" open date picker """""""""""'//
@@ -370,16 +386,16 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
             Constant.snackBar(mainLayout, "Please enter correct Budget");
         } else if (Validation.isEmpty(tvLocation)) {
             Constant.snackBar(mainLayout, "Please enter your Location");
-        } else if (Validation.isEmpty(etDescription)) {
+        }/* else if (Validation.isEmpty(etDescription)) {
             Constant.snackBar(mainLayout, "Please enter job Description");
-        } else {
+        }*/ else {
             JobCreationModel model = new JobCreationModel();
             model.skill = skillId;
             model.job_start_date = tvSelectDate.getText().toString();
             model.job_location = locationPlace;
             model.job_latitude = String.valueOf(locationLatLng.latitude);
             model.job_longitude = String.valueOf(locationLatLng.longitude);
-            model.job_budget =etBudget.getText().toString();
+            model.job_budget = Float.parseFloat(etBudget.getText().toString());
             model.job_type = "1";
             model.job_title = "test";
             model.job_description = etDescription.getText().toString();
@@ -404,7 +420,7 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
                         String status = response.getString("status");
                         String message = response.getString("message");
                         if (status.equals("success")) {
-                            Constant.snackBar(mainLayout,getString(R.string.your_project_has_been_successfully_shared));
+                            Constant.snackBar(mainLayout,"Your offer has been successfully sent.");
                             tvSelectSkill.setText("");
                             tvLocation.setText("");
                             tvSelectDate.setText("");

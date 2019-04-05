@@ -1,9 +1,10 @@
 package com.livewire.ui.activity;
 
 import android.databinding.DataBindingUtil;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,20 +31,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.livewire.utils.ApiCollection.BASE_URL;
-import static com.livewire.utils.ApiCollection.GET_MY_REVIEW_LIST_API;
+import static com.livewire.utils.ApiCollection.GET_OTHER_REVIEW_LIST_API;
 
-public class ReviewListActivity extends AppCompatActivity implements View.OnClickListener {
-    private static final String TAG = ReviewListActivity.class.getName();
+/**
+ * Created by mindiii on 4/5/19.
+ */
+
+public class OtherReviewListActivity extends AppCompatActivity implements View.OnClickListener {
+    private static final String TAG = OtherReviewListActivity.class.getName();
     ActivityReviewListBinding binding;
     private ProgressDialog progressDialog;
     private GetReviewResponce reviewResponce;
     private List<GetReviewResponce.DataBean> reviewList = new ArrayList<>();
     private ReviewAdapter adapter;
+    private String userId = "";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_review_list);
+
+        if (getIntent().getStringExtra("userId") != null) {
+            userId = getIntent().getStringExtra("userId");
+
+        }
+        binding.tvNoReview.setText("This user don't have any review yet");
 
         progressDialog = new ProgressDialog(this);
 
@@ -60,12 +72,14 @@ public class ReviewListActivity extends AppCompatActivity implements View.OnClic
                 DividerItemDecoration(this,
                 DividerItemDecoration.VERTICAL));
         reviewListApi();
+
     }
 
     private void reviewListApi() {
         if (Constant.isNetworkAvailable(this, binding.reviewLayout)) {
             progressDialog.show();
-            AndroidNetworking.get(BASE_URL + GET_MY_REVIEW_LIST_API)
+            AndroidNetworking.post(BASE_URL + GET_OTHER_REVIEW_LIST_API)
+                    .addBodyParameter("user_id", userId)
                     .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
                     .setPriority(Priority.MEDIUM)
                     .build().getAsJSONObject(new JSONObjectRequestListener() {
@@ -84,7 +98,8 @@ public class ReviewListActivity extends AppCompatActivity implements View.OnClic
                             }
                             adapter.notifyDataSetChanged();
                         } else {
-                            if (!message.equalsIgnoreCase("Record not found")){
+                            binding.tvNoReview.setVisibility(View.VISIBLE);
+                            if (!message.equals("Records not found")) {
                                 Constant.snackBar(binding.reviewLayout, message);
                             }
                         }

@@ -11,6 +11,7 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -89,8 +90,15 @@ public class EditProfileClientActivity extends AppCompatActivity implements View
                 locationLat = Double.parseDouble(userResponce.getData().getLatitude());
                 locationLng = Double.parseDouble(userResponce.getData().getLongitude());
             }
+
+          /* if (!PreferenceConnector.readString(this,PreferenceConnector.SOCIAL_LOGIN,"").isEmpty()){
+                binding.etEmail1.setText(userResponce.getData().getEmail());
+                binding.etEmail1.setEnabled(false);
+           }else binding.etEmail1.setText(userResponce.getData().getEmail());*/
             //  android:text='@{userInfo.town != "" ? userInfo.town : "N/A", default="N/A"}'
-            String location = userResponce.getData().getTown().isEmpty() ? "" : userResponce.getData().getTown();
+
+
+            String location = userResponce.getData().getProfile_address().isEmpty() ? "" : userResponce.getData().getProfile_address();
             binding.tvTownResident.setText(location);
 
             locationPlace = userResponce.getData().getTown();
@@ -153,6 +161,10 @@ public class EditProfileClientActivity extends AppCompatActivity implements View
         binding.btnSaveAndUpdate.setOnClickListener(this);
         binding.flUserProfile.setOnClickListener(this);
         binding.tvTownResident.setOnClickListener(this);
+
+        binding.tvTownResident.setSelected(true);
+        binding.tvTownResident.setHorizontallyScrolling(true);
+        binding.tvTownResident.setMovementMethod(new ScrollingMovementMethod());
 
     }
 
@@ -234,11 +246,22 @@ public class EditProfileClientActivity extends AppCompatActivity implements View
         if (requestCode == Constant.GALLERY && resultCode == RESULT_OK && null != data) {
             //isCamera = false;
             tmpUri = data.getData();
-            if (tmpUri != null) { // it will go to the CropImageActivity
+            if (tmpUri != null) {
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), tmpUri);
+                    userImageFile = savebitmap(this, bitmap, UUID.randomUUID() + ".jpg");
+                    // userImageFile = new File(tmpUri.toString());
+                    binding.inactiveUserImg.setVisibility(View.GONE);
+                    binding.ivProfileImg.setImageURI(tmpUri);
+                    profileImageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), tmpUri);
+                } catch (IOException e) {
+                    Log.d(TAG, e.getMessage());
+                }
+              /*  // it will go to the CropImageActivity
                 CropImage.activity(tmpUri).setCropShape(CropImageView.CropShape.OVAL).setMinCropResultSize(200, 200)
                         .setMaxCropResultSize(4000, 4000)
                         .setAspectRatio(300, 300)
-                        .start(this);
+                        .start(this);*/
             }
         } else {
             if (requestCode == Constant.CAMERA && resultCode == RESULT_OK) {
@@ -264,15 +287,26 @@ public class EditProfileClientActivity extends AppCompatActivity implements View
                     Log.d(TAG, e.getMessage());
                 }
                 if (tmpUri != null) { // it will go to the CropImageActivity
-                    CropImage.activity(tmpUri).setCropShape(CropImageView.CropShape.OVAL).setMinCropResultSize(200, 200)
+                    try {
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), tmpUri);
+                        userImageFile = savebitmap(this, bitmap, UUID.randomUUID() + ".jpg");
+                        // userImageFile = new File(tmpUri.toString());
+                        binding.inactiveUserImg.setVisibility(View.GONE);
+                        binding.ivProfileImg.setImageURI(tmpUri);
+                        profileImageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), tmpUri);
+                    } catch (IOException e) {
+                        Log.d(TAG, e.getMessage());
+                    }
+
+                    /*CropImage.activity(tmpUri).setCropShape(CropImageView.CropShape.OVAL).setMinCropResultSize(200, 200)
                             .setMaxCropResultSize(4000, 4000)
                             .setAspectRatio(300, 300)
-                            .start(this);
+                            .start(this);*/
                 }
             }
         }
 
-        //*********** circle cropping image ********//
+/*        /******************* circle cropping image **************//*/
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {   // Image Cropper
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (result != null) {
@@ -288,7 +322,7 @@ public class EditProfileClientActivity extends AppCompatActivity implements View
                     Log.d(TAG, e.getMessage());
                 }
             }
-        }
+        }*/
 
 
         //*********Autocomplete place p[icker****************//
@@ -366,11 +400,11 @@ public class EditProfileClientActivity extends AppCompatActivity implements View
             //  binding.etEmail1.startAnimation(shake);
             binding.etEmail1.requestFocus();
             Constant.snackBar(binding.editProfileLayout, "Please enter valid email");
-        } else if (binding.tvTownResident.getText().toString().equals("")) {
+        } /*else if (binding.tvTownResident.getText().toString().equals("")) {
             //  binding.tvTownResident.startAnimation(shake);
             binding.tvTownResident.requestFocus();
             Constant.snackBar(binding.editProfileLayout, "Please enter your location");
-        } else {
+        }*/ else {
             UserModel model = new UserModel();
             model.name = binding.etFullName.getText().toString();
             model.email = binding.etEmail1.getText().toString();
@@ -422,7 +456,7 @@ public class EditProfileClientActivity extends AppCompatActivity implements View
 
                 @Override
                 public void onError(ANError anError) {
-
+                    progressDialog.dismiss();
                 }
             });
         }

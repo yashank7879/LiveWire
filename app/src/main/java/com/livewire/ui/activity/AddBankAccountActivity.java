@@ -1,14 +1,15 @@
 package com.livewire.ui.activity;
 
-import android.app.DatePickerDialog;
 import android.databinding.DataBindingUtil;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
+import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -53,7 +54,7 @@ public class AddBankAccountActivity extends AppCompatActivity implements View.On
         progressDialog = new ProgressDialog(this);
 
         binding.payNow.setOnClickListener(this);
-        binding.llDob.setOnClickListener(this);
+        // binding.llDob.setOnClickListener(this);
         binding.actionBarWorker.ivBack.setOnClickListener(this);
         binding.actionBarWorker.tvLiveWire.setText(R.string.add_bank_acc);
 
@@ -66,10 +67,11 @@ public class AddBankAccountActivity extends AppCompatActivity implements View.On
         accTypeList.add("NRI Accounts");
         getBankAccountDetails();
 
-        accTypeAdapter = new ArrayAdapter<>(AddBankAccountActivity.this, R.layout.spinner_item, accTypeList);
-        accTypeAdapter.setDropDownViewResource(R.layout.spinner_drop_down);
-        binding.spinnerBankType.setOnItemSelectedListener(this);
-        binding.spinnerBankType.setAdapter(accTypeAdapter);
+
+        // accTypeAdapter = new ArrayAdapter<>(AddBankAccountActivity.this, R.layout.spinner_item, accTypeList);
+        //accTypeAdapter.setDropDownViewResource(R.layout.spinner_drop_down);
+        //  binding.spinnerBankType.setOnItemSelectedListener(this);
+        //  binding.spinnerBankType.setAdapter(accTypeAdapter);
 
 
     }
@@ -81,10 +83,6 @@ public class AddBankAccountActivity extends AppCompatActivity implements View.On
                 bankAccountValidations();
                 break;
             }
-            case R.id.ll_dob: {
-                openDobCalender();
-                break;
-            }
             case R.id.iv_back: {
                 onBackPressed();
                 break;
@@ -92,11 +90,15 @@ public class AddBankAccountActivity extends AppCompatActivity implements View.On
             default: {
                 break;
             }
+            /*case R.id.ll_dob: {
+                //openDobCalender();
+                break;
+            }*/
         }
     }
 
     //"""""""" open date picker """""""""""'//
-    private void openDobCalender() {
+   /* private void openDobCalender() {
         final Calendar calendar = Calendar.getInstance();
         int mYear = calendar.get(Calendar.YEAR);
         int mMonth = calendar.get(Calendar.MONTH);
@@ -110,7 +112,9 @@ public class AddBankAccountActivity extends AppCompatActivity implements View.On
                 startDateTime.set(Calendar.YEAR, year);
                 startDateTime.set(Calendar.MONTH, month);
                 startDateTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                //********Date time Format**************//
+                /*/
+
+    /********Date time Format**************//*/
                 SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy ");
                 binding.tvDob.setText(sdf1.format(startDateTime.getTime()));
 
@@ -123,18 +127,45 @@ public class AddBankAccountActivity extends AppCompatActivity implements View.On
 
         startDateDialog.show();
 
-    }
-
+    }*/
     private void bankAccountValidations() {
         if (Validation.isEmpty(binding.accHolderFirstName)) {
             Constant.snackBar(binding.svAddbankLayout, getString(R.string.please_enter_account_holder_first_name));
-        } else if (Validation.isEmpty(binding.accHolderLastName)) {
+        }
+        else if (binding.accHolderFirstName.getText().toString().trim().contains("  ")) {
+            Constant.snackBar(binding.svAddbankLayout, "Single space should allowed here.");
+            binding.accHolderFirstName.requestFocus();
+            Constant.hideSoftKeyBoard(this,binding.accHolderFirstName);
+        }
+        else if (Validation.isEmpty(binding.accHolderLastName)) {
             Constant.snackBar(binding.svAddbankLayout, getString(R.string.please_enter_account_holder_last_name));
-        } else if (Validation.isEmpty(binding.accNumber)) {
+        }
+        else if (binding.accHolderLastName.getText().toString().trim().contains("  ")) {
+            binding.accHolderLastName.requestFocus();
+            Constant.hideSoftKeyBoard(this,binding.accHolderLastName);
+            Constant.snackBar(binding.svAddbankLayout, "Single space should allowed here.");
+        }
+        else if (Validation.isEmpty(binding.accNumber)) {
             Constant.snackBar(binding.svAddbankLayout, getString(R.string.please_enter_account_number));
-        } else if (Validation.isEmpty(binding.routingNo)) {
-            Constant.snackBar(binding.svAddbankLayout, getString(R.string.please_enter_routing_number));
-        } else if (Validation.isEmpty(binding.postalCode)) {
+        }
+        else if (Validation.isEmpty(binding.branchCode)) {
+            Constant.snackBar(binding.svAddbankLayout, getString(R.string.please_enter_branch_code));
+        }
+        else if (binding.branchCode.getText().toString().trim().contains("  ")) {
+            binding.branchCode.requestFocus();
+            Constant.hideSoftKeyBoard(this,binding.branchCode);
+            Constant.snackBar(binding.svAddbankLayout, "Single space should allowed here.");
+        }
+        else {
+            AddBankAccontModel model = new AddBankAccontModel();
+            model.firstName = binding.accHolderFirstName.getText().toString().trim();
+            model.lastName = binding.accHolderLastName.getText().toString().trim();
+            model.branch_code = binding.branchCode.getText().toString().trim();
+            model.accountNumber = binding.accNumber.getText().toString().trim();
+            addBankAccApi(model);
+        }
+
+        /*else if (Validation.isEmpty(binding.postalCode)) {
             Constant.snackBar(binding.svAddbankLayout, getString(R.string.please_enter_Postal_code));
         } else if (Validation.isEmpty(binding.ssnLast)) {
             Constant.snackBar(binding.svAddbankLayout, getString(R.string.please_enter_SSN_number));
@@ -142,18 +173,7 @@ public class AddBankAccountActivity extends AppCompatActivity implements View.On
             Constant.snackBar(binding.svAddbankLayout, getString(R.string.please_select_acc_type));
         } else if (Validation.isEmpty(binding.tvDob)) {
             Constant.snackBar(binding.svAddbankLayout, getString(R.string.pls_select_your_dob));
-        } else {
-            AddBankAccontModel model = new AddBankAccontModel();
-            model.firstName = binding.accHolderFirstName.getText().toString().trim();
-            model.lastName = binding.accHolderLastName.getText().toString().trim();
-            model.dob = binding.tvDob.getText().toString().trim();
-            model.routingNumber = binding.routingNo.getText().toString().trim();
-            model.accountNumber = binding.accNumber.getText().toString().trim();
-            model.postalCode = binding.postalCode.getText().toString().trim();
-            model.ssnLast = binding.ssnLast.getText().toString().trim();
-            model.accountType = accHolderType;
-            addBankAccApi(model);
-        }
+        }*/
     }
 
     private void addBankAccApi(AddBankAccontModel model) {
@@ -174,18 +194,23 @@ public class AddBankAccountActivity extends AppCompatActivity implements View.On
                                 String message = response.getString("message");
                                 if (status.equals("success")) {
                                     onBackPressed();
-                                    Constant.snackBar(binding.svAddbankLayout, "Your Account Added successfully");
+                                   // Constant.snackBar(binding.svAddbankLayout, "Your Account Added successfully");
 
-                                    PreferenceConnector.writeString(AddBankAccountActivity.this,PreferenceConnector.IS_BANK_ACC,"1");
+                                    PreferenceConnector.writeString(AddBankAccountActivity.this, PreferenceConnector.IS_BANK_ACC, "1");
                                     binding.payNow.setText(R.string.update_bank_details);
                                     binding.accHolderFirstName.setEnabled(false);
                                     binding.accHolderLastName.setEnabled(false);
                                     binding.accNumber.setEnabled(false);
-                                    binding.routingNo.setEnabled(false);
-                                    binding.postalCode.setEnabled(false);
+                                    binding.branchCode.setEnabled(false);
+
+                                    if (binding.payNow.getText().toString().equals("Update Account"))
+                                    Toast.makeText(AddBankAccountActivity.this, "Bank account Updated successfully", Toast.LENGTH_SHORT).show();
+                                    else Toast.makeText(AddBankAccountActivity.this, "Bank Account Update Successfully", Toast.LENGTH_SHORT).show();
+
+                                    /*binding.postalCode.setEnabled(false);
                                     binding.ssnLast.setEnabled(false);
                                     binding.spinnerBankType.setEnabled(false);
-                                    binding.llDob.setEnabled(false);
+                                    binding.llDob.setEnabled(false);*/
                                 } else {
 
                                     Constant.snackBar(binding.svAddbankLayout, message);
@@ -210,9 +235,9 @@ public class AddBankAccountActivity extends AppCompatActivity implements View.On
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-        if (!accTypeList.get(binding.spinnerBankType.getSelectedItemPosition()).equals("Account Holder Type")) {
+     /*   if (!accTypeList.get(binding.spinnerBankType.getSelectedItemPosition()).equals("Account Holder Type")) {
             accHolderType = String.valueOf(binding.spinnerBankType.getSelectedItem());
-        } else accHolderType = "";
+        } else accHolderType = "";*/
     }
 
     @Override
@@ -238,6 +263,7 @@ public class AddBankAccountActivity extends AppCompatActivity implements View.On
                                 if (status.equals("success")) {
                                     BankAccDetailResponce bankAccDetailResonce = new Gson().fromJson(String.valueOf(response), BankAccDetailResponce.class);
                                     setBankDetail(bankAccDetailResonce);
+                                    binding.actionBarWorker.tvLiveWire.setText(R.string.edit_bank_account);
                                     binding.tvContent.setVisibility(View.GONE);
                                     binding.payNow.setText(R.string.update_bank_details);
                                 } else {
@@ -268,20 +294,20 @@ public class AddBankAccountActivity extends AppCompatActivity implements View.On
     //{"status":"fail","message":"Your bank details is not registered"}
 
     private void setBankDetail(BankAccDetailResponce bankAccDetailResonce) {
-        binding.accNumber.setText(bankAccDetailResonce.getBank_detail().getAccountNumber());
-        binding.accHolderFirstName.setText(bankAccDetailResonce.getBank_detail().getFirstName());
-        binding.accHolderLastName.setText(bankAccDetailResonce.getBank_detail().getLastName());
-        binding.routingNo.setText(bankAccDetailResonce.getBank_detail().getRoutingNumber());
-        binding.postalCode.setText(bankAccDetailResonce.getBank_detail().getPostalCode());
+        binding.accNumber.setText(bankAccDetailResonce.getBank_detail().getAccountNumberX());
+        binding.accHolderFirstName.setText(bankAccDetailResonce.getBank_detail().getFirstNameX());
+        binding.accHolderLastName.setText(bankAccDetailResonce.getBank_detail().getLastNameX());
+        binding.branchCode.setText(bankAccDetailResonce.getBank_detail().getBranch_code());
+      /*  binding.postalCode.setText(bankAccDetailResonce.getBank_detail().getPostalCode());
         binding.ssnLast.setText(bankAccDetailResonce.getBank_detail().getSsnLast());
-        binding.tvDob.setText(dateFomatChange(bankAccDetailResonce.getBank_detail().getDob()));
+        binding.tvDob.setText(dateFomatChange(bankAccDetailResonce.getBank_detail().getDob()));*/
 
-        for (int i = 0; i < accTypeList.size(); i++) {
+      /*  for (int i = 0; i < accTypeList.size(); i++) {
             if (accTypeList.get(i).equals(bankAccDetailResonce.getBank_detail().getAccountType())) {
                 binding.spinnerBankType.setSelection(i);
             }
         }
-        binding.accNumber.setText(bankAccDetailResonce.getBank_detail().getAccountNumber());
+        binding.accNumber.setText(bankAccDetailResonce.getBank_detail().getAccountNumber());*/
 
     }
 

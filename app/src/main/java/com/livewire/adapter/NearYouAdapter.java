@@ -58,6 +58,8 @@ public class NearYouAdapter extends RecyclerView.Adapter<NearYouAdapter.MyViewHo
             holder.tvName.setText(data.getName());
             Picasso.with(holder.ivProfileImg.getContext()).load(data.getProfileImage()).into(holder.ivProfileImg);
             holder.tvDistance.setText(data.getDistance_in_km() + " Km away");
+            float rating =  data.getRating().isEmpty() ? 0:Float.parseFloat(data.getRating());
+            holder.ratingBar.setRating(rating);
 
             SpannableStringBuilder builder = new SpannableStringBuilder();
             SpannableString minprice = new SpannableString("$ " + data.getMin_rate());

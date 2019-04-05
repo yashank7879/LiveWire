@@ -164,6 +164,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         callBackManager = CallbackManager.Factory.create();
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+               // .requestIdToken(getString(R.string.server_client_id))
                 .requestEmail()
                 .build();
 
@@ -297,8 +298,17 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                         if (graphObject.getString("picture") != null) {
                             imageUrl = object.getJSONObject("picture").getJSONObject("data").getString("url");
                         }
-                        checkSocialLogin(fbId, "fb");
+                       // checkSocialLogin(fbId, "fb");
 
+                        UserModel model = new UserModel();
+                        model.name = personName;
+                        model.email = email;
+                        model.userType = key;
+                        model.deviceType = "2";
+                        model.deviceToken = FirebaseInstanceId.getInstance().getToken();
+                        model.socialId = fbId;
+                        model.socialType = "fb";
+                        signUpApiForSocial(model);
                      /*   if (key.equals("client")) {
                             email = graphObject.getString("email");
                             personName = graphObject.getString("name");
@@ -361,7 +371,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
                                     String isSocialLogin = response.getString("socialId");
                                     if (isSocialLogin.equals("0")) {
-                                        openLocationDialog(id, socialType);
+                                       // openLocationDialog(id, socialType);
                                     } else {
 
                                         UserModel model = new UserModel();
@@ -373,7 +383,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                                         model.socialId = id;
                                         model.socialType = socialType;
 
-                                        signUpApiForSocial(model);
+                                       // signUpApiForSocial(model);
                                     }
 
                                 } else {
@@ -425,13 +435,24 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
-            checkSocialLogin(acct.getId(), "gmail");
+            //checkSocialLogin(acct.getId(), "gmail");
             personName = acct.getDisplayName();
             email = acct.getEmail();
 
             if (acct.getPhotoUrl() != null) {
                 imageUrl = String.valueOf(acct.getPhotoUrl());
             }
+
+            UserModel model = new UserModel();
+            model.name = personName;
+            model.email = email;
+            model.userType = key;
+            model.deviceType = "2";
+            model.deviceToken = FirebaseInstanceId.getInstance().getToken();
+            model.socialId = acct.getId();
+            model.socialType = "gmail";
+
+            signUpApiForSocial(model);
 
           /*  if (key.equals("client")) {
                 checkSocialLogin(acct.getId(), "gmail");
@@ -493,7 +514,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                         e.printStackTrace();
                     }
                 }
-
                 @Override
                 public void onError(ANError anError) {
                     progressDialog.dismiss();
@@ -597,10 +617,23 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             //isCamera = false;
             tmpUri = data.getData();
             if (tmpUri != null) { // it will go to the CropImageActivity
-                CropImage.activity(tmpUri).setCropShape(CropImageView.CropShape.OVAL).setMinCropResultSize(200, 200)
+                Bitmap bitmap = null;
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), tmpUri);
+                    userImageFile = savebitmap(this, bitmap, UUID.randomUUID() + ".jpg");
+                    // userImageFile = new File(tmpUri.toString());
+                    inactiveUserImg.setVisibility(View.GONE);
+                    ivProfileImg.setImageURI(tmpUri);
+                    profileImageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), tmpUri);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+              /*  CropImage.activity(tmpUri).setCropShape(CropImageView.CropShape.OVAL).setMinCropResultSize(200, 200)
                         .setMaxCropResultSize(4000, 4000)
                         .setAspectRatio(300, 300)
-                        .start(this);
+                        .start(this);*/
             }
         } else {
             if (requestCode == Constant.CAMERA && resultCode == RESULT_OK) {
@@ -626,15 +659,28 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                     Log.d(TAG, e.getMessage());
                 }
                 if (tmpUri != null) { // it will go to the CropImageActivity
-                    CropImage.activity(tmpUri).setCropShape(CropImageView.CropShape.OVAL).setMinCropResultSize(200, 200)
+
+                    Bitmap bitmap = null;
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), tmpUri);
+                        userImageFile = savebitmap(this, bitmap, UUID.randomUUID() + ".jpg");
+                        // userImageFile = new File(tmpUri.toString());
+                        inactiveUserImg.setVisibility(View.GONE);
+                        ivProfileImg.setImageURI(tmpUri);
+                        profileImageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), tmpUri);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    /*CropImage.activity(tmpUri).setCropShape(CropImageView.CropShape.OVAL).setMinCropResultSize(200, 200)
                             .setMaxCropResultSize(4000, 4000)
                             .setAspectRatio(300, 300)
-                            .start(this);
+                            .start(this);*/
                 }
             }
         }
 
-        //*********** circle cropping image ********//
+    /*    /************ circle cropping image ********//*/
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {   // Image Cropper
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (result != null) {
@@ -650,7 +696,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                     Log.d(TAG, e.getMessage());
                 }
             }
-        }
+        }*/
 
         //*********Autocomplete place p[icker****************//
         if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {

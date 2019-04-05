@@ -3,11 +3,16 @@ package com.livewire.ui.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,14 +24,19 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.appolica.interactiveinfowindow.InfoWindow;
 import com.appolica.interactiveinfowindow.InfoWindowManager;
 import com.appolica.interactiveinfowindow.fragment.MapInfoWindowFragment;
-import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.GeoDataClient;
+import com.google.android.gms.location.places.PlaceDetectionClient;
+import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
 import com.livewire.R;
 import com.livewire.databinding.FragmentMapviewBinding;
@@ -47,10 +57,11 @@ import static com.livewire.utils.ApiCollection.NEAR_BY_USER_API;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link MapviewFragment#newInstance} factory method to
+ * Use the {@link MapviewClientFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MapviewFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener, GoogleMap.OnMarkerClickListener, InfoWindowManager.WindowShowListener {
+public class MapviewClientFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener, GoogleMap.OnMarkerClickListener, InfoWindowManager.WindowShowListener {
+    private static final String TAG = MapviewClientFragment.class.getName();
     // TODO: Rename parameter arguments, choose names that match
     FragmentMapviewBinding binding;
     private static final String ARG_PARAM1 = "param1";
@@ -64,23 +75,28 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback, Vie
     private List<NearByResponce.DataBean> nearByList;
     private List<Marker> markerList;
     private List<InfoWindow> infoWindowList;
-
+    private GeoDataClient mGeoDataClient;
+    private PlaceDetectionClient mPlaceDetectionClient;
+    private FusedLocationProviderClient mFusedLocationProviderClient;
+    private Location mLastKnownLocation;
+    private static final int DEFAULT_ZOOM = 11;
+    private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
+    private final LatLng mDefaultLocation = new LatLng(-33.8523341, 151.2106085);
+    private boolean mLocationPermissionGranted;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
     private NearByResponce userData;
     private String message;
 
-
-    public MapviewFragment() {
+    public MapviewClientFragment() {
         // Required empty public constructor
     }
 
     // TODO: Rename and change types and number of parameters
-    public MapviewFragment newInstance(String mesage, NearByResponce nearByResponce) {
-
+    public static MapviewClientFragment newInstance(String mesage, NearByResponce nearByResponce) {
         Bundle args = new Bundle();
-        MapviewFragment fragment = new MapviewFragment();
+        MapviewClientFragment fragment = new MapviewClientFragment();
         args.putSerializable(ARG_PARAM1, mesage);
         args.putSerializable(ARG_PARAM2, nearByResponce);
         fragment.setArguments(args);
@@ -117,6 +133,8 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback, Vie
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        getLocationPermission();
+        currentlocation();
         assert message != null;
         if (message.equals("Please update your location to know Live Wires near you.")) {
             binding.rlUpdateProfile.setVisibility(View.VISIBLE);
@@ -131,14 +149,14 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback, Vie
             binding.rlUpdateProfile.setVisibility(View.GONE);
             binding.tvNoData.setVisibility(View.GONE);
 
-            final MapInfoWindowFragment mapFragment;
+             MapInfoWindowFragment mapFragment;
             mapFragment = (MapInfoWindowFragment) getChildFragmentManager()
                     .findFragmentById(R.id.map);
             assert mapFragment != null;
-            mapFragment.getMapAsync(this);
             infoWindowManager = mapFragment.infoWindowManager();
+            mapFragment.getMapAsync(this);
             infoWindowManager.setHideOnFling(true);
-            infoWindowManager.setWindowShowListener(MapviewFragment.this);
+            infoWindowManager.setWindowShowListener(MapviewClientFragment.this);
 
         }
         progressDialog = new ProgressDialog(mContext);
@@ -203,17 +221,23 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback, Vie
     }
 
     private void showMarkers(NearByResponce.DataBean data) {
-        final Marker marker2 = mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(data.getLatitude()), Double.parseDouble(data.getLongitude()))).snippet(data.getUserId()));
-        final int offsetX = (int) getResources().getDimension(R.dimen.marker_offset_x);
-        final int offsetY = (int) getResources().getDimension(R.dimen.marker_offset_y);
-        final InfoWindow.MarkerSpecification markerSpec =
-                new InfoWindow.MarkerSpecification(offsetX, offsetY);
-        InfoWindow formWindow = new InfoWindow(marker2, markerSpec, new CustomInfoWindowFragment().newInstance(data));
-        mMap.setOnMarkerClickListener(MapviewFragment.this);
-        markerList.add(marker2);
-        infoWindowList.add(formWindow);
+        if (mMap != null) {
+            try {
+                final Marker marker2 = mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(data.getLatitude()), Double.parseDouble(data.getLongitude()))).snippet(data.getUserId()));
+                final int offsetX = (int) getResources().getDimension(R.dimen.marker_offset_x);
+                final int offsetY = (int) getResources().getDimension(R.dimen.marker_offset_y);
+                final InfoWindow.MarkerSpecification markerSpec =
+                        new InfoWindow.MarkerSpecification(offsetX, offsetY);
+                InfoWindow formWindow = new InfoWindow(marker2, markerSpec, CustomInfoWindowFragment.newInstance(data));
+                mMap.setOnMarkerClickListener(MapviewClientFragment.this);
+                markerList.add(marker2);
+                infoWindowList.add(formWindow);
+            }catch (Exception e){
+                Log.e(TAG, "showMarkers: "+e.getLocalizedMessage());
+            }
+        }
 
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+    /*    LatLngBounds.Builder builder = new LatLngBounds.Builder();
         for (Marker m : markerList) {
             builder.include(m.getPosition());
         }
@@ -221,13 +245,17 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback, Vie
         int padding = 0; // offset from edges of the map in pixels
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
         mMap.moveCamera(cu);
-        mMap.animateCamera(cu);
+        mMap.animateCamera(cu);*/
 
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        updateLocationUI();
+
+        // Get the current location of the device and set the position of the map.
+        getDeviceLocation();
         if (userData != null) {
             for (NearByResponce.DataBean data : userData.getData()) {
                 showMarkers(data);
@@ -237,18 +265,114 @@ public class MapviewFragment extends Fragment implements OnMapReadyCallback, Vie
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        InfoWindow infoWindow = null;
         for (int i = 0; i < markerList.size(); i++) {
             if (markerList.get(i).getSnippet().equals(marker.getSnippet())) {
                 infoWindowManager.toggle(infoWindowList.get(i), true);
             }
         }
-
-
         return true;
 
     }
 
+    private void updateLocationUI() {
+        if (mMap == null) {
+            return;
+        }
+        try {
+            if (mLocationPermissionGranted) {
+                mMap.setMyLocationEnabled(true);
+                mMap.getUiSettings().setMyLocationButtonEnabled(true);
+            } else {
+                mMap.setMyLocationEnabled(false);
+                mMap.getUiSettings().setMyLocationButtonEnabled(false);
+                mLastKnownLocation = null;
+                getLocationPermission();
+            }
+        } catch (SecurityException e)  {
+            Log.e("Exception: %s", e.getMessage());
+        }
+    }
+
+    private void getDeviceLocation() {
+    /*
+     * Get the best and most recent location of the device, which may be null in rare
+     * cases when a location is not available.
+     */
+        try {
+            if (mLocationPermissionGranted) {
+                Task locationResult = mFusedLocationProviderClient.getLastLocation();
+                locationResult.addOnCompleteListener(getActivity(), new OnCompleteListener() {
+                    @Override
+                    public void onComplete(@NonNull Task task) {
+                        if (task.isSuccessful()) {
+                            // Set the map's camera position to the current location of the device.
+                            mLastKnownLocation = (Location) task.getResult();
+
+                            if (mLastKnownLocation!=null){
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                                    new LatLng(mLastKnownLocation.getLatitude(),
+                                            mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
+                            }
+                        } else {
+                            Log.d(TAG, "Current location is null. Using defaults.");
+                            Log.e(TAG, "Exception: %s", task.getException());
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mDefaultLocation, DEFAULT_ZOOM));
+                            mMap.getUiSettings().setMyLocationButtonEnabled(false);
+                        }
+                    }
+                });
+
+            }
+        } catch(SecurityException e)  {
+            Log.e("Exception: %s", e.getMessage());
+        }
+    }
+
+
+    private void getLocationPermission() {
+    /*
+     * Request location permission, so that we can get the location of the
+     * device. The result of the permission request is handled by a callback,
+     * onRequestPermissionsResult.
+     */
+        if (ContextCompat.checkSelfPermission(mContext.getApplicationContext(),
+                android.Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            mLocationPermissionGranted = true;
+        } else {
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+        }
+    }
+
+    private void currentlocation() {
+        // Construct a GeoDataClient.
+        mGeoDataClient = Places.getGeoDataClient(mContext, null);
+
+        // Construct a PlaceDetectionClient.
+        mPlaceDetectionClient = Places.getPlaceDetectionClient(mContext, null);
+
+        // Construct a FusedLocationProviderClient.
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(mContext);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String permissions[],
+                                           @NonNull int[] grantResults) {
+        mLocationPermissionGranted = false;
+        switch (requestCode) {
+            case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    mLocationPermissionGranted = true;
+                }
+            }
+        }
+        updateLocationUI();
+    }
 
     @Override
     public void onWindowShowStarted(@NonNull InfoWindow infoWindow) {

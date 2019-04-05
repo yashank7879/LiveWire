@@ -91,7 +91,6 @@ public class AddYourSkillsActivity extends AppCompatActivity implements View.OnC
         binding.tvCancel.setOnClickListener(this);
         binding.addSkillsRl.setOnClickListener(this);
         loadSkillsData();
-
     }
 
     //"""""""""""" skills data """""""""""""""""""""//
@@ -338,7 +337,7 @@ public class AddYourSkillsActivity extends AppCompatActivity implements View.OnC
                 if (bean.getCatageryId().equals(addedSkillBean.getCatageryId())) {
                     for (AddedSkillBean.SubCatagory subCatagory1 : bean.getSubCatagories()) {
                         if (subCatagory1.getSubCatId().equals(subCatagory.getSubCatId())) {
-                            Toast.makeText(AddYourSkillsActivity.this, "Subcategory Already added.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddYourSkillsActivity.this, "This subcategory is LeagueTableFragmentady added.", Toast.LENGTH_SHORT).show();
                             return;
                         }
                     }

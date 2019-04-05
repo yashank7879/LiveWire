@@ -68,26 +68,26 @@ public class NearByResponce implements Serializable{
         private String name;
         private String profileImage;
         private String distance_in_km;
-        private String latitude;
-        private String longitude;
+        private String address_latitude;
+        private String address_longitude;
         private String http;
         private String https;
         private String rating;
 
         public String getLatitude() {
-            return latitude;
+            return address_latitude;
         }
 
-        public void setLatitude(String latitude) {
-            this.latitude = latitude;
+        public void setLatitude(String address_latitude) {
+            this.address_latitude = address_latitude;
         }
 
         public String getLongitude() {
-            return longitude;
+            return address_longitude;
         }
 
-        public void setLongitude(String longitude) {
-            this.longitude = longitude;
+        public void setLongitude(String address_longitude) {
+            this.address_longitude = address_longitude;
         }
 
 

@@ -8,9 +8,8 @@
         android:id="@+id/chat_cell_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
         android:background="@color/colorWhite"
-        >
+        android:orientation="horizontal">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_favorite_image"
@@ -47,62 +46,79 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:fontFamily="@font/poppins_regular"
                 android:gravity="bottom"
                 android:maxLines="1"
-                android:layout_marginTop="@dimen/_5sdp"
                 android:singleLine="true"
                 android:text="hello"
                 android:textColor="@color/colorDarkGray"
                 android:textSize="@dimen/_10sdp" />
 
+
         </LinearLayout>
+
 
     </LinearLayout>
 
-  <!--  <ImageView
-        android:id="@+id/iv_favorite"
-        android:layout_width="@dimen/_20sdp"
-        android:layout_height="@dimen/_20sdp"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/_15sdp"
-        android:layout_centerInParent="true"
-        android:src="@drawable/ico_favourite_active" />-->
+    <!--  <ImageView
+          android:id="@+id/iv_favorite"
+          android:layout_width="@dimen/_20sdp"
+          android:layout_height="@dimen/_20sdp"
+          android:layout_alignParentRight="true"
+          android:layout_marginRight="@dimen/_15sdp"
+          android:layout_centerInParent="true"
+          android:src="@drawable/ico_favourite_active" />-->
 
 
-  <!--  <TextView
-        android:id="@+id/tv_unread_msg"
-        android:layout_width="@dimen/_25sdp"
-        android:layout_height="@dimen/_25sdp"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/_14sdp"
-        android:layout_centerInParent="true"
-        android:backgroundTint="@color/colorPrimary"
-        android:background="@drawable/circle_solid"
-        android:maxLines="1"
-        android:fontFamily="@font/nunito_regular"
-        android:textColor="@color/colorWhite"
-        android:gravity="center"
-        android:visibility="gone"/>-->
+    <!--  <TextView
+          android:id="@+id/tv_unread_msg"
+          android:layout_width="@dimen/_25sdp"
+          android:layout_height="@dimen/_25sdp"
+          android:layout_alignParentRight="true"
+          android:layout_marginRight="@dimen/_14sdp"
+          android:layout_centerInParent="true"
+          android:backgroundTint="@color/colorPrimary"
+          android:background="@drawable/circle_solid"
+          android:maxLines="1"
+          android:fontFamily="@font/nunito_regular"
+          android:textColor="@color/colorWhite"
+          android:gravity="center"
+          android:visibility="gone"/>-->
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_alignParentBottom="true"
-    android:layout_marginEnd="@dimen/_8sdp"
+        android:layout_marginEnd="@dimen/_8sdp"
         android:layout_marginStart="@dimen/_8sdp"
         android:background="@color/colorLightGray" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_light"
-        android:layout_alignParentRight="true"
+        android:id="@+id/tv_unread_count"
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="@dimen/_20sdp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
         android:layout_marginEnd="@dimen/_15sdp"
         android:layout_marginTop="@dimen/_10sdp"
+        android:background="@drawable/circle_green_bg"
+        android:fontFamily="@font/poppins_light"
+        android:gravity="center"
+        android:textColor="@color/colorBlack"
         android:textSize="@dimen/_8sdp"
-        android:text="@string/n_a"
-        android:visibility="gone"
-        />
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="@dimen/_10sdp"
+        android:fontFamily="@font/poppins_light"
+        android:gravity="center"
+        android:text=""
+        android:textColor="@color/colorLightGray"
+        android:textSize="@dimen/_8sdp" />
 
 </RelativeLayout>

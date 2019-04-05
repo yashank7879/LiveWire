@@ -49,13 +49,14 @@ public class NearByAdapterClient extends RecyclerView.Adapter<NearByAdapterClien
         if (nearByList.size() > 0) {
             final NearByResponce.DataBean dataBean = nearByList.get(i);
             holder.tvName.setText(dataBean.getName());
-            Picasso.with(holder.ivProfileImg.getContext()).load(dataBean.getProfileImage())
+            Picasso.with(holder.ivProfileImg.getContext()).load(dataBean.getProfileImage()).error(R.drawable.ic_user)
+                    .placeholder(R.drawable.ic_user)
                     .into(holder.ivProfileImg);
             assert dataBean.getDistance_in_km() != null;
             holder.tvDistance.setText(dataBean.getDistance_in_km() + " Km away");
-            if (dataBean.getRating() != null && !dataBean.getRating().isEmpty()) {
-                holder.ratingBar.setRating(Float.parseFloat(dataBean.getRating()));
-            }
+            float rating =  dataBean.getRating().isEmpty() ? 0:Float.parseFloat(dataBean.getRating());
+                holder.ratingBar.setRating(rating);
+
 
             holder.rlProfileDetail.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -79,7 +80,10 @@ public class NearByAdapterClient extends RecyclerView.Adapter<NearByAdapterClien
 
     @Override
     public int getItemCount() {
-        return nearByList.size();
+        if (nearByList.size()>0){
+            return nearByList.size();
+        }else return 0;
+
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

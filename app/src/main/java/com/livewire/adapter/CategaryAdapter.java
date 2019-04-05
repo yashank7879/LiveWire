@@ -54,9 +54,11 @@ public class CategaryAdapter extends RecyclerView.Adapter<CategaryAdapter.MyView
                 if (data.getSubCatagories().size() == 1) {
                     categaryList.remove(holder.getAdapterPosition());
                     notifyItemChanged(holder.getAdapterPosition());
+                    notifyItemRemoved(pos);
                 } else {
                     data.getSubCatagories().remove(pos);
                     notifyItemChanged(holder.getAdapterPosition());
+                    notifyItemRemoved(pos);
                     /*holder.listView.getAdapter().notify();*/
                 }
                 /*holder.getAdapterPosition();*/

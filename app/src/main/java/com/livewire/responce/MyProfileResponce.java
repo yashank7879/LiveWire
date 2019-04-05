@@ -81,8 +81,8 @@ public class MyProfileResponce implements Serializable {
         private String intro_video="";
         private String video_thumb="";
         private String town="";
-        private String latitude="";
-        private String longitude="";
+        private String address_latitude="";
+        private String address_longitude="";
         private String userType="";
         private String firebase_id="";
         private String Is_notify="";
@@ -103,6 +103,7 @@ public class MyProfileResponce implements Serializable {
         private String intro_discription="";
         private String job_created="";
         private String complete_job="";
+        private String profile_address="";
 
         public String getComplete_job() {
             return complete_job;
@@ -188,19 +189,19 @@ public class MyProfileResponce implements Serializable {
         }
 
         public String getLatitude() {
-            return latitude;
+            return address_latitude;
         }
 
-        public void setLatitude(String latitude) {
-            this.latitude = latitude;
+        public void setLatitude(String address_latitude) {
+            this.address_latitude = address_latitude;
         }
 
         public String getLongitude() {
-            return longitude;
+            return address_longitude;
         }
 
-        public void setLongitude(String longitude) {
-            this.longitude = longitude;
+        public void setLongitude(String address_longitude) {
+            this.address_longitude = address_longitude;
         }
 
         public String getUserType() {
@@ -353,6 +354,14 @@ public class MyProfileResponce implements Serializable {
 
         public void setIntro_discription(String intro_discription) {
             this.intro_discription = intro_discription;
+        }
+
+        public String getProfile_address() {
+            return profile_address;
+        }
+
+        public void setProfile_address(String profile_address) {
+            this.profile_address = profile_address;
         }
 
         public static class CategoryBean implements Serializable{

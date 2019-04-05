@@ -7,11 +7,12 @@ package com.livewire.model;
 public class AddBankAccontModel {
     public String firstName = "";
     public String lastName = "";
-    public String dob = "";
-    public String routingNumber = "";
+    public String branch_code = "";
     public String accountNumber = "";
-    public String postalCode = "";
+
+
+    /*public String postalCode = "";
     public String ssnLast = "";
     public String accountType = "";
-
+    public String dob = "";*/
 }

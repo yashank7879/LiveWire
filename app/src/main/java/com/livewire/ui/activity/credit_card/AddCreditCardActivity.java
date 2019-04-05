@@ -63,7 +63,7 @@ public class AddCreditCardActivity extends AppCompatActivity implements View.OnC
     private String workerDays;
     private String offer;
     private String hours;
-    private String jobType ="";
+    private String jobType = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,13 +79,13 @@ public class AddCreditCardActivity extends AppCompatActivity implements View.OnC
             binding.btnAddCard.setVisibility(View.GONE);
             binding.tvSelectCard.setVisibility(View.GONE);
             binding.btnPay.setVisibility(View.GONE);
+            binding.btnMakePayment.setOnClickListener(this);
 
             if (getIntent().getStringExtra("SingleJobPayment") != null) {  //user come from Confirm Single job payment
                 jobId = getIntent().getStringExtra("JobIdKey");
                 userId = getIntent().getStringExtra("UserIdKey");//""""" worker user Id """"//
                 name = getIntent().getStringExtra("NameKey");//"""" worker name """"""""//
                 budget = Float.parseFloat(getIntent().getStringExtra("PaymentKey"));
-
 
 
                 stripeFee = Float.parseFloat(df.format(((((budget * 2.9) / 100) + 0.30))));
@@ -108,7 +108,7 @@ public class AddCreditCardActivity extends AppCompatActivity implements View.OnC
 
             }
             // Constant.printLogMethod(Constant.LOG_VALUE, "stripe fee:", "" + stripeFee);
-        }else {
+        } else {
             binding.tvHeader.setText(R.string.card_list);
         }
         progressDialog = new ProgressDialog(this);
@@ -117,13 +117,13 @@ public class AddCreditCardActivity extends AppCompatActivity implements View.OnC
         binding.btnAddCard.setOnClickListener(this);
         binding.btnPay.setOnClickListener(this);
 
-        showCreditCardInfo();
+        //showCreditCardInfo();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        showCreditCardInfo();
+       // showCreditCardInfo();
     }
 
     ///""""""""" Saved credit card api """"""""//
@@ -135,7 +135,7 @@ public class AddCreditCardActivity extends AppCompatActivity implements View.OnC
             @Override
             protected ExternalAccountCollection doInBackground(Void... voids) {
 
-               // Stripe.apiKey = "sk_test_82UMhsygkviBYxQmikCW9Oa1";
+                // Stripe.apiKey = "sk_test_82UMhsygkviBYxQmikCW9Oa1";
                 Stripe.apiKey = "sk_test_wPa0eyao4nuDkLZG0QvaPzec";// project client account key
 
                 ExternalAccountCollection customer = null;
@@ -249,7 +249,7 @@ public class AddCreditCardActivity extends AppCompatActivity implements View.OnC
             new AsyncTask<Void, Void, Customer>() {
                 @Override
                 protected Customer doInBackground(Void... voids) {
-                  //  Stripe.apiKey = "sk_test_82UMhsygkviBYxQmikCW9Oa1";
+                    //  Stripe.apiKey = "sk_test_82UMhsygkviBYxQmikCW9Oa1";
                     Stripe.apiKey = "sk_test_wPa0eyao4nuDkLZG0QvaPzec";// project client account key
 
                     Customer customer = null;
@@ -270,7 +270,7 @@ public class AddCreditCardActivity extends AppCompatActivity implements View.OnC
                     super.onPostExecute(customer);
                     progressDialog.dismiss();
                     if (customer != null) {
-                        showCreditCardInfo();
+                      //  showCreditCardInfo();
                     }
                 }
             }.execute();
@@ -283,7 +283,7 @@ public class AddCreditCardActivity extends AppCompatActivity implements View.OnC
         switch (view.getId()) {
             case R.id.btn_add_card:
                 intent = new Intent(this, CreditCardActivity.class);
-                intent.putExtra("JobType","SaveCreditCard");
+                intent.putExtra("JobType", "SaveCreditCard");
                 startActivity(intent);
                 break;
 
@@ -293,13 +293,13 @@ public class AddCreditCardActivity extends AppCompatActivity implements View.OnC
 
             case R.id.tv_add_new_card:
                 intent = new Intent(this, CreditCardActivity.class);
-                intent.putExtra("JobType",jobType);
+                intent.putExtra("JobType", jobType);
                 intent.putExtra("PayKey", budget);
                 intent.putExtra("JobIdKey", jobId);
                 intent.putExtra("stripeFeeKey", stripeFee);
                 intent.putExtra("NameKey", name);
                 intent.putExtra("UserIdKey", userId);
-                intent.putExtra("WorkingDays",workerDays);
+                intent.putExtra("WorkingDays", workerDays);
                 startActivity(intent);
                 break;
 
@@ -309,9 +309,16 @@ public class AddCreditCardActivity extends AppCompatActivity implements View.OnC
                 } else {
                     if (jobType.equals("OngoingJob")) {
                         paymentForOngoingJob();
-                    }else if (jobType.equals("SingleJob")){
+                    } else if (jobType.equals("SingleJob")) {
                         paymentForSingleJob();
                     }
+                }
+                break;
+            case R.id.btn_make_payment:
+                if (jobType.equals("OngoingJob")) {
+                    paymentForOngoingJob();
+                } else if (jobType.equals("SingleJob")) {
+                    paymentForSingleJob();
                 }
                 break;
             default:
@@ -324,11 +331,11 @@ public class AddCreditCardActivity extends AppCompatActivity implements View.OnC
             AndroidNetworking.post(BASE_URL + "payment/ongoingEndJob")
                     .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
                     .addBodyParameter("jobId", jobId)
-                    .addBodyParameter("amount", "" + budget)
+                    /*.addBodyParameter("amount", "" + budget)
                     .addBodyParameter("source", cardId)
                     .addBodyParameter("source_type", "card")
                     .addBodyParameter("STRIPE_FEES", "" + stripeFee)
-                    .addBodyParameter("currency", "")
+                    .addBodyParameter("currency", "")*/
                     .addBodyParameter("working_days", workerDays)
                     .setPriority(Priority.MEDIUM)
                     .build()
@@ -367,11 +374,11 @@ public class AddCreditCardActivity extends AppCompatActivity implements View.OnC
             AndroidNetworking.post(BASE_URL + END_JOB_API)
                     .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
                     .addBodyParameter("jobId", jobId)
-                    .addBodyParameter("amount", "" + budget)
+                    /*.addBodyParameter("amount", "" + budget)
                     .addBodyParameter("source", cardId)
                     .addBodyParameter("source_type", "card")
                     .addBodyParameter("STRIPE_FEES", "" + stripeFee)
-                    .addBodyParameter("currency", "")
+                    .addBodyParameter("currency", "")*/
                     .setPriority(Priority.MEDIUM)
                     .build()
                     .getAsJSONObject(new JSONObjectRequestListener() {

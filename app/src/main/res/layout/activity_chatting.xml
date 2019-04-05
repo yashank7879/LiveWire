@@ -114,6 +114,7 @@
         android:layout_height="match_parent"
         android:layout_marginTop="?actionBarSize"
         android:orientation="vertical"
+        android:background="@color/colorExtraLightGray"
         >
 
         <android.support.v7.widget.RecyclerView

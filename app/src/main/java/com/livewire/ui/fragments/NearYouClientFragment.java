@@ -47,7 +47,7 @@ public class NearYouClientFragment extends Fragment implements View.OnClickListe
     private Context mContext;
     private NearByAdapterClient adapter;
     private ProgressDialog progressDialog;
-    private List<NearByResponce.DataBean> nearByList;
+    private List<NearByResponce.DataBean> nearByList = new ArrayList<>();
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private NearByResponce userData;
@@ -58,7 +58,7 @@ public class NearYouClientFragment extends Fragment implements View.OnClickListe
         // Required empty public constructor
     }
 
-    public NearYouClientFragment newInstance(String message, NearByResponce nearByResponce) {
+    public static NearYouClientFragment newInstance(String message, NearByResponce nearByResponce) {
         Bundle args = new Bundle();
         NearYouClientFragment fragment = new NearYouClientFragment();
         args.putSerializable(ARG_PARAM1, message);
@@ -72,7 +72,7 @@ public class NearYouClientFragment extends Fragment implements View.OnClickListe
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             if (getArguments().getSerializable(ARG_PARAM2) != null) {
-                nearByList = new ArrayList<>();
+
                 userData = (NearByResponce) getArguments().getSerializable(ARG_PARAM2);
                 assert userData != null;
                 nearByList.addAll(userData.getData());
@@ -117,7 +117,7 @@ public class NearYouClientFragment extends Fragment implements View.OnClickListe
             binding.rvNearYou.addItemDecoration(new
                     DividerItemDecoration(mContext,
                     DividerItemDecoration.VERTICAL));
-            adapter.notifyDataSetChanged();
+           // adapter.notifyDataSetChanged();
         }
 
         progressDialog = new ProgressDialog(mContext);

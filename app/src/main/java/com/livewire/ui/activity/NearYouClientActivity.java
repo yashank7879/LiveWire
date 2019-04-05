@@ -82,7 +82,6 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
         tv_no_job_post = findViewById(R.id.tv_no_job_post);
         nearYouList = new ArrayList<>();
 
-
         RecyclerView recyclerView = findViewById(R.id.rv_near_you);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -286,7 +285,7 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
                     .addBodyParameter("job_id", jobId)
                     //.addBodyParameter("request_to", "2")
                     .addBodyParameter("request_to", userId)
-                    .addBodyParameter("job_offer", offerPrice)
+                    .addBodyParameter("job_offer", ""+Float.parseFloat(offerPrice))
                     .addBodyParameter("request_status", "0")
                     .setPriority(Priority.MEDIUM)
                     .build().getAsJSONObject(new JSONObjectRequestListener() {
@@ -300,7 +299,7 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
                         if (status.equals("success")) {
                             Constant.snackBar(mainLayout, message);
                             //"""""' if user successfully created on going post """""""""""//
-                            Toast.makeText(NearYouClientActivity.this, R.string.your_project_has_been_successfully_shared, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(NearYouClientActivity.this, R.string.offer_has_been_successfully_sent, Toast.LENGTH_SHORT).show();
                           //  Constant.snackBar(mainLayout,getString(R.string.your_project_has_been_successfully_shared));
                             Intent intent = new Intent(NearYouClientActivity.this, ClientMainActivity.class);
                             intent.putExtra("NearYouKey", "MyJobs");
@@ -318,7 +317,6 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
                 @Override
                 public void onError(ANError anError) {
                     progressDialog.dismiss();
-
                 }
             });
         }

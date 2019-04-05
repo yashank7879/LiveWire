@@ -95,13 +95,17 @@ class EditMySubCetAdapter extends BaseAdapter {
             ivCancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listner.subCategoryOnClickListener((Integer) subCategoryText.getTag());
+                    boolean isListEmpty= false;
+                    if (objects.size() == 0){
+                        isListEmpty = true;
+                    }
+                    listner.subCategoryOnClickListener((Integer) subCategoryText.getTag() , isListEmpty);
                 }
             });
         }
     }
 
     public interface SubCategoryListner {
-        void subCategoryOnClickListener(int pos);
+        void subCategoryOnClickListener(int pos, boolean vlue);
     }
 }

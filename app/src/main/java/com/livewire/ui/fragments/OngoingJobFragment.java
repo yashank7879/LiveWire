@@ -116,6 +116,14 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
         super.onAttach(context);
         this.mContext = context;
     }
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        Log.e(TAG, "setUserVisibleHint2: "+isVisibleToUser );
+        if (isVisibleToUser){
+            clearFields();
+        }
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
@@ -161,10 +169,12 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
         binding.hourRequireSpinner.setAdapter(hourRequireAdapter);
 
 
+        binding.tvLocation.setOnClickListener(this);
         binding.tvLocation.setSelected(true);
         binding.tvLocation.setHorizontallyScrolling(true);
         binding.tvLocation.setMovementMethod(new ScrollingMovementMethod());
 
+        binding.tvWeekDays.setOnClickListener(this);
         binding.tvWeekDays.setSelected(true);
         binding.tvWeekDays.setHorizontallyScrolling(true);
         binding.tvWeekDays.setMovementMethod(new ScrollingMovementMethod());
@@ -177,7 +187,12 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
         new AsyncTask<Void, Void, List<String>>() {
             @Override
             protected List<String> doInBackground(Void... voids) {
-               hourList.add(0, "Hours Required Per Day");
+                try {
+                    hourList.add(0, "Hours Required Per Day");
+                }catch (Exception e){
+                    Log.e(TAG, e.getLocalizedMessage());
+                }
+
                 double hour = 0.5;
                 for (int i = 0; i <= 48; i++) {
                     if (hour < 24) {
@@ -238,7 +253,13 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
             case R.id.week_days_rl:
                 openWeekDialog();
                 break;
+                case R.id.tv_week_days:
+                openWeekDialog();
+                break;
             case R.id.location_rl:
+                autoCompletePlacePicker();
+                break;
+            case R.id.tv_location:
                 autoCompletePlacePicker();
                 break;
             case R.id.btn_share:
@@ -251,13 +272,15 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
     }
 
     private void clearFields() {
-        binding.tvSelectedSkill.setText("");
-        binding.tvStartDate.setText("");
-        binding.tvEndDate.setText("");
-        binding.tvWeekDays.setText("");
-        binding.hourRequireSpinner.setSelection(0);
-        binding.tvLocation.setText("");
-        binding.etDescription.setText("");
+        if (binding.tvSelectedSkill != null) {
+            binding.tvSelectedSkill.setText("");
+            binding.tvStartDate.setText("");
+            binding.tvEndDate.setText("");
+            binding.tvWeekDays.setText("");
+            binding.hourRequireSpinner.setSelection(0);
+            binding.tvLocation.setText("");
+            binding.etDescription.setText("");
+        }
     }
 
     //""""""""""" open week dialog """""""""""""""//
@@ -315,9 +338,9 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
             Constant.snackBar(binding.svOngoingJob, "Please select hour Required per day");
         } else if (Validation.isEmpty(binding.tvLocation)) {
             Constant.snackBar(binding.svOngoingJob, "Please enter your Location");
-        } else if (Validation.isEmpty(binding.etDescription)) {
+        } /*else if (Validation.isEmpty(binding.etDescription)) {
             Constant.snackBar(binding.svOngoingJob, "Please enter job Description");
-        } else {
+        }*/ else {
             JobCreationModel model = new JobCreationModel();
             model.skill = skillId;
             model.job_start_date = binding.tvStartDate.getText().toString().trim();
@@ -358,7 +381,7 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
                             binding.tvWeekDays.setText("");
                             //binding.etHourRequierd.setText("");
                             binding.etDescription.setText("");
-
+                            Toast.makeText(mContext, "Your offer has been successfully created.", Toast.LENGTH_SHORT).show();
 
                             String jobId = response.getString("clientJobId");
                             Intent intent = new Intent(mContext, NearYouClientActivity.class);

@@ -50,9 +50,10 @@ import static com.livewire.utils.ImageRotator.decodeBitmap;
  */
 
 public class Constant {
+    private static final String TAG = Constant.class.getName();
     private static final int DEFAULT_MIN_WIDTH_QUALITY = 400;        // min pixels
     private static final int DEFAULT_MIN_HEIGHT_QUALITY = 400;
-    private static final String TAG = Constant.class.getName();
+    public static final int MY_PERMISSIONS_REQUEST_LOCATION =101 ;
     private static int minWidthQuality = DEFAULT_MIN_WIDTH_QUALITY;
     private static int minHeightQuality = DEFAULT_MIN_HEIGHT_QUALITY;
     public static final int MY_PERMISSIONS_REQUEST_CAMERA = 1;
@@ -111,7 +112,6 @@ public class Constant {
 
         // Check for network connections
         if (activeNetworkInfo != null) {
-
             // if connected with internet
             return true;
 

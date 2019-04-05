@@ -5,12 +5,15 @@ package com.livewire.utils;
  */
 
 public class ApiCollection {
+
     ///""""""""""' dev api  """""""""//
-    //public static final String BASE_URL = "http://dev.livewire.work/apiv2/";
+   // public static final String BASE_URL = "http://dev.livewire.work/apiv2/";
 
     ///""""""""""' live api  """""""""//
-    /*  public static final String BASE_URL = "https://livewire.work/service/";*/
-    public static final String BASE_URL = "https://livewire.work/apiv2/";
+     public static final String BASE_URL = "https://livewire.work/apiv2/";
+
+
+    /* public static final String BASE_URL = "https://livewire.work/service/";*/
 
 
     public static final String UPDATE_CLIENT_PROFILE_API = "user/updateClientProfile";
@@ -23,6 +26,7 @@ public class ApiCollection {
     public static final String UPDATE_WORKER_PROFILEAPI = "user/updateWorkerProfile";
     public static final String CHANGE_USER_MODE_API = "user/changeUserMode";
     public static final String NEAR_BY_USER_API = "user/nearByUser";
+    public static final String DELETE_VIDEO_API = "user/delete_video";
 
     //http://dev.livewire.work/apiv2/user/changeUserMode
     //http://dev.livewire.work/apiv2/Jobpost/clientJobPost
@@ -42,7 +46,8 @@ public class ApiCollection {
     public static final String GET_BANK_DETAILS_API = "payment/getBankDetails";
     public static final String GET_MY_PROFILE_API = "user/getMyProfile";
     public static final String GET_SUBCATEGORY_LIST_API = "user/getSubcategoryList";
-    public static final String GET_REVIEW_LIST_API = "user/getReviewList";
+    public static final String GET_MY_REVIEW_LIST_API = "user/getReviewList";
+    public static final String GET_OTHER_REVIEW_LIST_API = "user/getUserRevies";
 
     public static final String ADD_REVIEW_API = "user/addReview";
     public static final String GET_MY_USER_PROFILE_API = "user/getUserProfile";
