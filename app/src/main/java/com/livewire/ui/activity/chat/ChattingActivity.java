@@ -137,7 +137,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         binding.sendMsgButton.setOnClickListener(this);
         binding.recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
                 // ly_popup_menu.setVisibility(View.GONE);
@@ -149,7 +149,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
             }
 
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
                 if (linearLayoutManager.findFirstVisibleItemPosition() != -1) {
@@ -176,8 +176,6 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
             }
         });
         binding.recyclerView.setAdapter(chattingAdapter);
-
-
         binding.ivBack.setOnClickListener(this);
         binding.ivPopupMenu.setOnClickListener(this);
         binding.cameraBtn.setOnClickListener(this);
@@ -198,8 +196,6 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
 
             }
         });
-
-
         getChat();
         getBlockUserData();
         isNotification();
@@ -208,19 +204,16 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
 
 
     private String gettingNotes() {
-        //create note for chatroom
+        //"""""""""" create note for chatroom """""""""//
         int myUid_ = Integer.parseInt(myUid);
         int otherUID_ = Integer.parseInt(otherUID);
-
         if (myUid_ < otherUID_) {
             chatNode = myUid + "_" + otherUID;
         } else {
             chatNode = otherUID + "_" + myUid;
         }
-
         return chatNode;
     }
-
 
     private void gettingDataFromUserTable(final String otherUID) {
         firebaseDatabase.getReference().child(Constant.ARG_USERS).child(otherUID).addValueEventListener(new ValueEventListener() {
@@ -234,10 +227,22 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
                         if (getApplicationContext() != null)
                             Picasso.with(binding.headerImage.getContext()).load(otherprofilePic).fit().into(binding.headerImage);
                     }
+                    //""""""" user availability """""""""//
+                    if (otherUserInfo.availability.equals("0")){
+                        binding.cameraBtn.setEnabled(false);
+                        binding.sendMsgButton.setEnabled(false);
+                        binding.edMessage.setEnabled(false);
+                        binding.llMessage.setAlpha((float) .5);
+                        binding.edMessage.setText(R.string.you_can_send_msg_as_this_user);
+                    }else {
+                        binding.cameraBtn.setEnabled(true);
+                        binding.sendMsgButton.setEnabled(true);
+                        binding.edMessage.setEnabled(true);
+                        binding.llMessage.setAlpha((float) 1);
+                        binding.edMessage.setText("");
+                    }
                 }
-
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -354,7 +359,6 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
     private void getChatDataInmap(String key, Chat chat) {
         if (chat != null) {
             if (chat.deleteby != null) {
-
                 if (chat.deleteby.equals(myUid)) {
                     return;
                 } else {
@@ -399,7 +403,6 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
 
     private void shortList() {
         Collections.sort(chatList, new Comparator<Chat>() {
-
             @Override
             public int compare(Chat a1, Chat a2) {
 

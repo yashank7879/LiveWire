@@ -50,6 +50,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
@@ -61,11 +62,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.livewire.R;
-import com.livewire.cropper.CropImage;
-import com.livewire.cropper.CropImageView;
 import com.livewire.model.UserInfoFcm;
 import com.livewire.model.UserModel;
 import com.livewire.responce.SignUpResponce;
+import com.livewire.ui.dialog.EmailDialog;
 import com.livewire.ui.dialog.LocationDialog;
 import com.livewire.utils.Constant;
 import com.livewire.utils.ImageRotator;
@@ -83,7 +83,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.UUID;
 
@@ -289,57 +288,32 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onCompleted(JSONObject object, GraphResponse response) {
                 JSONObject graphObject = response.getJSONObject();
-                if (graphObject.has("email")) {
-                    String fb_mail = null;
-                    try {
-                        email = graphObject.getString("email");
-                        personName = graphObject.getString("name");
-                        String fbId = graphObject.getString("id");
-                        if (graphObject.getString("picture") != null) {
-                            imageUrl = object.getJSONObject("picture").getJSONObject("data").getString("url");
-                        }
-                       // checkSocialLogin(fbId, "fb");
-
-                        UserModel model = new UserModel();
-                        model.name = personName;
-                        model.email = email;
-                        model.userType = key;
-                        model.deviceType = "2";
-                        model.deviceToken = FirebaseInstanceId.getInstance().getToken();
-                        model.socialId = fbId;
-                        model.socialType = "fb";
-                        signUpApiForSocial(model);
-                     /*   if (key.equals("client")) {
-                            email = graphObject.getString("email");
-                            personName = graphObject.getString("name");
-                            String fbId = graphObject.getString("id");
-                            if (graphObject.getString("picture") != null) {
-                                imageUrl = object.getJSONObject("picture").getJSONObject("data").getString("url");
-                            }
-                            checkSocialLogin(fbId, "fb");
-                        } else {
-                            fb_mail = graphObject.getString("email");
-                            String fbId = graphObject.getString("id");
-                            if (graphObject.getString("picture") != null) {
-                                imageUrl = object.getJSONObject("picture").getJSONObject("data").getString("url");
-                                ;
-                            }
-                            UserModel model = new UserModel();
+                String fbId = null;
+                try {
+                    fbId = graphObject.getString("id");
+                    email = graphObject.getString("email");
+                    personName = graphObject.getString("name");
+                    if (graphObject.getString("picture") != null) {
+                        imageUrl = object.getJSONObject("picture").getJSONObject("data").getString("url");
+                    }
+                    if (graphObject.has("email")) {
+                        checkSocialLogin(fbId, "fb");
+                           /* UserModel model = new UserModel();
                             model.name = graphObject.getString("name");
                             model.email = graphObject.getString("email");
-                            // model.profileImage = acct.getPhotoUrl();
-                            model.userType = key;
+                            model.profileImage = imageUrl;
+                            // model.userType = key;
                             model.deviceType = "2";
-                            model.deviceToken = "";
+                            model.deviceToken = FirebaseInstanceId.getInstance().getToken();
                             model.socialId = graphObject.getString("id");
                             model.socialType = "fb";
-                            signUpApiForSocial(model);
-                        }*/
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                            signUpApiForSocial(model);*/
 
-                    //Toast.makeText(LoginActivity.this, "Name" + fb_mail, Toast.LENGTH_SHORT).show();
+
+                        //Toast.makeText(LoginActivity.this, "Name" + fb_mail, Toast.LENGTH_SHORT).show();
+                    } else checkSocialfbLogin(fbId,"fb");
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
 
@@ -351,18 +325,17 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         data_request.executeAsync();
     }
 
-    private void checkSocialLogin(final String id, final String socialType) {
+    private void checkSocialfbLogin(String fbId, String fb) {
         if (Constant.isNetworkAvailable(this, mainLayout)) {
             progressDialog.show();
             AndroidNetworking.post(BASE_URL + CHECK_SOCIAL_STATUS_API)
-                    .addBodyParameter("socialId", id)
+                    .addBodyParameter("socialId", fbId)
                     .setPriority(Priority.MEDIUM)
                     .build()
                     .getAsJSONObject(new JSONObjectRequestListener() {
                         @Override
                         public void onResponse(JSONObject response) {
                             progressDialog.dismiss();
-                            //progressBar1.setVisibility(View.GONE);
                             String status = null;
                             try {
                                 status = response.getString("status");
@@ -370,20 +343,18 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                                 if (status.equals("success")) {
 
                                     String isSocialLogin = response.getString("socialId");
-                                    if (isSocialLogin.equals("0")) {
-                                       // openLocationDialog(id, socialType);
-                                    } else {
-
+                                    if (isSocialLogin.equals("0")) {// sign up
+                                        openEmailIdDialog(fbId, "fb");
+                                    } else {// log in
                                         UserModel model = new UserModel();
                                         model.name = personName;
                                         model.email = email;
-                                        model.userType = key;
+                                        //model.profileImage = imageUrl;
                                         model.deviceType = "2";
                                         model.deviceToken = FirebaseInstanceId.getInstance().getToken();
-                                        model.socialId = id;
-                                        model.socialType = socialType;
-
-                                       // signUpApiForSocial(model);
+                                        model.socialId = fbId;
+                                        model.socialType = fb;
+                                        signUpApiForSocial(model, "Second");
                                     }
 
                                 } else {
@@ -401,6 +372,103 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                     });
         }
     }
+
+
+    private void openEmailIdDialog(String fbId, String fb) {
+        final EmailDialog dialog = new EmailDialog();
+        dialog.show(getSupportFragmentManager(), "");
+        dialog.setCancelable(false);
+        dialog.getEmailInfo(new EmailDialog.LocationDialogListner() {
+            @Override
+            public void openEmailIdDialog(String email1) {
+                dialog.dismiss();
+                email = email1;
+                UserModel model = new UserModel();
+                model.name = personName;
+                model.email = email;
+                model.profileImage = imageUrl;
+                model.deviceType = "2";
+                model.deviceToken = FirebaseInstanceId.getInstance().getToken();
+                model.socialId = fbId;
+                model.socialType = fb;
+                signUpApiForSocial(model, "First");
+
+                /*UserModel model = new UserModel();
+                model.name = personName;
+                model.email = email;
+                //  model.userType = key;
+                model.deviceType = "2";
+                if (imageUrl != null) {
+                    // imageUrl = String.valueOf(acct.getPhotoUrl());
+                    model.profileImage = imageUrl;
+                }
+                model.deviceToken = FirebaseInstanceId.getInstance().getToken();
+                // model.socialId = id;
+                // model.socialType = socialType;
+                signUpApiForSocial(model);*/
+            }
+        });
+    }
+
+    //"""""" If you are sign up from social to check already registred or not === if not registred so open location dialog
+    private void checkSocialLogin(final String id, final String socialType) {
+        if (Constant.isNetworkAvailable(this, mainLayout)) {
+            progressDialog.show();
+            AndroidNetworking.post(BASE_URL + CHECK_SOCIAL_STATUS_API)
+                    .addBodyParameter("socialId", id)
+                    .setPriority(Priority.MEDIUM)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            progressDialog.dismiss();
+                            String status = null;
+                            try {
+                                status = response.getString("status");
+                                String message = response.getString("message");
+                                if (status.equals("success")) {
+
+                                    String isSocialLogin = response.getString("socialId");
+                                    if (isSocialLogin.equals("0")) {// sign up
+                                        UserModel model = new UserModel();
+                                        model.name = personName;
+                                        model.email = email;
+                                        model.profileImage = imageUrl;
+                                        model.deviceType = "2";
+                                        model.deviceToken = FirebaseInstanceId.getInstance().getToken();
+                                        model.socialId = id;
+                                        model.socialType = socialType;
+                                        signUpApiForSocial(model, "First");
+                                    } else {// log in
+                                        UserModel model = new UserModel();
+                                        model.name = personName;
+                                        model.email = email;
+                                        //model.profileImage = imageUrl;
+                                        model.deviceType = "2";
+                                        model.deviceToken = FirebaseInstanceId.getInstance().getToken();
+                                        model.socialId = id;
+                                        model.socialType = socialType;
+                                        signUpApiForSocial(model, "Second");
+                                    }
+
+                                } else {
+                                    Constant.snackBar(mainLayout, message);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void onError(ANError anError) {
+                            Log.e(TAG, anError.getErrorDetail());
+                        }
+                    });
+        }
+
+
+    }
+
 
     private void openLocationDialog(final String id, final String socialType) {
         final LocationDialog dialog = new LocationDialog();
@@ -425,7 +493,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 model.deviceToken = FirebaseInstanceId.getInstance().getToken();
                 model.socialId = id;
                 model.socialType = socialType;
-                signUpApiForSocial(model);
+                signUpApiForSocial(model, "First");
             }
         });
     }
@@ -433,7 +501,16 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     //"""""""""""gmail response"""""""//
     private void handleGoogleSignInResult(GoogleSignInResult result) {
         if (result.isSuccess()) {
-            // Signed in successfully, show authenticated UI.
+            GoogleSignInAccount acct = result.getSignInAccount();
+            assert acct != null;
+            checkSocialLogin(acct.getId(), "gmail");
+            personName = acct.getDisplayName();
+            email = acct.getEmail();
+            if (acct.getPhotoUrl() != null) {
+                imageUrl = String.valueOf(acct.getPhotoUrl());
+            }
+
+          /*  // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
             //checkSocialLogin(acct.getId(), "gmail");
             personName = acct.getDisplayName();
@@ -452,7 +529,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             model.socialId = acct.getId();
             model.socialType = "gmail";
 
-            signUpApiForSocial(model);
+            signUpApiForSocial(model);*/
 
           /*  if (key.equals("client")) {
                 checkSocialLogin(acct.getId(), "gmail");
@@ -480,7 +557,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     //"""""""""signup with google and fb""""""""""""""""""//
-    private void signUpApiForSocial(UserModel model) {
+    private void signUpApiForSocial(UserModel model, String first) {
         if (Constant.isNetworkAvailable(this, mainLayout)) {
             progressDialog.show();
             AndroidNetworking.post(BASE_URL + USER_REGISTRATION_API)
@@ -498,7 +575,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                         if (status.equals("success")) {
                             SignUpResponce userResponce = new Gson().fromJson(String.valueOf(response), SignUpResponce.class);
                             PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.USER_INFO_JSON, response.toString());
-                            setSocialResponceData(userResponce);
+                            setSocialResponceData(userResponce,first);
                         /*    Intent intent = new Intent(LoginActivity.this, CompleteProfileActivity.class);
                             startActivity(intent);
                             finish();*/
@@ -523,7 +600,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     ///""""""" set social responce data """"""""""//
-    private void setSocialResponceData(SignUpResponce userResponce) {
+    private void setSocialResponceData(SignUpResponce userResponce, String isSignUp) {
         PreferenceConnector.writeBoolean(SignupActivity.this, PreferenceConnector.IS_LOG_IN, true);
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.AUTH_TOKEN, userResponce.getData().getAuthToken());
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.SOCIAL_LOGIN, userResponce.getData().getSocialType());
@@ -541,32 +618,42 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.COMPLETE_PROFILE_STATUS, userResponce.getData().getCompleteProfile());
        // addUserFirebaseDatabase();
 
-        Log.d("Responce", userResponce.toString());
-        if (userResponce.getData().getUserType().equals("worker")) {// if user is worker
+        if (userResponce.getData().getUser_mode().equals("worker")) {// if user is worker
             Intent intent = null;
-            if (userResponce.getData().getCompleteProfile().equals("0")){ // if worker not complete own profile
-                finishAffinity();
-                intent = new Intent(SignupActivity.this, CompleteProfileActivity.class);
-                intent.putExtra("imageKey", imageUrl);
-                startActivity(intent);
-                finish();
-            } else if (userResponce.getData().getCompleteProfile().equals("1")) {// if worker complete own profile
-                addUserFirebaseDatabase();
-                finishAffinity();
-                intent = new Intent(SignupActivity.this, WorkerMainActivity.class);
-                startActivity(intent);
-                finish();
-            }
+            addUserFirebaseDatabase();
+            finishAffinity();
+            intent = new Intent(SignupActivity.this, WorkerMainActivity.class);
+            startActivity(intent);
+            finish();
+            soicialLogOut();
         } else { // if user is Client
             addUserFirebaseDatabase();
             finishAffinity();
-            Intent intent = new Intent(SignupActivity.this, ClientMainActivity.class);
+            Intent intent = null;
+            if (isSignUp.equals("First")) {// first sign up
+                intent = new Intent(SignupActivity.this, MyProfileClientActivity.class);
+                intent.putExtra("SignUp", "SignUp");
+            } else {
+                intent = new Intent(SignupActivity.this, ClientMainActivity.class);
+            }
+
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             finish();
+            soicialLogOut();
         }
     }
 
+
+    private void soicialLogOut() {
+        LoginManager.getInstance().logOut();// fb logout
+        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback( // google logout
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+                    }
+                });
+    }
     //"""""" open image dialog """"""""""""//
     private void showSetProfileImageDialog() {
 
@@ -870,7 +957,9 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         addUserFirebaseDatabase();
 
         finishAffinity();
-        Intent intent = new Intent(SignupActivity.this, ClientMainActivity.class);
+      //  Intent intent = new Intent(SignupActivity.this, ClientMainActivity.class);
+        Intent intent = new Intent(SignupActivity.this, MyProfileClientActivity.class);
+        intent.putExtra("SignUp","SignUp");
         startActivity(intent);
         finish();
     }
@@ -1032,6 +1121,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         infoFcm.userType = PreferenceConnector.readString(this,PreferenceConnector.USER_TYPE,"");
         infoFcm.userType = PreferenceConnector.readString(this,PreferenceConnector.USER_MODE,"");
         infoFcm.authToken = PreferenceConnector.readString(this,PreferenceConnector.AUTH_TOKEN,"");
+        infoFcm.availability = PreferenceConnector.readString(this,PreferenceConnector.AVAILABILITY_1,"");
 
         database.child(Constant.ARG_USERS)
                 .child(PreferenceConnector.readString(this,PreferenceConnector.MY_USER_ID,""))

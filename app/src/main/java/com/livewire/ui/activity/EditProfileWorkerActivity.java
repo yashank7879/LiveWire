@@ -411,6 +411,10 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
         binding.etDescription.setText(userData.getData().getIntro_discription());
         binding.inactiveUserImg.setVisibility(View.GONE);
 
+        if (!PreferenceConnector.readString(this,PreferenceConnector.SOCIAL_LOGIN,"").isEmpty()){
+            binding.etEmail1.setText(userData.getData().getEmail());
+            binding.etEmail1.setEnabled(false);
+        }else binding.etEmail1.setText(userData.getData().getEmail());
 
         binding.llNameEmail.setVisibility(View.VISIBLE);
         binding.btnSaveAndUpdate.setVisibility(View.VISIBLE);
@@ -1726,6 +1730,7 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
         infoFcm.uid = PreferenceConnector.readString(this, PreferenceConnector.MY_USER_ID, "");
         infoFcm.userType = PreferenceConnector.readString(this, PreferenceConnector.USER_TYPE, "");
         infoFcm.authToken = PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, "");
+        infoFcm.availability = PreferenceConnector.readString(this,PreferenceConnector.AVAILABILITY_1,"");
 
         database.child(Constant.ARG_USERS)
                 .child(PreferenceConnector.readString(this, PreferenceConnector.MY_USER_ID, ""))

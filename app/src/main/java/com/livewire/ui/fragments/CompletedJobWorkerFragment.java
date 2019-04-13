@@ -316,14 +316,14 @@ public class CompletedJobWorkerFragment extends Fragment implements View.OnClick
                 inVactive();
                 tvOnGoingJob.setBackground(mContext.getResources().getDrawable(R.drawable.rounded_corner_green));
                 tvOnGoingJob.setTextColor(ContextCompat.getColor(mContext, R.color.colorGreen));
-                jobType="2";
+                jobType="1";
                 break;
 
             case R.id.tv_pending_request:
                 inVactive();
                 tvHelpOffred.setBackground(mContext.getResources().getDrawable(R.drawable.rounded_corner_green));
                 tvHelpOffred.setTextColor(ContextCompat.getColor(mContext, R.color.colorGreen));
-                jobType="1";
+                jobType="2";
                 break;
 
             default:
@@ -361,8 +361,8 @@ public class CompletedJobWorkerFragment extends Fragment implements View.OnClick
             tvOnGoingJob = dialog.findViewById(R.id.tv_new_jobs);
             tvHelpOffred = dialog.findViewById(R.id.tv_pending_request);
 
-            tvHelpOffred.setText(R.string.short_term1);
-            tvOnGoingJob.setText(R.string.long_term1);
+            tvHelpOffred.setText(R.string.long_term1);
+            tvOnGoingJob.setText(R.string.short_term1);
 
             //""""""" Filter value """""""""//
             checkSelectedField();
@@ -412,13 +412,13 @@ public class CompletedJobWorkerFragment extends Fragment implements View.OnClick
 
     private void checkSelectedField() {
         switch (jobType) {
-            case "1":
+            case "2":
                 inVactive();
                 tvHelpOffred.setBackground(mContext.getResources().getDrawable(R.drawable.rounded_corner_green));
                 tvHelpOffred.setTextColor(ContextCompat.getColor(mContext, R.color.colorGreen));
 
                 break;
-            case "2":
+            case "1":
                 inVactive();
                 tvOnGoingJob.setBackground(mContext.getResources().getDrawable(R.drawable.rounded_corner_green));
                 tvOnGoingJob.setTextColor(ContextCompat.getColor(mContext, R.color.colorGreen));

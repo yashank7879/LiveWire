@@ -14,4 +14,5 @@ public class UserInfoFcm {
     public String notificationStatus = "";
     public String authToken  = "";
     public String userType  = "";
+    public String availability  = "";
 }

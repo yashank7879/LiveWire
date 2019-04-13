@@ -2,6 +2,7 @@ package com.livewire.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -23,7 +24,10 @@ import android.widget.TextView;
 
 import com.livewire.R;
 import com.livewire.responce.MyjobResponceClient;
+import com.livewire.ui.activity.CompleteOngoingJobDetailClientActivity;
 import com.livewire.ui.activity.RequestClientActivity;
+import com.livewire.ui.activity.SingleJobCompleteJobDetailActivity;
+import com.livewire.ui.activity.WorkerProfileDetailClientActivity;
 import com.livewire.utils.Constant;
 import com.squareup.picasso.Picasso;
 
@@ -43,6 +47,7 @@ public class MyJobAdapter extends RecyclerView.Adapter {
     private static final int JOBCELL1 = 1;
     private static final int JOBCELL2 = 2;
     private static final int JOBCELL3 = 3;
+    private static final int JOBCELL4 = 4;
     private Context mContext;
     private List<MyjobResponceClient.DataBean> myJobList;
     private OnClickMoreInfoListener listener;
@@ -62,6 +67,8 @@ public class MyJobAdapter extends RecyclerView.Adapter {
             int confirm = Integer.parseInt(dataBean.getJob_confirmed());
             if (jobType == 1 && confirm == 0 && request > 0) {
                 return JOBCELL1;
+            } else if (jobType == 1 && confirm == 4 || jobType == 2 && confirm == 4) {
+                return JOBCELL4;
             } else if (jobType == 2) {
                 return JOBCELL3;
             } else if (jobType == 1 && confirm == 1 || request == 0) {
@@ -87,6 +94,10 @@ public class MyJobAdapter extends RecyclerView.Adapter {
             case JOBCELL3:
                 View v3 = LayoutInflater.from(parent.getContext()).inflate(R.layout.job_cell3, parent, false);
                 return new MyViewHolderJob3(v3);
+
+            case JOBCELL4:
+                View v4 = LayoutInflater.from(parent.getContext()).inflate(R.layout.completed_job_cell, parent, false);
+                return new MyViewHolderJob4(v4);
         }
         return null;
     }
@@ -106,8 +117,44 @@ public class MyJobAdapter extends RecyclerView.Adapter {
                 MyViewHolderJob3 noImageHolder3 = (MyViewHolderJob3) holder;
                 setDataJobCell3(noImageHolder3, position);
                 break;
+                case JOBCELL4:// Complete short and ongoing job
+                MyViewHolderJob4 noImageHolder4 = (MyViewHolderJob4) holder;
+                setDataJobCell4(noImageHolder4, position);
+                break;
             default:
 
+        }
+    }
+
+    private void setDataJobCell4(MyViewHolderJob4 holderJob4, int position) {
+        if (myJobList.size() != 0) {
+            MyjobResponceClient.DataBean dataBean = myJobList.get(position);
+            Picasso.with(holderJob4.ivProfileImg.getContext())
+                    .load(dataBean.getRequestedUserData().get(0).getProfileImage()).fit()
+                    .into(holderJob4.ivProfileImg);
+            holderJob4.tvDate.setText(Constant.dateTextColorChange(mContext, Constant.DateFomatChange(dataBean.getJob_start_date())));
+            holderJob4.tvTime.setText(Constant.getDayDifference(dataBean.getCrd(), dataBean.getCurrentDateTime()));
+
+            if (!dataBean.getRequestedUserData().get(0).getRating().isEmpty()) {
+                holderJob4.ratingBar.setRating(Float.parseFloat(dataBean.getRequestedUserData().get(0).getRating()));
+            }
+
+            holderJob4.tvName.setText(dataBean.getRequestedUserData().get(0).getName());
+           String jobType = dataBean.getJob_type().equals("1") ? "Short Term" : "Long Term";
+            holderJob4.btnSendRequest.setText(jobType);
+            holderJob4.tvName.setText(dataBean.getRequestedUserData().get(0).getName());
+            holderJob4.tvDistance.setText(dataBean.getRequestedUserData().get(0).getDistance_in_km() + " Km away");
+
+            holderJob4.tvCategory.setText(dataBean.getSub_category());
+            holderJob4.tvSubcategory.setText(dataBean.getParent_category());
+
+            if (dataBean.getJob_type().equals("2")) {
+              //  float paidAmount = (Float.parseFloat(dataBean.getJob_time_duration()) * Float.parseFloat(dataBean.getJob_offer()) * Float.parseFloat(dataBean.getNumber_of_days()));
+              //  holderJob4.tvOfferRate.setText("$ " + paidAmount);
+
+            } else {
+                holderJob4.tvOfferRate.setText("$ " + dataBean.getJob_budget());
+            }
         }
     }
 
@@ -150,15 +197,19 @@ public class MyJobAdapter extends RecyclerView.Adapter {
                                 holder.tvPendingRequest.setText(R.string.request_cancel);
                                 holder.tvPendingRequest.setTextColor(ContextCompat.getColor(mContext, R.color.colorDarkBlack));
                             }
-
                             break;
                         case "1":  //request_confirmed job
                             if (dataBean.getRequestedUserData().get(0).getRequest_status().equals("1")) {
                                 holder.tvPendingRequest.setText(R.string.work_offer_accepted);
                                 holder.tvPendingRequest.setTextColor(ContextCompat.getColor(mContext, R.color.colorGreen));
                             }
-
                             break;
+                       /* case "4":
+                            if (dataBean.getRequestedUserData().get(0).getRequest_status().equals("4")) {
+                                holder.tvPendingRequest.setText(R.string.completed);
+                                holder.tvPendingRequest.setTextColor(ContextCompat.getColor(mContext, R.color.colorGreen));
+                            } break;*/
+
                         default: // in progress job
                             holder.tvPendingRequest.setTextColor(ContextCompat.getColor(mContext, R.color.colorDarkBlack));
                             break;
@@ -293,7 +344,6 @@ public class MyJobAdapter extends RecyclerView.Adapter {
         } else {
 
         }
-
     }
 
 
@@ -479,10 +529,11 @@ public class MyJobAdapter extends RecyclerView.Adapter {
         return builder;
     }
 
-    void addhorizontalTimeView(FrameLayout linearLayout, String profileImage, int leftMargin) {
+    private void addhorizontalTimeView(FrameLayout linearLayout, String profileImage, int leftMargin) {
         LayoutInflater layoutInflater;
         layoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
+        assert layoutInflater != null;
         final View v = layoutInflater.inflate(R.layout.multiple_image_cell, linearLayout, false);
 
         final ImageView showTime = v.findViewById(R.id.iv_profile);
@@ -505,9 +556,63 @@ public class MyJobAdapter extends RecyclerView.Adapter {
 
         void workerProfileDetail(MyjobResponceClient.DataBean dataBean);
     }
+
+    private class MyViewHolderJob4 extends RecyclerView.ViewHolder {
+        private TextView tvDate;
+        private TextView tvTime;
+        private TextView tvCategory;
+        private TextView tvSubcategory;
+        private TextView budget;
+        private TextView tvOfferRate;
+        private RelativeLayout rlUserData;
+        private CircleImageView ivProfileImg;
+        private TextView tvName;
+        private RatingBar ratingBar;
+        private TextView tvDistance;
+        private TextView btnSendRequest;
+        private LinearLayout llMoreInfo;
+        private TextView tvMoreInfo;
+        public MyViewHolderJob4(View v4) {
+            super(v4);
+            tvDate = (TextView) v4.findViewById(R.id.tv_date);
+            tvTime = (TextView) v4.findViewById(R.id.tv_time);
+            tvCategory = (TextView) v4.findViewById(R.id.tv_category);
+            tvSubcategory = (TextView) v4.findViewById(R.id.tv_subcategory);
+            budget = (TextView) v4.findViewById(R.id.budget);
+            tvOfferRate = (TextView) v4.findViewById(R.id.tv_offer_rate);
+            rlUserData = (RelativeLayout) v4.findViewById(R.id.rl_user_data);
+            ivProfileImg = (CircleImageView) v4.findViewById(R.id.iv_profile_img);
+            tvName = (TextView) v4.findViewById(R.id.tv_name);
+            ratingBar = (RatingBar) v4.findViewById(R.id.rating_bar);
+            tvDistance = (TextView) v4.findViewById(R.id.tv_distance);
+            btnSendRequest = (TextView) v4.findViewById(R.id.btn_send_request);
+            llMoreInfo = (LinearLayout) v4.findViewById(R.id.ll_more_info);
+            tvMoreInfo = (TextView) v4.findViewById(R.id.tv_more_info);
+            rlUserData.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, WorkerProfileDetailClientActivity.class);
+                    intent.putExtra("UserIdKey",""+myJobList.get(getAdapterPosition()).getRequestedUserData().get(0).getUserId());
+                    mContext.startActivity(intent);
+                }
+            });
+
+            llMoreInfo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                if (myJobList.get(getAdapterPosition()).getJob_type().equals("1")){
+                    Intent intent = new Intent(mContext, SingleJobCompleteJobDetailActivity.class);
+                    intent.putExtra("JobIdKey",""+myJobList.get(getAdapterPosition()).getJobId());
+                    mContext.startActivity(intent);
+                }else {// MyOngoingJob More Info
+                    Intent intent = new Intent(mContext, CompleteOngoingJobDetailClientActivity.class);
+                    intent.putExtra("JobIdKey", ""+myJobList.get(getAdapterPosition()).getJobId());
+                    mContext.startActivity(intent);
+                }
+                }
+            });
+        }
+    }
 }
-
-
-
 
 

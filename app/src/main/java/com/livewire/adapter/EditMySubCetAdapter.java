@@ -72,6 +72,8 @@ class EditMySubCetAdapter extends BaseAdapter {
                 public void onClick(View v) {
                    objects.remove(position);
                    notifyDataSetChanged();
+                    listner.subCategoryOnClickListener((Integer) holder.subCategoryText.getTag() , true);
+
                 }
             });
             // holder.subItemText.setText(object.getName());
@@ -84,7 +86,6 @@ class EditMySubCetAdapter extends BaseAdapter {
         private TextView tvPrice;
         private LinearLayout containerLay;
         private ImageView ivCancel;
-
 
         public ViewHolder(View view) {
 
@@ -99,7 +100,6 @@ class EditMySubCetAdapter extends BaseAdapter {
                     if (objects.size() == 0){
                         isListEmpty = true;
                     }
-                    listner.subCategoryOnClickListener((Integer) subCategoryText.getTag() , isListEmpty);
                 }
             });
         }

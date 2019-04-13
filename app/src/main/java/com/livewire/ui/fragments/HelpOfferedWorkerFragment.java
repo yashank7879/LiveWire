@@ -103,7 +103,6 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_help_offered, container, false);
-
     }
 
     @Override
@@ -124,10 +123,8 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
         tvClearAll = view.findViewById(R.id.tv_clear_all);
         rvFilter = view.findViewById(R.id.rv_filter_list);
 
-
        /* mLoadAnimation = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in);
         mLoadAnimation.setDuration(1000);*/
-
 
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);

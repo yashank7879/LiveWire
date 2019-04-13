@@ -27,7 +27,6 @@ public class PreferenceConnector {
     public static final String STRIPE_FEES = "StripeFees";
     public static final String STRIPE_TRANSACTION_FEES = "StripeTransactionFees";
 
-
     public static final String Email = "email";
     public static final String AUTH_TOKEN = "AuthToken1";
     public static final String USER_TYPE = "userType";
@@ -36,6 +35,7 @@ public class PreferenceConnector {
     public static final String PROFILE_IMG = "ProfileImg";
     public static final String Name = "name";
     public static final String AVAILABILITY_1 = "availability";
+   // public static final String FIRST_SIGNUP = "FirstSignup";
 
 
 

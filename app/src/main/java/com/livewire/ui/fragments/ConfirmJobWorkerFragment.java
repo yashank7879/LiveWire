@@ -59,7 +59,6 @@ import static com.livewire.utils.ApiCollection.BASE_URL;
 import static com.livewire.utils.ApiCollection.CONFIRM_OR_COMPLETED_JOB_LIST_API;
 import static com.livewire.utils.ApiCollection.GET_SUBCATEGORY_LIST_API;
 
-
 public class ConfirmJobWorkerFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener, SubCategoryAdapter.SubCategoryLisner, ConfirmJobWorkerAdapter.ConfirmJobListener {
     private Context mContext;
     private RelativeLayout mainLayout;
@@ -308,14 +307,14 @@ public class ConfirmJobWorkerFragment extends Fragment implements View.OnClickLi
                 inVactive();
                 tvOnGoingJob.setBackground(mContext.getResources().getDrawable(R.drawable.rounded_corner_green));
                 tvOnGoingJob.setTextColor(ContextCompat.getColor(mContext, R.color.colorGreen));
-                jobType = "2";
+                jobType = "1";
                 break;
 
             case R.id.tv_pending_request:
                 inVactive();
                 tvHelpOffred.setBackground(mContext.getResources().getDrawable(R.drawable.rounded_corner_green));
                 tvHelpOffred.setTextColor(ContextCompat.getColor(mContext, R.color.colorGreen));
-                jobType = "1";
+                jobType = "2";
                 break;
 
             default:
@@ -352,8 +351,8 @@ public class ConfirmJobWorkerFragment extends Fragment implements View.OnClickLi
             tvAllJobs = dialog.findViewById(R.id.tv_all_jobs);
             tvOnGoingJob = dialog.findViewById(R.id.tv_new_jobs);
             tvHelpOffred = dialog.findViewById(R.id.tv_pending_request);
-            tvHelpOffred.setText(R.string.short_term1);
-            tvOnGoingJob.setText(R.string.long_term1);
+            tvHelpOffred.setText(R.string.long_term1);
+            tvOnGoingJob.setText(R.string.short_term1);
 
             //""""""" Filter value """""""""//
             checkSelectedField();
@@ -404,13 +403,13 @@ public class ConfirmJobWorkerFragment extends Fragment implements View.OnClickLi
 
     private void checkSelectedField() {
         switch (jobType) {
-            case "1":
+            case "2":
                 inVactive();
                 tvHelpOffred.setBackground(mContext.getResources().getDrawable(R.drawable.rounded_corner_green));
                 tvHelpOffred.setTextColor(ContextCompat.getColor(mContext, R.color.colorGreen));
 
                 break;
-            case "2":
+            case "1":
                 inVactive();
                 tvOnGoingJob.setBackground(mContext.getResources().getDrawable(R.drawable.rounded_corner_green));
                 tvOnGoingJob.setTextColor(ContextCompat.getColor(mContext, R.color.colorGreen));

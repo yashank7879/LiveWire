@@ -185,7 +185,6 @@ public class NearByClientFragment extends Fragment implements View.OnClickListen
                                     if (status.equals("success")) {
                                         nearByResponce = new Gson().fromJson(String.valueOf(response), NearByResponce.class);
                                       //  checkVisibleFragmnet(response);
-
                                        nearByAdapter();
                                        // Log.e("onViewCreated: ",""+binding.viewpager.getCurrentItem() );
                                     } else {

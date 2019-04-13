@@ -56,7 +56,7 @@ public class AddBankAccountActivity extends AppCompatActivity implements View.On
         binding.payNow.setOnClickListener(this);
         // binding.llDob.setOnClickListener(this);
         binding.actionBarWorker.ivBack.setOnClickListener(this);
-        binding.actionBarWorker.tvLiveWire.setText(R.string.add_bank_acc);
+        binding.actionBarWorker.tvLiveWire.setText(R.string.manage_bank_acc);
 
         accTypeList = new ArrayList<>();
         accTypeList.add("Account Holder Type");

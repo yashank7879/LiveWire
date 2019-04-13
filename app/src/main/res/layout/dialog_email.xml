@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/review_layout"
+        >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/_10sdp"
+            android:background="@drawable/dialog_bg"
+            android:orientation="vertical">
+
+
+            <TextView
+                style="@style/mediumPopinsMediumStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="@dimen/_10sdp"
+                android:text="Enter Email Id"
+                android:textColor="@color/colorGreen" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorLightGray" />
+
+
+
+
+            <EditText
+                android:id="@+id/et_email"
+                style="@style/SmallPopinsLightStyle"
+                android:layout_width="@dimen/_270sdp"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:maxLength="250"
+                android:inputType="textEmailAddress"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:padding="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:hint="Enter your email id"
+                android:textColor="@color/colorDarkBlack"
+                android:textColorHint="@color/colorDarkGray"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorExtraLightGray"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_20sdp"
+                />
+
+
+            <Button
+                android:id="@+id/btn_submit"
+                style="@style/mediumPopinsLightStyle"
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginBottom="@dimen/_20sdp"
+                android:background="@drawable/button_green_bg"
+                android:text="@string/submit"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite" />
+
+            <TextView
+                android:id="@+id/tv_cancel"
+                style="@style/mediumPopinsLightStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:padding="@dimen/_5sdp"
+                android:text="@string/cancel"
+                android:textColor="@color/colorGreen"
+                android:visibility="gone"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</layout>

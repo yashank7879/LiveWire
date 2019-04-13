@@ -62,13 +62,15 @@ public class MySubCetAdapter extends BaseAdapter {
             holder.subCategoryText.setText(object.getSubName());
             String price= "$"+object.getMin_rate()+" - $"+object.getMax_rate();
             holder.tvPrice.setText(price);
-            /*holder.ivCancel.setOnClickListener(new View.OnClickListener() {
+
+            holder.ivCancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                    objects.remove(position);
+                    listner.subCategoryOnClickListener((Integer) holder.subCategoryText.getTag());
                    notifyDataSetChanged();
                 }
-            });*/
+            });
             // holder.subItemText.setText(object.getName());
         }
     }

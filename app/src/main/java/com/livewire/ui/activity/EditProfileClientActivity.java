@@ -91,12 +91,11 @@ public class EditProfileClientActivity extends AppCompatActivity implements View
                 locationLng = Double.parseDouble(userResponce.getData().getLongitude());
             }
 
-          /* if (!PreferenceConnector.readString(this,PreferenceConnector.SOCIAL_LOGIN,"").isEmpty()){
+           if (!PreferenceConnector.readString(this,PreferenceConnector.SOCIAL_LOGIN,"").isEmpty()){
                 binding.etEmail1.setText(userResponce.getData().getEmail());
                 binding.etEmail1.setEnabled(false);
-           }else binding.etEmail1.setText(userResponce.getData().getEmail());*/
+           }else binding.etEmail1.setText(userResponce.getData().getEmail());
             //  android:text='@{userInfo.town != "" ? userInfo.town : "N/A", default="N/A"}'
-
 
             String location = userResponce.getData().getProfile_address().isEmpty() ? "" : userResponce.getData().getProfile_address();
             binding.tvTownResident.setText(location);
@@ -110,8 +109,6 @@ public class EditProfileClientActivity extends AppCompatActivity implements View
         } else {
             myProfileApi();
         }
-
-
     }
 
     //"""""""""' my profile worker side""""""""""""""//
@@ -475,6 +472,7 @@ public class EditProfileClientActivity extends AppCompatActivity implements View
         infoFcm.uid = PreferenceConnector.readString(this, PreferenceConnector.MY_USER_ID, "");
         infoFcm.userType = PreferenceConnector.readString(this, PreferenceConnector.USER_TYPE, "");
         infoFcm.authToken = PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, "");
+        infoFcm.availability = PreferenceConnector.readString(this,PreferenceConnector.AVAILABILITY_1,"");
 
         database.child(Constant.ARG_USERS)
                 .child(PreferenceConnector.readString(this, PreferenceConnector.MY_USER_ID, ""))

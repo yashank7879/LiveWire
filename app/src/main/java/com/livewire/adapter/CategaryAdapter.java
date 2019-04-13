@@ -2,7 +2,9 @@ package com.livewire.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,8 +36,9 @@ public class CategaryAdapter extends RecyclerView.Adapter<CategaryAdapter.MyView
         this.mContext = context;
     }
 
+    @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.category_cell, parent, false);
 
@@ -43,25 +46,31 @@ public class CategaryAdapter extends RecyclerView.Adapter<CategaryAdapter.MyView
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final MyViewHolder holder,int position) {
         AddedSkillBean addedSkillBean = categaryList.get(position);
-        addedSkillBean.getSubCatagories();
+        //addedSkillBean.getSubCatagories();
         holder.tv_category.setText(addedSkillBean.getName());
         holder.listView.setAdapter(new MySubCetAdapter(mContext, addedSkillBean.getSubCatagories(), new MySubCetAdapter.SubCategoryListner() {
             @Override
             public void subCategoryOnClickListener(int pos) {
+                try {
                 AddedSkillBean data = categaryList.get(holder.getAdapterPosition());
-                if (data.getSubCatagories().size() == 1) {
+                if (data.getSubCatagories().size() == 0) {
                     categaryList.remove(holder.getAdapterPosition());
                     notifyItemChanged(holder.getAdapterPosition());
-                    notifyItemRemoved(pos);
+                    notifyDataSetChanged();
+                    //notifyItemRemoved(pos);
                 } else {
-                    data.getSubCatagories().remove(pos);
+                    //data.getSubCatagories().remove(pos);
                     notifyItemChanged(holder.getAdapterPosition());
-                    notifyItemRemoved(pos);
+                    notifyDataSetChanged();
+                    //notifyItemRemoved(pos);
                     /*holder.listView.getAdapter().notify();*/
                 }
                 /*holder.getAdapterPosition();*/
+                }catch (Exception e){
+                    Log.e( "Exception ", e.getLocalizedMessage());
+                }
             }
         }));
 

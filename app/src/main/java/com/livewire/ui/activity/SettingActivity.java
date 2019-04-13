@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,7 +28,10 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.livewire.R;
 import com.livewire.databinding.ActivitySettingBinding;
@@ -73,21 +77,22 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         binding.llShareApp.setOnClickListener(this);
 
         if (PreferenceConnector.readString(this, PreferenceConnector.USER_MODE, "").equals("worker")) {// show Bank acc
-            if (PreferenceConnector.readString(this, PreferenceConnector.IS_BANK_ACC, "").equals("1")) {
+            /*if (PreferenceConnector.readString(this, PreferenceConnector.IS_BANK_ACC, "").equals("1")) {
                 tvBankAcc.setText(R.string.edit_bank_account);
-            }
+            }*/
             binding.llAddBankAcc.setVisibility(View.VISIBLE);
             binding.rlAvailable.setVisibility(View.VISIBLE);
         } else if (PreferenceConnector.readString(this, PreferenceConnector.USER_MODE, "").equals("client")) {// show credit card
             binding.llAddCreditCard.setVisibility(View.VISIBLE);
+            binding.rlAvailable.setVisibility(View.VISIBLE);
         }
 
-        if (!PreferenceConnector.readString(this, PreferenceConnector.SOCIAL_LOGIN, "").isEmpty()) {
+        if (PreferenceConnector.readString(this, PreferenceConnector.PASS_WORD, "").isEmpty()) {
             binding.llChangePass.setVisibility(View.GONE);
         } else {
             binding.llChangePass.setVisibility(View.VISIBLE);
         }
-
+       // binding.llChangePass.setVisibility(View.VISIBLE);
         if (PreferenceConnector.readString(this, PreferenceConnector.AVAILABILITY_1, "").equals("1")) {
             binding.btnSwitch.setChecked(true);
         } else {
@@ -109,9 +114,9 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onResume() {
         super.onResume();
-        if (PreferenceConnector.readString(this, PreferenceConnector.IS_BANK_ACC, "").equals("1")) {
+        /*if (PreferenceConnector.readString(this, PreferenceConnector.IS_BANK_ACC, "").equals("1")) {
             tvBankAcc.setText(R.string.edit_bank_account);
-        }
+        }*/
     }
 
     @Override
@@ -283,11 +288,11 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         if (Validation.isEmpty(etCurrentPass)) {
             Constant.snackBar(dilogParentLayout, getString(R.string.please_enter_current_pass));
             etCurrentPass.startAnimation(shake);
-        } else if (!etCurrentPass.getText().toString().trim().equals(PreferenceConnector.readString(this, PreferenceConnector.PASS_WORD, ""))) {
+        } /*else if (!etCurrentPass.getText().toString().trim().equals(PreferenceConnector.readString(this, PreferenceConnector.PASS_WORD, ""))) {
             Constant.snackBar(dilogParentLayout, getString(R.string.please_enter_current_pass));
             etCurrentPass.requestFocus();
             etCurrentPass.startAnimation(shake);
-        } else if (Validation.isEmpty(etNewPass)) {
+        }*/else if (Validation.isEmpty(etNewPass)){
             Constant.snackBar(dilogParentLayout, getString(R.string.please_enter_new_pass));
             etNewPass.requestFocus();
             etNewPass.startAnimation(shake);
@@ -358,8 +363,6 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 }
             });
         }
-
-
     }
 
 
@@ -383,6 +386,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                             } else
                                 PreferenceConnector.writeString(SettingActivity.this, PreferenceConnector.AVAILABILITY_1, "0");
 
+                            changeAvailabilityOnFirebase(s);
                             // Toast.makeText(SettingActivity.this, message, Toast.LENGTH_SHORT).show();
 
                         } else {
@@ -401,6 +405,21 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 }
             });
         }
+    }
+
+    private void changeAvailabilityOnFirebase(String avalaible) {
+        String myId = PreferenceConnector.readString(this, PreferenceConnector.MY_USER_ID, "");
+        FirebaseDatabase.getInstance().getReference().child(Constant.ARG_USERS).child(myId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                FirebaseDatabase.getInstance().getReference().child(Constant.ARG_USERS).child(myId).child("availability").setValue(avalaible);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
 }

@@ -20,7 +20,13 @@ import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.Toast;
+
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
@@ -28,6 +34,7 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.livewire.R;
 import com.livewire.databinding.ActivityClientMainBinding;
 import com.livewire.model.Chat;
@@ -39,9 +46,15 @@ import com.livewire.ui.fragments.NotificationClientFragment;
 import com.livewire.ui.fragments.PostJobHomeFragment;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
+import com.livewire.utils.ProgressDialog;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.livewire.utils.ApiCollection.BASE_URL;
 
 public class ClientMainActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
     ActivityClientMainBinding binding;
@@ -50,6 +63,7 @@ public class ClientMainActivity extends AppCompatActivity implements View.OnClic
     private boolean doubleBackToExitPressedOnce = false;
     private Runnable runnable;
     private Map<String, Integer> isMsgFoundMap;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +75,7 @@ public class ClientMainActivity extends AppCompatActivity implements View.OnClic
 
     private void intializeViews() {
         fm = getSupportFragmentManager();
+        progressDialog = new ProgressDialog(this);
         Log.e( "dob date: ", PreferenceConnector.readString(this,PreferenceConnector.USER_DOB,""));
         binding.myJobLl.setOnClickListener(this);
         binding.notificationLl.setOnClickListener(this);
@@ -68,14 +83,25 @@ public class ClientMainActivity extends AppCompatActivity implements View.OnClic
         binding.chatLl.setOnClickListener(this);
         binding.nearyouLl.setOnClickListener(this);
 
-        binding.actionBar.setVisibility(View.VISIBLE);
+        binding.btnSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {//// user available
+                    availablityUser("1");
+                } else {// user unavailable
+                    availablityUser("0");
+                }
+            }
+        });
+
+       // binding.actionBar.setVisibility(View.VISIBLE);
 
         isMsgFoundMap = new HashMap<>();
         //get intent from NearYouClientActivity || from After completing payment
         if (getIntent().getStringExtra("NearYouKey") != null) {
             replaceFragment(new MyJobClientFragment(), false, R.id.fl_container); // first time replace home fragment
             inActiveTab();
-            binding.actionBar.setVisibility(View.GONE);
+           // binding.actionBar.setVisibility(View.GONE);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 binding.ivMyJob.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorGreen)));
             }
@@ -140,6 +166,45 @@ public class ClientMainActivity extends AppCompatActivity implements View.OnClic
         binding.ivProfile.setVisibility(View.VISIBLE);
         binding.ivProfile.setOnClickListener(this);
         binding.ivFilter.setOnClickListener(this);
+    }
+
+    private void availablityUser(final String s) {
+        if (Constant.isNetworkAvailable(this, binding.mainLayout)) {
+            progressDialog.show();
+            AndroidNetworking.post(BASE_URL + "user/availability")
+                    .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
+                    .addBodyParameter("availability", s)
+                    .setPriority(Priority.MEDIUM)
+                    .build().getAsJSONObject(new JSONObjectRequestListener() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    progressDialog.dismiss();
+                    try {
+                        String status = response.getString("status");
+                        String message = response.getString("message");
+                        if (status.equals("success")) {
+
+                            if (s.equals("1")){
+                                PreferenceConnector.writeString(ClientMainActivity.this,PreferenceConnector.AVAILABILITY_1,"1");
+                            }else PreferenceConnector.writeString(ClientMainActivity.this,PreferenceConnector.AVAILABILITY_1,"0");
+                            // Toast.makeText(WorkerMainActivity.this, message, Toast.LENGTH_SHORT).show();
+                            changeAvailabilityOnFirebase(s);
+                        } else {
+
+                            Constant.snackBar(binding.mainLayout, message);
+                        }
+                    } catch (JSONException e) {
+                        Log.d("Exception", e.getMessage());
+                    }
+                }
+
+                @Override
+                public void onError(ANError anError) {
+                    Log.d("EXception", anError.getErrorDetail());
+                    progressDialog.dismiss();
+                }
+            });
+        }
     }
 
 
@@ -220,7 +285,9 @@ public class ClientMainActivity extends AppCompatActivity implements View.OnClic
             case R.id.my_job_ll:
                 if (clickId != R.id.my_job_ll) {
                     inActiveTab();
-                    binding.actionBar.setVisibility(View.GONE);
+                    binding.actionBar.setVisibility(View.VISIBLE);
+                    binding.tvHeading.setText(R.string.my_livewire_post);
+                    binding.tvHeading.setAllCaps(true);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         binding.ivMyJob.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorGreen)));
                     }
@@ -371,5 +438,20 @@ public class ClientMainActivity extends AppCompatActivity implements View.OnClic
         } catch (Exception e) {
             Log.e("TAG", "onBackPressed: " + e.getMessage());
         }
+    }
+
+  private void  changeAvailabilityOnFirebase(String avalaible){
+        String myId = PreferenceConnector.readString(this,PreferenceConnector.MY_USER_ID,"");
+      FirebaseDatabase.getInstance().getReference().child(Constant.ARG_USERS).child(myId).addListenerForSingleValueEvent(new ValueEventListener() {
+          @Override
+          public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                  FirebaseDatabase.getInstance().getReference().child(Constant.ARG_USERS).child(myId).child("availability").setValue(avalaible);
+          }
+
+          @Override
+          public void onCancelled(@NonNull DatabaseError databaseError) {
+
+          }
+      });
     }
 }

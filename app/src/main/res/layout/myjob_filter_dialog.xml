@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_margin="@dimen/_10sdp"
+        android:layout_margin="@dimen/_5sdp"
         android:text="@string/filter"
         android:textColor="@color/colorGreen" />
 
@@ -32,26 +32,60 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/view1_id"
         android:layout_marginStart="@dimen/_15sdp"
-        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_8sdp"
         android:text="@string/sort_by"
         android:textColor="@color/colorGreen"
         android:textSize="@dimen/_10sdp" />
 
+    <LinearLayout
+        android:id="@+id/ll_all_app"
+        android:layout_width="@dimen/_70sdp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/id_sort_by"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/iv_all"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_gravity="center"
+            android:background="@drawable/active_btn_balck_bg"
+            android:padding="@dimen/_15sdp"
+            android:tint="@color/colorDarkBlack"
+            app:srcCompat="@drawable/ic_inactive_all_jobs_ico" />
+
+        <TextView
+            android:id="@+id/tv_all"
+            style="@style/SmallPopinsLightStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:gravity="center"
+            android:text="@string/all_work"
+            android:textColor="@color/colorDarkBlack"
+            android:textSize="@dimen/_10sdp" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/ll_once"
         android:layout_width="@dimen/_70sdp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/id_sort_by"
+        android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/_5sdp"
-        android:layout_marginStart="@dimen/_40sdp"
-        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_8sdp"
         android:orientation="vertical">
 
         <ImageView
             android:id="@+id/iv_once"
-            android:layout_width="@dimen/_60sdp"
-            android:layout_height="@dimen/_60sdp"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
             android:layout_gravity="center"
             android:background="@drawable/inactive_btn_gray_bg"
             android:padding="@dimen/_15sdp"
@@ -78,14 +112,14 @@
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/id_sort_by"
         android:layout_marginBottom="@dimen/_5sdp"
-        android:layout_marginEnd="@dimen/_40sdp"
-        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_8sdp"
         android:orientation="vertical">
 
         <ImageView
             android:id="@+id/iv_ongoing"
-            android:layout_width="@dimen/_60sdp"
-            android:layout_height="@dimen/_60sdp"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
             android:layout_gravity="center"
             android:background="@drawable/inactive_btn_gray_bg"
             android:padding="@dimen/_15sdp"
@@ -117,20 +151,32 @@
         android:textSize="@dimen/_10sdp" />
 
     <LinearLayout
-        android:id="@+id/check_box"
+        android:id="@+id/chack_box1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/id_filter"
         android:orientation="horizontal"
-
+        android:layout_below="@+id/id_filter"
         >
+
+        <android.support.v7.widget.AppCompatCheckBox
+            android:id="@+id/cb_new_app"
+            style="@style/smallPopinsRegularStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_weight=".9"
+            android:singleLine="true"
+            android:text="@string/new_application"
+            android:textColor="@color/colorDarkGray"
+            android:textSize="@dimen/_9sdp" />
 
         <android.support.v7.widget.AppCompatCheckBox
             android:id="@+id/cb_pending"
             style="@style/smallPopinsRegularStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_weight="1"
             android:singleLine="true"
@@ -138,19 +184,101 @@
             android:textColor="@color/colorDarkGray"
             android:textSize="@dimen/_9sdp" />
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/check_box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chack_box1"
+        android:orientation="horizontal"
+        >
+
         <android.support.v7.widget.AppCompatCheckBox
             android:id="@+id/cb_confirm"
             style="@style/smallPopinsRegularStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_5sdp"
-            android:layout_weight="1"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_weight=".9"
             android:singleLine="true"
             android:text="@string/confirm_application"
             android:textColor="@color/colorDarkGray"
             android:textSize="@dimen/_9sdp" />
 
+        <android.support.v7.widget.AppCompatCheckBox
+            android:id="@+id/cb_completed_app"
+            style="@style/smallPopinsRegularStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_weight="1"
+            android:singleLine="true"
+            android:text="@string/completed_application"
+            android:textColor="@color/colorDarkGray"
+            android:textSize="@dimen/_9sdp" />
+
     </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/select_category_rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/check_box"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_2sdp">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/iv_category_spin"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/sub_category_spinner"
+            android:rotation="360"
+            app:srcCompat="@drawable/ic_arrow_drop_down_black" />
+
+
+        <Spinner
+            android:id="@+id/sub_category_spinner"
+            android:layout_width="@dimen/_230sdp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@color/colorExtraLightGray"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="center"
+            android:spinnerMode="dropdown" />
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/view1"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:background="@color/colorLightGray"
+        android:layout_below="@+id/select_category_rl"
+        />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_below="@+id/view1"
+        android:orientation="horizontal"
+        >
+
+    </android.support.v7.widget.RecyclerView>
 
 
     <Button
@@ -158,12 +286,12 @@
         style="@style/mediumPopinsLightStyle"
         android:layout_width="@dimen/_120sdp"
         android:layout_height="@dimen/_30sdp"
-        android:layout_below="@+id/check_box"
+        android:layout_below="@+id/recycler_view"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/_25sdp"
+        android:layout_marginTop="@dimen/_10sdp"
         android:background="@drawable/button_green_bg"
-        android:text="@string/apply"
+        android:text="@string/filter"
         android:textAllCaps="false"
         android:textColor="@color/colorWhite" />
 
@@ -174,9 +302,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/btn_send_request"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
         android:background="?android:attr/selectableItemBackground"
-        android:padding="@dimen/_5sdp"
+        android:padding="@dimen/_3sdp"
         android:text="@string/cancel"
         android:textColor="@color/colorGreen" />
 

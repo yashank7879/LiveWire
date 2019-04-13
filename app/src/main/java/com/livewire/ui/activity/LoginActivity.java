@@ -2,8 +2,6 @@ package com.livewire.ui.activity;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
@@ -43,7 +41,6 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
@@ -51,7 +48,6 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
@@ -62,22 +58,15 @@ import com.livewire.R;
 import com.livewire.model.UserInfoFcm;
 import com.livewire.model.UserModel;
 import com.livewire.responce.SignUpResponce;
-import com.livewire.ui.dialog.LocationDialog;
-import com.livewire.ui.dialog.ReviewDialog;
+import com.livewire.ui.dialog.EmailDialog;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PermissionAll;
 import com.livewire.utils.PreferenceConnector;
 import com.livewire.utils.PreferenceConnectorRem;
 import com.livewire.utils.ProgressDialog;
 import com.livewire.utils.Validation;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
-import cz.msebera.android.httpclient.extras.Base64;
 
 import static com.livewire.utils.ApiCollection.BASE_URL;
 import static com.livewire.utils.ApiCollection.CHECK_SOCIAL_STATUS_API;
@@ -149,7 +138,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         permissionAll.RequestMultiplePermission(LoginActivity.this);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-               // .requestIdToken(getString(R.string.server_client_id))
+                // .requestIdToken(getString(R.string.server_client_id))
                 .requestEmail()
                 .build();
 
@@ -199,10 +188,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         //""""""it check user type remember login credential""""""""""
         if (PreferenceConnectorRem.readBoolean(LoginActivity.this, PreferenceConnectorRem.IS_CHECKED, false)) {
-           // if (PreferenceConnectorRem.readString(LoginActivity.this, PreferenceConnectorRem.REM_USER_TYPE, "").equals(key) && key.equals("worker")) { //""""""if worker
-                etMail.setText(PreferenceConnectorRem.readString(LoginActivity.this, PreferenceConnectorRem.REM_EMAIL, ""));
-                etPass.setText(PreferenceConnectorRem.readString(LoginActivity.this, PreferenceConnectorRem.REM_PASS, ""));
-                ivCheckBox.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check));
+            // if (PreferenceConnectorRem.readString(LoginActivity.this, PreferenceConnectorRem.REM_USER_TYPE, "").equals(key) && key.equals("worker")) { //""""""if worker
+            etMail.setText(PreferenceConnectorRem.readString(LoginActivity.this, PreferenceConnectorRem.REM_EMAIL, ""));
+            etPass.setText(PreferenceConnectorRem.readString(LoginActivity.this, PreferenceConnectorRem.REM_PASS, ""));
+            ivCheckBox.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_check));
            /* } else if (PreferenceConnectorRem.readString(LoginActivity.this, PreferenceConnectorRem.REM_USER_TYPE, "").equals(key) && key.equals("client")) {//""if Client
                 etMail.setText(PreferenceConnectorRem.readString(LoginActivity.this, PreferenceConnectorRem.REM_EMAIL, ""));
                 etPass.setText(PreferenceConnectorRem.readString(LoginActivity.this, PreferenceConnectorRem.REM_PASS, ""));
@@ -232,21 +221,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.iv_cBox:
                 checkBoxSelector();
                 break;
-
             case R.id.btn_signup:
                 intent = new Intent(this, SignupActivity.class);
-               // intent.putExtra("UserTypeKey", key);
+                // intent.putExtra("UserTypeKey", key);
                 startActivity(intent);
                 finish();
                 break;
-
             case R.id.btn_signup1:
                 intent = new Intent(this, SignupActivity.class);
-               // intent.putExtra("UserTypeKey", key);
+                // intent.putExtra("UserTypeKey", key);
                 startActivity(intent);
                 finish();
                 break;
-
             case R.id.btn_login:
                 fieldValidation();
                 break;
@@ -275,7 +261,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             @Override
             public void onCancel() {
-                //noting
+                //nothing
             }
 
             @Override
@@ -290,44 +276,32 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onCompleted(JSONObject object, GraphResponse response) {
                 JSONObject graphObject = response.getJSONObject();
-                if (graphObject.has("email")) {
-                    try {
-                        //if (key.equals("client")) {
-                            email = graphObject.getString("email");
-                            personName = graphObject.getString("name");
-                            String fbId = graphObject.getString("id");
-                            if (graphObject.getString("picture") != null) {
-                                imageUrl = object.getJSONObject("picture").getJSONObject("data").getString("url");
-                            }
-                            //checkSocialLogin(fbId, "fb");
-                     //   } else {
-                      /*      UserModel model = new UserModel();
+                String fbId = null;
+                try {
+                    fbId = graphObject.getString("id");
+                    personName = graphObject.getString("name");
+                    if (graphObject.getString("picture") != null) {
+                        imageUrl = object.getJSONObject("picture").getJSONObject("data").getString("url");
+                    }
+                    if (graphObject.has("email")) {
+                        email = graphObject.getString("email");
+                        checkSocialLogin(fbId, "fb");
+                           /* UserModel model = new UserModel();
                             model.name = graphObject.getString("name");
                             model.email = graphObject.getString("email");
                             model.profileImage = imageUrl;
-                            model.userType = key;
+                            // model.userType = key;
                             model.deviceType = "2";
                             model.deviceToken = FirebaseInstanceId.getInstance().getToken();
                             model.socialId = graphObject.getString("id");
                             model.socialType = "fb";
                             signUpApiForSocial(model);*/
-                   ///     }
 
-                        UserModel model = new UserModel();
-                        model.name = graphObject.getString("name");
-                        model.email = graphObject.getString("email");
-                        model.profileImage = imageUrl;
-                       // model.userType = key;
-                        model.deviceType = "2";
-                        model.deviceToken = FirebaseInstanceId.getInstance().getToken();
-                        model.socialId = graphObject.getString("id");
-                        model.socialType = "fb";
-                        signUpApiForSocial(model);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
 
-                    //Toast.makeText(LoginActivity.this, "Name" + fb_mail, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(LoginActivity.this, "Name" + fb_mail, Toast.LENGTH_SHORT).show();
+                    } else checkSocialfbLogin(fbId,"fb");
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
 
@@ -337,6 +311,53 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         bundle.putString("fields", "id, name, email, picture.width(120).height(120)");
         data_request.setParameters(bundle);
         data_request.executeAsync();
+    }
+
+    private void checkSocialfbLogin(String fbId, String fb) {
+        if (Constant.isNetworkAvailable(this, mainLayout)) {
+            progressDialog.show();
+            AndroidNetworking.post(BASE_URL + CHECK_SOCIAL_STATUS_API)
+                    .addBodyParameter("socialId", fbId)
+                    .setPriority(Priority.MEDIUM)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            progressDialog.dismiss();
+                            String status = null;
+                            try {
+                                status = response.getString("status");
+                                String message = response.getString("message");
+                                if (status.equals("success")) {
+
+                                    String isSocialLogin = response.getString("socialId");
+                                    if (isSocialLogin.equals("0")) {// sign up
+                                        openEmailIdDialog(fbId, "fb");
+                                    } else {// log in
+                                        UserModel model = new UserModel();
+                                        model.name = personName;
+                                        model.email = email;
+                                        //model.profileImage = imageUrl;
+                                        model.deviceType = "2";
+                                        model.deviceToken = FirebaseInstanceId.getInstance().getToken();
+                                        model.socialId = fbId;
+                                        model.socialType = fb;
+                                        signUpApiForSocial(model, "Second");
+                                    }
+                                } else {
+                                    Constant.snackBar(mainLayout, message);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void onError(ANError anError) {
+                            Log.e(TAG, anError.getErrorDetail());
+                        }
+                    });
+        }
     }
 
     private void showForgotDialog() {
@@ -362,8 +383,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
             }
         });
-
-
         tvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -443,22 +462,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
-            //checkSocialLogin(acct.getId(), "gmail");
+            assert acct != null;
+            checkSocialLogin(acct.getId(), "gmail");
             personName = acct.getDisplayName();
             email = acct.getEmail();
             if (acct.getPhotoUrl() != null) {
                 imageUrl = String.valueOf(acct.getPhotoUrl());
             }
-            UserModel model = new UserModel();
+           /* UserModel model = new UserModel();
             model.name = acct.getDisplayName();
             model.email = acct.getEmail();
             model.profileImage = String.valueOf(acct.getPhotoUrl());
-           // model.userType = key;
+            // model.userType = key;
             model.deviceType = "2";
             model.deviceToken = FirebaseInstanceId.getInstance().getToken();
             model.socialId = acct.getId();
             model.socialType = "gmail";
-            signUpApiForSocial(model);
+            signUpApiForSocial(model, "");*/
 
      /*       if (key.equals("client")) {
                 checkSocialLogin(acct.getId(), "gmail");
@@ -495,7 +515,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         @Override
                         public void onResponse(JSONObject response) {
                             progressDialog.dismiss();
-                            //progressBar1.setVisibility(View.GONE);
                             String status = null;
                             try {
                                 status = response.getString("status");
@@ -503,18 +522,26 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 if (status.equals("success")) {
 
                                     String isSocialLogin = response.getString("socialId");
-                                    if (isSocialLogin.equals("0")) {
-                                       // openLocationDialog(id, socialType);
-                                    } else {
+                                    if (isSocialLogin.equals("0")) {// sign up
                                         UserModel model = new UserModel();
                                         model.name = personName;
                                         model.email = email;
-                                      //  model.userType = key;
+                                        model.profileImage = imageUrl;
                                         model.deviceType = "2";
                                         model.deviceToken = FirebaseInstanceId.getInstance().getToken();
                                         model.socialId = id;
                                         model.socialType = socialType;
-                                        signUpApiForSocial(model);
+                                        signUpApiForSocial(model, "First");
+                                    } else {// log in
+                                        UserModel model = new UserModel();
+                                        model.name = personName;
+                                        model.email = email;
+                                        //model.profileImage = imageUrl;
+                                        model.deviceType = "2";
+                                        model.deviceToken = FirebaseInstanceId.getInstance().getToken();
+                                        model.socialId = id;
+                                        model.socialType = socialType;
+                                        signUpApiForSocial(model, "Second");
                                     }
 
                                 } else {
@@ -535,9 +562,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
-    ///""""""" open location dialog if user want to sign up at client side """"""""//
+ /*   ///""""""" open location dialog if user want to sign up at client side """"""""//
     private void openLocationDialog(final String id, final String socialType) {
-
         final LocationDialog dialog = new LocationDialog();
         dialog.show(getSupportFragmentManager(), "");
         dialog.setCancelable(false);
@@ -548,7 +574,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 UserModel model = new UserModel();
                 model.name = personName;
                 model.email = email;
-              //  model.userType = key;
+                //  model.userType = key;
                 model.deviceType = "2";
                 model.town = town;
                 model.latitude = String.valueOf(latLng.latitude);
@@ -560,15 +586,49 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 model.deviceToken = FirebaseInstanceId.getInstance().getToken();
                 model.socialId = id;
                 model.socialType = socialType;
-                signUpApiForSocial(model);
+                signUpApiForSocial(model, "");
             }
         });
+    }
+*/
+    private void openEmailIdDialog(String fbId, String fb) {
+        final EmailDialog dialog = new EmailDialog();
+        dialog.show(getSupportFragmentManager(), "");
+        dialog.setCancelable(false);
+        dialog.getEmailInfo(new EmailDialog.LocationDialogListner() {
+            @Override
+            public void openEmailIdDialog(String email1) {
+                dialog.dismiss();
+                email = email1;
+                UserModel model = new UserModel();
+                model.name = personName;
+                model.email = email;
+                model.profileImage = imageUrl;
+                model.deviceType = "2";
+                model.deviceToken = FirebaseInstanceId.getInstance().getToken();
+                model.socialId = fbId;
+                model.socialType = fb;
+                signUpApiForSocial(model, "First");
 
-
+                /*UserModel model = new UserModel();
+                model.name = personName;
+                model.email = email;
+                //  model.userType = key;
+                model.deviceType = "2";
+                if (imageUrl != null) {
+                    // imageUrl = String.valueOf(acct.getPhotoUrl());
+                    model.profileImage = imageUrl;
+                }
+                model.deviceToken = FirebaseInstanceId.getInstance().getToken();
+                // model.socialId = id;
+                // model.socialType = socialType;
+                signUpApiForSocial(model);*/
+            }
+        });
     }
 
     //"""""""""signup with google and fb""""""""""""""""""//
-    private void signUpApiForSocial(UserModel model) {
+    private void signUpApiForSocial(UserModel model, String isSignUp) {
         if (Constant.isNetworkAvailable(this, mainLayout)) {
             progressDialog.show();
             // progressBar.setVisibility(View.VISIBLE);
@@ -591,10 +651,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.USER_INFO_JSON, response.toString());
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.COMPLETE_PROFILE_STATUS, userResponce.getData().getCompleteProfile());
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.AUTH_TOKEN, userResponce.getData().getAuthToken());
-                                    PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.SOCIAL_LOGIN, userResponce.getData().getSocialType());
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.STRIPE_CUSTOMER_ID, userResponce.getData().getStripe_customer_id());
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.IS_BANK_ACC, userResponce.getData().getIs_bank_account());
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.AVAILABILITY_1, userResponce.getData().getAvailability());
+                                    PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.PASS_WORD, userResponce.getData().getPassword());
+                                    PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.SOCIAL_LOGIN, userResponce.getData().getSocialType());
 
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.MY_USER_ID, userResponce.getData().getUserId());
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
@@ -617,7 +678,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     } else { // if user is Client
                                         addUserFirebaseDatabase();
                                         finishAffinity();
-                                        Intent intent = new Intent(LoginActivity.this, ClientMainActivity.class);
+                                        Intent intent = null;
+                                        if (isSignUp.equals("First")) {// first sign up
+                                            intent = new Intent(LoginActivity.this, MyProfileClientActivity.class);
+                                            intent.putExtra("SignUp", "SignUp");
+                                        } else {
+                                            intent = new Intent(LoginActivity.this, ClientMainActivity.class);
+                                        }
+
                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                         startActivity(intent);
                                         finish();
@@ -686,7 +754,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             UserModel model = new UserModel();
             model.email = etMail.getText().toString().trim();
             model.password = etPass.getText().toString().trim();
-         //   model.userType = key;
+            //   model.userType = key;
             model.deviceType = "2";
             model.deviceToken = FirebaseInstanceId.getInstance().getToken();
             loginApi(model);
@@ -698,8 +766,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void loginApi(UserModel model) {
         if (Constant.isNetworkAvailable(this, mainLayout)) {
             progressDialog.show();
-            // progressBar.setVisibility(View.VISIBLE);
-            //  AndroidNetworking.post("http://dev.mindiii.com/livewire/service/userLogin")
             AndroidNetworking.post(BASE_URL + USER_LOGIN_API)
                     .addBodyParameter(model)
                     .setPriority(Priority.MEDIUM)
@@ -717,10 +783,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.USER_INFO_JSON, response.toString());
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.AUTH_TOKEN, userResponce.getData().getAuthToken());
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.COMPLETE_PROFILE_STATUS, userResponce.getData().getCompleteProfile());
-                                    PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.PASS_WORD, etPass.getText().toString());
+                                    PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.PASS_WORD, userResponce.getData().getPassword());
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.IS_BANK_ACC, userResponce.getData().getIs_bank_account());
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.STRIPE_CUSTOMER_ID, userResponce.getData().getStripe_customer_id());
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.AVAILABILITY_1, userResponce.getData().getAvailability());
+                                    PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.SOCIAL_LOGIN, userResponce.getData().getSocialType());
 
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.USER_MODE, userResponce.getData().getUser_mode());
@@ -729,7 +796,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.Name, userResponce.getData().getName());
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.Email, userResponce.getData().getEmail());
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.COMPLETE_PROFILE_STATUS, userResponce.getData().getCompleteProfile());
-                                    Log.e( "onResponse dob: ",userResponce.getData().getConfirm_dob() );
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.USER_DOB, userResponce.getData().getConfirm_dob());
 
                                     addUserFirebaseDatabase();
@@ -787,6 +853,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                         startActivity(intent);
                                         finish();
+                                       /* Intent intent = new Intent(LoginActivity.this, MyProfileClientActivity.class);
+                                        intent.putExtra("SignUp","SignUp");
+                                        startActivity(intent);
+                                        finish();*/
+
                                     }
 
                                 } else {
@@ -816,7 +887,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     //""""""""" register user in Firebase data base  """""""""""""""//
     private void addUserFirebaseDatabase() {
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-       // Log.e(TAG, database.toString());
         UserInfoFcm infoFcm = new UserInfoFcm();
         infoFcm.email = PreferenceConnector.readString(this, PreferenceConnector.Email, "");
         infoFcm.firebaseToken = FirebaseInstanceId.getInstance().getToken();
@@ -826,6 +896,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         infoFcm.uid = PreferenceConnector.readString(this, PreferenceConnector.MY_USER_ID, "");
         infoFcm.userType = PreferenceConnector.readString(this, PreferenceConnector.USER_TYPE, "");
         infoFcm.authToken = PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, "");
+        infoFcm.availability = PreferenceConnector.readString(this, PreferenceConnector.AVAILABILITY_1, "");
 
         database.child(Constant.ARG_USERS)
                 .child(PreferenceConnector.readString(this, PreferenceConnector.MY_USER_ID, ""))

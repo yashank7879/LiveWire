@@ -48,6 +48,7 @@ public class MyProfileClientActivity extends AppCompatActivity implements View.O
     private ArrayList<MyProfileResponce.DataBean.CategoryBean> showSkillBeans = new ArrayList<>();
     private ShowSkillsAdapter showSkillsAdapter;
     private String videoUrl;
+    private String fromSignUp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +58,12 @@ public class MyProfileClientActivity extends AppCompatActivity implements View.O
         binding.rvSkillData.setLayoutManager(layoutManager);
         showSkillsAdapter = new ShowSkillsAdapter(this, showSkillBeans);
         binding.rvSkillData.setAdapter(showSkillsAdapter);
-
+        actionBarIntialize();
+        if (getIntent().getStringExtra("SignUp") != null){
+             fromSignUp = getIntent().getStringExtra("SignUp");
+            binding.actionBar1.ivBack.setVisibility(View.GONE);
+            binding.llHirer.setOnClickListener(this);
+        }
 
         progressDialog = new ProgressDialog(this);
         binding.btnLogout.setOnClickListener(this);
@@ -67,14 +73,12 @@ public class MyProfileClientActivity extends AppCompatActivity implements View.O
         // binding.cvCompleteJob.setOnClickListener(this);
         binding.ivProfile.setOnClickListener(this);
         binding.rlRatingBar.setOnClickListener(this);
-        binding.llHirer.setOnClickListener(this);
         binding.llWorker.setOnClickListener(this);
         //PreferenceConnector.writeString(this, PreferenceConnector.USER_DOB, "");
         PreferenceConnector.writeString(this, PreferenceConnector.SELECTED_VIDEO, "");
         PreferenceConnector.writeString(this, PreferenceConnector.ABOUT_ME, "");
-        actionBarIntialize();
+
         myProfileApi();
-        Log.e("MyProfileCl dob: ", PreferenceConnector.readString(this, PreferenceConnector.USER_DOB, ""));
     }
 
     private void actionBarIntialize() {
@@ -182,6 +186,15 @@ public class MyProfileClientActivity extends AppCompatActivity implements View.O
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     binding.ivClient.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorWhite)));
                 }
+
+               if (fromSignUp.equals("SignUp")) {
+                   finishAffinity();
+                    intent = new Intent(MyProfileClientActivity.this, ClientMainActivity.class);
+                    startActivity(intent);
+                    finish();
+
+                }
+                break;
             }
             default:
         }
@@ -204,6 +217,7 @@ public class MyProfileClientActivity extends AppCompatActivity implements View.O
                                 String status = response.getString("status");
                                 String message = response.getString("message");
                                 if (status.equals("success")) {
+
                                     if (PreferenceConnector.readString(MyProfileClientActivity.this, PreferenceConnector.USER_MODE, "").equals("worker")) { //switch worker to clint
                                         PreferenceConnector.writeString(MyProfileClientActivity.this, PreferenceConnector.USER_MODE, "client");
                                         finishAffinity();
@@ -241,7 +255,7 @@ public class MyProfileClientActivity extends AppCompatActivity implements View.O
 
     //"""""""""' my profile worker side""""""""""""""//
     private void myProfileApi() {// help offer api calling
-        if (Constant.isNetworkAvailable(this, binding.svProfile)) {
+        if (Constant.isNetworkAvailable(this, binding.svProfile)){
             progressDialog.show();
             AndroidNetworking.get(BASE_URL + GET_MY_USER_PROFILE_API)
                     .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
@@ -295,11 +309,10 @@ public class MyProfileClientActivity extends AppCompatActivity implements View.O
                             progressDialog.dismiss();
                         }
                     });
-
         }
     }
 
-    private void ageAlertDiaog() {
+    private void ageAlertDiaog(){
         AlertDialog.Builder builder1 = new AlertDialog.Builder(MyProfileClientActivity.this);
         builder1.setTitle("Alert");
         builder1.setMessage("Are you over 40 Years?");

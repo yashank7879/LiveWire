@@ -76,7 +76,6 @@ public class ReviewListActivity extends AppCompatActivity implements View.OnClic
                         String status = response.getString("status");
                         String message = response.getString("message");
                         if (status.equals("success")) {
-
                             reviewResponce = new Gson().fromJson(String.valueOf(response), GetReviewResponce.class);
                             reviewList.addAll(reviewResponce.getData());
                             if (reviewResponce.getData().size() != 0) {
@@ -84,7 +83,7 @@ public class ReviewListActivity extends AppCompatActivity implements View.OnClic
                             }
                             adapter.notifyDataSetChanged();
                         } else {
-                            if (!message.equalsIgnoreCase("Record not found")){
+                            if (!message.equalsIgnoreCase("Records not found")){
                                 Constant.snackBar(binding.reviewLayout, message);
                             }
                         }

@@ -34,40 +34,40 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_splash);
         upperLl = findViewById(R.id.upper_ll);
         upperFl = findViewById(R.id.fl_upper);
         image = findViewById(R.id.image_view);
         tvLiveWire = findViewById(R.id.tv_live_wire);
-        Log.e("authToken",PreferenceConnector.readString(this,PreferenceConnector.AUTH_TOKEN,""));
-       // zoomOut = AnimationUtils.loadAnimation(this, R.anim.zoom_out);
+        Log.e("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""));
+        // zoomOut = AnimationUtils.loadAnimation(this, R.anim.zoom_out);
 
-         mRunnable = new Runnable() {
+        mRunnable = new Runnable() {
             @Override
             public void run() {
 
-                Intent intent =null;
+                Intent intent = null;
                 //""""""' by default user is client """""""""//
-                        if (PreferenceConnector.readBoolean(SplashActivity.this,PreferenceConnector.IS_LOG_IN,false)){// is login
-
-                            if (PreferenceConnector.readString(SplashActivity.this,PreferenceConnector.USER_MODE,"").equals("worker")){//if user is worker
-                                //"""" if worker complete profile
-                                    intent = new Intent(SplashActivity.this,WorkerMainActivity.class);
-                            }else { //""""""" if user is Client """"""//
-                                intent = new Intent(SplashActivity.this,ClientMainActivity.class);
-                            }
-                        }else {//""""" if user not login
-                            intent = new Intent(SplashActivity.this,LoginActivity.class);
+                if (PreferenceConnector.readBoolean(SplashActivity.this, PreferenceConnector.IS_LOG_IN, false)) {// is login
+                        if (PreferenceConnector.readString(SplashActivity.this, PreferenceConnector.USER_MODE, "").equals("worker")) {//if user is worker
+                            //"""" if worker complete profile """"""""//
+                            intent = new Intent(SplashActivity.this, WorkerMainActivity.class);
+                        } else { //""""""" if user is Client """"""//
+                            intent = new Intent(SplashActivity.this, ClientMainActivity.class);
                         }
+                    }
+                else {//""""" if user not login
+                    intent = new Intent(SplashActivity.this, LoginActivity.class);
+                }
 
                 startActivity(intent);
                 finish();
 
             }
         };
-         mHandlers.postDelayed(mRunnable,2000);
+        mHandlers.postDelayed(mRunnable, 2000);
     }
 
     @Override
@@ -89,6 +89,7 @@ public class SplashActivity extends AppCompatActivity {
         image.startAnimation(rotate);
         image.setVisibility(View.VISIBLE);
     }
+
     @Override
     protected void onPause() {
         super.onPause();

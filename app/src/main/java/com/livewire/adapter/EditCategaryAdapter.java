@@ -50,22 +50,24 @@ public class EditCategaryAdapter extends RecyclerView.Adapter<EditCategaryAdapte
             @Override
             public void subCategoryOnClickListener(int pos, boolean value) {
                 AddedSkillBean data = categaryList.get(holder.getAdapterPosition());
-                if (data.getSubCatagories().size() == 1) {
+                if (data.getSubCatagories().size() == 0) {
                     categaryList.remove(holder.getAdapterPosition());
+                    //notifyItemRemoved(pos);
                     notifyItemChanged(holder.getAdapterPosition());
-                    notifyItemRemoved(pos);
+                    notifyDataSetChanged();
                 } else {
-                    data.getSubCatagories().remove(pos);
+                   // data.getSubCatagories().remove(pos);
+                   // notifyItemRemoved(pos);
                     notifyItemChanged(holder.getAdapterPosition());
-                    notifyItemRemoved(pos);
+                    notifyDataSetChanged();
                     /*holder.listView.getAdapter().notify();*/
                 }
 
-                /*if (value){
+               /* if (value){
                     holder.tv_category.setVisibility(View.GONE);
                     notifyItemChanged(holder.getAdapterPosition());
-                }else holder.tv_category.setVisibility(View.VISIBLE);*/
-
+                }else holder.tv_category.setVisibility(View.VISIBLE);
+*/
                 /*holder.getAdapterPosition();*/
             }
         }));

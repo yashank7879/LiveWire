@@ -25,6 +25,31 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_40sdp">
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/_5sdp"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/_8sdp"
+                    android:text="@string/availability"
+                    android:textColor="@color/colorBlack"
+                    android:fontFamily="@font/poppins_regular"
+                    />
+                <Switch
+                    android:id="@+id/btn_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_10sdp"
+                    android:backgroundTint="@color/colorLightGreen"
+                    android:checked="true"/>
+
+            </LinearLayout>
+
             <TextView
                 android:id="@+id/tv_heading"
                 style="@style/mediumPopinsMediumStyle"
@@ -59,43 +84,7 @@
     </com.loopeer.shadow.ShadowView>
 
 
- <!--   <com.loopeer.shadow.ShadowView
-        android:id="@+id/sv_action_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:background="@color/colorWhite"
-        app:shadowColor="@color/colorDarkGray"
-        app:shadowMarginBottom="3dp"
-        app:shadowRadius="@dimen/_5sdp">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp">
-
-            <TextView
-                android:id="@+id/btn_logout"
-                android:fontFamily="@font/poppins_medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Logout"
-                android:textColor="@color/colorGreen"
-                android:layout_centerVertical="true"
-                android:padding="@dimen/_5sdp"
-                />
-
-            <TextView
-                android:id="@+id/tv_live_wire"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:textSize="@dimen/_14sdp"
-                android:fontFamily="@font/poppins_medium"
-                />
-
-        </RelativeLayout>
-
-    </com.loopeer.shadow.ShadowView>-->
 
     <FrameLayout
         android:id="@+id/fl_container"
@@ -290,7 +279,7 @@
                     android:id="@+id/iv_notification"
                     android:layout_width="@dimen/_30sdp"
                     android:layout_height="@dimen/_30sdp"
-                    app:srcCompat="@drawable/ic_inactive_notification"
+                    app:srcCompat="@drawable/ic_active_black_notification_ico"
                     android:tint="@color/colorLightGray"
                     android:padding="@dimen/_3sdp"
                     />

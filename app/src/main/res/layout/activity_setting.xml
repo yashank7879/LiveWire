@@ -34,11 +34,10 @@
 
                 <ImageView
                     android:id="@+id/iv_back"
-                    android:layout_width="@dimen/_25sdp"
+                    android:layout_width="@dimen/_30sdp"
                     android:layout_height="match_parent"
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginEnd="@dimen/_5sdp"
                     android:background="?android:attr/selectableItemBackground"
                     android:padding="@dimen/_5sdp"
                     android:tint="@color/colorDarkBlack"
@@ -146,7 +145,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginStart="@dimen/_5sdp"
-                android:text="@string/add_bank_account"
+                android:text="@string/manage_bank_acc"
                 android:textColor="@color/colorDarkGray"
                 android:textSize="@dimen/_10sdp" />
 

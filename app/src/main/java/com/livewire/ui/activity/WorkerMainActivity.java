@@ -33,6 +33,7 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.livewire.R;
 import com.livewire.databinding.ActivityWorkerMainBinding;
 import com.livewire.model.Chat;
@@ -62,7 +63,7 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
     private boolean doubleBackToExitPressedOnce = false;
     private Runnable runnable;
     private ImageView ivNotification;
-   private Map<String, Integer> isMsgFoundMap;
+    private Map<String, Integer> isMsgFoundMap;
     private ProgressDialog progressDialog;
 
     @Override
@@ -95,9 +96,9 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void checkAvailability() {
-        if (PreferenceConnector.readString(this,PreferenceConnector.AVAILABILITY_1,"").equals("1")){
+        if (PreferenceConnector.readString(this, PreferenceConnector.AVAILABILITY_1, "").equals("1")) {
             binding.btnSwitch.setChecked(true);
-        }else {
+        } else {
             binding.btnSwitch.setChecked(false);
         }
     }
@@ -124,11 +125,12 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
                         String message = response.getString("message");
                         if (status.equals("success")) {
 
-                            if (s.equals("1")){
-                                PreferenceConnector.writeString(WorkerMainActivity.this,PreferenceConnector.AVAILABILITY_1,"1");
-                            }else PreferenceConnector.writeString(WorkerMainActivity.this,PreferenceConnector.AVAILABILITY_1,"0");
+                            if (s.equals("1")) {
+                                PreferenceConnector.writeString(WorkerMainActivity.this, PreferenceConnector.AVAILABILITY_1, "1");
+                            } else
+                                PreferenceConnector.writeString(WorkerMainActivity.this, PreferenceConnector.AVAILABILITY_1, "0");
                             // Toast.makeText(WorkerMainActivity.this, message, Toast.LENGTH_SHORT).show();
-
+                            changeAvailabilityOnFirebase(s);
                         } else {
 
                             Constant.snackBar(binding.mainLayout, message);
@@ -179,11 +181,11 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
 
             showAlertWorkerDialog();
 
-        } else if (getIntent().getStringExtra("workerMyProfile") != null){
+        } else if (getIntent().getStringExtra("workerMyProfile") != null) {
             binding.tvHeading.setText(R.string.work_opportunity);
             replaceFragment(new JobRequestFragment(), false, R.id.fl_container); // first time replace home fragment
             clickId = R.id.home_ll;
-            Intent intent = new Intent(this,MyProfileWorkerActivity.class);
+            Intent intent = new Intent(this, MyProfileWorkerActivity.class);
             startActivity(intent);
         } else {
             binding.tvHeading.setText(R.string.work_opportunity);
@@ -191,10 +193,10 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
             clickId = R.id.home_ll;
         }
 
-        if (Constant.isNetworkAvailable(this,binding.mainLayout)) {
+        if (Constant.isNetworkAvailable(this, binding.mainLayout)) {
             checkUREADmsg();
         }
-        Log.e( "inti user mode: ",PreferenceConnector.readString(this,PreferenceConnector.USER_MODE,"") );
+        Log.e("inti user mode: ", PreferenceConnector.readString(this, PreferenceConnector.USER_MODE, ""));
     }
 
     @Override
@@ -341,7 +343,7 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
 
 
     private void checkUREADmsg() {
-        FirebaseDatabase.getInstance().getReference().child(Constant.ARG_HISTORY).child(PreferenceConnector.readString(this,PreferenceConnector.MY_USER_ID,"")).addChildEventListener(new ChildEventListener() {
+        FirebaseDatabase.getInstance().getReference().child(Constant.ARG_HISTORY).child(PreferenceConnector.readString(this, PreferenceConnector.MY_USER_ID, "")).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 if (dataSnapshot.getValue(Chat.class) != null) {
@@ -356,7 +358,7 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
                         } else iv_unread_msg_tab.setVisibility(View.GONE);*/
 
 
-                    } else  binding.ivUnreadMsgTab.setVisibility(View.GONE);
+                    } else binding.ivUnreadMsgTab.setVisibility(View.GONE);
                 }
             }
 
@@ -372,7 +374,7 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
                             iv_unread_msg_tab.setVisibility(View.VISIBLE);
                             return;
                         } else iv_unread_msg_tab.setVisibility(View.GONE);*/
-                    }else  binding.ivUnreadMsgTab.setVisibility(View.GONE);
+                    } else binding.ivUnreadMsgTab.setVisibility(View.GONE);
                 }
 
             }
@@ -405,7 +407,6 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
             }
         });
     }
-
 
 
     //*********   replace Fragment  ************//
@@ -456,6 +457,21 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
         } catch (Exception e) {
             Log.e("TAG", "onBackPressed: " + e.getMessage());
         }
+    }
+
+    private void changeAvailabilityOnFirebase(String avalaible) {
+        String myId = PreferenceConnector.readString(this, PreferenceConnector.MY_USER_ID, "");
+        FirebaseDatabase.getInstance().getReference().child(Constant.ARG_USERS).child(myId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                FirebaseDatabase.getInstance().getReference().child(Constant.ARG_USERS).child(myId).child("availability").setValue(avalaible);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }
 

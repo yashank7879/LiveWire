@@ -153,6 +153,7 @@
     <string name="please_enter_account_holder_last_name">Please enter account holder last name</string>
     <string name="edit_bank_account">Edit Bank Account</string>
     <string name="add_bank_acc">Add Bank Account</string>
+    <string name="manage_bank_acc">Manage Bank Account</string>
     <string name="update_bank_details">Update Account</string>
     <string name="payment">Payment</string>
     <string name="pay">Pay</string>
@@ -337,8 +338,10 @@
     <string name="please_add_intro_video">Please add intro video</string>
     <string name="maximum_200_words">Maximum 200 words</string>
     <string name="offer_has_been_successfully_sent">Your offer has been successfully sent.</string>
-
-
+    <string name="my_livewire_post">My livewire posts</string>
+    <string name="completed_application">Completed Application</string>
+    <string name="you_can_send_msg_as_this_user">You can\'t send message as this user is currently unavailable. Please check later.</string>
+    <string name="new_application">New Application</string>
 
 
 </resources>
