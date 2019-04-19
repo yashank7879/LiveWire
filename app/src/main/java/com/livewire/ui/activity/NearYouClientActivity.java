@@ -12,13 +12,17 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +34,7 @@ import com.google.gson.Gson;
 import com.livewire.R;
 import com.livewire.adapter.NearYouAdapter;
 import com.livewire.pagination.EndlessRecyclerViewScrollListener;
+import com.livewire.responce.AddSkillsResponce;
 import com.livewire.responce.NearYouResponce;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
@@ -46,7 +51,7 @@ import static com.livewire.utils.ApiCollection.BASE_URL;
 import static com.livewire.utils.ApiCollection.GET_NEAR_BY_WORKER_API;
 import static com.livewire.utils.ApiCollection.JOBPOSTSEND_REQUEST_2_API;
 
-public class NearYouClientActivity extends AppCompatActivity implements View.OnClickListener, NearYouAdapter.NearYouRequestListener {
+public class NearYouClientActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener, NearYouAdapter.NearYouRequestListener {
     private ProgressDialog progressDialog;
     private RelativeLayout mainLayout;
     private List<NearYouResponce.DataBean> nearYouList;
@@ -57,6 +62,8 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
     private SwipeRefreshLayout swipeRefreshLayout;
     private int limit = 5;
     private int start = 0;
+    private List<String> currencyList = new ArrayList<>();
+    private String currency;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +77,7 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         width = displaymetrics.widthPixels;
-
+        addVlaueInCurrency();
         if (getIntent().getStringExtra("JobIdKey") != null) {
             jobId = getIntent().getStringExtra("JobIdKey");
         }
@@ -117,6 +124,10 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
         nearYouListApi();
     }
 
+    private void addVlaueInCurrency() {
+        currencyList.add("Currency");
+        currencyList.add("ZAR (R)");
+    }
 
     //"""""""""' near you api at client side""""""""""""""//
     private void nearYouListApi() {// help offer api calling
@@ -184,7 +195,6 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
 
     //""""""""""" open send offer dialog """"""""""""""'//
     private void openRequestDialog(final String userId) {
-
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -194,14 +204,26 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
         TextView tvCancel = dialog.findViewById(R.id.tv_cancel);
         Button btnSendRequest = dialog.findViewById(R.id.btn_send_request);
         final EditText etOfferPrice = dialog.findViewById(R.id.et_offer_price);
+        Spinner CurrencySpinner = dialog.findViewById(R.id.currency_spinner);
+
+        ArrayAdapter currencyAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, currencyList);
+        currencyAdapter.setDropDownViewResource(R.layout.spinner_drop_down);
+        CurrencySpinner.setOnItemSelectedListener(this);
+        CurrencySpinner.setAdapter(currencyAdapter);
+
 
         btnSendRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Validation.isEmpty(etOfferPrice)) {
+
+                if (currency.equals("Currency")) {
+                    Constant.snackBar(mainLayout1, "Please select currency");
+                } else if (Validation.isEmpty(etOfferPrice)) {
                     Constant.snackBar(mainLayout1, "Please enter offer price");
-                } if (etOfferPrice.getText().toString().trim().equals("0")) {
+                } else if (etOfferPrice.getText().toString().trim().equals("0")) {
                     Constant.snackBar(mainLayout1, "Offer price should not be zero");
+                } else if (Float.parseFloat(etOfferPrice.getText().toString()) < 3) {
+                    Constant.snackBar(mainLayout1, "Offer rate should not be less than 3 dollar");
                 } else {
                     dialog.dismiss();
                     sendOfferRequestApi(etOfferPrice.getText().toString().trim(), mainLayout1, userId);
@@ -230,7 +252,7 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
             }
 
             @Override
-            public void afterTextChanged(Editable editable) { //""""""""" price format "15455.15"
+            public void afterTextChanged(Editable editable) { //""" price format "15455.15"""""""""
                 String str = etOfferPrice.getText().toString();
                 if (str.isEmpty()) return;
                 String str2 = perfectDecimal(str, 6, 2);
@@ -276,6 +298,20 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
         return rFinal;
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        switch (parent.getId()) {
+            case R.id.currency_spinner:
+                currency = currencyList.get(position);
+                Log.e("fkjgh", "onItemSelected: " + currency);
+                break;
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 
     private void sendOfferRequestApi(String offerPrice, RelativeLayout mainLayout1, String userId) {
         if (Constant.isNetworkAvailable(this, mainLayout1)) {
@@ -283,9 +319,10 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
             AndroidNetworking.post(BASE_URL + JOBPOSTSEND_REQUEST_2_API)
                     .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
                     .addBodyParameter("job_id", jobId)
+                    .addBodyParameter("currency", "ZAR")
                     //.addBodyParameter("request_to", "2")
                     .addBodyParameter("request_to", userId)
-                    .addBodyParameter("job_offer", ""+Float.parseFloat(offerPrice))
+                    .addBodyParameter("job_offer", "" + Float.parseFloat(offerPrice))
                     .addBodyParameter("request_status", "0")
                     .setPriority(Priority.MEDIUM)
                     .build().getAsJSONObject(new JSONObjectRequestListener() {
@@ -300,7 +337,7 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
                             Constant.snackBar(mainLayout, message);
                             //"""""' if user successfully created on going post """""""""""//
                             Toast.makeText(NearYouClientActivity.this, R.string.offer_has_been_successfully_sent, Toast.LENGTH_SHORT).show();
-                          //  Constant.snackBar(mainLayout,getString(R.string.your_project_has_been_successfully_shared));
+                            //  Constant.snackBar(mainLayout,getString(R.string.your_project_has_been_successfully_shared));
                             Intent intent = new Intent(NearYouClientActivity.this, ClientMainActivity.class);
                             intent.putExtra("NearYouKey", "MyJobs");
                             startActivity(intent);

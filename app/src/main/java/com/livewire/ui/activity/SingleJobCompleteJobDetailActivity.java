@@ -71,7 +71,6 @@ public class SingleJobCompleteJobDetailActivity extends AppCompatActivity implem
                                 String message = response.getString("message");
                                 if (status.equals("success")) {
                                     JobDetailClientResponce dataBean = new Gson().fromJson(String.valueOf(response), JobDetailClientResponce.class);
-
                                     setMyJobDetails(dataBean);
                                     binding.setJobDetail(dataBean.getData());
                                     userId = dataBean.getData().getRequestedUserData().get(0).getUserId();
@@ -126,11 +125,10 @@ public class SingleJobCompleteJobDetailActivity extends AppCompatActivity implem
                 binding.tvReviewUserDescription.setText(reviewBean.getReview_description());
                 binding.ratingBarUserReview.setRating(Float.parseFloat(reviewBean.getRating()));
             }
-            if (data.getData().getRequestedUserData().get(0).getReview_status().equals("1")) {
-                binding.btnDilog.setVisibility(View.GONE);
-
-            }
         }
+        if (data.getData().getRequestedUserData().get(0).getReview_status().equals("1")) {
+            binding.btnDilog.setVisibility(View.GONE);
+        }else binding.btnDilog.setVisibility(View.VISIBLE);
     }
 
     @Override

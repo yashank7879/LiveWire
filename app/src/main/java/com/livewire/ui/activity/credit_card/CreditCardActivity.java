@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -31,16 +30,11 @@ import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
 import com.livewire.utils.ProgressDialog;
 import com.livewire.utils.Validation;
-import com.stripe.Stripe;
-import com.stripe.exception.StripeException;
-import com.stripe.model.Customer;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
 
 import static com.livewire.utils.ApiCollection.ADD_REVIEW_API;
 import static com.livewire.utils.ApiCollection.BASE_URL;
@@ -198,12 +192,12 @@ public class CreditCardActivity extends AppCompatActivity implements View.OnClic
                     + binding.cardNum3.getText().toString().trim()
                     + binding.cardNum4.getText().toString().trim();
 
-            saveCardAndPay(cardNumber, month1, year1, binding.edCvv.getText().toString().trim());
+           // saveCardAndPay(cardNumber, month1, year1, binding.edCvv.getText().toString().trim());
 
         }
     }
 
-    //""""""""""' user come from JobDetailActivity :- save and pay from credit card """"""""'//
+    /*//""""""""""' user come from JobDetailActivity :- save and pay from credit card """"""""'//
     @SuppressLint("StaticFieldLeak")
     private void saveCardAndPay(final String cardNumber, final int month1, final int year1, final String cvv) {
         if (Constant.isNetworkAvailable(this, binding.svCreditcardLayout)) {
@@ -243,7 +237,7 @@ public class CreditCardActivity extends AppCompatActivity implements View.OnClic
                         @Override
                         public void run() {
                             progressDialog.dismiss();
-                             if (token != null /*&& binding.cbSaveCard.isChecked()*/) {
+                             if (token != null *//*&& binding.cbSaveCard.isChecked()*//*) {
                                 if (Constant.isNetworkAvailable(CreditCardActivity.this, binding.svCreditcardLayout)) {
                                     if (binding.cbSaveCard.isChecked()) {
                                         createStripeToken(cardNumber, month1, year1, binding.edCvv.getText().toString().trim());
@@ -262,7 +256,7 @@ public class CreditCardActivity extends AppCompatActivity implements View.OnClic
             }.execute();
         }
     }
-
+*/
     private void paymentForOngoingJob(String id) {
         if (Constant.isNetworkAvailable(this, binding.svCreditcardLayout)) {
             progressDialog.show();
@@ -362,11 +356,11 @@ public class CreditCardActivity extends AppCompatActivity implements View.OnClic
                     + binding.cardNum3.getText().toString().trim()
                     + binding.cardNum4.getText().toString().trim();
 
-            createStripeToken(cardNumber, month1, year1, binding.edCvv.getText().toString().trim());
+           // createStripeToken(cardNumber, month1, year1, binding.edCvv.getText().toString().trim());
         }
     }
 
-    //"""""""""" Save your credit card :- user come from manage credit card """"""""""""'///
+   /* //"""""""""" Save your credit card :- user come from manage credit card """"""""""""'///
     @SuppressLint("StaticFieldLeak")
     private void createStripeToken(final String cardNumber, final int month1, final int year1, final String cvv) {
         if (Constant.isNetworkAvailable(this, binding.svCreditcardLayout)) {
@@ -415,6 +409,8 @@ public class CreditCardActivity extends AppCompatActivity implements View.OnClic
             }.execute();
         }
     }
+*/
+
 
     @SuppressLint("StaticFieldLeak")
     private void createStripeToken() {
@@ -456,7 +452,7 @@ public class CreditCardActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-    @SuppressLint("StaticFieldLeak")
+  /*  @SuppressLint("StaticFieldLeak")
     private void saveCreditCard(final String id) {
         progressDialog.show();
         new AsyncTask<Void, Void, Customer>() {
@@ -493,7 +489,7 @@ public class CreditCardActivity extends AppCompatActivity implements View.OnClic
             }
         }.execute();
 
-    }
+    }*/
 
     //*************show  MonthYear  Dialog *******************//
     private void showMonthYearDialog() {

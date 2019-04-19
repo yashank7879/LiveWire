@@ -25,6 +25,13 @@
 
     </style>
 
+    <!-- Custom checkout theme -->
+    <style name="CustomCheckoutTheme" parent="Theme.Checkout.Light">
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="headerBackground">@color/colorAccent</item>
+    </style>
+
+
     <style name="CustomDialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowEnterAnimation">@anim/zoom_out</item>
     </style>

@@ -21,6 +21,7 @@ public class MyApplication extends Application{
         super.onCreate();
         Fabric.with(this, new Crashlytics());
         AndroidNetworking.initialize(getApplicationContext());
+        MultiDex.install(this);
         //FacebookSdk.sdkInitialize(getApplicationContext());
     }
 }

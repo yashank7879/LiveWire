@@ -1,1 +1,1 @@
-include ':app', ':InteractiveInfoWindow', ':interactive-info-window'
+include ':app', ':InteractiveInfoWindow', ':oppwa.mobile-2.35.0'

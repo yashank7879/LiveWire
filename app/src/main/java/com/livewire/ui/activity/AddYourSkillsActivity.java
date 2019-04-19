@@ -115,7 +115,6 @@ public class AddYourSkillsActivity extends AppCompatActivity implements View.OnC
                                 categoryModel.setCategoryName(dataBean.getCategoryName());
                                 category.add(categoryModel);
                             }
-
                             for (AddSkillsResponce.DataBean dataBean : skillsResponce.getData()) {
                                 AddSkillsResponce.DataBean.SubcatBean subcatBean = new AddSkillsResponce.DataBean.SubcatBean();
                                 subcatBean.setCategoryName("Select Subcategory");
@@ -308,6 +307,9 @@ public class AddYourSkillsActivity extends AppCompatActivity implements View.OnC
             Constant.snackBar(addSkillsLayout, "Please Select Subcategory");
         } else if (minPrice.getText().toString().equals("") || minPrice.getText().toString().length() == 0) {
             Constant.snackBar(addSkillsLayout, "Please enter min price");
+            minPrice.requestFocus();
+        }else if (Float.parseFloat(minPrice.getText().toString()) <  3 ) {
+            Constant.snackBar(addSkillsLayout, "Min price should not be less than 3 dollar");
             minPrice.requestFocus();
         } else if (maxPrice.getText().toString().equals("") || maxPrice.getText().toString().length() == 0) {
             Constant.snackBar(addSkillsLayout, "Please enter max price");

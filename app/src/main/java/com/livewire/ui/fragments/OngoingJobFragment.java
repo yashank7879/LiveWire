@@ -459,7 +459,7 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
                 startDateTime.set(Calendar.YEAR, year);
                 startDateTime.set(Calendar.MONTH, month);
                 startDateTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                //********Date time Format**************//
+                //******** Date time Format **************//
                 SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy ");
                 startDateString = sdf1.format(startDateTime.getTime());
                 if (startDateTime.getTimeInMillis() >=  System.currentTimeMillis() - 1000 ) {

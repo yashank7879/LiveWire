@@ -452,23 +452,23 @@ public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapte
                 startActivity(intent);
                 break;
             case "Accept":
-                acceptRejectrequestApi(dataBean.getUserId(), dataBean.getJobId(), "1", pos);
+                //acceptRejectrequestApi(dataBean.getUserId(), dataBean.getJobId(), "1", pos);
 
-               /* if (PreferenceConnector.readString(mContext,PreferenceConnector.IS_BANK_ACC,"").equals("1")) {
+                if (PreferenceConnector.readString(mContext,PreferenceConnector.IS_BANK_ACC,"").equals("1")) {
                     acceptRejectrequestApi(dataBean.getUserId(), dataBean.getJobId(), "1",pos);
                 }else {
                     showAddBankAccountDialog();
-                }*/
+                }
                 break;
             case "Reject":
-                acceptRejectrequestApi(dataBean.getUserId(), dataBean.getJobId(), "2", pos);
+               // acceptRejectrequestApi(dataBean.getUserId(), dataBean.getJobId(), "2", pos);
 
-              /*  if (PreferenceConnector.readString(mContext,PreferenceConnector.IS_BANK_ACC,"").equals("1")) {
+                if (PreferenceConnector.readString(mContext,PreferenceConnector.IS_BANK_ACC,"").equals("1")) {
                     acceptRejectrequestApi(dataBean.getUserId(), dataBean.getJobId(), "2", pos);
 
                 }else {
                     showAddBankAccountDialog();
-                }*/
+                }
                 break;
                 default:
         }
@@ -486,7 +486,7 @@ public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapte
     private void showAddBankAccountDialog() {
         final android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(mContext);
         builder.setTitle("Add Bank Account");
-        builder.setMessage("Please add your bank details first.");
+        builder.setMessage("To apply, first please add your bank account details.");
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

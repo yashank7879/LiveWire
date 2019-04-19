@@ -61,7 +61,7 @@
                     android:layout_gravity="bottom|end"
                     android:background="@drawable/circle_green_bg"
                     android:padding="@dimen/_5sdp"
-                    app:srcCompat="@drawable/ic_camera" />
+                    app:srcCompat="@drawable/ic_camera_" />
 
 
             </FrameLayout>

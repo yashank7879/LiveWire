@@ -40,6 +40,8 @@ public class ApiCollection {
     public static final String USER_LOGOUT_API = "user/logout";
     public static final String GET_JOB_LIST_API = "Jobpost/getJobList";
     public static final String CHECK_SOCIAL_STATUS_API = "user/checkSocialStatus";
+    public static final String CONFIRM_PAYMENT_API = "payment/confirmPayment";
+    public static final String COMPLETE_PAYMENT_API = "payment/complete_payment";
 
 
     public static final String ADD_BANK_ACCOUNT_API = "payment/addBankAccount";

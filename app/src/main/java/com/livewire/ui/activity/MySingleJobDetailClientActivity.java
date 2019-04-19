@@ -25,13 +25,20 @@ import com.livewire.ui.activity.credit_card.AddCreditCardActivity;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
 import com.livewire.utils.ProgressDialog;
+import com.oppwa.mobile.connect.checkout.dialog.CheckoutActivity;
+import com.oppwa.mobile.connect.checkout.meta.CheckoutSettings;
+import com.oppwa.mobile.connect.provider.Connect;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 import static com.livewire.utils.ApiCollection.BASE_URL;
+import static com.livewire.utils.ApiCollection.CONFIRM_PAYMENT_API;
 import static com.livewire.utils.ApiCollection.JOBPOSTSEND_GET_CLIENT_JOB_DETAIL_API;
 
 public class MySingleJobDetailClientActivity extends AppCompatActivity implements View.OnClickListener {
@@ -42,8 +49,8 @@ public class MySingleJobDetailClientActivity extends AppCompatActivity implement
     private String JobId = "";
     private String usetId = "";
     private String budget = "";
-    private String workerName="";
-    private String workerProfilePic="";
+    private String workerName = "";
+    private String workerProfilePic = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +70,7 @@ public class MySingleJobDetailClientActivity extends AppCompatActivity implement
 
         if (getIntent().getSerializableExtra("JobIdKey") != null) {
             //MyjobResponceClient.DataBean dataBean = (MyjobResponceClient.DataBean) getIntent().getSerializableExtra("MyJobDetail");
-          JobId = getIntent().getStringExtra("JobIdKey");
+            JobId = getIntent().getStringExtra("JobIdKey");
             jobDetailApi();
         }
     }
@@ -189,28 +196,80 @@ public class MySingleJobDetailClientActivity extends AppCompatActivity implement
                 startActivity(intent);
                 break;
             case R.id.btn_end_job:
-                intent = new Intent(this, AddCreditCardActivity.class);
-                intent.putExtra("SingleJobPayment","SingleJob");
-                intent.putExtra("NameKey",workerName);
+                getCheckOutId();
+
+             /*   intent = new Intent(this, AddCreditCardActivity.class);
+                intent.putExtra("SingleJobPayment", "SingleJob");
+                intent.putExtra("NameKey", workerName);
                 intent.putExtra("PaymentKey", budget);
                 intent.putExtra("JobIdKey", JobId);
                 intent.putExtra("UserIdKey", usetId);
-                startActivity(intent);
+                startActivity(intent);*/
                 break;
 
             case R.id.ll_chat:
-             intent = new Intent(this, ChattingActivity.class);
-            intent.putExtra("otherUID", usetId);
-            intent.putExtra("titleName", workerName);
-            intent.putExtra("profilePic", workerProfilePic);
-            startActivity(intent);
-            break;
+                intent = new Intent(this, ChattingActivity.class);
+                intent.putExtra("otherUID", usetId);
+                intent.putExtra("titleName", workerName);
+                intent.putExtra("profilePic", workerProfilePic);
+                startActivity(intent);
+                break;
             case R.id.rl_user_data:
-                 intent = new Intent(this, WorkerProfileDetailClientActivity.class);
+                intent = new Intent(this, WorkerProfileDetailClientActivity.class);
                 intent.putExtra("UserIdKey", usetId);
                 startActivity(intent);
-            break;
+                break;
             default:
+        }
+    }
+
+    private void getCheckOutId() {
+        if (Constant.isNetworkAvailable(this, binding.detailMainLayout)) {
+            progressDialog.show();
+            AndroidNetworking.post(BASE_URL + CONFIRM_PAYMENT_API)
+                    .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
+                    .addBodyParameter("project_id", JobId)
+                    .addBodyParameter("working_days", "")
+                    .setPriority(Priority.MEDIUM)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            progressDialog.dismiss();
+                            String status = null;
+                            try {
+                                status = response.getString("status");
+                                String message = response.getString("message");
+                                if (status.equals("success")) {//checkout_id
+                                    String checkoutId = response.getString("checkout_id");
+                                    budget = response.getString("amount");
+                                    String currency = response.getString("currency");
+
+                                    Intent intent = new Intent(MySingleJobDetailClientActivity.this, MakePaymentActivity.class);
+                                    intent.putExtra("SingleJobPayment", "SingleJob");
+                                    intent.putExtra("NameKey", workerName);
+                                    intent.putExtra("PaymentKey", budget);
+                                    intent.putExtra("CurrencyKey", currency);
+                                    intent.putExtra("checkoutIdKey", checkoutId);
+                                    intent.putExtra("JobIdKey", JobId);
+                                    intent.putExtra("UserIdKey", usetId);
+                                    startActivity(intent);
+                                } else {
+                                    progressDialog.dismiss();
+                                    Constant.snackBar(binding.detailMainLayout, message);
+                                }
+                            } catch (JSONException e) {
+                                Log.d(TAG, e.getMessage());
+                            }
+
+                        }
+
+                        @Override
+                        public void onError(ANError anError) {
+                            Log.d(TAG, anError.getErrorDetail());
+                            progressDialog.dismiss();
+                        }
+                    });
         }
     }
 
@@ -227,7 +286,6 @@ public class MySingleJobDetailClientActivity extends AppCompatActivity implement
                         @Override
                         public void onResponse(JSONObject response) {
                             progressDialog.dismiss();
-                            //progressDialog.dismiss();
                             String status = null;
                             try {
                                 status = response.getString("status");

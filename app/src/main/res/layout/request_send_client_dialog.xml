@@ -46,7 +46,83 @@
         android:textAlignment="center"
         android:textColor="@color/colorDarkBlack" />
 
-    <TextView
+    <LinearLayout
+        android:id="@+id/ll_offer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:layout_marginLeft="@dimen/_15sdp"
+        android:layout_below="@+id/tv_content"
+        >
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight=".8"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/_2sdp" >
+            <Spinner
+                android:id="@+id/currency_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@color/colorBlackTransparent"
+                android:clickable="true"
+                android:dropDownWidth="@dimen/_80sdp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:fontFamily="@font/poppins_regular"
+                android:gravity="center"
+                android:spinnerMode="dropdown"
+                />
+
+            <ImageView
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_alignParentEnd="true"
+                app:srcCompat="@drawable/ic_arrow_drop_down_black"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:background="@color/colorLightGray"
+                android:layout_alignParentBottom="true"/>
+        </RelativeLayout>
+        <!-- <TextView
+             style="@style/SmallPopinsLightStyle"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="@string/dollar"
+             android:textColor="@color/colorDarkBlack" />-->
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_2sdp">
+            <EditText
+                android:id="@+id/et_offer_price"
+                style="@style/SmallPopinsLightStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:background="@null"
+                android:hint="@string/enter_offer_rate_per_hour"
+                android:inputType="numberDecimal"
+                android:singleLine="true"
+                android:textColorHint="@color/colorLightGray" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:layout_marginTop="@dimen/_25sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:background="@color/colorLightGray"
+                />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+   <!-- <TextView
         android:id="@+id/tv_dollar"
         style="@style/mediumPopinsLightStyle"
         android:layout_width="wrap_content"
@@ -80,13 +156,14 @@
         android:layout_marginRight="@dimen/_15sdp"
         android:layout_marginTop="@dimen/_5sdp"
         android:background="@color/colorLightGray" />
+        -->
 
     <Button
         android:id="@+id/btn_send_request"
         style="@style/mediumPopinsLightStyle"
         android:layout_width="@dimen/_120sdp"
         android:layout_height="@dimen/_32sdp"
-        android:layout_below="@+id/view2_id"
+        android:layout_below="@+id/ll_offer"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/_25sdp"

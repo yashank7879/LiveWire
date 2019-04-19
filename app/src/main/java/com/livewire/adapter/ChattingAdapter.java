@@ -304,8 +304,6 @@ public class ChattingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 other_name.setText(chat.name+"");
                 other_name_.setText(chat.name+"");
             }
-
-
         }
 
         public void full_screen_photo_dialog(String image_url) {

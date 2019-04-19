@@ -143,7 +143,7 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
 
         if (jobDetail.getJob_confirmed().equals("0")) { // pending request
             binding.btnSendRequest.setBackground(null);
-            binding.btnSendRequest.setText(R.string.application_pending);
+            binding.btnSendRequest.setText(R.string.Work_offer_pending);
             binding.btnSendRequest.setTextColor(ContextCompat.getColor(this, R.color.colorOrange));
             binding.btnSendRequest.setClickable(false);
         } else if (jobDetail.getJob_confirmed().equals("3")) {// job not send
@@ -217,7 +217,7 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
     private void showAddBankAccountDialog() {
         final android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
         builder.setTitle("Add Bank Account");
-        builder.setMessage("Please add your bank details first.");
+        builder.setMessage("To apply, first please add your bank account details.");
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -318,7 +318,7 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
                         String message = response.getString("message");
                         if (status.equals("success")) {
                             binding.btnSendRequest.setBackground(null);
-                            binding.btnSendRequest.setText(R.string.application_pending);
+                            binding.btnSendRequest.setText(R.string.Work_offer_pending);
                             binding.btnSendRequest.setTextColor(ContextCompat.getColor(JobHelpOfferedDetailWorkerActivity.this, R.color.colorOrange));
                             binding.btnSendRequest.setClickable(false);
                             Constant.snackBar(binding.detailMainLayout, message);

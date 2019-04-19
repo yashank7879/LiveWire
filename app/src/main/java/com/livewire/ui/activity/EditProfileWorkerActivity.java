@@ -783,6 +783,9 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
         } else if (minPrice.getText().toString().equals("") || minPrice.getText().toString().length() == 0) {
             Constant.snackBar(addSkillsLayout, "Please enter min price");
             minPrice.requestFocus();
+        }else if (Float.parseFloat(minPrice.getText().toString()) <  3 ) {
+            Constant.snackBar(addSkillsLayout, "Min price should not be less than 3 dollar");
+            minPrice.requestFocus();
         } else if (maxPrice.getText().toString().equals("") || maxPrice.getText().toString().length() == 0) {
             Constant.snackBar(addSkillsLayout, "Please enter max price");
             maxPrice.requestFocus();

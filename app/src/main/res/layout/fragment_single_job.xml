@@ -89,7 +89,6 @@
                 style="@style/SmallPopinsLightStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_regular"
                 android:hint="@string/select_job_date"
                 android:textColor="@color/colorDarkBlack"
                 android:textColorHint="@color/colorLightGray" />
@@ -127,13 +126,52 @@
             android:layout_marginRight="@dimen/_20sdp"
             android:layout_marginTop="@dimen/_20sdp">
 
-            <TextView
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/_2sdp" >
+            <Spinner
+                android:id="@+id/currency_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@color/colorBlackTransparent"
+                android:clickable="true"
+                android:dropDownWidth="@dimen/_80sdp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:fontFamily="@font/poppins_regular"
+                android:gravity="center"
+                android:spinnerMode="dropdown"
+                />
+
+                <ImageView
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_alignParentEnd="true"
+                    app:srcCompat="@drawable/ic_arrow_drop_down_black"
+                    />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_1sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:background="@color/colorLightGray"
+                    android:layout_alignParentBottom="true"/>
+
+            </RelativeLayout>
+           <!-- <TextView
                 style="@style/SmallPopinsLightStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/dollar"
-                android:textColor="@color/colorDarkBlack" />
-
+                android:textColor="@color/colorDarkBlack" />-->
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_2sdp">
             <EditText
                 android:id="@+id/et_budget"
                 style="@style/SmallPopinsLightStyle"
@@ -141,21 +179,28 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_2sdp"
                 android:background="@null"
-                android:hint="@string/specify_budget_for_project"
+                android:hint="@string/budget"
                 android:inputType="numberDecimal"
                 android:singleLine="true"
                 android:textColorHint="@color/colorLightGray" />
-
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_1sdp"
+                    android:layout_marginTop="@dimen/_25sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:background="@color/colorLightGray"
+                    />
+            </RelativeLayout>
 
         </LinearLayout>
 
-        <View
+    <!--    <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/_1sdp"
             android:layout_marginBottom="@dimen/_5sdp"
             android:layout_marginLeft="@dimen/_20sdp"
             android:layout_marginRight="@dimen/_20sdp"
-            android:background="@color/colorLightGray" />
+            android:background="@color/colorLightGray" />-->
 
         <RelativeLayout
             android:id="@+id/location_rl"

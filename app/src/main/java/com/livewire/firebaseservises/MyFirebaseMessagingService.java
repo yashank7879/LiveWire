@@ -202,7 +202,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             }
             case "Once_job_completed": {
                 if (PreferenceConnector.readString(this, PreferenceConnector.USER_MODE, "").equals(userType)) {
-
                     Intent intent = new Intent(this, NotificationCompleteJobHelpOfferedDetailWorkerActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intent.putExtra(USER_ID, userId);

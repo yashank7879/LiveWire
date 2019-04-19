@@ -289,6 +289,7 @@ public class JobDetailClientResponce {
             private String max_rate;
             private String min_rate;
             private String rating="";
+            private String review_status;
 
             public String getRating() {
                 return rating;
@@ -305,7 +306,7 @@ public class JobDetailClientResponce {
                 this.review_status = review_status;
             }
 
-            private String review_status;
+
 
             public String getUserId() {
                 return userId;

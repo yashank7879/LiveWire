@@ -1,52 +1,60 @@
 package com.livewire.ui.activity.credit_card;
 
-import android.annotation.SuppressLint;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.databinding.DataBindingUtil;
-import android.os.AsyncTask;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Looper;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
-import com.google.gson.Gson;
+import com.livewire.BuildConfig;
 import com.livewire.R;
 import com.livewire.adapter.CreditCardAdapter;
 import com.livewire.databinding.ActivityAddCreditCardsBinding;
+import com.livewire.peach.Config;
+import com.livewire.peach.activity.BasePaymentActivity;
+import com.livewire.peach.reciver.CheckoutBroadcastReceiver;
 import com.livewire.responce.StripeSaveCardResponce;
 import com.livewire.ui.activity.ClientMainActivity;
+import com.livewire.ui.activity.MySingleJobDetailClientActivity;
 import com.livewire.ui.dialog.ReviewDialog;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
 import com.livewire.utils.ProgressDialog;
-import com.stripe.Stripe;
-import com.stripe.exception.StripeException;
-import com.stripe.model.Customer;
-import com.stripe.model.ExternalAccountCollection;
-
+import com.oppwa.mobile.connect.exception.PaymentError;
+import com.oppwa.mobile.connect.exception.PaymentException;
+import com.oppwa.mobile.connect.provider.Connect;
+import com.oppwa.mobile.connect.provider.Transaction;
+import com.oppwa.mobile.connect.provider.TransactionType;
+import com.oppwa.mobile.connect.service.IProviderBinder;
+import com.oppwa.mobile.connect.checkout.dialog.CheckoutActivity;
+import com.oppwa.mobile.connect.checkout.meta.CheckoutSettings;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import static com.livewire.utils.ApiCollection.ADD_REVIEW_API;
 import static com.livewire.utils.ApiCollection.BASE_URL;
+import static com.livewire.utils.ApiCollection.COMPLETE_PAYMENT_API;
+import static com.livewire.utils.ApiCollection.CONFIRM_PAYMENT_API;
 import static com.livewire.utils.ApiCollection.END_JOB_API;
 
 
-public class AddCreditCardActivity extends AppCompatActivity implements View.OnClickListener {
+public class AddCreditCardActivity extends BasePaymentActivity implements View.OnClickListener {
     private static final String TAG = AddCreditCardActivity.class.getName();
     ActivityAddCreditCardsBinding binding;
     private ProgressDialog progressDialog;
@@ -64,6 +72,9 @@ public class AddCreditCardActivity extends AppCompatActivity implements View.OnC
     private String offer;
     private String hours;
     private String jobType = "";
+    private String checkoutId = "";
+    private String CurrencyKey;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +97,8 @@ public class AddCreditCardActivity extends AppCompatActivity implements View.OnC
                 userId = getIntent().getStringExtra("UserIdKey");//""""" worker user Id """"//
                 name = getIntent().getStringExtra("NameKey");//"""" worker name """"""""//
                 budget = Float.parseFloat(getIntent().getStringExtra("PaymentKey"));
+                CurrencyKey = getIntent().getStringExtra("CurrencyKey");
+                checkoutId = getIntent().getStringExtra("checkoutIdKey");
 
 
                 stripeFee = Float.parseFloat(df.format(((((budget * 2.9) / 100) + 0.30))));
@@ -100,7 +113,8 @@ public class AddCreditCardActivity extends AppCompatActivity implements View.OnC
                 workerDays = getIntent().getStringExtra("WorkDays");//"""" working days """"""""//
                 hours = getIntent().getStringExtra("Hours"); //"""" Hours """"""""//
                 jobType = getIntent().getStringExtra("OngoingJobPayment");
-
+                CurrencyKey = getIntent().getStringExtra("CurrencyKey");
+                checkoutId = getIntent().getStringExtra("checkoutIdKey");
                 budget = Float.parseFloat(offer) * Float.parseFloat(workerDays) * Float.parseFloat(hours);
                 Constant.printLogMethod(Constant.LOG_VALUE, TAG, "" + budget);
                 stripeFee = Float.parseFloat(df.format(((((budget * 2.9) / 100) + 0.30))));
@@ -123,10 +137,10 @@ public class AddCreditCardActivity extends AppCompatActivity implements View.OnC
     @Override
     protected void onResume() {
         super.onResume();
-       // showCreditCardInfo();
+        // showCreditCardInfo();
     }
 
-    ///""""""""" Saved credit card api """"""""//
+  /*  ///""""""""" Saved credit card api """"""""//
     @SuppressLint("StaticFieldLeak")
     private void showCreditCardInfo() {
         progressDialog.show();
@@ -167,8 +181,8 @@ public class AddCreditCardActivity extends AppCompatActivity implements View.OnC
                             //  Log.e("Size: ", "" + cardResponce.getData().size());
 
                             if (cardResponce.getData().size() != 0) {
-                                /* binding.tvSelectCard.setVisibility(View.VISIBLE);
-                                 binding.btnPay.setVisibility(View.VISIBLE);*/
+                                *//* binding.tvSelectCard.setVisibility(View.VISIBLE);
+                                 binding.btnPay.setVisibility(View.VISIBLE);*//*
 
                                 if (jobType.equals("OngoingJob") || jobType.equals("SingleJob")) {
                                     binding.tvSelectCard.setVisibility(View.VISIBLE);
@@ -204,7 +218,7 @@ public class AddCreditCardActivity extends AppCompatActivity implements View.OnC
 
                                     removedSaveCardApi(customerId);
 
-                                 /* // Use the Builder class for convenient dialog construction
+                                 *//* // Use the Builder class for convenient dialog construction
                                   final AlertDialog.Builder builder = new AlertDialog.Builder(AddCreditCardActivity.this);
 
                                   builder.setMessage(R.string.do_you_want_to_delete_this_card)
@@ -224,7 +238,7 @@ public class AddCreditCardActivity extends AppCompatActivity implements View.OnC
                                           });
                                   AlertDialog dialog = builder.create();
                                   dialog.getWindow().getAttributes().windowAnimations = R.style.CustomDialog;
-                                  dialog.show();*/
+                                  dialog.show();*//*
 
                                 }
                             });
@@ -239,9 +253,9 @@ public class AddCreditCardActivity extends AppCompatActivity implements View.OnC
             }
 
         }.execute();
-    }
+    }*/
 
-    //""""""""""  Remove Saved credit card """"""""""""//
+    /*//""""""""""  Remove Saved credit card """"""""""""//
     @SuppressLint("StaticFieldLeak")
     private void removedSaveCardApi(final String id) {
         if (Constant.isNetworkAvailable(this, binding.llPaymentLayout)) {
@@ -275,7 +289,7 @@ public class AddCreditCardActivity extends AppCompatActivity implements View.OnC
                 }
             }.execute();
         }
-    }
+    }*/
 
     @Override
     public void onClick(View view) {
@@ -292,7 +306,7 @@ public class AddCreditCardActivity extends AppCompatActivity implements View.OnC
                 break;
 
             case R.id.tv_add_new_card:
-                intent = new Intent(this, CreditCardActivity.class);
+              /*  intent = new Intent(this, CreditCardActivity.class);
                 intent.putExtra("JobType", jobType);
                 intent.putExtra("PayKey", budget);
                 intent.putExtra("JobIdKey", jobId);
@@ -300,11 +314,11 @@ public class AddCreditCardActivity extends AppCompatActivity implements View.OnC
                 intent.putExtra("NameKey", name);
                 intent.putExtra("UserIdKey", userId);
                 intent.putExtra("WorkingDays", workerDays);
-                startActivity(intent);
+                startActivity(intent);*/
                 break;
 
             case R.id.btn_pay:
-                if (cardId.isEmpty()) {
+               /* if (cardId.isEmpty()) {
                     Constant.snackBar(binding.llPaymentLayout, "Please select Card");
                 } else {
                     if (jobType.equals("OngoingJob")) {
@@ -312,17 +326,172 @@ public class AddCreditCardActivity extends AppCompatActivity implements View.OnC
                     } else if (jobType.equals("SingleJob")) {
                         paymentForSingleJob();
                     }
-                }
+                }*/
                 break;
             case R.id.btn_make_payment:
-                if (jobType.equals("OngoingJob")) {
-                    paymentForOngoingJob();
-                } else if (jobType.equals("SingleJob")) {
-                    paymentForSingleJob();
-                }
+                openCheckoutUI(checkoutId);
                 break;
             default:
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+
+
+    private void openCheckoutUI(String checkoutId) {
+        CheckoutSettings checkoutSettings = createCheckoutSettings(checkoutId, getString(R.string.checkout_ui_callback_scheme));
+        /* Set componentName if you want to receive callbacks from the checkout */
+        ComponentName componentName = new ComponentName(
+                getPackageName(), CheckoutBroadcastReceiver.class.getName());
+
+        /* Set up the Intent and start the checkout activity. */
+        Intent intent = checkoutSettings.createCheckoutActivityIntent(this, componentName);
+       // intent.putExtra("CheckOutId",checkoutId);
+
+        startActivityForResult(intent, CheckoutActivity.REQUEST_CODE_CHECKOUT);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        /* Override onActivityResult to get notified when the checkout process is done. */
+        if (requestCode == CheckoutActivity.REQUEST_CODE_CHECKOUT){
+            switch (resultCode) {
+                case CheckoutActivity.RESULT_OK:
+                    /* Transaction completed. */
+
+                    Transaction transaction = data.getParcelableExtra(
+                            CheckoutActivity.CHECKOUT_RESULT_TRANSACTION);
+
+                    resourcePath = data.getStringExtra(
+                            CheckoutActivity.CHECKOUT_RESULT_RESOURCE_PATH);
+
+                    /*Check the transaction type.*/
+                    if (transaction.getTransactionType() == TransactionType.SYNC) {
+                        completePaymentApi();
+
+                    } else {
+                        /* Asynchronous transaction is processed in the onNewIntent(). */
+                        hideProgressDialog();
+                    }
+
+                    break;
+                case CheckoutActivity.RESULT_CANCELED:
+                    hideProgressDialog();
+
+                    break;
+                case CheckoutActivity.RESULT_ERROR:
+                    hideProgressDialog();
+
+                    PaymentError error = data.getParcelableExtra(
+                            CheckoutActivity.CHECKOUT_RESULT_ERROR);
+
+                    showAlertDialog(R.string.error_message);
+            }
+        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        setIntent(intent);
+
+        /* Check if the intent contains the callback scheme. */
+        if (hasCallbackScheme(intent)) {
+            // requestPaymentStatus(resourcePath);
+            completePaymentApi();
+        }
+    }
+
+    private void completePaymentApi() {
+        if (Constant.isNetworkAvailable(this, binding.llPaymentLayout)) {
+            progressDialog.show();
+            AndroidNetworking.post(BASE_URL + COMPLETE_PAYMENT_API)
+                    .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
+                    .addBodyParameter("project_id", jobId)
+                    .addBodyParameter("checkout_id", checkoutId)
+                    .setPriority(Priority.MEDIUM)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            progressDialog.dismiss();
+                            String status = null;
+                            try {
+                                status = response.getString("status");
+                                String message = response.getString("message");
+                                if (status.equals("success")) {//checkout_id
+                                    openReviewDialog();
+                                    Constant.snackBar(binding.llPaymentLayout, message);
+                                } else {
+                                    progressDialog.dismiss();
+                                    Constant.snackBar(binding.llPaymentLayout, message);
+                                }
+                            } catch (JSONException e) {
+                                Log.d(TAG, e.getMessage());
+                            }
+
+                        }
+
+                        @Override
+                        public void onError(ANError anError) {
+                            Log.d(TAG, anError.getErrorDetail());
+                            progressDialog.dismiss();
+                        }
+                    });
+        }
+    }
+
+
+    /*  @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (resultCode) {
+            case CheckoutActivity.RESULT_OK:
+            *//* transaction completed *//*
+                Transaction transaction = data.getParcelableExtra(CheckoutActivity.CHECKOUT_RESULT_TRANSACTION);
+
+            *//* resource path if needed *//*
+                String resourcePath = data.getStringExtra(CheckoutActivity.CHECKOUT_RESULT_RESOURCE_PATH);
+
+                if (transaction.getTransactionType() == TransactionType.SYNC) {
+                *//* check the result of synchronous transaction *//*
+                    fireBroadcast(Config.SUCCESS, "checkoutId=" + checkoutId);
+                    showToast("checkoutId=" + checkoutId);
+                } else {
+                *//* wait for the asynchronous transaction callback in the onNewIntent() *//*
+                }
+                break;
+            case CheckoutActivity.RESULT_CANCELED:
+                fireBroadcast(Config.FAILED, "Shoper cancelled transaction");
+                showToast("Shoper cancelled transaction");
+                break;
+            case CheckoutActivity.RESULT_ERROR:
+                PaymentError error = data.getParcelableExtra(CheckoutActivity.CHECKOUT_RESULT_ERROR);
+                showToast(error.getErrorMessage());
+                fireBroadcast(Config.FAILED, error.getErrorMessage());
+                break;
+            default:
+                break;
+        }
+    }
+*/
+    private void showToast(String s) {
+        Toast.makeText(this, ""+s, Toast.LENGTH_SHORT).show();
+    }
+
+    private void fireBroadcast(int code, String message) {
+        Intent intent = new Intent();
+        intent.setAction("ai.devsupport.peachpay");
+        intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
+        intent.putExtra("code", code);
+        intent.putExtra("response", message);
+        sendBroadcast(intent);
+        this.finish();
     }
 
     private void paymentForOngoingJob() {
@@ -431,6 +600,7 @@ public class AddCreditCardActivity extends AppCompatActivity implements View.OnC
 
             @Override
             public void onReviewCancel() {
+                finishAffinity();
                 Intent intent = new Intent(AddCreditCardActivity.this, ClientMainActivity.class);
                 intent.putExtra("NearYouKey", "MyJob");
                 startActivity(intent);
@@ -459,6 +629,7 @@ public class AddCreditCardActivity extends AppCompatActivity implements View.OnC
                         String message = response.getString("message");
                         if (status.equals("success")) {
                             dialog.dismiss();
+                            finishAffinity();
                             Intent intent = new Intent(AddCreditCardActivity.this, ClientMainActivity.class);
                             intent.putExtra("NearYouKey", "MyJob");
                             startActivity(intent);

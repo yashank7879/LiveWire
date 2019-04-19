@@ -101,6 +101,7 @@ public class ClientMainActivity extends AppCompatActivity implements View.OnClic
         if (getIntent().getStringExtra("NearYouKey") != null) {
             replaceFragment(new MyJobClientFragment(), false, R.id.fl_container); // first time replace home fragment
             inActiveTab();
+            binding.tvHeading.setText(R.string.my_livewire_post);
            // binding.actionBar.setVisibility(View.GONE);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 binding.ivMyJob.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorGreen)));

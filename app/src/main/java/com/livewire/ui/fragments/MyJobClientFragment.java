@@ -69,7 +69,7 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
     private List<MyjobResponceClient.DataBean> myJobList;
     private SwipeRefreshLayout swipeRefreshLayout;
     private int width;
-    private String requestStatus = "";
+    private String requestStatus = "new";
     private String jobType = "all";
     private AppCompatCheckBox cbPending;
     private AppCompatCheckBox cbConfirm;
@@ -445,7 +445,7 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
         cbPending.setOnClickListener(this);
         cbCompletedApp.setOnClickListener(this);
         cbNewApp.setOnClickListener(this);
-        if (requestStatus.equals("new") || requestStatus.isEmpty())
+        if (requestStatus.equals("new"))
         cbNewApp.setChecked(true);
         btnSendRequest = dialog.findViewById(R.id.btn_send_request);
         TextView tvCancel = dialog.findViewById(R.id.tv_cancel);
@@ -458,7 +458,7 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
             public void onClick(View v) {
                 tempJobTyp = "all";
                 jobType = tempJobTyp;
-                requestStatus = "";
+                requestStatus = "new";
                 skillsStrin="";
                 filterLayout.setVisibility(View.GONE);
                 subCategoryList.clear();
@@ -702,5 +702,7 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
 
         return skillsStrin;
     }
+
+
 }
 

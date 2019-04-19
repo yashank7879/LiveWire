@@ -537,17 +537,17 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
 
     @Override
     public void sendRequestOnClick(HelpOfferedResponce.DataBean dataBean, String key, int pos) {
-        dataBean.setJob_confirmed("0");
+       /* dataBean.setJob_confirmed("0");
         offeredAdapter.notifyDataSetChanged();
-        sendRequestApi(dataBean.getJobId(), dataBean.getUserId(), pos);
+        sendRequestApi(dataBean.getJobId(), dataBean.getUserId(), pos);*/
 
-      /*  if (PreferenceConnector.readString(mContext, PreferenceConnector.IS_BANK_ACC, "0").equals("1")) {
+        if (PreferenceConnector.readString(mContext, PreferenceConnector.IS_BANK_ACC, "0").equals("1")) {
             dataBean.setJob_confirmed("0");
             offeredAdapter.notifyDataSetChanged();
             sendRequestApi(dataBean.getJobId(), dataBean.getUserId(), pos);
         } else {
             showAddBankAccountDialog();
-        }*/
+        }
     }
 
     @Override
@@ -562,7 +562,7 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
     private void showAddBankAccountDialog() {
         final android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(mContext);
         builder.setTitle("Add Bank Account");
-        builder.setMessage("Please add your bank details first.");
+        builder.setMessage("To apply, first please add your bank account details.");
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

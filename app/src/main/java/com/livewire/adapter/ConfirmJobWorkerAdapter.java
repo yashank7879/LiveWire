@@ -107,7 +107,7 @@ public class ConfirmJobWorkerAdapter extends RecyclerView.Adapter<ConfirmJobWork
                 float paidAmount = Float.parseFloat(dataBean.getNumber_of_days()) * Float.parseFloat(dataBean.getJob_offer()) * Float.parseFloat(dataBean.getJob_time_duration());
                 holder.tvBudget.setText("$ " + paidAmount);
 
-            } else if (!dataBean.getJob_offer().isEmpty()) {
+            } else if (!dataBean.getJob_offer().equals("0")) {
                 holder.tvBudget.setText("$ " + dataBean.getJob_offer());
 
             } else {

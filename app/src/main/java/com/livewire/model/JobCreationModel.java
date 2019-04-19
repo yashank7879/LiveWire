@@ -30,4 +30,6 @@ public class JobCreationModel {
     public String job_longitude = "";
     @SerializedName("job_description")
     public String job_description = "";
+    @SerializedName("currency")
+    public String currency = "";
 }

@@ -90,7 +90,6 @@ import static com.livewire.utils.ApiCollection.BASE_URL;
 import static com.livewire.utils.ApiCollection.CHECK_SOCIAL_STATUS_API;
 import static com.livewire.utils.ApiCollection.USER_REGISTRATION_API;
 
-
 public class SignupActivity extends AppCompatActivity implements View.OnClickListener ,GoogleApiClient.OnConnectionFailedListener{
     private static final String TAG = SignupActivity.class.getName();
     private EditText etFullName;

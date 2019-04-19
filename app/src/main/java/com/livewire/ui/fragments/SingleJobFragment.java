@@ -16,7 +16,6 @@ import android.text.TextWatcher;
 import android.text.method.ScrollingMovementMethod;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +47,6 @@ import com.google.gson.Gson;
 import com.livewire.R;
 import com.livewire.model.JobCreationModel;
 import com.livewire.responce.AddSkillsResponce;
-import com.livewire.ui.activity.CompleteProfileActivity;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
 import com.livewire.utils.ProgressDialog;
@@ -60,7 +58,7 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.util.List;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
@@ -91,6 +89,8 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
     private Button btnCancel;
     private String skillId;
     private String locationPlace;
+    private List<String> currencyList = new ArrayList<>();
+    private String currency = "";
 
     @Nullable
     @Override
@@ -110,23 +110,30 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         width = displaymetrics.widthPixels;
+        addVlaueInCurrency();
         progressDialog = new ProgressDialog(mContext);
         mainLayout = view.findViewById(R.id.sv_single_job);
-        RelativeLayout selectSkillsRl =  view.findViewById(R.id.select_skills_rl);
-        tvSelectSkill =  view.findViewById(R.id.tv_select_skill);
-        RelativeLayout selectDateRl =  view.findViewById(R.id.select_date_rl);
+        RelativeLayout selectSkillsRl = view.findViewById(R.id.select_skills_rl);
+        tvSelectSkill = view.findViewById(R.id.tv_select_skill);
+        RelativeLayout selectDateRl = view.findViewById(R.id.select_date_rl);
         tvSelectDate = view.findViewById(R.id.tv_select_date);
-        RelativeLayout locationRl =  view.findViewById(R.id.location_rl);
+        RelativeLayout locationRl = view.findViewById(R.id.location_rl);
         tvLocation = view.findViewById(R.id.tv_location);
         etBudget = view.findViewById(R.id.et_budget);
         btnCancel = view.findViewById(R.id.btn_cancel);
         etDescription = view.findViewById(R.id.et_description);
+        Spinner CurrencySpinner = view.findViewById(R.id.currency_spinner);
 
         tvLocation.setOnClickListener(this);
         tvLocation.setSelected(true);
         tvLocation.setHorizontallyScrolling(true);
         tvLocation.setMovementMethod(new ScrollingMovementMethod());
         tvLocation.setHint(R.string.location);
+
+        ArrayAdapter currencyAdapter = new ArrayAdapter<>(mContext, R.layout.spinner_item, currencyList);
+        currencyAdapter.setDropDownViewResource(R.layout.spinner_drop_down);
+        CurrencySpinner.setOnItemSelectedListener(this);
+        CurrencySpinner.setAdapter(currencyAdapter);
 
         //""""  to hide keyboard """""""//
         etDescription.setImeOptions(EditorInfo.IME_ACTION_DONE);
@@ -165,11 +172,16 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
         loadSkillsData();
     }
 
+    private void addVlaueInCurrency() {
+        currencyList.add("Currency");
+        currencyList.add("ZAR (R)");
+    }
+
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        Log.e(TAG, "setUserVisibleHint1: "+isVisibleToUser );
-        if (isVisibleToUser){
+        Log.e(TAG, "setUserVisibleHint1: " + isVisibleToUser);
+        if (isVisibleToUser) {
             clearData();
         }
     }
@@ -221,7 +233,7 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
             case R.id.btn_share:
                 jobValidations();
                 break;
-                case R.id.btn_cancel:
+            case R.id.btn_cancel:
                 clearData();
                 break;
         }
@@ -229,7 +241,7 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
     }
 
     private void clearData() {
-        if (tvSelectSkill!=null) {
+        if (tvSelectSkill != null) {
             tvSelectSkill.setText("");
             tvSelectDate.setText("");
             tvLocation.setText("");
@@ -250,23 +262,23 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
 
-                    startDateTime = Calendar.getInstance();
-                    startDateTime.set(Calendar.YEAR, year);
-                    startDateTime.set(Calendar.MONTH, month);
-                    startDateTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                    //********Date time Format**************//
-                    SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy ");
-                if (startDateTime.getTimeInMillis() >=  System.currentTimeMillis() - 1000 ) {
+                startDateTime = Calendar.getInstance();
+                startDateTime.set(Calendar.YEAR, year);
+                startDateTime.set(Calendar.MONTH, month);
+                startDateTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                //********Date time Format**************//
+                SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy ");
+                if (startDateTime.getTimeInMillis() >= System.currentTimeMillis() - 1000) {
                     tvSelectDate.setText(sdf1.format(startDateTime.getTime()));
 
-                }else {
+                } else {
                     Toast.makeText(mContext, "Can't select past date", Toast.LENGTH_SHORT).show();
                 }
                 //  startDateString = sdf1.format(startDateTime.getTime());
 
             }
         }, mYear, mMonth, mDay);
-        startDateDialog.getDatePicker().setMinDate( System.currentTimeMillis() - 1000);
+        startDateDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
 
         startDateDialog.show();
     }
@@ -340,6 +352,7 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
             categorySpinner.setOnItemSelectedListener(this);
             categorySpinner.setAdapter(categoryAdapter);
 
+
             tvCancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -351,7 +364,7 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
                 @Override
                 public void onClick(View v) {
 
-                    skillDialogValidation(categorySpinner, addSkillsLayout,dialog);
+                    skillDialogValidation(categorySpinner, addSkillsLayout, dialog);
                 }
             });
 
@@ -382,13 +395,17 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
             Constant.snackBar(mainLayout, "Please Select Date");
         } else if (Validation.isEmpty(etBudget)) {
             Constant.snackBar(mainLayout, "Please enter Budget");
+        } else if (currency.equals("Currency")) {
+            Constant.snackBar(mainLayout, "Please select currency");
         } else if (etBudget.getText().toString().trim().equals("0")) {
             Constant.snackBar(mainLayout, "Please enter correct Budget");
+        } else if (Float.parseFloat(etBudget.getText().toString()) < 3) {
+            Constant.snackBar(mainLayout, "Budget price should not be less than 3 dollar");
         } else if (Validation.isEmpty(tvLocation)) {
             Constant.snackBar(mainLayout, "Please enter your Location");
         }/* else if (Validation.isEmpty(etDescription)) {
             Constant.snackBar(mainLayout, "Please enter job Description");
-        }*/ else {
+        }*/  else {
             JobCreationModel model = new JobCreationModel();
             model.skill = skillId;
             model.job_start_date = tvSelectDate.getText().toString();
@@ -396,6 +413,7 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
             model.job_latitude = String.valueOf(locationLatLng.latitude);
             model.job_longitude = String.valueOf(locationLatLng.longitude);
             model.job_budget = Float.parseFloat(etBudget.getText().toString());
+            model.currency = "ZAR";
             model.job_type = "1";
             model.job_title = "test";
             model.job_description = etDescription.getText().toString();
@@ -420,30 +438,29 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
                         String status = response.getString("status");
                         String message = response.getString("message");
                         if (status.equals("success")) {
-                            Constant.snackBar(mainLayout,"Your offer has been successfully sent.");
+                            Constant.snackBar(mainLayout, "Your offer has been successfully sent.");
                             tvSelectSkill.setText("");
                             tvLocation.setText("");
                             tvSelectDate.setText("");
                             etBudget.setText("");
                             etDescription.setText("");
 
-                        }else {
-                            Constant.snackBar(mainLayout,message);
+                        } else {
+                            Constant.snackBar(mainLayout, message);
                         }
-                    }catch (JSONException e){
-                        Log.d(TAG,e.getMessage());
+                    } catch (JSONException e) {
+                        Log.d(TAG, e.getMessage());
                     }
                 }
 
                 @Override
                 public void onError(ANError anError) {
-                    Constant.errorHandle(anError,getActivity());
-                    Log.d(TAG,anError.getErrorDetail());
+                    Constant.errorHandle(anError, getActivity());
+                    Log.d(TAG, anError.getErrorDetail());
                     progressDialog.dismiss();
                 }
             });
         }
-
     }
 
     @Override
@@ -455,6 +472,10 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
                 subCateoryAdapter.setDropDownViewResource(R.layout.spinner_drop_down);
                 subCategorySpinner.setOnItemSelectedListener(this);
                 subCategorySpinner.setAdapter(subCateoryAdapter);
+                break;
+            case R.id.currency_spinner:
+                currency = currencyList.get(position);
+                Log.e(TAG, "onItemSelected: " + currency);
                 break;
         }
     }

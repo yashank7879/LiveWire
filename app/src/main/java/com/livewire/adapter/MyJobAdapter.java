@@ -67,11 +67,11 @@ public class MyJobAdapter extends RecyclerView.Adapter {
             int confirm = Integer.parseInt(dataBean.getJob_confirmed());
             if (jobType == 1 && confirm == 0 && request > 0) {
                 return JOBCELL1;
-            } else if (jobType == 1 && confirm == 4 || jobType == 2 && confirm == 4) {
+            } else if (jobType == 1 && confirm == 4 || jobType == 2 && confirm == 4) {// job Completed
                 return JOBCELL4;
-            } else if (jobType == 2) {
+            } else if (jobType == 2) {// Long term job
                 return JOBCELL3;
-            } else if (jobType == 1 && confirm == 1 || request == 0) {
+            } else if (jobType == 1 && confirm == 1 || request == 0) {// short term goal
                 return JOBCELL2;
             }
         }
@@ -149,8 +149,8 @@ public class MyJobAdapter extends RecyclerView.Adapter {
             holderJob4.tvSubcategory.setText(dataBean.getParent_category());
 
             if (dataBean.getJob_type().equals("2")) {
-              //  float paidAmount = (Float.parseFloat(dataBean.getJob_time_duration()) * Float.parseFloat(dataBean.getJob_offer()) * Float.parseFloat(dataBean.getNumber_of_days()));
-              //  holderJob4.tvOfferRate.setText("$ " + paidAmount);
+               // float paidAmount = (Float.parseFloat(dataBean.getJob_time_duration()) * Float.parseFloat(dataBean.getJob_offer()) * Float.parseFloat(dataBean.()));
+               // holderJob4.tvOfferRate.setText("$ " + paidAmount);
 
             } else {
                 holderJob4.tvOfferRate.setText("$ " + dataBean.getJob_budget());

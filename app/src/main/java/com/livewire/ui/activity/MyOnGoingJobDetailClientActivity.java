@@ -41,6 +41,7 @@ import org.json.JSONObject;
 
 import static com.livewire.utils.ApiCollection.BASE_URL;
 import static com.livewire.utils.ApiCollection.CANCLE_JOB_BY_CLIENT_API;
+import static com.livewire.utils.ApiCollection.CONFIRM_PAYMENT_API;
 import static com.livewire.utils.ApiCollection.JOBPOSTSEND_GET_CLIENT_JOB_DETAIL_API;
 
 public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implements View.OnClickListener {
@@ -54,6 +55,7 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
     private String userId = "";
     private String workerProfilePic = "";
     private String jobRequestId = "";
+    private String noOfDays = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +94,15 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
         }
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        jobDetailApi();
+    }
+
     private void setMyJobDetails(final JobDetailClientResponce.DataBean dataBean) {
+        noOfDays = dataBean.getNumber_of_days();
         if (dataBean.getJob_type().equals("2")) {///"""""""""" ONGOING JOB """'
             if (dataBean.getTotal_request().equals("0")) {  // NO OFFER SEND YET
                 binding.btnSendOffer.setVisibility(View.VISIBLE);
@@ -245,6 +255,7 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
         }
     }
 
+
     private void cancelJobApi() {
         //  Jobpost/cancleJobByClient
 
@@ -297,6 +308,7 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
         TextView tvCancel = dialog.findViewById(R.id.tv_cancel);
         final ProgressBar progressBar1 = dialog.findViewById(R.id.progress_bar);
         final RelativeLayout forgotDialogLayout = dialog.findViewById(R.id.forgot_layout);
+        etEmailDialog.setText(noOfDays);
         dialog.findViewById(R.id.btnSubmit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -304,15 +316,9 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
                     Constant.snackBar(forgotDialogLayout, "Please Enter Number Of working Days.");
                     Constant.hideSoftKeyBoard(MyOnGoingJobDetailClientActivity.this, etEmailDialog);
                 } else {
-                    Intent intent = new Intent(MyOnGoingJobDetailClientActivity.this, AddCreditCardActivity.class);
-                    intent.putExtra("OngoingJobPayment", "OngoingJob");
-                    intent.putExtra("NameKey", binding.tvName.getText().toString());
-                    intent.putExtra("PaymentKey", offer);
-                    intent.putExtra("JobIdKey", jobId);
-                    intent.putExtra("UserIdKey", userId);
-                    intent.putExtra("WorkDays", etEmailDialog.getText().toString().trim());
-                    intent.putExtra("Hours", hours);
-                    startActivity(intent);
+
+                    getCheckOutId(etEmailDialog.getText().toString(), dialog);
+
                     Constant.hideSoftKeyBoard(MyOnGoingJobDetailClientActivity.this, etEmailDialog);
                 }
             }
@@ -369,6 +375,67 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
 
                         @Override
                         public void onError(ANError anError) {
+                            Log.d(TAG, anError.getErrorDetail());
+                            progressDialog.dismiss();
+                        }
+                    });
+        }
+    }
+
+    private void getCheckOutId(String workingdays, Dialog dialog) {
+        if (Constant.isNetworkAvailable(this, binding.detailMainLayout)) {
+            progressDialog.show();
+            AndroidNetworking.post(BASE_URL + CONFIRM_PAYMENT_API)
+                    .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
+                    .addBodyParameter("project_id", jobId)
+                    .addBodyParameter("working_days", workingdays)
+                    .setPriority(Priority.MEDIUM)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            progressDialog.dismiss();
+                            String status = null;
+                            try {
+                                status = response.getString("status");
+                                String message = response.getString("message");
+                                if (status.equals("success")) {//checkout_id
+                                    dialog.dismiss();
+                                    String checkoutId = response.getString("checkout_id");
+                                    String budget = response.getString("amount");
+                                    String currency = response.getString("currency");
+
+                                    Intent intent = new Intent(MyOnGoingJobDetailClientActivity.this, MakePaymentActivity.class);
+                                    intent.putExtra("OngoingJobPayment", "OngoingJob");
+                                    intent.putExtra("NameKey", binding.tvName.getText().toString());
+                                    intent.putExtra("PaymentKey", offer);
+                                    intent.putExtra("JobIdKey", jobId);
+                                    intent.putExtra("UserIdKey", userId);
+                                    intent.putExtra("WorkDays", workingdays);
+                                    intent.putExtra("CurrencyKey", currency);
+                                    intent.putExtra("checkoutIdKey", checkoutId);
+                                    intent.putExtra("amountKey", budget);
+                                    intent.putExtra("Hours", hours);
+                                    startActivity(intent);
+
+                                    /*intent.putExtra("CurrencyKey", currency);
+                                    intent.putExtra("checkoutIdKey", checkoutId);
+                                    intent.putExtra("JobIdKey", JobId);*/
+                                    //startActivity(intent);
+                                } else {
+                                    dialog.dismiss();
+                                    progressDialog.dismiss();
+                                    Constant.snackBar(binding.detailMainLayout, message);
+                                }
+                            } catch (JSONException e) {
+                                Log.d(TAG, e.getMessage());
+                            }
+
+                        }
+
+                        @Override
+                        public void onError(ANError anError) {
+                            dialog.dismiss();
                             Log.d(TAG, anError.getErrorDetail());
                             progressDialog.dismiss();
                         }
