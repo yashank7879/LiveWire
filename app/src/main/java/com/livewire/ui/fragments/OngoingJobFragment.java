@@ -197,6 +197,9 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
                 for (int i = 0; i <= 48; i++) {
                     if (hour < 24) {
                         hour += 0.5;
+
+
+
                         hourList.add(String.valueOf(hour));
                     }
                 }
@@ -209,34 +212,6 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
             }
         }.execute();
     }
-
-/*    TextWatcher watcherClass = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            Log.v("VALUE", "" + s);
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            Log.v("VALUE", "" + s);
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-           String str =  etHourRequierd.getText().toString();
-           if (str.isEmpty()) return;
-
-           if ()
-           *//*  if (str.isEmpty()) return;
-            String str2 = perfectDecimal(yourBidText.getText().toString(), 5, 2);
-            if (!str2.equals(yourBidText.getText().toString())) {
-                yourBidText.setText(str2);
-                int pos = yourBidText.getText().length();
-                yourBidText.setSelection(pos);
-
-            }*//*
-        }
-    };*/
 
     @Override
     public void onClick(View v) {
@@ -380,6 +355,7 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
                             binding.tvLocation.setText("");
                             binding.tvWeekDays.setText("");
                             //binding.etHourRequierd.setText("");
+                            binding.hourRequireSpinner.setSelection(0);
                             binding.etDescription.setText("");
                             Toast.makeText(mContext, "Your offer has been successfully created.", Toast.LENGTH_SHORT).show();
 

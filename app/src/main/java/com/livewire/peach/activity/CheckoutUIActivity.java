@@ -17,6 +17,7 @@ import com.oppwa.mobile.connect.checkout.meta.CheckoutSettings;
 /**
  * Represents an activity for making payments via {@link CheckoutActivity}.
  */
+//"""""""""" this class is not used """"""//
 public class CheckoutUIActivity extends BasePaymentActivity {
 
     @Override

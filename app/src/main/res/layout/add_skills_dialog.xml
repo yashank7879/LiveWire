@@ -137,7 +137,7 @@
                 android:id="@+id/tv_doll"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/dollar"
+                android:text="@string/Zar"
                 style="@style/SmallPopinsLightStyle"
                 android:textColor="@color/colorDarkBlack"
                 />
@@ -167,8 +167,8 @@
                 android:id="@+id/tv_doll1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/dollar"
-                android:layout_toRightOf="@id/et_min_price"
+                android:text="@string/Zar"
+                android:layout_toEndOf="@id/et_min_price"
                 style="@style/SmallPopinsLightStyle"
                 android:textColor="@color/colorDarkBlack"
                 />
@@ -178,7 +178,7 @@
                 android:layout_width="@dimen/_60sdp"
                 android:layout_height="wrap_content"
                 android:hint="@string/max_price"
-                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_marginStart="@dimen/_5sdp"
                 style="@style/SmallPopinsLightStyle"
                 android:background="@null"
                 android:singleLine="true"

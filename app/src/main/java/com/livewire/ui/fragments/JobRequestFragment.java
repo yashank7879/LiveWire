@@ -63,8 +63,10 @@ public class JobRequestFragment extends Fragment {
             viewPager.setAdapter(adapter);
             tabLayout = view.findViewById(R.id.sliding_tabs);
             tabLayout.setupWithViewPager(viewPager);
-
-
+            tabLayout.getTabAt(0).setIcon(R.drawable.ic_black_shorterm);
+            tabLayout.getTabAt(0).setTag("ShortTerm");
+            tabLayout.getTabAt(1).setTag("LongTerm");
+            tabLayout.getTabAt(1).setIcon(R.drawable.ic_onging_job );
 
             // decrease width of indicator
             for (int i = 0; i < tabLayout.getTabCount(); i++) {
@@ -110,16 +112,21 @@ public class JobRequestFragment extends Fragment {
             tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                 @Override
                 public void onTabSelected(TabLayout.Tab tab) {
+                   if (tab.getTag().equals("ShortTerm"))
+                    tab.setIcon(R.drawable.ic_black_shorterm);
+                   else tab.setIcon(R.drawable.ic_active_ongoing);
                 }
 
                 @Override
                 public void onTabUnselected(TabLayout.Tab tab) {
-
+                    if (tab.getTag().equals("ShortTerm"))
+                        tab.setIcon(R.drawable.ic_inactive_shorterm);
+                    else tab.setIcon(R.drawable.ic_onging_job);
                 }
 
                 @Override
                 public void onTabReselected(TabLayout.Tab tab) {
-            /*this method is not used*/
+                    /*this method is not used*/
                 }
             });
         }

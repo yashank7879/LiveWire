@@ -62,7 +62,7 @@ public class NearYouAdapter extends RecyclerView.Adapter<NearYouAdapter.MyViewHo
             holder.ratingBar.setRating(rating);
 
             SpannableStringBuilder builder = new SpannableStringBuilder();
-            SpannableString minprice = new SpannableString("$ " + data.getMin_rate());
+            SpannableString minprice = new SpannableString("R" + data.getMin_rate());
             minprice.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.colorDarkBlack)), 0, minprice.length(), 0);
             //  userName.setSpan(new StyleSpan(Typeface.BOLD), 0, userName.length(), 0);
             builder.append(minprice);
@@ -70,7 +70,7 @@ public class NearYouAdapter extends RecyclerView.Adapter<NearYouAdapter.MyViewHo
             builder.append(toString);
 
 
-            SpannableString maxprice = new SpannableString("$ " + data.getMax_rate());
+            SpannableString maxprice = new SpannableString("R" + data.getMax_rate());
             maxprice.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.colorDarkBlack)), 0, maxprice.length(), 0);
             //  userName.setSpan(new StyleSpan(Typeface.BOLD), 0, userName.length(), 0);
             builder.append(maxprice);

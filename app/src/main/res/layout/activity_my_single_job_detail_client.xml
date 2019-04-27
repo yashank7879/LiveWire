@@ -368,7 +368,7 @@
                     android:layout_alignBaseline="@id/tv_offer_rate"
                     android:layout_toEndOf="@id/tv_offer_rate"
                     android:fontFamily="@font/poppins_semibold"
-                    android:text='@{"$ "+jobDetail.job_budget,default = "N/A"}'
+                    android:text='@{"R"+jobDetail.job_budget,default = "N/A"}'
                     android:textColor="@color/colorDarkBlack"
                     android:textSize="@dimen/_12sdp" />
 

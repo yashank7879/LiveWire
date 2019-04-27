@@ -48,6 +48,7 @@
     <string name="location">Location</string>
     <string name="budget">Budget</string>
     <string name="dollar">$</string>
+    <string name="Zar">R</string>
     <string name="select_job_date">Select Date</string>
     <string name="select_skill">Select Skill</string>
     <string name="select_job_start_date">Select Project Start Date</string>
@@ -383,4 +384,7 @@
     <string name="error_message">An error occurred</string>
     <string name="error_empty_fields">The fields must not be empty</string>
     <string name="project_cost">Project Cost</string>
+
+    <string name="bank_name">Bank name</string>
+    <string name="this_user_dont_have_any_review_yet">This user don\'t have any review yet</string>
 </resources>

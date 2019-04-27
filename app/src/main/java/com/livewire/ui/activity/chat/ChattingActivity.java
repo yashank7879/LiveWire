@@ -91,6 +91,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
     private boolean isImageLoaded = false;
     private String blockedId = "";
     private boolean isNotification = true;
+    private String titleName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,11 +103,10 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         Bundle extra = getIntent().getExtras();
         if (getIntent().getStringExtra("otherUID") != null) {
             otherprofilePic = getIntent().getStringExtra("profilePic");
-            String titleName = getIntent().getStringExtra("titleName");
+            titleName = getIntent().getStringExtra("titleName");
             binding.titleName.setText(titleName);
-
             otherUID = getIntent().getStringExtra("otherUID");
-            MY_UID  = getIntent().getStringExtra("otherUID");
+            MY_UID = getIntent().getStringExtra("otherUID");
             if (!otherprofilePic.isEmpty()) {
                 Picasso.with(binding.headerImage.getContext()).load(otherprofilePic)
                         .placeholder(R.drawable.ic_user)
@@ -114,6 +114,14 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
             }
             gettingDataFromUserTable(otherUID);
             // IsGetNotificationValue = otherUID;
+        } else {
+            if (extra != null) {
+                otherUID = extra.getString("opponentChatId");
+                titleName = extra.getString("titleName");
+                MY_UID = otherUID;
+                binding.titleName.setText(titleName);
+            }
+            gettingDataFromUserTable(otherUID);
         }
         final TextView tv_days_status = findViewById(R.id.tv_days_status);
         myUid = PreferenceConnector.readString(this, PreferenceConnector.MY_USER_ID, "");
@@ -129,8 +137,6 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
 
             }
         }, true);
-
-
 
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         binding.recyclerView.setLayoutManager(linearLayoutManager);
@@ -225,16 +231,16 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
                     if (!otherUserInfo.profilePic.equals("")) {
                         otherprofilePic = otherUserInfo.profilePic;
                         if (getApplicationContext() != null)
-                            Picasso.with(binding.headerImage.getContext()).load(otherprofilePic).fit().into(binding.headerImage);
+                            Picasso.with(binding.headerImage.getContext()).load(otherprofilePic).error(R.drawable.ic_user).placeholder(R.drawable.ic_user).fit().into(binding.headerImage);
                     }
                     //""""""" user availability """""""""//
-                    if (otherUserInfo.availability.equals("0")){
+                    if (otherUserInfo.availability.equals("0")) {
                         binding.cameraBtn.setEnabled(false);
                         binding.sendMsgButton.setEnabled(false);
                         binding.edMessage.setEnabled(false);
                         binding.llMessage.setAlpha((float) .5);
                         binding.edMessage.setText(R.string.you_can_send_msg_as_this_user);
-                    }else {
+                    } else {
                         binding.cameraBtn.setEnabled(true);
                         binding.sendMsgButton.setEnabled(true);
                         binding.edMessage.setEnabled(true);
@@ -243,6 +249,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
                     }
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -447,7 +454,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
     protected void onDestroy() {
         super.onDestroy();
         //IsGetNotificationValue = "";
-        Constant.MY_UID="";
+        Constant.MY_UID = "";
 
 
         firebaseDatabase.getReference().child(Constant.ARG_HISTORY).child(myUid).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -690,10 +697,10 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         assert app != null;
         storage = FirebaseStorage.getInstance(app);
 
-        if (BASE_URL.equals("https://livewire.work/apiv2/")){
+        if (BASE_URL.equals("https://livewire.work/apiv2/")) {
             storageRef = storage.getReference("chat_photos_LiveWire");
 
-        }else {
+        } else {
             storageRef = storage.getReference("chat_photos_LiveWire_Dev");
         }
 
@@ -820,7 +827,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Constant.hideSoftKeyBoard(this,binding.edMessage);
+        Constant.hideSoftKeyBoard(this, binding.edMessage);
         MY_UID = "";
     }
 
@@ -908,7 +915,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         ImageView iv_closeDialog = _dialog.findViewById(R.id.iv_closeDialog);
 
         tv_dialog_txt.setText(msg);
-        tv_name.setText(otherUserInfo.name+" ?");
+        tv_name.setText(otherUserInfo.name + " ?");
         tv_yes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

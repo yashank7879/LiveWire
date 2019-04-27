@@ -92,6 +92,7 @@ public class MyjobResponceClient implements Serializable {
         private String job_week_days="";
         private String  job_time_duration="";
         private String currentDateTime="";
+        private String number_of_days="";
         private int total_record;
         private List<RequestedUserDataBean> requestedUserData;
 
@@ -285,6 +286,14 @@ public class MyjobResponceClient implements Serializable {
 
         public void setJobrequestId(String jobrequestId) {
             this.jobrequestId = jobrequestId;
+        }
+
+        public String getNumber_of_days() {
+            return number_of_days;
+        }
+
+        public void setNumber_of_days(String number_of_days) {
+            this.number_of_days = number_of_days;
         }
 
         public static class RequestedUserDataBean implements Serializable {

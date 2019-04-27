@@ -149,9 +149,9 @@ public class NotificationCompleteJobHelpOfferedDetailWorkerActivity extends AppC
 
         float adminCommision = (Float.parseFloat(jobDetail.getData().getJob_budget()) * 3) / 100;
         float paidToYou = Float.parseFloat(jobDetail.getData().getJob_budget()) - adminCommision;
-        binding.tvAdminCommission.setText(MessageFormat.format("${0}", adminCommision));
-        binding.tvPaidToYou.setText(MessageFormat.format("${0}", paidToYou));
-        binding.tvTotalPrice.setText("$" + jobDetail.getData().getJob_budget() + ".0");
+        binding.tvAdminCommission.setText(MessageFormat.format("R{0}", adminCommision));
+        binding.tvPaidToYou.setText(MessageFormat.format("R{0}", paidToYou));
+        binding.tvTotalPrice.setText("R" + jobDetail.getData().getJob_budget() + ".0");
 
         //********"2018-07-04" date format converted into "04 jul 2018"***********//
         DateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
@@ -261,4 +261,5 @@ public class NotificationCompleteJobHelpOfferedDetailWorkerActivity extends AppC
 
 
 }
+
 

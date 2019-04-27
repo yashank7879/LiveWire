@@ -23,7 +23,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.livewire.R;
 import com.livewire.adapter.ChatHistoryAdapter;
 import com.livewire.databinding.FragmentChatClientBinding;
-import com.livewire.databinding.FragmentChatWorkerBinding;
 import com.livewire.model.Chat;
 import com.livewire.model.UserInfoFcm;
 import com.livewire.ui.activity.MyProfileClientActivity;
@@ -52,9 +51,8 @@ public class ChatClientFragment extends Fragment implements View.OnClickListener
         // Required empty public constructor
     }
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater,
                 R.layout.fragment_chat_client, container, false);
@@ -139,7 +137,6 @@ public class ChatClientFragment extends Fragment implements View.OnClickListener
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 if (dataSnapshot.getValue(Chat.class) != null) {
-
                     Chat chat = dataSnapshot.getValue(Chat.class);
                     gettingDataFromUserTable(dataSnapshot.getKey(), chat);
 

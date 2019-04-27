@@ -188,7 +188,7 @@
                         android:layout_below="@+id/tv_time"
                         android:layout_margin="@dimen/_8sdp"
                         android:background="@drawable/button_green_bg"
-                        android:text="@string/send_offer"
+                        android:text="@string/offer_work"
                         android:textAllCaps="false"
                         android:textColor="@color/colorWhite"
                         android:textSize="@dimen/_10sdp"
@@ -232,7 +232,7 @@
             </com.loopeer.shadow.ShadowView>
 
 
-            <com.loopeer.shadow.ShadowView
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/details_id"
@@ -240,11 +240,10 @@
                 android:layout_marginLeft="@dimen/_5sdp"
                 android:layout_marginRight="@dimen/_5sdp"
                 android:layout_marginTop="-1dp"
-                app:shadowColor="#666666"
-                app:shadowMarginBottom="3dp"
-                app:shadowMarginLeft="3dp"
-                app:shadowMarginRight="3dp"
-                app:shadowRadius="@dimen/_5sdp">
+                app:cardBackgroundColor="@color/colorWhite"
+                app:cardCornerRadius="2dp">
+
+
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -349,7 +348,7 @@
                             android:layout_alignBaseline="@id/tv_offer_rate"
                             android:layout_toEndOf="@id/tv_offer_rate"
                             android:fontFamily="@font/poppins_semibold"
-                            android:text='@{"$ "+dataBean.job_offer, default = "N/A"}'
+                            android:text='@{"R "+dataBean.job_offer, default = "N/A"}'
                             android:textColor="@color/colorDarkBlack"
                             android:textSize="@dimen/_12sdp" />
 
@@ -583,7 +582,7 @@
                 </RelativeLayout>
 
 
-            </com.loopeer.shadow.ShadowView>
+            </android.support.v7.widget.CardView>
 
 
         </RelativeLayout>

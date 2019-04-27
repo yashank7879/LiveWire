@@ -102,17 +102,15 @@ public class CompleteOngoingJobDetailClientActivity extends AppCompatActivity im
                 .get(0).getProfileImage())
                 .fit().into(binding.ivProfileImg);
 
-
+        binding.tvStartDate.setText(Constant.DateFomatChange(data.getData().getJob_start_date()));
+        binding.tvEndDate.setText(Constant.DateFomatChange(data.getData().getJob_end_date()));
         binding.tvTime.setText(Constant.getDayDifference(data.getData().getCrd(), data.getData().getCurrentDateTime()));
+
+
         float totalPrice = Float.parseFloat(data.getData().getJob_time_duration()) *
                 Float.parseFloat(data.getData().getNumber_of_days())
                 * Float.parseFloat(data.getData().getJob_offer());
-        binding.tvTotalPrice.setText("$ "+totalPrice);
-
-        binding.tvStartDate.setText(Constant.DateFomatChange(data.getData().getJob_start_date()));
-        binding.tvEndDate.setText(Constant.DateFomatChange(data.getData().getJob_end_date()));
-
-
+        binding.tvTotalPrice.setText("R"+totalPrice);
         name =data.getData().getRequestedUserData().get(0).getName();
         for (JobDetailClientResponce.ReviewBean reviewBean : data.getReview()) {
             if (reviewBean.getReview_by().equals(PreferenceConnector.readString(this, PreferenceConnector.MY_USER_ID, ""))) {

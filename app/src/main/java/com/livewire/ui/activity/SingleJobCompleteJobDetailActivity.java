@@ -83,9 +83,7 @@ public class SingleJobCompleteJobDetailActivity extends AppCompatActivity implem
                             } catch (JSONException e) {
                                 Log.d(TAG, e.getMessage());
                             }
-
                         }
-
                         @Override
                         public void onError(ANError anError) {
                             Log.d(TAG, anError.getErrorDetail());

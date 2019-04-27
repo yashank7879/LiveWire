@@ -89,7 +89,7 @@ public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapte
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_on_going_worker, container, false);
@@ -312,6 +312,7 @@ public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapte
             tvCancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    filterLayout.setVisibility(View.GONE);
                     dialog.dismiss();
                 }
             });
@@ -319,7 +320,6 @@ public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapte
             btnApplySkills.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     if (subCategoryList.size() == 0) {
                         Constant.snackBar(addSkillsLayout, "Please Select at least one Skill");
                     } else {
@@ -453,7 +453,6 @@ public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapte
                 break;
             case "Accept":
                 //acceptRejectrequestApi(dataBean.getUserId(), dataBean.getJobId(), "1", pos);
-
                 if (PreferenceConnector.readString(mContext,PreferenceConnector.IS_BANK_ACC,"").equals("1")) {
                     acceptRejectrequestApi(dataBean.getUserId(), dataBean.getJobId(), "1",pos);
                 }else {
@@ -462,7 +461,6 @@ public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapte
                 break;
             case "Reject":
                // acceptRejectrequestApi(dataBean.getUserId(), dataBean.getJobId(), "2", pos);
-
                 if (PreferenceConnector.readString(mContext,PreferenceConnector.IS_BANK_ACC,"").equals("1")) {
                     acceptRejectrequestApi(dataBean.getUserId(), dataBean.getJobId(), "2", pos);
 

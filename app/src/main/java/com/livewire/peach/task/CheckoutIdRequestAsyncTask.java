@@ -15,6 +15,7 @@ import java.net.URL;
 /**
  * Represents an async task to request a checkout id from the server.
  */
+//""""""""""" this class is not used """""""""""""//
 public class CheckoutIdRequestAsyncTask extends AsyncTask<String, Void, String> {
 
     private CheckoutIdRequestListener listener;

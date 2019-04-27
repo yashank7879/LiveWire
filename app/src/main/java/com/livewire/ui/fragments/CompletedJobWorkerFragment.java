@@ -393,12 +393,13 @@ public class CompletedJobWorkerFragment extends Fragment implements View.OnClick
                 @Override
                 public void onClick(View v) {
                         skillsString();
+                        subCategoryAdapterList.notifyDataSetChanged();
                         subCategoryAdapter.notifyDataSetChanged();
                         confirmJobApi();
                         dialog.dismiss();
                     if (subCategoryList.size() > 0){
                         filterLayout.setVisibility(View.VISIBLE);
-                    }
+                    }else  filterLayout.setVisibility(View.GONE);
 
                 }
             });

@@ -28,12 +28,9 @@ import com.livewire.adapter.ShowSkillsAdapter;
 import com.livewire.databinding.FragmentMyProfileWorkerBinding;
 import com.livewire.model.CategoryBean;
 import com.livewire.responce.MyProfileResponce;
-import com.livewire.ui.activity.AddYourSkillsActivity;
 import com.livewire.ui.activity.ClientMainActivity;
 import com.livewire.ui.activity.EditProfileWorkerActivity;
-import com.livewire.ui.activity.MyProfileClientActivity;
 import com.livewire.ui.activity.NotificationListWorkerActivity;
-import com.livewire.ui.activity.PlayVideoActivity;
 import com.livewire.ui.activity.ReviewListActivity;
 import com.livewire.ui.activity.SettingActivity;
 import com.livewire.ui.activity.WorkerMainActivity;
@@ -289,8 +286,6 @@ public class MyProfileWorkerFragment extends Fragment implements View.OnClickLis
                             progressDialog.dismiss();
                         }
                     });
-
-
         }
     }
 }

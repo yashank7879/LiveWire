@@ -215,7 +215,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_below="@+id/total_income"
                                     android:layout_marginStart="@dimen/_10sdp"
-                                    android:text='@{userResponce.totalIncome != "" ?  "$ "+userResponce.totalIncome  : "$ 0",default = "N/A"}'
+                                    android:text='@{userResponce.totalIncome != "" ?  "R "+userResponce.totalIncome  : "R 0",default = "N/A"}'
                                     android:textColor="@color/colorGreen" />
 
                                 <TextView
@@ -281,7 +281,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_below="@+id/total_paid"
                                     android:layout_marginStart="@dimen/_10sdp"
-                                    android:text='@{userResponce.totalIncome != "" ?  "$ "+userResponce.totalIncome  : "$ 0",default = "N/A"}'
+                                    android:text='@{userResponce.totalIncome != "" ?  "R "+userResponce.totalIncome  : "R 0",default = "N/A"}'
                                     android:textColor="@color/colorGreen" />
 
                                 <TextView

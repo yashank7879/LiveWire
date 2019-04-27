@@ -241,7 +241,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignBaseline="@+id/tv_details_of_help"
                     android:layout_alignParentEnd="true"
-                    android:text="@string/single_project_task"
+                    android:text="@string/short_term1"
                     android:textColor="@color/colorDarkBlack"
                     android:paddingRight="@dimen/_8sdp"
                     android:paddingLeft="@dimen/_8sdp"
@@ -304,7 +304,7 @@
                     android:layout_alignBaseline="@id/tv_offer_rate"
                     android:layout_toEndOf="@id/tv_offer_rate"
                     android:fontFamily="@font/poppins_semibold"
-                    android:text='@{"$ "+jobDetail.job_budget, default= "N/A"}'
+                    android:text='@{"R "+jobDetail.job_budget, default= "N/A"}'
                     android:textColor="@color/colorDarkBlack"
                     android:textSize="@dimen/_12sdp" />
 

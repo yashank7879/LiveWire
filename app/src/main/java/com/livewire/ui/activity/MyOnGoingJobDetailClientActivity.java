@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -31,6 +32,7 @@ import com.livewire.databinding.ActivityMyOngoingJobDetailClientBinding;
 import com.livewire.responce.JobDetailClientResponce;
 import com.livewire.ui.activity.chat.ChattingActivity;
 import com.livewire.ui.activity.credit_card.AddCreditCardActivity;
+import com.livewire.ui.dialog.ReviewDialog;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
 import com.livewire.utils.ProgressDialog;
@@ -39,6 +41,7 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static com.livewire.utils.ApiCollection.ADD_REVIEW_API;
 import static com.livewire.utils.ApiCollection.BASE_URL;
 import static com.livewire.utils.ApiCollection.CANCLE_JOB_BY_CLIENT_API;
 import static com.livewire.utils.ApiCollection.CONFIRM_PAYMENT_API;
@@ -56,6 +59,7 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
     private String workerProfilePic = "";
     private String jobRequestId = "";
     private String noOfDays = "";
+    private String name="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,10 +105,12 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
         jobDetailApi();
     }
 
-    private void setMyJobDetails(final JobDetailClientResponce.DataBean dataBean) {
-        noOfDays = dataBean.getNumber_of_days();
-        if (dataBean.getJob_type().equals("2")) {///"""""""""" ONGOING JOB """'
-            if (dataBean.getTotal_request().equals("0")) {  // NO OFFER SEND YET
+    private void setMyJobDetails(final JobDetailClientResponce dataBean) {
+        noOfDays = dataBean.getData().getNumber_of_days();
+        jobId = dataBean.getData().getJobId();
+
+        if (dataBean.getData().getJob_type().equals("2")) {///"""""""""" ONGOING JOB """'
+            if (dataBean.getData().getTotal_request().equals("0")) {  // NO OFFER SEND YET
                 binding.btnSendOffer.setVisibility(View.VISIBLE);
                 binding.rlMoredetail.setVisibility(View.VISIBLE);
                 binding.tvNoRequest.setVisibility(View.VISIBLE);
@@ -114,10 +120,10 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
                 binding.rlRange.setVisibility(View.GONE);
 
                 binding.tvNoRequest.setText(R.string.no_offer_application_yet);
-                binding.tvStartDate.setText(Constant.DateFomatChange(dataBean.getJob_start_date()));
-                binding.tvEndDate.setText(Constant.DateFomatChange(dataBean.getJob_end_date()));
+                binding.tvStartDate.setText(Constant.DateFomatChange(dataBean.getData().getJob_start_date()));
+                binding.tvEndDate.setText(Constant.DateFomatChange(dataBean.getData().getJob_end_date()));
 
-                jobId = dataBean.getJobId();
+                jobId = dataBean.getData().getJobId();
 
 
               /*  binding.btnSendOffer.setOnClickListener(new View.OnClickListener() {
@@ -130,14 +136,14 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
                     }
                 });*/
 
-            } else if (dataBean.getTotal_request().equals("1")) {
+            } else if (dataBean.getData().getTotal_request().equals("1")) {
                 // JOB CONFIRM OR PENDING REQUEST OR IN PROGRESS
-                if (!dataBean.getRequestedUserData().get(0).getRating().isEmpty()) {
-                    binding.ratingBar.setRating(Float.parseFloat(dataBean.getRequestedUserData().get(0).getRating()));
+                if (!dataBean.getData().getRequestedUserData().get(0).getRating().isEmpty()) {
+                    binding.ratingBar.setRating(Float.parseFloat(dataBean.getData().getRequestedUserData().get(0).getRating()));
                 }
-                switch (dataBean.getJob_confirmed()) {
+                switch (dataBean.getData().getJob_confirmed()) {
                     case "0": // request pending job
-                        if (dataBean.getRequestedUserData().get(0).getRequest_status().equals("0")) {
+                        if (dataBean.getData().getRequestedUserData().get(0).getRequest_status().equals("0")) {
                             binding.tvJobStatus.setText(R.string.Work_offer_pending);
                             binding.tvJobStatus.setBackground(getResources().getDrawable(R.drawable.doteted_orange_shape));
                             binding.tvJobStatus.setTextColor(ContextCompat.getColor(this, R.color.colorOrange));
@@ -145,23 +151,51 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
                             binding.btnCancelJob.setOnClickListener(this);
                             getWorkerData(dataBean);
 
-                        } else if (dataBean.getRequestedUserData().get(0).getRequest_status().equals("2")) {
+                        } else if (dataBean.getData().getRequestedUserData().get(0).getRequest_status().equals("2")) {
                             binding.tvJobStatus.setText(R.string.request_cancel);
                             binding.tvJobStatus.setBackground(getResources().getDrawable(R.drawable.doteted_balck_shape));
                             binding.tvJobStatus.setTextColor(ContextCompat.getColor(this, R.color.colorDarkBlack));
                         }
                         break;
                     case "1":  //request_confirmed job
-                        if (dataBean.getRequestedUserData().get(0).getRequest_status().equals("1")) {
+                        if (dataBean.getData().getRequestedUserData().get(0).getRequest_status().equals("1")) {
+                            userId = dataBean.getData().getRequestedUserData().get(0).getUserId();
                             binding.tvJobStatus.setText(R.string.work_offer_accepted);
                             binding.tvJobStatus.setBackground(getResources().getDrawable(R.drawable.doteted_green_shape));
                             binding.tvJobStatus.setTextColor(ContextCompat.getColor(this, R.color.colorGreen));
                             binding.btnEndJob.setVisibility(View.VISIBLE);
 
                             getWorkerData(dataBean);
-
+                            break;
                         }
-
+                    case "4":{
+                        binding.rlPaymentInfo.setVisibility(View.VISIBLE);
+                       binding.tvJobStatus.setVisibility(View.GONE);
+                        userId = dataBean.getData().getRequestedUserData().get(0).getUserId();
+                        float totalPrice = Float.parseFloat(dataBean.getData().getJob_time_duration()) *
+                                Float.parseFloat(dataBean.getData().getNumber_of_days())
+                                * Float.parseFloat(dataBean.getData().getJob_offer());
+                        binding.tvTotalPrice.setText("R"+totalPrice);
+                        name =dataBean.getData().getRequestedUserData().get(0).getName();
+                        for (JobDetailClientResponce.ReviewBean reviewBean : dataBean.getReview()) {
+                            if (reviewBean.getReview_by().equals(PreferenceConnector.readString(this, PreferenceConnector.MY_USER_ID, ""))) {
+                                binding.tvJobReview.setVisibility(View.VISIBLE);
+                                binding.btnGiveReview.setVisibility(View.GONE);
+                                binding.reviewByRl.setVisibility(View.VISIBLE);
+                                binding.tvReviewTime.setText(Constant.getDayDifference(reviewBean.getCrd(), dataBean.getData().getCurrentDateTime()));
+                                binding.tvReviewDescription.setText(reviewBean.getReview_description());
+                                binding.ratingBarReview.setRating(Float.parseFloat(reviewBean.getRating()));
+                            } else {
+                                binding.tvJobReview.setVisibility(View.VISIBLE);
+                                binding.reviewUserRl.setVisibility(View.VISIBLE);
+                                binding.btnGiveReview.setVisibility(View.VISIBLE);
+                                binding.tvUserNameReview.setText(dataBean.getData().getRequestedUserData().get(0).getName());
+                                binding.tvUserTimeReview.setText(Constant.getDayDifference(reviewBean.getCrd(), dataBean.getData().getCurrentDateTime()));
+                                binding.tvReviewUserDescription.setText(reviewBean.getReview_description());
+                                binding.ratingBarUserReview.setRating(Float.parseFloat(reviewBean.getRating()));
+                            }
+                        }
+                    }
                         break;
                     default: // in progress job
                         binding.tvJobStatus.setBackground(getResources().getDrawable(R.drawable.doteted_green_shape));
@@ -177,21 +211,21 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
                 binding.btnSendOffer.setVisibility(View.GONE);
 
 
-                binding.tvName.setText(dataBean.getRequestedUserData().get(0).getName());
+                binding.tvName.setText(dataBean.getData().getRequestedUserData().get(0).getName());
 
-                binding.tvDistance.setText(dataBean.getRequestedUserData().get(0).getDistance_in_km() + " Km away");
+                binding.tvDistance.setText(dataBean.getData().getRequestedUserData().get(0).getDistance_in_km() + " Km away");
 
-                userId = dataBean.getRequestedUserData().get(0).getUserId();
+                userId = dataBean.getData().getRequestedUserData().get(0).getUserId();
 
                 Picasso.with(binding.ivProfileImg.getContext())
-                        .load(dataBean.getRequestedUserData()
+                        .load(dataBean.getData().getRequestedUserData()
                                 .get(0).getProfileImage()).fit().into(binding.ivProfileImg);
 
-                binding.tvStartDate.setText(Constant.DateFomatChange(dataBean.getJob_start_date()));
-                binding.tvEndDate.setText(Constant.DateFomatChange(dataBean.getJob_end_date()));
+                binding.tvStartDate.setText(Constant.DateFomatChange(dataBean.getData().getJob_start_date()));
+                binding.tvEndDate.setText(Constant.DateFomatChange(dataBean.getData().getJob_end_date()));
 
                 SpannableStringBuilder builder = new SpannableStringBuilder();
-                SpannableString minprice = new SpannableString("$ " + dataBean.getRequestedUserData().get(0).getMin_rate());
+                SpannableString minprice = new SpannableString("R" + dataBean.getData().getRequestedUserData().get(0).getMin_rate());
                 minprice.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorDarkBlack)), 0, minprice.length(), 0);
                 //  userName.setSpan(new StyleSpan(Typeface.BOLD), 0, userName.length(), 0);
                 builder.append(minprice);
@@ -199,7 +233,7 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
                 builder.append(toString);
 
 
-                SpannableString maxprice = new SpannableString("$ " + dataBean.getRequestedUserData().get(0).getMax_rate());
+                SpannableString maxprice = new SpannableString("R" + dataBean.getData().getRequestedUserData().get(0).getMax_rate());
                 maxprice.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorDarkBlack)), 0, maxprice.length(), 0);
                 //  userName.setSpan(new StyleSpan(Typeface.BOLD), 0, userName.length(), 0);
                 builder.append(maxprice);
@@ -212,15 +246,15 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
         }
     }
 
-    private void getWorkerData(JobDetailClientResponce.DataBean dataBean) {
-        jobId = dataBean.getJobId();
-        userId = dataBean.getRequestedUserData().get(0).getUserId();
-        offer = dataBean.getJob_offer();
-        hours = dataBean.getJob_time_duration();
-        workerProfilePic = dataBean.getRequestedUserData().get(0).getProfileImage();
+    private void getWorkerData(JobDetailClientResponce dataBean) {
+        offer = dataBean.getData().getJob_offer();
+        hours = dataBean.getData().getJob_time_duration();
+        workerProfilePic = dataBean.getData().getRequestedUserData().get(0).getProfileImage();
     }
 
-
+//complete job :-
+    //give review
+    // doted status
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -250,10 +284,80 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
                 intent.putExtra("JobIdKey", jobId);
                 startActivity(intent);
                 break;
+            case R.id.btn_give_review:
+                openReviewDialog();
+                break;
 
             default:
         }
     }
+
+    private void openReviewDialog() {
+        Bundle bundle = new Bundle();
+        bundle.putString("NameKey", name);
+        final ReviewDialog dialog = new ReviewDialog();
+        dialog.setArguments(bundle);
+        dialog.show(getSupportFragmentManager(), "");
+        dialog.setCancelable(false);
+        dialog.getReviewInfo(new ReviewDialog.ReviewDialogListner() {
+            @Override
+            public void onReviewOnClick(String description, float rating, LinearLayout layout) {
+                giveReviewApi(description, rating, dialog, layout);
+            }
+
+            @Override
+            public void onReviewCancel() {
+
+            }
+        });
+    }
+
+
+    //"""""""""" give review list""""""""""""""""""'//
+    private void giveReviewApi(final String description, final float rating, final ReviewDialog dialog, final LinearLayout layout) {
+        if (Constant.isNetworkAvailable(this, layout)) {
+            progressDialog.show();
+            AndroidNetworking.post(BASE_URL + ADD_REVIEW_API)
+                    .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
+                    .addBodyParameter("review_by", PreferenceConnector.readString(this, PreferenceConnector.MY_USER_ID, ""))
+                    .addBodyParameter("review_to", userId)
+                    .addBodyParameter("job_id", jobId)
+                    .addBodyParameter("rating", "" + rating)
+                    .addBodyParameter("description", description)
+                    .setPriority(Priority.MEDIUM)
+                    .build().getAsJSONObject(new JSONObjectRequestListener() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        progressDialog.dismiss();
+                        String status = response.getString("status");
+                        String message = response.getString("message");
+                        if (status.equals("success")) {
+                            dialog.dismiss();
+                            binding.reviewByRl.setVisibility(View.VISIBLE);
+                            binding.ratingBarReview.setRating(rating);
+                            binding.tvReviewDescription.setText(description);
+                            binding.tvJobReview.setVisibility(View.VISIBLE);
+                            binding.btnGiveReview.setVisibility(View.GONE);
+                            binding.tvReviewTime.setText("just now");
+                            //  Constant.snackBar(binding.detailMainLayout, message);
+                        } else {
+                            Constant.snackBar(layout, message);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onError(ANError anError) {
+                    progressDialog.dismiss();
+                }
+            });
+        }
+
+    }
+
 
 
     private void cancelJobApi() {
@@ -359,7 +463,7 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
                                 String message = response.getString("message");
                                 if (status.equals("success")) {
                                     JobDetailClientResponce JobDetail = new Gson().fromJson(String.valueOf(response), JobDetailClientResponce.class);
-                                    setMyJobDetails(JobDetail.getData());
+                                    setMyJobDetails(JobDetail);
                                     binding.setDataBean(JobDetail.getData());
 
                                     binding.tvTime.setText(Constant.getDayDifference(JobDetail.getData().getCrd(), JobDetail.getData().getCurrentDateTime()));
@@ -405,7 +509,7 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
                                     String budget = response.getString("amount");
                                     String currency = response.getString("currency");
 
-                                    Intent intent = new Intent(MyOnGoingJobDetailClientActivity.this, MakePaymentActivity.class);
+                                     Intent intent = new Intent(MyOnGoingJobDetailClientActivity.this, MakePaymentActivity.class);
                                     intent.putExtra("OngoingJobPayment", "OngoingJob");
                                     intent.putExtra("NameKey", binding.tvName.getText().toString());
                                     intent.putExtra("PaymentKey", offer);

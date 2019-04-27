@@ -285,23 +285,6 @@
                         android:text="@string/deatils"
                         android:textColor="@color/colorGreen" />
 
-                    <!--  <TextView
-                          android:id="@+id/tv_job_status"
-                          style="@style/SmallPopinsMediumStyle"
-                          android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:layout_alignParentEnd="true"
-                          android:layout_marginEnd="-2dp"
-                          android:background="@drawadoteted_orange_shapehape"
-                          android:paddingBottom="@dimen/_3sdp"
-                          android:paddingEnd="@dimen/_10sdp"
-                          android:paddingStart="@dimen/_10sdp"
-                          android:paddingTop="@dimen/_3sdp"
-                          android:text="@string/n_a"
-                          android:textAllCaps="false"
-                          android:textColor="@color/colorDarkBlack"
-                          android:textSize="@dimen/_10sdp" />
-      -->
 
                     <TextView
                         android:id="@+id/tv_category"
@@ -314,29 +297,6 @@
                         android:text='@{jobDetail.sub_category ,default= "N/A"}'
                         android:textColor="@color/colorDarkBlack"
                         android:textSize="@dimen/_12sdp" />
-
-                    <!--     <TextView
-                             android:id="@+id/tv_date"
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content"
-                             android:layout_toStartOf="@+id/tv_date_month"
-                             android:layout_alignBaseline="@id/tv_category"
-                             android:text="23"
-                             style="@style/mediumPopinsRegularStyle"
-                             android:textColor="@color/colorDarkBlack"
-                             />
-
-                         <TextView
-                             android:id="@+id/tv_date_month"
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content"
-                             android:layout_alignParentEnd="true"
-                             android:fontFamily="@font/poppins_light"
-                             android:textColor="@color/colorDarkBlack"
-                             android:textSize="@dimen/_10sdp"
-                             android:layout_alignBaseline="@id/tv_category"
-                             android:text=" sep 2018"
-                             />-->
 
                     <TextView
                         android:id="@+id/tv_sub_category"
@@ -367,7 +327,7 @@
                         android:layout_alignBaseline="@id/tv_offer_rate"
                         android:layout_toEndOf="@id/tv_offer_rate"
                         android:fontFamily="@font/poppins_semibold"
-                        android:text='@{"$ "+jobDetail.job_budget ,default= "N/A"}'
+                        android:text='@{"R"+jobDetail.job_budget ,default= "N/A"}'
                         android:textColor="@color/colorDarkBlack"
                         android:textSize="@dimen/_12sdp" />
 
@@ -380,125 +340,6 @@
                         android:layout_marginEnd="@dimen/_8sdp"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:background="@color/colorExtraLightGray" />
-
-                    <!--  <View
-                          android:id="@+id/view3_id"
-                          android:layout_width="match_parent"
-                          android:layout_height="1dp"
-                          android:layout_below="@+id/rl_moredetail"
-                          android:layout_marginEnd="@dimen/_8sdp"
-                          android:background="@color/colorExtraLightGray" />
-      -->
-                    <!-- gone
-                     <RelativeLayout
-                         android:id="@+id/rl_moredetail"
-                         android:layout_width="match_parent"
-                         android:layout_height="wrap_content"
-                         android:layout_below="@+id/view2_id"
-                         android:orientation="vertical"
-                         android:visibility="gone">
-
-
-                         <TextView
-                             android:id="@+id/tv_more_deatail"
-                             style="@style/SmallPopinsMediumStyle"
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content"
-                             android:layout_marginTop="@dimen/_5sdp"
-                             android:fontFamily="@font/poppins_medium"
-                             android:text="@string/more_details"
-                             android:textColor="@color/colorGreen" />
-
-                         <TextView
-                             android:id="@+id/start_date"
-                             style="@style/SmallPopinsMediumStyle"
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content"
-                             android:layout_below="@+id/tv_more_deatail"
-                             android:layout_marginTop="@dimen/_5sdp"
-                             android:text="@string/start_date"
-                             android:textColor="@color/colorDarkBlack"
-                             android:textSize="@dimen/_12sdp" />
-
-                         <TextView
-                             style="@style/smallPopinsRegularStyle"
-                             android:id="@+id/tv_start_date"
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content"
-                             android:layout_below="@+id/start_date"
-                             android:text="@string/n_a"
-                             android:textColor="@color/colorDarkGray"
-                              />
-
-                         <TextView
-                             android:id="@+id/end_date"
-                             style="@style/SmallPopinsMediumStyle"
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content"
-                             android:layout_alignParentEnd="true"
-                             android:layout_below="@+id/tv_more_deatail"
-                             android:layout_marginEnd="@dimen/_8sdp"
-                             android:layout_marginTop="@dimen/_5sdp"
-                             android:text="@string/end_date"
-                             android:textColor="@color/colorDarkBlack"
-                             android:textSize="@dimen/_12sdp" />
-
-                         <TextView
-                             android:id="@+id/tv_end_date"
-                             style="@style/smallPopinsRegularStyle"
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content"
-                             android:layout_alignParentEnd="true"
-                             android:layout_below="@+id/end_date"
-                             android:layout_marginEnd="@dimen/_8sdp"
-                             android:text="@string/n_a"
-                             android:textColor="@color/colorDarkGray"
-                            />
-
-                         <TextView
-                             android:id="@+id/week_days"
-                             style="@style/SmallPopinsMediumStyle"
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content"
-                             android:layout_below="@+id/tv_start_date"
-                             android:layout_marginTop="@dimen/_5sdp"
-                             android:text="@string/week_days"
-                             android:textColor="@color/colorDarkBlack"
-                             android:textSize="@dimen/_12sdp" />
-
-                         <TextView
-                             android:id="@+id/tv_week_days"
-                             style="@style/smallPopinsRegularStyle"
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content"
-                             android:layout_below="@+id/week_days"
-                             android:text="@string/n_a"
-                             android:textColor="@color/colorDarkGray"
-                          />
-
-                         <TextView
-                             android:id="@+id/time_duration"
-                             style="@style/SmallPopinsMediumStyle"
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content"
-                             android:layout_below="@+id/tv_week_days"
-                             android:layout_marginTop="@dimen/_5sdp"
-                             android:text="@string/time_duration"
-                             android:textColor="@color/colorDarkBlack"
-                             android:textSize="@dimen/_12sdp" />
-
-                         <TextView
-                             style="@style/smallPopinsRegularStyle"
-                             android:id="@+id/tv_time_duration"
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content"
-                             android:layout_below="@+id/time_duration"
-                             android:layout_marginBottom="@dimen/_5sdp"
-                             android:text="@string/n_a"
-                             android:textColor="@color/colorDarkGray"
-                       />
-
-                     </RelativeLayout>-->
 
                     <TextView
                         android:id="@+id/description"
@@ -522,19 +363,6 @@
                         android:text='@{jobDetail.job_description.empty ? "N/A" : jobDetail.job_description ,default = "N/A"}'
                         android:textSize="@dimen/_10sdp" />
 
-                    <!--     <Button
-                                  android:id="@+id/btn_send_request"
-                                  style="@style/smallPopinsRegularStyle"
-                                  android:layout_width="@dimen/_85sdp"
-                                  android:layout_height="@dimen/_25sdp"
-                                  android:layout_below="@id/tv_description"
-                                  android:layout_centerInParent="true"
-                                  android:layout_margin="@dimen/_15sdp"
-                                  android:background="@drawable/button_green_bg"
-                                  android:text="@string/send_request"
-                                  android:textAllCaps="false"
-                                  android:textColor="@color/colorWhite"
-                                  android:textSize="@dimen/_10sdp" />-->
 
                 </RelativeLayout>
 

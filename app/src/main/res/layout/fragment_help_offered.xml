@@ -37,7 +37,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/tv_clear_all"
+            android:layout_toStartOf="@+id/tv_clear_all"
+            tools:listitem="@layout/help_offered_cell"
             >
 
         </android.support.v7.widget.RecyclerView>

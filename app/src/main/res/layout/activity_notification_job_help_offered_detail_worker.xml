@@ -259,11 +259,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="-2dp"
+                        android:layout_marginEnd="-8dp"
                         android:visibility="gone"
                         android:background="@drawable/doteted_balck_shape"
                         android:paddingBottom="@dimen/_1sdp"
-                        android:paddingEnd="@dimen/_5sdp"
+                        android:paddingEnd="@dimen/_8sdp"
                         android:paddingStart="@dimen/_10sdp"
                         android:paddingTop="@dimen/_1sdp"
                         android:text="@string/short_term1"
@@ -334,7 +334,7 @@
                         android:layout_alignBaseline="@id/tv_offer_rate"
                         android:layout_toEndOf="@id/tv_offer_rate"
                         android:fontFamily="@font/poppins_semibold"
-                        android:text='@{"$ "+jobDetail.job_budget, default= "N/A"}'
+                        android:text='@{"R"+jobDetail.job_budget, default= "N/A"}'
                         android:textColor="@color/colorDarkBlack"
                         android:textSize="@dimen/_12sdp" />
 
@@ -372,7 +372,7 @@
                         android:id="@+id/btn_send_request"
                         style="@style/smallPopinsRegularStyle"
                         android:layout_width="@dimen/_85sdp"
-                        android:layout_height="@dimen/_25sdp"
+                        android:layout_height="@dimen/_28sdp"
                         android:layout_below="@id/tv_description"
                         android:layout_centerInParent="true"
                         android:layout_margin="@dimen/_15sdp"
@@ -453,7 +453,7 @@
                             android:layout_alignParentEnd="true"
                             android:layout_below="@+id/tv_admin_commission"
                             android:layout_marginEnd="@dimen/_8sdp"
-                            android:text="$00.0"
+                            android:text="R00.0"
                             android:textColor="@color/colorDarkBlack" />
 
                         <View
@@ -482,7 +482,7 @@
                             android:layout_alignParentEnd="true"
                             android:layout_below="@+id/view5_id"
                             android:layout_marginEnd="@dimen/_8sdp"
-                            android:text="$ 00.0"
+                            android:text="R 00.0"
                             android:textColor="@color/colorDarkBlack" />
 
                         <View

@@ -4,6 +4,7 @@ package com.livewire.ui.activity.notification_activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
@@ -21,6 +22,7 @@ import com.google.gson.Gson;
 import com.livewire.R;
 import com.livewire.databinding.ActivityNotificationJobOngoingDetailWorkerBinding;
 import com.livewire.responce.JobDetailWorkerResponce;
+import com.livewire.ui.activity.ClientMainActivity;
 import com.livewire.ui.activity.chat.ChattingActivity;
 import com.livewire.ui.dialog.ReviewDialog;
 import com.livewire.utils.Constant;
@@ -38,7 +40,6 @@ import static com.livewire.utils.ApiCollection.JOBPOSTSEND_GET_WORKER_JOB_DETAIL
 public class NotificationCompleteJobOnGoingDetailWorkerActivity extends AppCompatActivity implements View.OnClickListener {
     ActivityNotificationJobOngoingDetailWorkerBinding binding;
     private static final String TAG = NotificationCompleteJobOnGoingDetailWorkerActivity.class.getName();
-
     private ProgressDialog progressDialog;
     private String jobId = "";
     private JobDetailWorkerResponce workerResponce;
@@ -63,16 +64,36 @@ public class NotificationCompleteJobOnGoingDetailWorkerActivity extends AppCompa
         findViewById(R.id.btn_ignore).setOnClickListener(this);
         findViewById(R.id.btn_accept).setOnClickListener(this);
 
-        if (getIntent().getStringExtra("JobIdKey") != null) {
-            jobId = getIntent().getStringExtra("JobIdKey");
+        Bundle extras = getIntent().getExtras();
+        if (extras != null){
+            String userType =  extras.getString("for_user_type");
+            //"""""""""" check the user type and then go to the activivty """""//
+            if (PreferenceConnector.readString(this, PreferenceConnector.USER_MODE, "").equals(userType)) {
+
+                if (extras.getString("type").equals("Ongoing_job_completed")) {
+                    jobId = getIntent().getStringExtra("reference_id");
+                    binding.paymentInfoLayout.setVisibility(View.VISIBLE);
+                    binding.btnGiveReview.setVisibility(View.VISIBLE);
+                }
+            }else {
+                Intent intent = new Intent(this, ClientMainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("MyProfile", "MyProfile");
+                startActivity(intent);
+                finish();
+            }
+        }
+    /*    if (getIntent().getStringExtra("reference_id") != null) {
+            jobId = getIntent().getStringExtra("reference_id");
             binding.btnAcceptRejectLayout.setVisibility(View.GONE);
 
             if (getIntent().getStringExtra("CompleteJobKey") != null) {
                 binding.paymentInfoLayout.setVisibility(View.VISIBLE);
                 binding.btnGiveReview.setVisibility(View.VISIBLE);
             }
-            getJobDetailApi();
-        }
+
+        }*/
+        getJobDetailApi();
     }
 
     private void getJobDetailApi() {
@@ -169,14 +190,13 @@ public class NotificationCompleteJobOnGoingDetailWorkerActivity extends AppCompa
             binding.btnGiveReview.setVisibility(View.GONE);
         }
 
-        if (workerResponce.getData().getJob_confirmed().equals("3")) {
+       // if (workerResponce.getData().getJob_confirmed().equals("4")) {
             binding.tvTotalDays.setText(workerResponce.getData().getNumber_of_days());
-            binding.tvOfferPriceValue.setText("$" + workerResponce.getData().getJob_offer());
+            binding.tvOfferPriceValue.setText("R" + workerResponce.getData().getJob_offer());
             float totalPaid = (Float.parseFloat(workerResponce.getData().getJob_offer()) * Float.parseFloat(workerResponce.getData().getNumber_of_days()) * Float.parseFloat(workerResponce.getData().getJob_time_duration()));
             float adminCommision = (totalPaid * 3) / 100;
-            binding.tvCommisionPrice.setText("$" + adminCommision);
-            binding.tvTotalPrice.setText("$" + totalPaid);
-        }
+            binding.tvTotalPrice.setText("R" + totalPaid);
+       // }
 
         //********"2018-07-04" date format converted into "04 jul 2018"***********//
         binding.tvStartDate.setText(Constant.DateFomatChange(workerResponce.getData().getJob_start_date()));
@@ -184,7 +204,7 @@ public class NotificationCompleteJobOnGoingDetailWorkerActivity extends AppCompa
         binding.tvEndDate.setText(Constant.DateFomatChange(workerResponce.getData().getJob_end_date()));
 
         SpannableStringBuilder builder = new SpannableStringBuilder();
-        SpannableString minprice = new SpannableString("$ " + workerResponce.getData().getMin_rate());
+        SpannableString minprice = new SpannableString("R" + workerResponce.getData().getMin_rate());
         minprice.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorDarkBlack)), 0, minprice.length(), 0);
         //  userName.setSpan(new StyleSpan(Typeface.BOLD), 0, userName.length(), 0);
         builder.append(minprice);
@@ -192,14 +212,13 @@ public class NotificationCompleteJobOnGoingDetailWorkerActivity extends AppCompa
         builder.append(toString);
 
 
-        SpannableString maxprice = new SpannableString("$ " + workerResponce.getData().getMax_rate());
+        SpannableString maxprice = new SpannableString("R" + workerResponce.getData().getMax_rate());
         maxprice.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorDarkBlack)), 0, maxprice.length(), 0);
         //  userName.setSpan(new StyleSpan(Typeface.BOLD), 0, userName.length(), 0);
         builder.append(maxprice);
 
         binding.tvRangePrice.setText(builder);
     }
-
 
     private void openReviewDialog() {
         Bundle bundle = new Bundle();

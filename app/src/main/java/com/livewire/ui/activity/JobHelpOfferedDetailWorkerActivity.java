@@ -48,7 +48,6 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
     private String name = "";
     private String clientProfileImg = "";
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,7 +139,6 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
         name = jobDetail.getName();
         binding.tvTime.setText(Constant.getDayDifference(jobDetail.getCrd(), jobDetail.getCurrentDateTime()));
 
-
         if (jobDetail.getJob_confirmed().equals("0")) { // pending request
             binding.btnSendRequest.setBackground(null);
             binding.btnSendRequest.setText(R.string.Work_offer_pending);
@@ -150,6 +148,8 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
             binding.btnSendRequest.setBackground(this.getResources().getDrawable(R.drawable.button_black_bg));
             binding.btnSendRequest.setText(R.string.apply);
             binding.btnSendRequest.setTextColor(ContextCompat.getColor(this, R.color.colorWhite));
+        }else if (jobDetail.getJob_confirmed().equals("4") || jobDetail.getJob_confirmed().equals("1")){// JOB IS COMPLITED || job is confirmed
+            binding.btnSendRequest.setVisibility(View.GONE);
         }
         Picasso.with(binding.ivProfileImg.getContext())
                 .load(jobDetail.getProfileImage())

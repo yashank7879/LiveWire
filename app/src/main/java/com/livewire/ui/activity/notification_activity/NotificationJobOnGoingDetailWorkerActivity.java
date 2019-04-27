@@ -20,6 +20,7 @@ import com.google.gson.Gson;
 import com.livewire.R;
 import com.livewire.databinding.ActivityNotificationJobOngoingDetailWorkerBinding;
 import com.livewire.responce.JobDetailWorkerResponce;
+import com.livewire.ui.activity.ClientMainActivity;
 import com.livewire.ui.activity.WorkerMainActivity;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
@@ -61,13 +62,24 @@ public class NotificationJobOnGoingDetailWorkerActivity extends AppCompatActivit
         findViewById(R.id.btn_accept).setOnClickListener(this);
         binding.btnAcceptRejectLayout.setVisibility(View.VISIBLE);
 
-        Bundle extra = getIntent().getExtras();;
+        Bundle extra = getIntent().getExtras();
         assert extra != null;
-        if (extra.getString("type").equals("Ongoing_job_request")) {
-            jobId = extra.getString("reference_id");
-            getJobDetailApi();
+        String userType =  extra.getString("for_user_type");
+        //"""""""""" check the user type and then go to the activivty """""//
+        if (PreferenceConnector.readString(this, PreferenceConnector.USER_MODE, "").equals(userType)) {
+            if (extra.getString("type").equals("Ongoing_job_request")) {
+                jobId = extra.getString("reference_id");
+                getJobDetailApi();
+            }
+        }else {// if user type is same
+            Intent intent = new Intent(this, ClientMainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("MyProfile", "MyProfile");
+            startActivity(intent);
+            finish();
         }
     }
+
 
     private void getJobDetailApi() {
 
@@ -136,7 +148,6 @@ public class NotificationJobOnGoingDetailWorkerActivity extends AppCompatActivit
     private void setJobDetailData() {
 
         binding.tvTime.setText(Constant.getDayDifference(workerResponce.getData().getCrd(), workerResponce.getData().getCurrentDateTime()));
-
         Picasso.with(binding.ivProfileImg.getContext())
                 .load(workerResponce.getData().getProfileImage()).fit().into(binding.ivProfileImg);
 
@@ -145,7 +156,7 @@ public class NotificationJobOnGoingDetailWorkerActivity extends AppCompatActivit
         binding.tvEndDate.setText(Constant.DateFomatChange(workerResponce.getData().getJob_end_date()));
 
         SpannableStringBuilder builder = new SpannableStringBuilder();
-        SpannableString minprice = new SpannableString("$ " + workerResponce.getData().getMin_rate());
+        SpannableString minprice = new SpannableString("R" + workerResponce.getData().getMin_rate());
         minprice.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorDarkBlack)), 0, minprice.length(), 0);
         //  userName.setSpan(new StyleSpan(Typeface.BOLD), 0, userName.length(), 0);
         builder.append(minprice);
@@ -153,12 +164,47 @@ public class NotificationJobOnGoingDetailWorkerActivity extends AppCompatActivit
         builder.append(toString);
 
 
-        SpannableString maxprice = new SpannableString("$ " + workerResponce.getData().getMax_rate());
+        SpannableString maxprice = new SpannableString("R" + workerResponce.getData().getMax_rate());
         maxprice.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorDarkBlack)), 0, maxprice.length(), 0);
         //  userName.setSpan(new StyleSpan(Typeface.BOLD), 0, userName.length(), 0);
         builder.append(maxprice);
 
         binding.tvRangePrice.setText(builder);
+
+        //""""""""
+        if (workerResponce.getData().getJob_confirmed().equals("4")){
+           // name = workerResponce.getData().getName();
+            binding.btnAcceptRejectLayout.setVisibility(View.GONE);
+            binding.svMoreInfo.setVisibility(View.VISIBLE);
+            for (JobDetailWorkerResponce.ReviewBean reviewBean : workerResponce.getReview()) {
+                if (reviewBean.getReview_by().equals(PreferenceConnector.readString(this, PreferenceConnector.MY_USER_ID, ""))) {
+                    binding.tvJobReview.setVisibility(View.VISIBLE);
+                    binding.reviewByRl.setVisibility(View.VISIBLE);
+                    binding.tvReviewTime.setText(Constant.getDayDifference(reviewBean.getCrd(), workerResponce.getData().getCurrentDateTime()));
+                    binding.tvReviewDescription.setText(reviewBean.getReview_description());
+                    binding.ratingBarReview.setRating(Float.parseFloat(reviewBean.getRating()));
+                } else {
+                    binding.tvJobReview.setVisibility(View.VISIBLE);
+                    binding.reviewUserRl.setVisibility(View.VISIBLE);
+                    binding.tvUserNameReview.setText(workerResponce.getData().getName());
+                    binding.tvUserTimeReview.setText(Constant.getDayDifference(reviewBean.getCrd(), workerResponce.getData().getCurrentDateTime()));
+                    binding.tvReviewUserDescription.setText(reviewBean.getReview_description());
+                    binding.ratingBarUserReview.setRating(Float.parseFloat(reviewBean.getRating()));
+                }
+            }
+            if(workerResponce.getData().getReview_status().equals("1")){
+                binding.btnGiveReview.setVisibility(View.GONE);
+            }
+
+            // if (workerResponce.getData().getJob_confirmed().equals("4")) {
+            binding.tvTotalDays.setText(workerResponce.getData().getNumber_of_days());
+            binding.tvOfferPriceValue.setText("R" + workerResponce.getData().getJob_offer());
+            float totalPaid = (Float.parseFloat(workerResponce.getData().getJob_offer()) * Float.parseFloat(workerResponce.getData().getNumber_of_days()) * Float.parseFloat(workerResponce.getData().getJob_time_duration()));
+            float adminCommision = (totalPaid * 3) / 100;
+           // binding.tvCommisionPrice.setText("R" + adminCommision);
+            binding.tvTotalPrice.setText("R" + totalPaid);
+            // }
+        }
     }
 
     private void acceptRejectrequestApi(String userId, String jobId, String requestStatus) {

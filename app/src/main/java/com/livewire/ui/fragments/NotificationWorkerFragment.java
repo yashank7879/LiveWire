@@ -146,7 +146,7 @@ public class NotificationWorkerFragment extends Fragment implements View.OnClick
         Intent intent = null;
         switch (dataBean.getNotification_message().getType()) {
             case "Ongoing_job_request":
-            case "Ongoing_job_accepted":
+            //case "Ongoing_job_accepted":
                 intent = new Intent(mContext, JobOnGoingDetailWorkerActivity.class);
                 intent.putExtra("JobDetail", dataBean.getNotification_message().getReference_id());
                 intent.putExtra("body", dataBean.getNotification_message().getBody());
@@ -163,7 +163,7 @@ public class NotificationWorkerFragment extends Fragment implements View.OnClick
                 startActivity(intent);
                 break;
             case "Ongoing_job_completed":
-                intent = new Intent(mContext, CompleteJobOnGoingDetailWorkerActivity.class);
+                intent = new Intent(mContext, JobOnGoingDetailWorkerActivity.class);
                 intent.putExtra("JobIdKey", dataBean.getNotification_message().getReference_id());
                 intent.putExtra("CompleteJobKey","OngoingJobComplete");
                 intent.putExtra(CONSTANTTYPE, dataBean.getNotification_message().getType());

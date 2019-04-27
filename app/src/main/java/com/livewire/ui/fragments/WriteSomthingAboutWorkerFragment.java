@@ -59,6 +59,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static com.livewire.utils.ApiCollection.BASE_URL;
 import static com.livewire.utils.ApiCollection.CHANGE_USER_MODE_API;
@@ -268,8 +270,10 @@ public class WriteSomthingAboutWorkerFragment extends Fragment implements View.O
                 } else {
                     videoFile = new ArrayList<>();
                     videoFile.add(file);
-                    apiCallForUploadVideo(videoFile);
-
+                    HashMap<String , File> map = new HashMap<>();
+                    map.put("intro_video", videoFile.get(0));
+                    map.put("video_thumb", videoThumbFileList.get(0));
+                    apiCallForUploadVideo(map);
                 }
 
                 return null;
@@ -332,7 +336,12 @@ public class WriteSomthingAboutWorkerFragment extends Fragment implements View.O
                 //FileProvider.getUriForFile(mContext, mContext.getApplicationContext().getPackageName()+ FILE_PROVIDER_EXTENTION, imageFile);
                 videoFile = new ArrayList<>();
                 videoFile.add(videoFil);
-                apiCallForUploadVideo(videoFile);
+                HashMap<String , File> map = new HashMap<>();
+                map.put("intro_video", videoFile.get(0));
+                map.put("video_thumb", videoThumbFileList.get(0));
+
+                apiCallForUploadVideo(map);
+                //apiCallForUploadVideo(videoFile);
 
             } else {
                 progressDialog.dismiss();
@@ -343,6 +352,56 @@ public class WriteSomthingAboutWorkerFragment extends Fragment implements View.O
         }
     }
 
+    private void apiCallForUploadVideo(HashMap<String, File> map) {
+        if (Constant.isNetworkAvailable(mContext, binding.mainLayout)) {
+            progressDialog.show();
+            AndroidNetworking.upload(BASE_URL + UPDATE_WORKER_PROFILEAPI)
+                    .addHeaders("authToken", PreferenceConnector.readString(mContext, PreferenceConnector.AUTH_TOKEN, ""))
+                    .addMultipartParameter(mPram)
+                    .addMultipartFile(map)
+                    .setPriority(Priority.HIGH)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            String status = null;
+                            try {
+                                progressDialog.hide();
+                                status = response.getString("status");
+                                String message = response.getString("message");
+                                if (status.equalsIgnoreCase("success")) {
+                                    SignUpResponce userResponce = new Gson().fromJson(String.valueOf(response), SignUpResponce.class);
+                                    PreferenceConnector.writeString(mContext, PreferenceConnector.COMPLETE_PROFILE_STATUS, "1");
+                                    PreferenceConnector.writeString(mContext, PreferenceConnector.MY_USER_ID, userResponce.getData().getUserId());
+                                    PreferenceConnector.writeString(mContext, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
+                                    PreferenceConnector.writeString(mContext, PreferenceConnector.USER_MODE, userResponce.getData().getUser_mode());
+                                    PreferenceConnector.writeString(mContext, PreferenceConnector.PROFILE_IMG, userResponce.getData().getProfileImage());
+                                    PreferenceConnector.writeString(mContext, PreferenceConnector.Name, userResponce.getData().getName());
+                                    PreferenceConnector.writeString(mContext, PreferenceConnector.Email, userResponce.getData().getEmail());
+
+                                    getActivity().finishAffinity();
+                                    Intent intent = new Intent(mContext, WorkerMainActivity.class);
+                                    startActivity(intent);
+                                    getActivity().finish();
+                                } else {
+                                    progressDialog.hide();
+                                    Constant.snackBar(binding.mainLayout, message);
+                                }
+                            } catch (JSONException e) {
+                                progressDialog.hide();
+                                e.printStackTrace();
+                            }
+
+                        }
+
+                        @Override
+                        public void onError(ANError anError) {
+
+                            progressDialog.hide();
+                        }
+                    });
+        }
+    }
 
     private void sendOtherData() {
         if (Constant.isNetworkAvailable(mContext, binding.mainLayout)) {
@@ -401,7 +460,7 @@ public class WriteSomthingAboutWorkerFragment extends Fragment implements View.O
     }
 
 
-    private void apiCallForUploadVideo(ArrayList<File> tmpFile) {
+    /*private void apiCallForUploadVideo(ArrayList<File> tmpFile) {
         VolleyMySingleton volleySingleton = new VolleyMySingleton(mContext);
         RequestQueue mRequest = volleySingleton.getInstance().getRequestQueue();
         mRequest.start();
@@ -425,7 +484,7 @@ public class WriteSomthingAboutWorkerFragment extends Fragment implements View.O
                     String status = result.getString("status");
                     String message = result.getString("message");
                     if (status.equalsIgnoreCase("success")) {
-                        //*************success fully status**************//
+                        /*//*************success fully status**************//*/
                         //ChangeModeApi();
                         SignUpResponce userResponce = new Gson().fromJson(String.valueOf(response), SignUpResponce.class);
                         PreferenceConnector.writeString(mContext, PreferenceConnector.COMPLETE_PROFILE_STATUS, "1");
@@ -457,7 +516,7 @@ public class WriteSomthingAboutWorkerFragment extends Fragment implements View.O
                 Template.VolleyRetryPolicy.RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         mRequest.add(mMultiPartRequest);
-    }
+    }*/
 
     //Respon dari volley, untuk menampilkan keterengan upload, seperti error, message dari server
     void setResponse(Object response, VolleyError error) {

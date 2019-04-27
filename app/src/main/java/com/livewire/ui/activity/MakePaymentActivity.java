@@ -107,9 +107,9 @@ public class MakePaymentActivity extends BasePaymentActivity implements View.OnC
                 checkoutId = getIntent().getStringExtra("checkoutIdKey");
                 budget = Float.parseFloat(getIntent().getStringExtra("amountKey"));
 
-               binding.tvProjectCost.setText("Toatal working days");
+               binding.tvProjectCost.setText("Total working days");
                binding.projectCost.setText(workerDays+" days");
-               binding.offerPrice.setText(String.valueOf(offer)+" R/hr");
+               binding.offerPrice.setText("R "+String.valueOf(offer)+"/hr");
                 binding.totalAmount.setText("R "+String.valueOf(budget));
               /*  budget = Float.parseFloat(offer) * Float.parseFloat(workerDays) * Float.parseFloat(hours);
                 Constant.printLogMethod(Constant.LOG_VALUE, TAG, "" + budget);

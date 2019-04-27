@@ -53,10 +53,6 @@ public class UserSelectionActivity extends AppCompatActivity implements View.OnC
 
         shake = AnimationUtils.loadAnimation(this, R.anim.shakeanim);
 
-
-
-       // liveWireTerms.setPaintFlags(liveWireTerms.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);// to add underline
-
         wantToWorkCardView.setOnClickListener(this);
         wantToHireCardView.setOnClickListener(this);
         tvLiveWire.setText(Constant.liveWireText(this));
@@ -77,18 +73,9 @@ public class UserSelectionActivity extends AppCompatActivity implements View.OnC
                 Intent intent = new Intent(this,LoginActivity.class);
                 intent.putExtra("UserKey","client");
                 startActivity(intent);
-                //UserSelectionActivity.this.overridePendingTransition(R.anim.slide_right_out, R.anim.slide_right_in);
 
                 wantToHireCardView.setCardElevation(10);
                 wantToWorkCardView.setCardElevation(2);
-
-          /*    wantToHireCardView.setCardElevation(3);
-                wantToWorkCardView.setCardElevation(1);*/
-
-              /*  wantToHireCardView.setShadowMargin(8,10,8,8);
-                wantToHireCardView.setShadowRadius(12);
-                wantToWorkCardView.setShadowMargin(2,2,2,2);
-                wantToWorkCardView.setShadowRadius(5);*/
 
                 tvWantToHire.setTextColor(getResources().getColor(R.color.colorGreen));
                 tvHelpNeede.setTextColor(getResources().getColor(R.color.colorGreen));
@@ -106,14 +93,8 @@ public class UserSelectionActivity extends AppCompatActivity implements View.OnC
                 Intent intent1 = new Intent(this,LoginActivity.class);
                 intent1.putExtra("UserKey","worker");
                 startActivity(intent1);
-               // UserSelectionActivity.this.overridePendingTransition(R.anim.slide_right_out, R.anim.slide_right_in);
-
                 wantToHireCardView.setCardElevation(2);
                 wantToWorkCardView.setCardElevation(10);
-              /*  wantToHireCardView.setShadowMargin(2,2,2,2);
-                wantToHireCardView.setShadowRadius(5);
-                wantToWorkCardView.setShadowMargin(8,10,8,8);
-                wantToWorkCardView.setShadowRadius(12);*/
 
                 tvHelpNeede.setTextColor(getResources().getColor(R.color.colorLightGray));
                 tvHappyToHelp.setTextColor(getResources().getColor(R.color.colorGreen));

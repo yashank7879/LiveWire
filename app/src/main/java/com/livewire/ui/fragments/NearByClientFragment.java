@@ -444,7 +444,6 @@ public class NearByClientFragment extends Fragment implements View.OnClickListen
         int permissionLocation = ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.ACCESS_FINE_LOCATION);
         if (permissionLocation == PackageManager.PERMISSION_GRANTED) {
-
             locationRequest = new LocationRequest();
             locationRequest.setInterval(3000);
             locationRequest.setFastestInterval(3000);
@@ -478,6 +477,7 @@ public class NearByClientFragment extends Fragment implements View.OnClickListen
                                     if (location != null) {
                                         // Logic to handle location object
                                         setLatLng(location);
+
                                     } else {
                                         //Location not available
                                         Log.e("Test", "Location not available");

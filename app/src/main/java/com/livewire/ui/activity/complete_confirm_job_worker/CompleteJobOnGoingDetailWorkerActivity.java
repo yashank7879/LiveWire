@@ -158,7 +158,6 @@ public class CompleteJobOnGoingDetailWorkerActivity extends AppCompatActivity im
        /* RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 binding.rlProfileDetails.getHeight());
         binding.svMoreInfo.setLayoutParams(layoutParams);*/
-
         binding.tvTime.setText(Constant.getDayDifference(workerResponce.getData().getCrd(), workerResponce.getData().getCurrentDateTime()));
 
         Picasso.with(binding.ivProfileImg.getContext())
@@ -187,14 +186,14 @@ public class CompleteJobOnGoingDetailWorkerActivity extends AppCompatActivity im
             binding.btnGiveReview.setVisibility(View.GONE);
         }
 
-        if (workerResponce.getData().getJob_confirmed().equals("3")) {
+        if (workerResponce.getData().getJob_confirmed().equals("4")) {
             binding.tvTotalDays.setText(workerResponce.getData().getNumber_of_days());
-            binding.tvOfferPriceValue.setText("$" + workerResponce.getData().getJob_offer());
+            binding.tvOfferPriceValue.setText("R" + workerResponce.getData().getJob_offer());
             float totalPaid = (Float.parseFloat(workerResponce.getData().getJob_offer()) * Float.parseFloat(workerResponce.getData().getNumber_of_days()) * Float.parseFloat(workerResponce.getData().getJob_time_duration()));
             float adminCommision = (totalPaid * 3) / 100;
-            binding.tvCommisionPrice.setText("$" + adminCommision);
-            binding.tvTotalPrice.setText("$" + totalPaid);
-            binding.tvAmount.setText("$" + totalPaid);
+            //binding.tvCommisionPrice.setText("R" + adminCommision);
+            binding.tvTotalPrice.setText("R" + totalPaid);
+            binding.tvAmount.setText("R" + totalPaid);
         }
 
         //********"2018-07-04" date format converted into "04 jul 2018"***********//
@@ -203,7 +202,7 @@ public class CompleteJobOnGoingDetailWorkerActivity extends AppCompatActivity im
         binding.tvEndDate.setText(Constant.DateFomatChange(workerResponce.getData().getJob_end_date()));
 
         SpannableStringBuilder builder = new SpannableStringBuilder();
-        SpannableString minprice = new SpannableString("$ " + workerResponce.getData().getMin_rate());
+        SpannableString minprice = new SpannableString("R" + workerResponce.getData().getMin_rate());
         minprice.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorDarkBlack)), 0, minprice.length(), 0);
         //  userName.setSpan(new StyleSpan(Typeface.BOLD), 0, userName.length(), 0);
         builder.append(minprice);
@@ -211,7 +210,7 @@ public class CompleteJobOnGoingDetailWorkerActivity extends AppCompatActivity im
         builder.append(toString);
 
 
-        SpannableString maxprice = new SpannableString("$ " + workerResponce.getData().getMax_rate());
+        SpannableString maxprice = new SpannableString("R" + workerResponce.getData().getMax_rate());
         maxprice.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorDarkBlack)), 0, maxprice.length(), 0);
         //  userName.setSpan(new StyleSpan(Typeface.BOLD), 0, userName.length(), 0);
         builder.append(maxprice);

@@ -1,5 +1,6 @@
 package com.livewire.ui.activity.notification_activity;
 
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import com.livewire.R;
 import com.livewire.databinding.ActivityNotificationJobHelpOfferedDetailWorkerBinding;
 import com.livewire.responce.HelpOfferedResponce;
 import com.livewire.responce.JobDetailWorkerResponce;
+import com.livewire.ui.activity.ClientMainActivity;
 import com.livewire.ui.activity.WorkerMainActivity;
 import com.livewire.ui.dialog.ReviewDialog;
 import com.livewire.utils.Constant;
@@ -32,6 +34,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
+import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -44,6 +47,7 @@ public class NotificationJobHelpOfferedDetailWorkerActivity extends AppCompatAct
     private ProgressDialog progressDialog;
     private String userId = "";
     private String jobId = "";
+    private String name = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,22 +57,32 @@ public class NotificationJobHelpOfferedDetailWorkerActivity extends AppCompatAct
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            if (extras.getString("type").equals("Once_job_created")) {
-                jobId = extras.getString("reference_id");
-                getJobDetailApi();
-            } else if (extras.getString("type").equals("Once_job_rejected")) {
-                jobId = extras.getString("reference_id");
-                getJobDetailApi();
-            }else if (extras.getString("type").equals("Once_job_accepted")) {
-                jobId = extras.getString("reference_id");
-                binding.btnSendRequest.setVisibility(View.GONE);
-                binding.tvStatus.setText(R.string.job_confirmed);
-                binding.tvStatus.setVisibility(View.VISIBLE);
-                getJobDetailApi();
+           String userType =  extras.getString("for_user_type");
+           //"""""""""" check the user type and then go to the activivty """""//
+            if (PreferenceConnector.readString(this, PreferenceConnector.USER_MODE, "").equals(userType)) {
+                if (extras.getString("type").equals("Once_job_created")) {
+                    jobId = extras.getString("reference_id");
+                } else if (extras.getString("type").equals("Once_job_rejected")) {
+                    jobId = extras.getString("reference_id");
+                } else if (extras.getString("type").equals("Once_job_accepted")) {
+                    jobId = extras.getString("reference_id");
+                    binding.btnSendRequest.setVisibility(View.GONE);
+                    binding.tvStatus.setText(R.string.job_confirmed);
+                    binding.tvStatus.setVisibility(View.VISIBLE);
+                } else if (extras.getString("type").equals("Once_job_completed")) {
+                    jobId = extras.getString("reference_id");
+                    binding.btnSendRequest.setVisibility(View.GONE);
+                    binding.tvStatus.setVisibility(View.GONE);
+                }
+            }else {// if user type is same
+                Intent intent = new Intent(this, ClientMainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("MyProfile", "MyProfile");
+                startActivity(intent);
+                finish();
             }
-
         }
-
+        getJobDetailApi();
     }
 
     private void intializeViews() {
@@ -99,7 +113,7 @@ public class NotificationJobHelpOfferedDetailWorkerActivity extends AppCompatAct
                                 if (status.equals("success")) {
                                     JobDetailWorkerResponce workerResponce = new Gson().fromJson(String.valueOf(response), JobDetailWorkerResponce.class);
                                     binding.setJobDetail(workerResponce.getData());
-                                    setWorkerDataResponce(workerResponce.getData());
+                                    setWorkerDataResponce(workerResponce);
                                     userId = workerResponce.getData().getUserId();
 
                                 } else {
@@ -120,33 +134,70 @@ public class NotificationJobHelpOfferedDetailWorkerActivity extends AppCompatAct
     }
 
     //"""""""""set job deatil worker response data """""""""""
-    private void setWorkerDataResponce(JobDetailWorkerResponce.DataBean jobDetail) {
+    private void setWorkerDataResponce(JobDetailWorkerResponce jobDetail) {
 
         // binding.tvDistance.setText(jobDetail.getDistance_in_km() + " Km away");
 
-        binding.tvTime.setText(Constant.getDayDifference(jobDetail.getCrd(), jobDetail.getCurrentDateTime()));
+        binding.tvTime.setText(Constant.getDayDifference(jobDetail.getData().getCrd(), jobDetail.getData().getCurrentDateTime()));
 
-        if (jobDetail.getJob_confirmed().equals("0")) { // pending request
-            binding.btnSendRequest.setBackground(null);
-            binding.btnSendRequest.setText(R.string.pending_request);
-            binding.btnSendRequest.setTextColor(ContextCompat.getColor(this, R.color.colorOrange));
-            binding.btnSendRequest.setClickable(false);
+        switch (jobDetail.getData().getJob_confirmed()) {
+            case "0":  // pending request
+                binding.btnSendRequest.setBackground(null);
+                binding.btnSendRequest.setText(R.string.Work_offer_pending);
+                binding.btnSendRequest.setTextColor(ContextCompat.getColor(this, R.color.colorOrange));
+                binding.btnSendRequest.setClickable(false);
    /*        }else if (dataBean.getJob_confirmed().equals("1")){// accepted
                holder.btnSendRequest.setClickable(false);
            }else if (dataBean.getJob_confirmed().equals("2")){// job not accepted
             holder.btnSendRequest.setClickable(false);*/
-        } else if (jobDetail.getJob_confirmed().equals("3")) {// job not send
-            binding.btnSendRequest.setBackground(this.getResources().getDrawable(R.drawable.button_black_bg));
-            binding.btnSendRequest.setText(R.string.apply);
-            binding.btnSendRequest.setTextColor(ContextCompat.getColor(this, R.color.colorWhite));
+                break;
+            case "3": // job not send
+                binding.btnSendRequest.setVisibility(View.VISIBLE);
+                binding.btnSendRequest.setBackground(this.getResources().getDrawable(R.drawable.button_black_bg));
+                binding.btnSendRequest.setText(R.string.apply);
+                binding.btnSendRequest.setTextColor(ContextCompat.getColor(this, R.color.colorWhite));
+                break;
+            case "4":
+                binding.paymentInfoLayout.setVisibility(View.VISIBLE);
+                binding.btnGiveReview.setVisibility(View.VISIBLE);
+                name = jobDetail.getData().getName();
+                for (JobDetailWorkerResponce.ReviewBean reviewBean : jobDetail.getReview()) {
+                    if (reviewBean.getReview_by().equals(PreferenceConnector.readString(this, PreferenceConnector.MY_USER_ID, ""))) {
+                        binding.tvJobReview.setVisibility(View.VISIBLE);
+                        binding.reviewByRl.setVisibility(View.VISIBLE);
+                        binding.tvReviewTime.setText(Constant.getDayDifference(reviewBean.getCrd(), jobDetail.getData().getCurrentDateTime()));
+                        binding.tvReviewDescription.setText(reviewBean.getReview_description());
+                        binding.ratingBarReview.setRating(Float.parseFloat(reviewBean.getRating()));
+                    } else {
+                        binding.tvJobReview.setVisibility(View.VISIBLE);
+                        binding.reviewUserRl.setVisibility(View.VISIBLE);
+                        binding.tvUserNameReview.setText(jobDetail.getData().getName());
+                        binding.tvUserTimeReview.setText(Constant.getDayDifference(reviewBean.getCrd(), jobDetail.getData().getCurrentDateTime()));
+                        binding.tvReviewUserDescription.setText(reviewBean.getReview_description());
+                        binding.ratingBarUserReview.setRating(Float.parseFloat(reviewBean.getRating()));
+                    }
+                }
+
+                if (jobDetail.getData().getReview_status().equals("1")) {
+                    binding.btnGiveReview.setVisibility(View.GONE);
+                }
+
+                float adminCommision = (Float.parseFloat(jobDetail.getData().getJob_budget()) * 3) / 100;
+                float paidToYou = Float.parseFloat(jobDetail.getData().getJob_budget()) - adminCommision;
+                binding.tvAdminCommission.setText(MessageFormat.format("R{0}", adminCommision));
+                binding.tvPaidToYou.setText(MessageFormat.format("R{0}", paidToYou));
+                binding.tvTotalPrice.setText("R" + jobDetail.getData().getJob_budget() + ".0");
+                break;
+            default:
+                break;
         }
         Picasso.with(binding.ivProfileImg.getContext())
-                .load(jobDetail.getProfileImage())
+                .load(jobDetail.getData().getProfileImage())
                 .fit().into(binding.ivProfileImg);
 
         //********"2018-07-04" date format converted into "04 jul 2018"***********//
         DateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
-        String start = jobDetail.getJob_start_date();
+        String start = jobDetail.getData().getJob_start_date();
 
         try {
             Date newStartDate;
@@ -160,19 +211,6 @@ public class NotificationJobHelpOfferedDetailWorkerActivity extends AppCompatAct
         } catch (ParseException e) {
             Log.e("Tag", e.getMessage());
         }
-
-        if (jobDetail.getJob_confirmed().equals("0")) { // pending request
-            binding.btnSendRequest.setBackground(null);
-            binding.btnSendRequest.setText(R.string.pending_request);
-            binding.btnSendRequest.setTextColor(ContextCompat.getColor(this, R.color.colorOrange));
-            binding.btnSendRequest.setClickable(false);
-     /*   } else if (jobDetail.getJob_confirmed().equals("1")) {// accepted
-            btnSendRequest.setClickable(false);
-        } else if (jobDetail.getJob_confirmed().equals("2")) {// job not accepted
-            btnSendRequest.setClickable(false);*/
-        } else if (jobDetail.getJob_confirmed().equals("3")) {// job not send
-
-        }
         // tvDate.setText(Constant.getDayDifference(workerResponce.getData().get(0).getCrd(),workerResponce.getData().get(0).getCurrentDateTime()) );
         // tvDateMonth.setText(Constant.getDayDifference(workerResponce.getData().get(0).getCrd(),workerResponce.getData().get(0).getCurrentDateTime()) );
     }
@@ -184,7 +222,7 @@ public class NotificationJobHelpOfferedDetailWorkerActivity extends AppCompatAct
                 sendRequestApi();
                 break;
             case R.id.iv_back:
-               onBackPressed();
+                onBackPressed();
                 break;
             case R.id.btn_dilog:
                 break;
@@ -238,7 +276,7 @@ public class NotificationJobHelpOfferedDetailWorkerActivity extends AppCompatAct
                         String message = response.getString("message");
                         if (status.equals("success")) {
                             binding.btnSendRequest.setBackground(null);
-                            binding.btnSendRequest.setText(R.string.pending_request);
+                            binding.btnSendRequest.setText(R.string.Work_offer_pending);
                             binding.btnSendRequest.setTextColor(ContextCompat.getColor(NotificationJobHelpOfferedDetailWorkerActivity.this, R.color.colorOrange));
                             binding.btnSendRequest.setClickable(false);
                             Constant.snackBar(binding.detailMainLayout, message);
@@ -249,6 +287,7 @@ public class NotificationJobHelpOfferedDetailWorkerActivity extends AppCompatAct
                         e.printStackTrace();
                     }
                 }
+
                 @Override
                 public void onError(ANError anError) {
                     progressDialog.dismiss();
@@ -259,4 +298,16 @@ public class NotificationJobHelpOfferedDetailWorkerActivity extends AppCompatAct
 
 
 }
+
+/*{job_type=1,
+reference_id=94,
+ body=Yashank has accepted your Tuition / Extra lessons work accepted,
+ type=Once_job_accepted, sound=default, title=Work request accepted,
+ click_action=NotificationJobHelpOfferedDetailWorkerActivity, for_user_type=worker}*/
+/*
+{{reference_id=94,
+ body=Yashank has completed your work Tuition / Extra lessons,
+ type=Once_job_completed, sound=default,
+ title=Job ended,
+ click_action=NotificationJobHelpOfferedDetailWorkerActivity}*/
 

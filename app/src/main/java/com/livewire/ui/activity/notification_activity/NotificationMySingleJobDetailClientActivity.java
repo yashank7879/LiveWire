@@ -24,6 +24,7 @@ import com.livewire.responce.JobDetailClientResponce;
 import com.livewire.ui.activity.ClientMainActivity;
 
 import com.livewire.ui.activity.RequestClientActivity;
+import com.livewire.ui.activity.WorkerMainActivity;
 import com.livewire.ui.activity.credit_card.AddCreditCardActivity;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
@@ -59,11 +60,22 @@ public class NotificationMySingleJobDetailClientActivity extends AppCompatActivi
         binding.ivBack.setOnClickListener(this);
         binding.flMultiImg.setOnClickListener(this);
         Bundle extras = getIntent().getExtras();
-        String type = extras.getString("type");
-        if (type.equals("Once_job_request")) {
-            jobId = extras.getString("reference_id");
-            jobDetailApi();
-      }
+        assert extras != null;
+        String userType =  extras.getString("for_user_type");
+        //"""""""""" check the user type and then go to the activivty """""//
+        if (PreferenceConnector.readString(this, PreferenceConnector.USER_MODE, "").equals(userType)) {
+            String type = extras.getString("type");
+            if (type.equals("Once_job_request")) {
+                jobId = extras.getString("reference_id");
+                jobDetailApi();
+            }
+        }else {// if user type is same
+            Intent intent = new Intent(this, WorkerMainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("MyProfile", "MyProfile");
+            startActivity(intent);
+            finish();
+        }
     }
 
     @Override

@@ -69,7 +69,7 @@ public class MyProfileClientActivity extends AppCompatActivity implements View.O
         binding.btnLogout.setOnClickListener(this);
         binding.btnEdit.setOnClickListener(this);
         binding.rlVideoImg.setOnClickListener(this);
-        binding.completed.setOnClickListener(this);
+       // binding.completed.setOnClickListener(this);
         // binding.cvCompleteJob.setOnClickListener(this);
         binding.ivProfile.setOnClickListener(this);
         binding.rlRatingBar.setOnClickListener(this);
@@ -128,11 +128,6 @@ public class MyProfileClientActivity extends AppCompatActivity implements View.O
                     intent.putExtra("ClientProfileInfo", userResponce);
                     startActivity(intent);
                 }
-                break;
-
-            case R.id.cv_complete_job:
-                intent = new Intent(this, CompletedJobClientActivity.class);
-                startActivity(intent);
                 break;
 
             case R.id.rl_rating_bar:

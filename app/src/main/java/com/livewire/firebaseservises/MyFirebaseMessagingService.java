@@ -19,7 +19,6 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.livewire.R;
 import com.livewire.ui.activity.ClientMainActivity;
 import com.livewire.ui.activity.WorkerMainActivity;
-import com.livewire.ui.activity.notification_activity.NotificationCompleteJobHelpOfferedDetailWorkerActivity;
 import com.livewire.ui.activity.notification_activity.NotificationCompleteJobOnGoingDetailWorkerActivity;
 import com.livewire.ui.activity.notification_activity.NotificationJobHelpOfferedDetailWorkerActivity;
 import com.livewire.ui.activity.notification_activity.NotificationJobOnGoingDetailWorkerActivity;
@@ -36,7 +35,6 @@ import static com.livewire.utils.Constant.MY_UID;
  */
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
-
     public static final String CURRENTTIME = "currentTime";
     public static final String USER_ID = "reference_id";
     public static final String CONSTANTTYPE = "type";
@@ -52,20 +50,18 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String tittle = remoteMessage.getData().get("title");
         userType = remoteMessage.getData().get("for_user_type");
         String type = remoteMessage.getData().get(CONSTANTTYPE);
-       // Log.e( "noti usermode: ",userType);
-
+        // Log.e( "noti usermode: ",userType);
         if (remoteMessage.getData().get("opponentChatId") != null) {
             opponentChatId = remoteMessage.getData().get("opponentChatId");
             titleName = remoteMessage.getData().get("titleName");
         }
-
         Constant.printLogMethod(Constant.LOG_VALUE, "notifcation", remoteMessage.getData().toString());
+        Constant.printLogMethod(Constant.LOG_VALUE, "notifcation", PreferenceConnector.readString(this, PreferenceConnector.USER_MODE, ""));
         sendNotification(userId, message, currentTime, tittle, type, opponentChatId, titleName);
     }
 
     private void sendNotification(String userId, String message, String currentTime, String tittle, String type, String opponentChatId, String titleName) {
         int iUniqueId = (int) (System.currentTimeMillis() & 0xfffffff);
-
         PendingIntent pendingIntent = null;
 
         switch (type) {
@@ -76,6 +72,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     intent.putExtra(USER_ID, userId);
                     intent.putExtra("body", message);
                     intent.putExtra(CONSTANTTYPE, type);
+                    intent.putExtra("for_user_type",userType);
                     pendingIntent = PendingIntent.getActivity(this, iUniqueId, intent, PendingIntent.FLAG_ONE_SHOT);
                     sendNotification(tittle, message, pendingIntent);
                 } else {
@@ -91,26 +88,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                 break;
             }
-         /*   case "Once_job_created": {
-                Intent intent = new Intent(this, NotificationJobHelpOfferedDetailWorkerActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra(USER_ID, userId);
-                intent.putExtra("body", message);
-                intent.putExtra(CONSTANTTYPE, type);
-                pendingIntent = PendingIntent.getActivity(this, iUniqueId, intent, PendingIntent.FLAG_ONE_SHOT);
-
-                break;
-            }*/
 
             case "Once_job_created": {
 //                Toast.makeText(this,PreferenceConnector.readString(this,PreferenceConnector.USER_MODE,""),Toast.LENGTH_SHORT).show();
-                Log.e("User mode: ", PreferenceConnector.readString(this, PreferenceConnector.USER_MODE, ""));
+                // Log.e("User mode: ", PreferenceConnector.readString(this, PreferenceConnector.USER_MODE, ""));
                 if (PreferenceConnector.readString(this, PreferenceConnector.USER_MODE, "").equals(userType)) {
                     Intent intent = new Intent(this, NotificationJobHelpOfferedDetailWorkerActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intent.putExtra(USER_ID, userId);
                     intent.putExtra("body", message);
                     intent.putExtra(CONSTANTTYPE, type);
+                    intent.putExtra("for_user_type",userType);
                     pendingIntent = PendingIntent.getActivity(this, iUniqueId, intent, PendingIntent.FLAG_ONE_SHOT);
                     sendNotification(tittle, message, pendingIntent);
                 } else if (PreferenceConnector.readString(this, PreferenceConnector.USER_MODE, "").equalsIgnoreCase("client")) {
@@ -125,16 +113,36 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 }
                 break;
             }
-
-
-            case "Once_job_rejected": //worker
-            case "Once_job_accepted": {
+            case "Once_job_completed": {
                 if (PreferenceConnector.readString(this, PreferenceConnector.USER_MODE, "").equals(userType)) {
                     Intent intent = new Intent(this, NotificationJobHelpOfferedDetailWorkerActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intent.putExtra(USER_ID, userId);
                     intent.putExtra("body", message);
                     intent.putExtra(CONSTANTTYPE, type);
+                    intent.putExtra("for_user_type",userType);
+                    pendingIntent = PendingIntent.getActivity(this, iUniqueId, intent, PendingIntent.FLAG_ONE_SHOT);
+                    sendNotification(tittle, message, pendingIntent);
+                } else {
+                    Intent intent = new Intent(this, ClientMainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.putExtra("MyProfile", "MyProfile");
+                    intent.putExtra(USER_ID, userId);
+                    intent.putExtra("body", message);
+                    intent.putExtra(CONSTANTTYPE, type);
+                    pendingIntent = PendingIntent.getActivity(this, iUniqueId, intent, PendingIntent.FLAG_ONE_SHOT);
+                    sendNotification(tittle, message, pendingIntent);
+                }
+                break;
+            }
+            case "Ongoing_job_completed": {
+                if (PreferenceConnector.readString(this, PreferenceConnector.USER_MODE, "").equals(userType)) {
+                    Intent intent = new Intent(this, NotificationCompleteJobOnGoingDetailWorkerActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.putExtra(USER_ID, userId);
+                    intent.putExtra("body", message);
+                    intent.putExtra(CONSTANTTYPE, type);
+                    intent.putExtra("for_user_type",userType);
                     pendingIntent = PendingIntent.getActivity(this, iUniqueId, intent, PendingIntent.FLAG_ONE_SHOT);
                     sendNotification(tittle, message, pendingIntent);
                 } else {
@@ -150,6 +158,29 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 break;
             }
 
+            case "Once_job_rejected":
+            case "Once_job_accepted": {
+                if (PreferenceConnector.readString(this, PreferenceConnector.USER_MODE, "").equals(userType)) {
+                    Intent intent = new Intent(this, NotificationJobHelpOfferedDetailWorkerActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.putExtra(USER_ID, userId);
+                    intent.putExtra("body", message);
+                    intent.putExtra(CONSTANTTYPE, type);
+                    intent.putExtra("for_user_type",userType);
+                    pendingIntent = PendingIntent.getActivity(this, iUniqueId, intent, PendingIntent.FLAG_ONE_SHOT);
+                    sendNotification(tittle, message, pendingIntent);
+                } else {
+                    Intent intent = new Intent(this, ClientMainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.putExtra("MyProfile", "MyProfile");
+                    intent.putExtra(USER_ID, userId);
+                    intent.putExtra("body", message);
+                    intent.putExtra(CONSTANTTYPE, type);
+                    pendingIntent = PendingIntent.getActivity(this, iUniqueId, intent, PendingIntent.FLAG_ONE_SHOT);
+                    sendNotification(tittle, message, pendingIntent);
+                }
+                break;
+            }
 
             case "Once_job_request": {
                 Log.e("User mode: ", PreferenceConnector.readString(this, PreferenceConnector.USER_MODE, ""));
@@ -159,10 +190,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     intent.putExtra(USER_ID, userId);
                     intent.putExtra("body", message);
                     intent.putExtra(CONSTANTTYPE, type);
+                    intent.putExtra("for_user_type",userType);
                     pendingIntent = PendingIntent.getActivity(this, iUniqueId, intent, PendingIntent.FLAG_ONE_SHOT);
                     sendNotification(tittle, message, pendingIntent);
                 } else {
-
                     Intent intent = new Intent(this, WorkerMainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intent.putExtra("MyProfile", "MyProfile");
@@ -183,11 +214,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     intent.putExtra(USER_ID, userId);
                     intent.putExtra("body", message);
                     intent.putExtra(CONSTANTTYPE, type);
+                    intent.putExtra("for_user_type",userType);
                     pendingIntent = PendingIntent.getActivity(this, iUniqueId, intent, PendingIntent.FLAG_ONE_SHOT);
                     sendNotification(tittle, message, pendingIntent);
-
-                }else {
-                    Intent intent = new Intent(this, ClientMainActivity.class);
+                } else {
+                    Intent intent = new Intent(this, WorkerMainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     intent.putExtra("MyProfile", "MyProfile");
                     intent.putExtra(USER_ID, userId);
@@ -197,37 +228,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     sendNotification(tittle, message, pendingIntent);
                 }
                 break;
-
-
             }
-            case "Once_job_completed": {
-                if (PreferenceConnector.readString(this, PreferenceConnector.USER_MODE, "").equals(userType)) {
-                    Intent intent = new Intent(this, NotificationCompleteJobHelpOfferedDetailWorkerActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    intent.putExtra(USER_ID, userId);
-                    intent.putExtra("body", message);
-                    intent.putExtra(CONSTANTTYPE, type);
-                    pendingIntent = PendingIntent.getActivity(this, iUniqueId, intent, PendingIntent.FLAG_ONE_SHOT);
-                    sendNotification(tittle, message, pendingIntent);
-                }else {
 
-                }
-                break;
-            }
-            case "Ongoing_job_completed": {
-                if (PreferenceConnector.readString(this, PreferenceConnector.USER_MODE, "").equals(userType)) {
-                    Intent intent = new Intent(this, NotificationCompleteJobOnGoingDetailWorkerActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    intent.putExtra(USER_ID, userId);
-                    intent.putExtra("body", message);
-                    intent.putExtra(CONSTANTTYPE, type);
-                    pendingIntent = PendingIntent.getActivity(this, iUniqueId, intent, PendingIntent.FLAG_ONE_SHOT);
-                    sendNotification(tittle, message, pendingIntent);
-                }else {
-
-                }
-                break;
-            }
             case "chat": {
                 if (!MY_UID.equals(opponentChatId)) {
                     if (PreferenceConnector.readString(this, PreferenceConnector.USER_MODE, "").equalsIgnoreCase("worker")) {
@@ -239,7 +241,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         intent.putExtra(CONSTANTTYPE, type);
                         pendingIntent = PendingIntent.getActivity(this, iUniqueId, intent, PendingIntent.FLAG_ONE_SHOT);
                         sendNotification(tittle, message, pendingIntent);
-                    } else {
+                    } else if (PreferenceConnector.readString(this, PreferenceConnector.USER_MODE, "").equalsIgnoreCase("client")){
                         Intent intent = new Intent(this, ClientMainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         // intent.putExtra(USER_ID, userId);
@@ -252,8 +254,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 }
                 break;
             }
-
-
             default: {
                 if (PreferenceConnector.readString(this, PreferenceConnector.USER_MODE, "").equalsIgnoreCase("worker")) {
                     Intent intent = new Intent(this, WorkerMainActivity.class);
@@ -275,54 +275,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 break;
             }
         }
-
-
-    }
-
-    public void showAlertWorkerDialog() {
-
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(getApplicationContext());
-        builder1.setTitle("");
-        builder1.setMessage("You Need To Switch Your Profile");
-        builder1.setCancelable(false);
-        builder1.setPositiveButton("Ok",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        /*Intent intent = new Intent(this, WorkerMainActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        intent.putExtra("MyProfile", "MyProfile");
-                        intent.putExtra(USER_ID, userId);
-                        intent.putExtra("body", message);
-                        intent.putExtra(CONSTANTTYPE, type);
-                        pendingIntent = PendingIntent.getActivity(this, iUniqueId, intent, PendingIntent.FLAG_ONE_SHOT);
-                        sendNotification(tittle, message, pendingIntent);*/
-                        dialog.cancel();
-
-                    }
-                });
-
-        AlertDialog alert11 = builder1.create();
-        alert11.show();
-    }
-
-    public void showAlertClientDialog() {
-
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(getApplicationContext());
-        builder1.setTitle("");
-        builder1.setMessage("You Need To Switch Your Profile");
-        builder1.setCancelable(false);
-        builder1.setPositiveButton("Ok",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-
-                    }
-                });
-
-        AlertDialog alert11 = builder1.create();
-        alert11.show();
     }
 
     private void sendNotification(String tittle, String message, PendingIntent pendingIntent) {
@@ -360,18 +312,41 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 }
 
-/*{job_type=, reference_id=135,
- body=Yashank created a Babysitting job,
-  type=Once_job_created, sound=default,
-  title=New help offered,
-   click_action=NotificationJobHelpOfferedDetailWorkerActivity,
-    createrId=,
-     for_user_type=worker}*/
+/*{reference_id=21,
+ body=Yash three has completed your job Babysitting,
+ type=Once_job_completed, sound=default, title=Job ended,
+  click_action=NotificationJobHelpOfferedDetailWorkerActivity,
+for_user_type=worker}*/
 /*
-{reference_id=184,
- body=Viss123 sent you request forBabysittingjob,
-  type=Ongoing_job_request,
-   sound=default,
-   title=New Ongoing job request,
-    click_action=ChatActivity,
-     createrId=}*/
+
+{reference_id=22, body=Yash three has completed your job Tuition / Extra lessons,
+ type=Ongoing_job_completed, sound=default, title=Job ended,
+click_action=NotificationJobHelpOfferedDetailWorkerActivity, for_user_type=worker}
+
+{{job_type=1, reference_id=69,
+ body=Yash rathore job accepted,
+  type=Once_job_accepted, sound=default,
+   title=Job request accepted,
+click_action=NotificationJobHelpOfferedDetailWorkerActivity, for_user_type=worker}
+
+{reference_id=3, body=Palak created a Babysitting job, type=Once_job_created,
+ sound=default, title=New help offered,
+ click_action=NotificationJobHelpOfferedDetailWorkerActivity,
+  for_user_type=worker}
+
+
+{reference_id=2,
+        body=Yashank sent you request forTuition / Extra lessons job, type=Ongoing_job_request,
+        sound=default,
+        title=New Ongoing Work request, click_action=NotificationJobHelpOfferedDetailWorkerActivity}
+
+{reference_id=31,
+ body=Yash three sent you request for Babysitting job, type=Once_job_request, sound=default, title=New Once job request,
+click_action=NotificationJobHelpOfferedDetailWorkerActivity, for_user_type=client}
+
+
+{job_type=2, reference_id=32, body=Yash three job accepted,
+type=Ongoing_job_accepted, sound=default,
+title=Job request accepted, click_action=NotificationJobHelpOfferedDetailWorkerActivity,
+for_user_type=client}
+*/

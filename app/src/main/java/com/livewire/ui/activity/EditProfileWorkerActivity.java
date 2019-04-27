@@ -70,7 +70,6 @@ import com.iceteck.silicompressorr.SiliCompressor;
 import com.livewire.R;
 import com.livewire.adapter.EditCategaryAdapter;
 import com.livewire.cropper.CropImage;
-import com.livewire.cropper.CropImageView;
 import com.livewire.databinding.ActivityEditProfileWorkerBinding;
 import com.livewire.model.AddedSkillBean;
 import com.livewire.model.CategoryModel;
@@ -248,6 +247,7 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
             binding.videoImg.setClickable(false);
 */
 
+            if (userData != null)
             setUserData(userData);
 
 
@@ -343,9 +343,7 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
     }
 
     private void setUserData(MyProfileResponce userData) {
-
         // MyProfileResponce.DataBean userData = (MyProfileResponce.DataBean) getIntent().getSerializableExtra("MyProfileKey");
-
         for (MyProfileResponce.DataBean.CategoryBean categoryBean : userData.getData().getCategory()) {
             AddedSkillBean addedCatagory = new AddedSkillBean();
             addedCatagory.setName(categoryBean.getCategoryName());
@@ -362,11 +360,9 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
                 subcatBean.setMin_rate(Float.parseFloat(categoryBean.getSubcat().get(i).getMin_rate()));
                 subcatBean.setMax_rate(Float.parseFloat(categoryBean.getSubcat().get(i).getMax_rate()));
                 addedCatagory.getSubCatagories().add(subcatBean);
-
             }
             addedSkillBeans.add(addedCatagory);
         }
-
          /*   binding.etFullName.setText(userData.getData().getName());
             binding.etEmail1.setText(userData.getData().getEmail());
             binding.tvLocation.setText(userData.getData().getTown());*/
@@ -411,10 +407,10 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
         binding.etDescription.setText(userData.getData().getIntro_discription());
         binding.inactiveUserImg.setVisibility(View.GONE);
 
-        if (!PreferenceConnector.readString(this,PreferenceConnector.SOCIAL_LOGIN,"").isEmpty()){
+        if (!PreferenceConnector.readString(this, PreferenceConnector.SOCIAL_LOGIN, "").isEmpty()) {
             binding.etEmail1.setText(userData.getData().getEmail());
             binding.etEmail1.setEnabled(false);
-        }else binding.etEmail1.setText(userData.getData().getEmail());
+        } else binding.etEmail1.setText(userData.getData().getEmail());
 
         binding.llNameEmail.setVisibility(View.VISIBLE);
         binding.btnSaveAndUpdate.setVisibility(View.VISIBLE);
@@ -559,10 +555,10 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
                 updateProfileValidations();
                 break;
             case R.id.iv_remove_video:
-                if (isvideoUrl){
+                if (isvideoUrl) {
                     deleteDialog();
 
-                }else {
+                } else {
 
                     binding.ivRemoveVideo.setVisibility(View.GONE);
                     binding.videoImg.setClickable(true);
@@ -579,29 +575,29 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
     }
 
     private void deleteDialog() {
-            android.app.AlertDialog.Builder builder1 = new android.app.AlertDialog.Builder(this);
-            builder1.setTitle("Alert");
-            builder1.setMessage("Are you sure you want to delete intro video?");
-            builder1.setCancelable(true);
-            builder1.setPositiveButton("Yes",
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id) {
-                            removeVideo();
-                            dialog.cancel();
+        android.app.AlertDialog.Builder builder1 = new android.app.AlertDialog.Builder(this);
+        builder1.setTitle("Alert");
+        builder1.setMessage("Are you sure you want to delete intro video?");
+        builder1.setCancelable(true);
+        builder1.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        removeVideo();
+                        dialog.cancel();
 
-                        }
-                    });
-            builder1.setNegativeButton("No",
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                        }
-                    });
+                    }
+                });
+        builder1.setNegativeButton("No",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
 
-            android.app.AlertDialog alert11 = builder1.create();
-                alert11.show();
+        android.app.AlertDialog alert11 = builder1.create();
+        alert11.show();
 
 
     }
@@ -643,7 +639,9 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
 
             if (isvideoUrl || finalVideoUri == null) {
                 mPram.put(Template.Query.INTRO_VIDEO_KEY, "");
-                apiCallForUpdateUserData();
+                HashMap<String ,File> map = new HashMap<>();
+                map.put("profileImage",imageFile);
+                apiCallForUpdateUserData(map);
 
             } else {
                 uploadVideo();
@@ -652,6 +650,8 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
         }
 
     }
+
+
 
     //"""""""""show dialog for add skills""""""""""""""""//
     private void showAddSkillsDialog() {
@@ -783,7 +783,7 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
         } else if (minPrice.getText().toString().equals("") || minPrice.getText().toString().length() == 0) {
             Constant.snackBar(addSkillsLayout, "Please enter min price");
             minPrice.requestFocus();
-        }else if (Float.parseFloat(minPrice.getText().toString()) <  3 ) {
+        } else if (Float.parseFloat(minPrice.getText().toString()) < 3) {
             Constant.snackBar(addSkillsLayout, "Min price should not be less than 3 dollar");
             minPrice.requestFocus();
         } else if (maxPrice.getText().toString().equals("") || maxPrice.getText().toString().length() == 0) {
@@ -866,7 +866,11 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
                     videoFile = new ArrayList<>();
                     videoFile.add(file);
                     // if user come from edit profile
-                    apiCallForUpdateProfile();
+                    HashMap<String ,File> map = new HashMap<>();
+                    map.put("intro_video", videoFile.get(0));
+                    map.put("video_thumb", videoThumbFileList.get(0));
+                    map.put("profileImage",imageFile);
+                    apiCallForUpdateProfile(map);
                 }
                 return null;
             }
@@ -1517,10 +1521,11 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
         return json;
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class VideoCompressAsyncTask extends AsyncTask<String, Void, String> {
         private Context mContext;
 
-        public VideoCompressAsyncTask(Context mCon) {
+        VideoCompressAsyncTask(Context mCon) {
             this.mContext = mCon;
         }
 
@@ -1554,8 +1559,11 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
                 //FileProvider.getUriForFile(mContext, mContext.getApplicationContext().getPackageName()+ FILE_PROVIDER_EXTENTION, imageFile);
                 videoFile = new ArrayList<>();
                 videoFile.add(videoFil);
-
-                apiCallForUpdateProfile();
+                HashMap<String ,File> map = new HashMap<>();
+                map.put("intro_video", videoFile.get(0));
+                map.put("video_thumb", videoThumbFileList.get(0));
+                map.put("profileImage",imageFile);
+                apiCallForUpdateProfile(map);
 
             } else {
                 progressDialog.dismiss();
@@ -1566,7 +1574,52 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
         }
     }
 
-    private void apiCallForUpdateProfile() {
+    private void apiCallForUpdateProfile(HashMap<String, File> map) {
+        if (Constant.isNetworkAvailable(this, binding.mainLayout)) {
+            progressDialog.show();
+            AndroidNetworking.upload(BASE_URL + "user/updateUserProfile")
+                    .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
+                    .addMultipartParameter(mPram)
+                    .addMultipartFile(map)
+                    .setPriority(Priority.HIGH)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            String status = null;
+                            try {
+                                progressDialog.hide();
+                                status = response.getString("status");
+                                String message = response.getString("message");
+                                if (status.equalsIgnoreCase("success")) {
+                                    //**********sucess fully add car status**************////
+                                    SignUpResponce userResponce = new Gson().fromJson(String.valueOf(response), SignUpResponce.class);
+                                    PreferenceConnector.writeString(EditProfileWorkerActivity.this, PreferenceConnector.MY_USER_ID, userResponce.getData().getUserId());
+                                    PreferenceConnector.writeString(EditProfileWorkerActivity.this, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
+                                    PreferenceConnector.writeString(EditProfileWorkerActivity.this, PreferenceConnector.PROFILE_IMG, userResponce.getData().getThumbImage());
+                                    PreferenceConnector.writeString(EditProfileWorkerActivity.this, PreferenceConnector.Name, userResponce.getData().getName());
+                                    PreferenceConnector.writeString(EditProfileWorkerActivity.this, PreferenceConnector.Email, userResponce.getData().getEmail());
+                                    addUserFirebaseDatabase();
+                                } else {
+                                    progressDialog.hide();
+                                    Constant.snackBar(binding.mainLayout, message);
+                                }
+                            } catch (JSONException e) {
+                                progressDialog.hide();
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void onError(ANError anError) {
+
+                            progressDialog.hide();
+                        }
+                    });
+        }
+    }
+
+   /* private void apiCallForUpdateProfile() {
         VolleyMySingleton volleySingleton = new VolleyMySingleton(EditProfileWorkerActivity.this);
         RequestQueue mRequest = volleySingleton.getInstance().getRequestQueue();
         mRequest.start();
@@ -1591,7 +1644,10 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
                     String status = result.getString("status");
                     String message = result.getString("message");
                     if (status.equalsIgnoreCase("success")) {
-                        //*************sucess fully add car status**************//
+                        *//*//**/
+
+    /*************sucess fully add car status
+     * @param map**************//**//*//*
                         SignUpResponce userResponce = new Gson().fromJson(String.valueOf(response), SignUpResponce.class);
 
                         PreferenceConnector.writeString(EditProfileWorkerActivity.this, PreferenceConnector.MY_USER_ID, userResponce.getData().getUserId());
@@ -1619,10 +1675,58 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
                 Template.VolleyRetryPolicy.RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         mRequest.add(mMultiPartRequest);
+    }*/
+
+    private void apiCallForUpdateUserData(HashMap<String, File> map) {
+        if (Constant.isNetworkAvailable(this, binding.mainLayout)) {
+            progressDialog.show();
+            AndroidNetworking.upload(BASE_URL + "user/updateUserProfile")
+                    .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
+                    .addMultipartParameter(mPram)
+                    .addMultipartFile(map)
+                    .setPriority(Priority.HIGH)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            String status = null;
+                            try {
+                                progressDialog.hide();
+                                status = response.getString("status");
+                                String message = response.getString("message");
+                                if (status.equalsIgnoreCase("success")) {
+                                    //**********sucess fully add car status**************////
+
+                                    SignUpResponce userResponce = new Gson().fromJson(String.valueOf(response), SignUpResponce.class);
+
+                                    PreferenceConnector.writeString(EditProfileWorkerActivity.this, PreferenceConnector.MY_USER_ID, userResponce.getData().getUserId());
+                                    PreferenceConnector.writeString(EditProfileWorkerActivity.this, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
+                                    PreferenceConnector.writeString(EditProfileWorkerActivity.this, PreferenceConnector.PROFILE_IMG, userResponce.getData().getThumbImage());
+                                    PreferenceConnector.writeString(EditProfileWorkerActivity.this, PreferenceConnector.Name, userResponce.getData().getName());
+                                    PreferenceConnector.writeString(EditProfileWorkerActivity.this, PreferenceConnector.Email, userResponce.getData().getEmail());
+                                    addUserFirebaseDatabase();
+                                } else {
+                                    progressDialog.hide();
+                                    Constant.snackBar(binding.mainLayout, message);
+                                }
+                            } catch (JSONException e) {
+                                progressDialog.hide();
+                                e.printStackTrace();
+                            }
+
+                        }
+
+                        @Override
+                        public void onError(ANError anError) {
+
+                            progressDialog.hide();
+                        }
+                    });
+        }
     }
 
 
-    private void apiCallForUpdateUserData() {
+    /*private void apiCallForUpdateUserData() {
         VolleyMySingleton volleySingleton = new VolleyMySingleton(EditProfileWorkerActivity.this);
         RequestQueue mRequest = volleySingleton.getInstance().getRequestQueue();
         mRequest.start();
@@ -1647,7 +1751,7 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
                     String status = result.getString("status");
                     String message = result.getString("message");
                     if (status.equalsIgnoreCase("success")) {
-                        //*************sucess fully add car status**************//
+                        /*//*************sucess fully add car status**************//*/
 
                         SignUpResponce userResponce = new Gson().fromJson(String.valueOf(response), SignUpResponce.class);
 
@@ -1679,8 +1783,8 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
     //Respon dari volley, untuk menampilkan keterengan upload, seperti error, message dari server
     void setResponse(Object response, VolleyError error) {
         Log.e(TAG, error.getLocalizedMessage());
-          /*not used*/
-    }
+          *//*not used*//*
+    }*/
 
 
     //""""""""""" remove added video """""""""""""//
@@ -1688,7 +1792,7 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
         if (Constant.isNetworkAvailable(this, binding.mainLayout)) {
             progressDialog.show();
             AndroidNetworking.post(BASE_URL + DELETE_VIDEO_API)
-                    .addHeaders("authToken",PreferenceConnector.readString(this,PreferenceConnector.AUTH_TOKEN,""))
+                    .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
                     .setPriority(Priority.MEDIUM)
                     .build().getAsJSONObject(new JSONObjectRequestListener() {
                 @Override
@@ -1712,6 +1816,7 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
                         e.printStackTrace();
                     }
                 }
+
                 @Override
                 public void onError(ANError anError) {
                     progressDialog.dismiss();
@@ -1733,7 +1838,7 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
         infoFcm.uid = PreferenceConnector.readString(this, PreferenceConnector.MY_USER_ID, "");
         infoFcm.userType = PreferenceConnector.readString(this, PreferenceConnector.USER_TYPE, "");
         infoFcm.authToken = PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, "");
-        infoFcm.availability = PreferenceConnector.readString(this,PreferenceConnector.AVAILABILITY_1,"");
+        infoFcm.availability = PreferenceConnector.readString(this, PreferenceConnector.AVAILABILITY_1, "");
 
         database.child(Constant.ARG_USERS)
                 .child(PreferenceConnector.readString(this, PreferenceConnector.MY_USER_ID, ""))
@@ -1742,7 +1847,7 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
                     @Override
                     public void onComplete(Task<Void> task) {
                         if (task.isSuccessful()) {
-                            if(subCategoryModelList.size()> 0){
+                            if (subCategoryModelList.size() > 0) {
                                 PreferenceConnector.writeString(EditProfileWorkerActivity.this, PreferenceConnector.COMPLETE_PROFILE_STATUS, "1");
                             }
                             finish();

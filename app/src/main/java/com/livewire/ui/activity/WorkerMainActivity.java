@@ -162,7 +162,6 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
 
         progressDialog = new ProgressDialog(this);
         isMsgFoundMap = new HashMap<>();
-
         if (getIntent().getStringExtra("opponentChatId") != null) {
             String oponnetId = getIntent().getStringExtra("opponentChatId");
             String name = getIntent().getStringExtra("titleName");
@@ -178,7 +177,6 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
             binding.tvHeading.setText(R.string.work_opportunity);
             replaceFragment(new JobRequestFragment(), false, R.id.fl_container); // first time replace home fragment
             clickId = R.id.home_ll;
-
             showAlertWorkerDialog();
 
         } else if (getIntent().getStringExtra("workerMyProfile") != null) {
@@ -346,19 +344,23 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
         FirebaseDatabase.getInstance().getReference().child(Constant.ARG_HISTORY).child(PreferenceConnector.readString(this, PreferenceConnector.MY_USER_ID, "")).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if (dataSnapshot.getValue(Chat.class) != null) {
-                    int unreadCount = dataSnapshot.getValue(Chat.class).unreadCount;
+                try {
+                    if (dataSnapshot.getValue(Chat.class) != null) {
+                        int unreadCount = dataSnapshot.getValue(Chat.class).unreadCount;
 
-                    if (unreadCount > 0) {
-                        isMsgFoundMap.put(dataSnapshot.getKey(), unreadCount);
-                        binding.ivUnreadMsgTab.setVisibility(View.VISIBLE);
+                        if (unreadCount > 0) {
+                            isMsgFoundMap.put(dataSnapshot.getKey(), unreadCount);
+                            binding.ivUnreadMsgTab.setVisibility(View.VISIBLE);
                         /*if (isMsgFoundMap.containsValue(myUserId)) {
                             iv_unread_msg_tab.setVisibility(View.VISIBLE);
                             return;
                         } else iv_unread_msg_tab.setVisibility(View.GONE);*/
 
 
-                    } else binding.ivUnreadMsgTab.setVisibility(View.GONE);
+                        } else binding.ivUnreadMsgTab.setVisibility(View.GONE);
+                    }
+                }catch (Exception e){
+                    Log.d("Firebase Exception",e.getLocalizedMessage()+"");
                 }
             }
 

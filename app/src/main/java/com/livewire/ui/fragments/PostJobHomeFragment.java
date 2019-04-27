@@ -17,7 +17,6 @@ import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -58,6 +57,10 @@ public class PostJobHomeFragment extends Fragment implements View.OnClickListene
         viewPager.setAdapter(adapter);
         tabLayout = view.findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_green_shorterm_ico);
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_onging_job );
+        tabLayout.getTabAt(0).setTag("ShortTerm");
+        tabLayout.getTabAt(1).setTag("LongTerm");
 
         View actionBar = view.findViewById(R.id.action_bar);
         TextView header = actionBar.findViewById(R.id.tv_live_wire);
@@ -77,7 +80,6 @@ public class PostJobHomeFragment extends Fragment implements View.OnClickListene
 
         final Typeface tf = ResourcesCompat.getFont(mContext,R.font.poppins_medium);
         final Typeface rl = ResourcesCompat.getFont(mContext,R.font.poppins_regular);
-
 
         //""""" Zero position selected so change fontFamily """""""""""//
         for (int i=0;i<tabLayout.getTabCount();i++){
@@ -108,13 +110,16 @@ public class PostJobHomeFragment extends Fragment implements View.OnClickListene
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-             /*this method is not used*/
+                if (tab.getTag().equals("ShortTerm"))
+                    tab.setIcon(R.drawable.ic_green_shorterm_ico);
+                else tab.setIcon(R.drawable.ic_green_ongoing);
             }
-
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-             /*this method is not used*/
+                if (tab.getTag().equals("ShortTerm"))
+                    tab.setIcon(R.drawable.ic_inactive_shorterm);
+                else tab.setIcon(R.drawable.ic_onging_job);
             }
 
             @Override

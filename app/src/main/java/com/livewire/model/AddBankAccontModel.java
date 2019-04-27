@@ -9,6 +9,7 @@ public class AddBankAccontModel {
     public String lastName = "";
     public String branch_code = "";
     public String accountNumber = "";
+    public String bankName = "";
 
 
     /*public String postalCode = "";

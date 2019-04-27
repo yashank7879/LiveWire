@@ -37,7 +37,6 @@ import com.livewire.ui.activity.MySingleJobDetailClientActivity;
 import com.livewire.ui.activity.WorkerMainActivity;
 import com.livewire.ui.activity.notification_activity.NotificationJobHelpOfferedDetailWorkerActivity;
 import com.livewire.ui.activity.notification_activity.NotificationJobOnGoingDetailWorkerActivity;
-import com.livewire.ui.activity.notification_activity.NotificationMyOnGoingJobDetailClientActivity;
 import com.livewire.ui.activity.notification_activity.NotificationMySingleJobDetailClientActivity;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
@@ -181,8 +180,6 @@ public class NotificationClientFragment extends Fragment implements View.OnClick
     }*/
         switch (dataBean.getNotification_message().getType()) {
             case "Once_job_request":
-          //  case "Once_job_rejected":
-           // case "Once_job_accepted":
                 intent = new Intent(mContext, MySingleJobDetailClientActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra("JobIdKey", dataBean.getNotification_message().getReference_id());
@@ -214,7 +211,7 @@ public class NotificationClientFragment extends Fragment implements View.OnClick
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        Intent intent = new Intent(mContext, MyProfileWorkerActivity.class);
+                        Intent intent = new Intent(mContext, MyProfileClientActivity.class);
                         startActivity(intent);
                         /*Intent intent = new Intent(this, WorkerMainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

@@ -89,7 +89,6 @@ public class MySingleJobDetailClientActivity extends AppCompatActivity implement
             binding.tvDate1.setText(Constant.DateFomatChange(dataBean.getJob_start_date()).substring(0, 2) + " ");
             binding.tvDateMonth.setText(Constant.DateFomatChange(dataBean.getJob_start_date()).substring(3));
 
-
             if (dataBean.getTotal_request().equals("0")) {   // no requested yet
                 //*//*
                 binding.tvNoRequest.setVisibility(View.VISIBLE);
@@ -140,26 +139,6 @@ public class MySingleJobDetailClientActivity extends AppCompatActivity implement
         }
     }
 
-
-
-        /*else if (dataBean.getJob_type().equals("2")){///"""""""""" ONGOING JOB
-            if (dataBean.getTotal_request().equals("0")){  // NO OFFER SEND YET
-
-                rlUserData.setVisibility(View.GONE);
-                rlMoredetail.setVisibility(View.GONE);
-                tvNorequest.setText(R.string.no_offer_request_yet);
-                tvNorequest.setVisibility(View.VISIBLE);
-
-            }else if (dataBean.getTotal_request().equals("1") && dataBean.getJob_confirmed().equals("1")) {
-                // JOB CONFIRM OR PENDING REQUEST OR IN PROGRESS
-                rlUserData.setVisibility(View.VISIBLE);
-                rlMoredetail.setVisibility(View.VISIBLE);
-                tvNorequest.setVisibility(View.GONE);
-            }
-
-            }*/
-
-
     //""""""""""  add image at run time """""""""""""//
     void addhorizontalTimeView(FrameLayout linearLayout, String profileImage, int leftMargin) {
         LayoutInflater layoutInflater;
@@ -173,12 +152,10 @@ public class MySingleJobDetailClientActivity extends AppCompatActivity implement
 
         // Get the TextView current LayoutParams
         RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) showTime.getLayoutParams();
-
         // Set TextView layout margin 25 pixels to all side
         // Left Top Right Bottom Margin
         lp.setMargins(leftMargin, 0, 0, 0);
         showTime.setLayoutParams(lp);
-
         linearLayout.addView(v);
     }
 
@@ -197,16 +174,7 @@ public class MySingleJobDetailClientActivity extends AppCompatActivity implement
                 break;
             case R.id.btn_end_job:
                 getCheckOutId();
-
-             /*   intent = new Intent(this, AddCreditCardActivity.class);
-                intent.putExtra("SingleJobPayment", "SingleJob");
-                intent.putExtra("NameKey", workerName);
-                intent.putExtra("PaymentKey", budget);
-                intent.putExtra("JobIdKey", JobId);
-                intent.putExtra("UserIdKey", usetId);
-                startActivity(intent);*/
                 break;
-
             case R.id.ll_chat:
                 intent = new Intent(this, ChattingActivity.class);
                 intent.putExtra("otherUID", usetId);
@@ -294,10 +262,6 @@ public class MySingleJobDetailClientActivity extends AppCompatActivity implement
                                     JobDetailClientResponce dataBean = new Gson().fromJson(String.valueOf(response), JobDetailClientResponce.class);
                                     setMyJobDetails(dataBean.getData());
                                     binding.setJobDetail(dataBean.getData());
-
-                                    /*setMyJobDetails(dataBean.getData());
-                                    binding.setJobDetail(dataBean.getData());*/
-                                    // binding.setJobDetail(dataBean.getData());
 
                                     binding.tvTime.setText(Constant.getDayDifference(dataBean.getData().getCrd(), dataBean.getData().getCurrentDateTime()));
                                 } else {

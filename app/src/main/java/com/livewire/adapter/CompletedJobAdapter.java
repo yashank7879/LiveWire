@@ -67,10 +67,10 @@ public class CompletedJobAdapter extends RecyclerView.Adapter<CompletedJobAdapte
 
             if (dataBean.getJob_type().equals("2")){
             float paidAmount  =(Float.parseFloat(dataBean.getJob_time_duration()) * Float.parseFloat(dataBean.getJob_offer())* Float.parseFloat(dataBean.getNumber_of_days()));
-                holder.tv_offer_rate.setText("$ "+paidAmount);
+                holder.tv_offer_rate.setText("R"+paidAmount);
 
             }else {
-                holder.tv_offer_rate.setText("$ "+dataBean.getJob_budget());
+                holder.tv_offer_rate.setText("R"+dataBean.getJob_budget());
             }
         }
 

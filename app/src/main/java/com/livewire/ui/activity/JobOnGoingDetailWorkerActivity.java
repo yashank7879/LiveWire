@@ -45,6 +45,7 @@ public class JobOnGoingDetailWorkerActivity extends AppCompatActivity implements
     private String jobId="";
     private String userId="";
     private String clientProfileImg="";
+    private String name="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +93,7 @@ public class JobOnGoingDetailWorkerActivity extends AppCompatActivity implements
                                 if (status.equals("success")) {
                                     workerResponcd = new Gson().fromJson(String.valueOf(response),JobDetailWorkerResponce.class);
                                     binding.setWorkerResponcd(workerResponcd.getData());
-                                    setJobDetailData(workerResponcd.getData());
+                                    setJobDetailData(workerResponcd);
                                 }else {
                                     Constant.snackBar(binding.detailMainLayout,message);
                                 }
@@ -175,24 +176,24 @@ public class JobOnGoingDetailWorkerActivity extends AppCompatActivity implements
         dialog.show();
     }
 
-    private void setJobDetailData(JobDetailWorkerResponce.DataBean workerResponcd) {
+    private void setJobDetailData(JobDetailWorkerResponce workerResponcd) {
 
-        userId  = workerResponcd.getUserId();
-        clientProfileImg  = workerResponcd.getProfileImage();
+        userId  = workerResponcd.getData().getUserId();
+        clientProfileImg  = workerResponcd.getData().getProfileImage();
 
-        binding.tvTime.setText(Constant.getDayDifference(workerResponcd.getCrd(), workerResponcd.getCurrentDateTime()));
+        binding.tvTime.setText(Constant.getDayDifference(workerResponcd.getData().getCrd(), workerResponcd.getData().getCurrentDateTime()));
 
-        binding.tvDistance.setText(workerResponcd.getDistance_in_km() + " Km away");
+        binding.tvDistance.setText(workerResponcd.getData().getDistance_in_km() + " Km away");
 
         Picasso.with(binding.ivProfileImg.getContext())
-                .load(workerResponcd.getProfileImage()).fit().into(binding.ivProfileImg);
+                .load(workerResponcd.getData().getProfileImage()).fit().into(binding.ivProfileImg);
 
-        if (!workerResponcd.getRating().isEmpty()) {
-            binding.ratingBar.setRating(Float.parseFloat(workerResponcd.getRating()));
+        if (!workerResponcd.getData().getRating().isEmpty()) {
+            binding.ratingBar.setRating(Float.parseFloat(workerResponcd.getData().getRating()));
         }
 
         SpannableStringBuilder builder = new SpannableStringBuilder();
-        SpannableString minprice = new SpannableString("$ " + workerResponcd.getMin_rate());
+        SpannableString minprice = new SpannableString("R " + workerResponcd.getData().getMin_rate());
         minprice.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorDarkBlack)), 0, minprice.length(), 0);
         //  userName.setSpan(new StyleSpan(Typeface.BOLD), 0, userName.length(), 0);
         builder.append(minprice);
@@ -200,20 +201,53 @@ public class JobOnGoingDetailWorkerActivity extends AppCompatActivity implements
         builder.append(toString);
 
 
-        SpannableString maxprice = new SpannableString("$ " + workerResponcd.getMax_rate());
+        SpannableString maxprice = new SpannableString("R " + workerResponcd.getData().getMax_rate());
         maxprice.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorDarkBlack)), 0, maxprice.length(), 0);
         //  userName.setSpan(new StyleSpan(Typeface.BOLD), 0, userName.length(), 0);
         builder.append(maxprice);
 
         binding.tvRangePrice.setText(builder);
 
-        switch (workerResponcd.getJob_confirmed()) {
+        switch (workerResponcd.getData().getJob_confirmed()) {
             case "0":
                 binding.acceptRejectLayout.setVisibility(View.VISIBLE);
 
                 break;
             case "1":
                 binding.acceptRejectLayout.setVisibility(View.GONE);
+                break;
+                case "4":
+                binding.acceptRejectLayout.setVisibility(View.GONE);
+                    name = workerResponcd.getData().getName();
+                    for (JobDetailWorkerResponce.ReviewBean reviewBean : workerResponcd.getReview()) {
+                        if (reviewBean.getReview_by().equals(PreferenceConnector.readString(this, PreferenceConnector.MY_USER_ID, ""))) {
+                            binding.tvJobReview.setVisibility(View.VISIBLE);
+                            binding.reviewByRl.setVisibility(View.VISIBLE);
+                            binding.tvReviewTime.setText(Constant.getDayDifference(reviewBean.getCrd(), workerResponcd.getData().getCurrentDateTime()));
+                            binding.tvReviewDescription.setText(reviewBean.getReview_description());
+                            binding.ratingBarReview.setRating(Float.parseFloat(reviewBean.getRating()));
+                        } else {
+                            binding.tvJobReview.setVisibility(View.VISIBLE);
+                            binding.reviewUserRl.setVisibility(View.VISIBLE);
+                            binding.tvUserNameReview.setText(workerResponcd.getData().getName());
+                            binding.tvUserTimeReview.setText(Constant.getDayDifference(reviewBean.getCrd(), workerResponcd.getData().getCurrentDateTime()));
+                            binding.tvReviewUserDescription.setText(reviewBean.getReview_description());
+                            binding.ratingBarUserReview.setRating(Float.parseFloat(reviewBean.getRating()));
+                        }
+                    }
+                    if(workerResponcd.getData().getReview_status().equals("1")){
+                        binding.btnGiveReview.setVisibility(View.GONE);
+                    }
+
+                    if (workerResponcd.getData().getJob_confirmed().equals("4")) {
+                        binding.tvTotalDays.setText(workerResponcd.getData().getNumber_of_days());
+                        binding.tvOfferPriceValue.setText("R" + workerResponcd.getData().getJob_offer());
+                        float totalPaid = (Float.parseFloat(workerResponcd.getData().getJob_offer()) * Float.parseFloat(workerResponcd.getData().getNumber_of_days()) * Float.parseFloat(workerResponcd.getData().getJob_time_duration()));
+                        float adminCommision = (totalPaid * 3) / 100;
+                        //binding.tvCommisionPrice.setText("$" + adminCommision);
+                        binding.tvTotalPrice.setText("R" + totalPaid);
+                        binding.tvAmount.setText("R" + totalPaid);
+                    }
                 break;
             default:
             /*Noting will print*/

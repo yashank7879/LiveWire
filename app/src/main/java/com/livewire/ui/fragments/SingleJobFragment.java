@@ -70,7 +70,6 @@ import static com.livewire.utils.ApiCollection.GET_CATEGORY_LIST_API;
 /**
  * Created by mindiii on 9/28/18.
  */
-
 public class SingleJobFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
     private static final String TAG = SingleJobFragment.class.getName();
     private TextView tvSelectSkill;
@@ -91,6 +90,7 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
     private String locationPlace;
     private List<String> currencyList = new ArrayList<>();
     private String currency = "";
+    private Spinner currencySpinner;
 
     @Nullable
     @Override
@@ -122,7 +122,7 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
         etBudget = view.findViewById(R.id.et_budget);
         btnCancel = view.findViewById(R.id.btn_cancel);
         etDescription = view.findViewById(R.id.et_description);
-        Spinner CurrencySpinner = view.findViewById(R.id.currency_spinner);
+         currencySpinner = view.findViewById(R.id.currency_spinner);
 
         tvLocation.setOnClickListener(this);
         tvLocation.setSelected(true);
@@ -132,8 +132,8 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
 
         ArrayAdapter currencyAdapter = new ArrayAdapter<>(mContext, R.layout.spinner_item, currencyList);
         currencyAdapter.setDropDownViewResource(R.layout.spinner_drop_down);
-        CurrencySpinner.setOnItemSelectedListener(this);
-        CurrencySpinner.setAdapter(currencyAdapter);
+        currencySpinner.setOnItemSelectedListener(this);
+        currencySpinner.setAdapter(currencyAdapter);
 
         //""""  to hide keyboard """""""//
         etDescription.setImeOptions(EditorInfo.IME_ACTION_DONE);
@@ -248,6 +248,7 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
             etBudget.setText("");
             etDescription.setText("");
             tvLocation.setHint(R.string.location);
+            currencySpinner.setSelection(0);
         }
     }
 
@@ -413,13 +414,12 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
             model.job_latitude = String.valueOf(locationLatLng.latitude);
             model.job_longitude = String.valueOf(locationLatLng.longitude);
             model.job_budget = Float.parseFloat(etBudget.getText().toString());
+            model.job_title = "test";
             model.currency = "ZAR";
             model.job_type = "1";
-            model.job_title = "test";
             model.job_description = etDescription.getText().toString();
             singleJobCreationApi(model);
         }
-
     }
 
     //"""""""""""" single job creation """""""""" //
@@ -430,6 +430,7 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
                     .addHeaders("authToken", PreferenceConnector.readString(mContext, PreferenceConnector.AUTH_TOKEN, ""))
                     .addBodyParameter(model)
                     .setPriority(Priority.MEDIUM)
+                    .setContentType("text/plain; charset=utf-8")
                     .build().getAsJSONObject(new JSONObjectRequestListener() {
                 @Override
                 public void onResponse(JSONObject response) {
@@ -444,7 +445,7 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
                             tvSelectDate.setText("");
                             etBudget.setText("");
                             etDescription.setText("");
-
+                            currencySpinner.setSelection(0);
                         } else {
                             Constant.snackBar(mainLayout, message);
                         }
@@ -504,7 +505,6 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
 
                 assert data != null;
                 Place place = PlaceAutocomplete.getPlace(mContext, data);
-
                 tvLocation.setText(place.getAddress());
                 locationPlace = place.getAddress().toString();
                 locationLatLng = place.getLatLng();
@@ -512,11 +512,9 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
 
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 Status status1 = PlaceAutocomplete.getStatus(mContext, data);
-
                 Log.i(TAG, status1.getStatusMessage());
 
             } else if (resultCode == RESULT_CANCELED) {
-
                 Constant.hideSoftKeyBoard(mContext, tvLocation);
             }
         }

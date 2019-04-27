@@ -23,6 +23,7 @@ import com.livewire.databinding.ActivityNotificationMyOngoingJobDetailClientBind
 import com.livewire.responce.JobDetailClientResponce;
 import com.livewire.ui.activity.ClientMainActivity;
 import com.livewire.ui.activity.NearYouClientActivity;
+import com.livewire.ui.activity.WorkerMainActivity;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
 import com.livewire.utils.ProgressDialog;
@@ -46,24 +47,34 @@ public class NotificationMyOnGoingJobDetailClientActivity extends AppCompatActiv
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_notification_my_ongoing_job_detail_client);
         intializeView();
-        jobDetailApi();
+       // jobDetailApi();
     }
 
     private void intializeView() {
         progressDialog = new ProgressDialog(this);
         findViewById(R.id.iv_back).setOnClickListener(this);
         Bundle extras = getIntent().getExtras();
-
-        if (extras != null && (extras.getString("type").equals("Ongoing_job_accepted") || extras.getString("type").equals("Ongoing_job_rejected"))) {
-            jobId = extras.getString("reference_id");
-            jobDetailApi();
-
-
-               /* MyjobResponceClient.DataBean dataBean = (MyjobResponceClient.DataBean) getIntent().getSerializableExtra("MyJobDetail");
+       assert extras != null;
+        String userType =  extras.getString("for_user_type");
+        //"""""""""" check the user type and then go to the activivty """""//
+        if (PreferenceConnector.readString(this, PreferenceConnector.USER_MODE, "").equals(userType)) {
+            if (extras != null && (extras.getString("type").equals("Ongoing_job_accepted") || extras.getString("type").equals("Ongoing_job_rejected"))) {
+                jobId = extras.getString("reference_id");
+            /* MyjobResponceClient.DataBean dataBean = (MyjobResponceClient.DataBean) getIntent().getSerializableExtra("MyJobDetail");
                 setMyJobDetails(dataBean);
                 binding.setDataBean(dataBean);
                 binding.tvTime.setText(Constant.getDayDifference(dataBean.getCrd(), dataBean.getCurrentDateTime()));*/
+            } else if (extras != null && extras.getString("type").equals("Ongoing_job_completed")) {
+                jobId = extras.getString("reference_id");
+            }
+        }else {
+            Intent intent = new Intent(this, WorkerMainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("MyProfile", "MyProfile");
+            startActivity(intent);
+            finish();
         }
+        jobDetailApi();
     }
 
     private void setMyJobDetails(final JobDetailClientResponce.DataBean dataBean) {
@@ -137,7 +148,7 @@ public class NotificationMyOnGoingJobDetailClientActivity extends AppCompatActiv
 
 
                 SpannableStringBuilder builder = new SpannableStringBuilder();
-                SpannableString minprice = new SpannableString("$ " + dataBean.getRequestedUserData().get(0).getMin_rate());
+                SpannableString minprice = new SpannableString("R" + dataBean.getRequestedUserData().get(0).getMin_rate());
                 minprice.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorDarkBlack)), 0, minprice.length(), 0);
                 //  userName.setSpan(new StyleSpan(Typeface.BOLD), 0, userName.length(), 0);
                 builder.append(minprice);
@@ -145,7 +156,7 @@ public class NotificationMyOnGoingJobDetailClientActivity extends AppCompatActiv
                 builder.append(toString);
 
 
-                SpannableString maxprice = new SpannableString("$ " + dataBean.getRequestedUserData().get(0).getMax_rate());
+                SpannableString maxprice = new SpannableString("R" + dataBean.getRequestedUserData().get(0).getMax_rate());
                 maxprice.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorDarkBlack)), 0, maxprice.length(), 0);
                 //  userName.setSpan(new StyleSpan(Typeface.BOLD), 0, userName.length(), 0);
                 builder.append(maxprice);

@@ -6,20 +6,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.common.Priority;
-import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.livewire.R;
 import com.livewire.peach.Config;
-import com.livewire.peach.task.CheckoutIdRequestAsyncTask;
 import com.livewire.peach.task.CheckoutIdRequestListener;
 import com.livewire.peach.task.PaymentStatusRequestAsyncTask;
 import com.livewire.peach.task.PaymentStatusRequestListener;
-import com.livewire.ui.activity.MySingleJobDetailClientActivity;
-import com.livewire.ui.activity.credit_card.AddCreditCardActivity;
-import com.livewire.utils.Constant;
-import com.livewire.utils.PreferenceConnector;
 import com.oppwa.mobile.connect.checkout.dialog.CheckoutActivity;
 import com.oppwa.mobile.connect.checkout.meta.CheckoutSettings;
 import com.oppwa.mobile.connect.checkout.meta.CheckoutSkipCVVMode;
@@ -27,12 +18,6 @@ import com.oppwa.mobile.connect.exception.PaymentError;
 import com.oppwa.mobile.connect.provider.Connect;
 import com.oppwa.mobile.connect.provider.Transaction;
 import com.oppwa.mobile.connect.provider.TransactionType;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import static com.livewire.utils.ApiCollection.BASE_URL;
-import static com.livewire.utils.ApiCollection.CONFIRM_PAYMENT_API;
 
 /**
  * Represents a base activity for making the payments with mobile sdk.
@@ -136,8 +121,8 @@ public class BasePaymentActivity extends BaseActivity
     protected void requestCheckoutId(String callbackScheme) {
         showProgressDialog(R.string.progress_message_checkout_id);
 
-        new CheckoutIdRequestAsyncTask(this)
-                .execute(Config.AMOUNT, Config.CURRENCY);
+      /*  new CheckoutIdRequestAsyncTask(this)
+                .execute(Config.AMOUNT, Config.CURRENCY);*/
     }
 
     @Override

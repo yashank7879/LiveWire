@@ -228,7 +228,7 @@ public class ConfirmJobWorkerFragment extends Fragment implements View.OnClickLi
 
                         @Override
                         public void onError(ANError anError) {
-                        Constant.errorHandle(anError,getActivity());
+                            Constant.errorHandle(anError, getActivity());
                         }
                     });
         }
@@ -381,13 +381,14 @@ public class ConfirmJobWorkerFragment extends Fragment implements View.OnClickLi
             btnApplySkills.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                        skillsString();
-                        subCategoryAdapter.notifyDataSetChanged();
-                        confirmJobApi();
-                        dialog.dismiss();
-                    if (subCategoryList.size() > 0){
+                    skillsString();
+                    subCategoryAdapterList.notifyDataSetChanged();
+                    subCategoryAdapter.notifyDataSetChanged();
+                    confirmJobApi();
+                    dialog.dismiss();
+                    if (subCategoryList.size() > 0) {
                         filterLayout.setVisibility(View.VISIBLE);
-                    }
+                    }else  filterLayout.setVisibility(View.GONE);
 
 
                     //  skillDialogValidation(categorySpinner, addSkillsLayout);
@@ -515,6 +516,7 @@ public class ConfirmJobWorkerFragment extends Fragment implements View.OnClickLi
         Intent intent = null;
         if (jobType.equals("1")) {
             if (Constant.isNetworkAvailable(mContext, mainLayout)) {
+                ;
                 intent = new Intent(mContext, CompleteJobHelpOfferedDetailWorkerActivity.class);
                 intent.putExtra("JobIdKey", jobId);
                 startActivity(intent);

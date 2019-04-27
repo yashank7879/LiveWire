@@ -155,13 +155,16 @@ public class AddBankAccountActivity extends AppCompatActivity implements View.On
             binding.branchCode.requestFocus();
             Constant.hideSoftKeyBoard(this,binding.branchCode);
             Constant.snackBar(binding.svAddbankLayout, "Single space should allowed here.");
-        }
+        }/*else if (Validation.isEmpty(binding.etBankName)) {
+            Constant.snackBar(binding.svAddbankLayout, "Please enter bank name");
+        }*/
         else {
             AddBankAccontModel model = new AddBankAccontModel();
             model.firstName = binding.accHolderFirstName.getText().toString().trim();
             model.lastName = binding.accHolderLastName.getText().toString().trim();
             model.branch_code = binding.branchCode.getText().toString().trim();
             model.accountNumber = binding.accNumber.getText().toString().trim();
+            model.bankName = binding.etBankName.getText().toString().trim();
             addBankAccApi(model);
         }
 

@@ -40,12 +40,12 @@ public class ApiCollection {
     public static final String USER_LOGOUT_API = "user/logout";
     public static final String GET_JOB_LIST_API = "Jobpost/getJobList";
     public static final String CHECK_SOCIAL_STATUS_API = "user/checkSocialStatus";
-    public static final String CONFIRM_PAYMENT_API = "payment/confirmPayment";
-    public static final String COMPLETE_PAYMENT_API = "payment/complete_payment";
+    public static final String CONFIRM_PAYMENT_API = "Payment/confirmPayment";
+    public static final String COMPLETE_PAYMENT_API = "Payment/complete_payment";
 
 
-    public static final String ADD_BANK_ACCOUNT_API = "payment/addBankAccount";
-    public static final String GET_BANK_DETAILS_API = "payment/getBankDetails";
+    public static final String ADD_BANK_ACCOUNT_API = "Payment/addBankAccount";
+    public static final String GET_BANK_DETAILS_API = "Payment/getBankDetails";
     public static final String GET_MY_PROFILE_API = "user/getMyProfile";
     public static final String GET_SUBCATEGORY_LIST_API = "user/getSubcategoryList";
     public static final String GET_MY_REVIEW_LIST_API = "user/getReviewList";
@@ -55,8 +55,8 @@ public class ApiCollection {
     public static final String GET_MY_USER_PROFILE_API = "user/getUserProfile";
     public static final String GET_MY_JOB_REQUEST_LIST_API = "Jobpost/getMyJobRequestList";
     public static final String CONFIRM_OR_COMPLETED_JOB_LIST_API = "Jobpost/confirmOrCompletedJobList?";
-    public static final String END_JOB_API = "payment/endJob"; // single job payment
-    public static final String ONGOING_END_JOB_API = "payment/ongoingEndJob"; // ongoing job payment
+    public static final String END_JOB_API = "Payment/endJob"; // single job payment
+    public static final String ONGOING_END_JOB_API = "Payment/ongoingEndJob"; // ongoing job payment
     public static final String NOTIFICATION_LIST_API = "user/notificationList"; //https://livewire.work/service/user/notificationList
     public static final String CANCLE_JOB_BY_CLIENT_API = "Jobpost/cancleJobByClient"; //https://livewire.work/service/Jobpost/cancleJobByClient
     public static final String CONFIRMATION_DATE_OF_BIRTH_API = "user/confirmationDateOfBirth"; //https://livewire.work/service/Jobpost/cancleJobByClient

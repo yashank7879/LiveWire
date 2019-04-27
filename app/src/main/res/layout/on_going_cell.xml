@@ -108,7 +108,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/offered_price"
                 android:layout_toStartOf="@+id/hr"
-                android:text="$0"
+                android:text="R0"
                 android:textColor="@color/colorDarkBlack" />
 
             <TextView

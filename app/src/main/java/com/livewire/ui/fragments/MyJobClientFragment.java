@@ -496,7 +496,11 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
                 }*/
                 if (subCategoryList.size() > 0) {
                     filterLayout.setVisibility(View.VISIBLE);
+                }else {
+                    filterLayout.setVisibility(View.GONE);
                 }
+                subCategoryAdapterList.notifyDataSetChanged();
+                subCategoryAdapter.notifyDataSetChanged();
                 jobType = tempJobTyp;
                 state = true;
                 isOpenFilter = true;

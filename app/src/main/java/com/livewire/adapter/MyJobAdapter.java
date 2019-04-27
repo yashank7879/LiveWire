@@ -42,7 +42,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 /**
  * Created by mindiii on 10/12/18.
  */
-
 public class MyJobAdapter extends RecyclerView.Adapter {
     private static final int JOBCELL1 = 1;
     private static final int JOBCELL2 = 2;
@@ -76,7 +75,6 @@ public class MyJobAdapter extends RecyclerView.Adapter {
             }
         }
         return 0;
-
     }
 
     @NonNull
@@ -117,7 +115,7 @@ public class MyJobAdapter extends RecyclerView.Adapter {
                 MyViewHolderJob3 noImageHolder3 = (MyViewHolderJob3) holder;
                 setDataJobCell3(noImageHolder3, position);
                 break;
-                case JOBCELL4:// Complete short and ongoing job
+            case JOBCELL4:// Complete short and ongoing job
                 MyViewHolderJob4 noImageHolder4 = (MyViewHolderJob4) holder;
                 setDataJobCell4(noImageHolder4, position);
                 break;
@@ -140,7 +138,7 @@ public class MyJobAdapter extends RecyclerView.Adapter {
             }
 
             holderJob4.tvName.setText(dataBean.getRequestedUserData().get(0).getName());
-           String jobType = dataBean.getJob_type().equals("1") ? "Short Term" : "Long Term";
+            String jobType = dataBean.getJob_type().equals("1") ? "Short Term" : "Long Term";
             holderJob4.btnSendRequest.setText(jobType);
             holderJob4.tvName.setText(dataBean.getRequestedUserData().get(0).getName());
             holderJob4.tvDistance.setText(dataBean.getRequestedUserData().get(0).getDistance_in_km() + " Km away");
@@ -149,11 +147,20 @@ public class MyJobAdapter extends RecyclerView.Adapter {
             holderJob4.tvSubcategory.setText(dataBean.getParent_category());
 
             if (dataBean.getJob_type().equals("2")) {
-               // float paidAmount = (Float.parseFloat(dataBean.getJob_time_duration()) * Float.parseFloat(dataBean.getJob_offer()) * Float.parseFloat(dataBean.()));
-               // holderJob4.tvOfferRate.setText("$ " + paidAmount);
+                holderJob4.date_rl.setVisibility(View.VISIBLE);
+                holderJob4.tvDate.setVisibility(View.INVISIBLE);
+                holderJob4.tv_date1.setText(Constant.dateTextColorChange(mContext, Constant.DateFomatChange(dataBean.getJob_start_date())));
+            } else if (dataBean.getJob_type().equals("1")) {
+                holderJob4.tvDate.setText(Constant.dateTextColorChange(mContext, Constant.DateFomatChange(dataBean.getJob_start_date())));
+                holderJob4.date_rl.setVisibility(View.INVISIBLE);
+                holderJob4.tvDate.setVisibility(View.VISIBLE);
+            }
 
+            if (dataBean.getJob_type().equals("2")) {
+                float paidAmount = (Float.parseFloat(dataBean.getJob_time_duration()) * Float.parseFloat(dataBean.getJob_offer()) * Float.parseFloat(dataBean.getNumber_of_days()));
+                holderJob4.tvOfferRate.setText("R" + paidAmount);
             } else {
-                holderJob4.tvOfferRate.setText("$ " + dataBean.getJob_budget());
+                holderJob4.tvOfferRate.setText("R" + dataBean.getJob_budget());
             }
         }
     }
@@ -161,9 +168,11 @@ public class MyJobAdapter extends RecyclerView.Adapter {
     private void setDataJobCell3(MyViewHolderJob3 holder, int position) {
         if (myJobList.size() != 0) {
             MyjobResponceClient.DataBean dataBean = myJobList.get(position);
+            String start1 = dataBean.getJob_start_date();
+            Log.e("00000", "setDataJobCell3: " + start1);
             holder.tvCategory.setText(dataBean.getSub_category());
             holder.tvSubcategory.setText(dataBean.getParent_category());
-            //  holder.tvBudget.setText("$ " + dataBean.getJob_budget());
+            //  holder.tvBudget.setText("R " + dataBean.getJob_budget());
 
             if (dataBean.getJob_offer() == null || dataBean.getJob_offer().equals("")) {
                 holder.rlData.setVisibility(View.GONE);
@@ -178,7 +187,7 @@ public class MyJobAdapter extends RecyclerView.Adapter {
                     holder.rlRange.setVisibility(View.VISIBLE);
                     holder.tvOfferRequest.setVisibility(View.GONE);
                     holder.rlOfferRange.setVisibility(View.VISIBLE);
-                    holder.tvOfferPrice.setText("$ " + dataBean.getJob_offer());
+                    holder.tvOfferPrice.setText("R" + dataBean.getJob_offer());
                     holder.tvName.setText(dataBean.getRequestedUserData().get(0).getName());
                     holder.tvDistance.setText(dataBean.getRequestedUserData().get(0).getDistance_in_km() + " Km away");
                     Picasso.with(holder.ivProfileImg.getContext()).load(dataBean.getRequestedUserData().get(0).getProfileImage()).error(R.drawable.ic_user).fit().into(holder.ivProfileImg);
@@ -216,14 +225,14 @@ public class MyJobAdapter extends RecyclerView.Adapter {
                     }
 
                     SpannableStringBuilder builder = new SpannableStringBuilder();
-                    SpannableString minprice = new SpannableString("$ " + dataBean.getRequestedUserData().get(0).getMin_rate());
+                    SpannableString minprice = new SpannableString("R" + dataBean.getRequestedUserData().get(0).getMin_rate());
                     minprice.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.colorDarkBlack)), 0, minprice.length(), 0);
                     //  userName.setSpan(new StyleSpan(Typeface.BOLD), 0, userName.length(), 0);
                     builder.append(minprice);
                     SpannableString toString = new SpannableString(" to ");
                     builder.append(toString);
 
-                    SpannableString maxprice = new SpannableString("$ " + dataBean.getRequestedUserData().get(0).getMax_rate());
+                    SpannableString maxprice = new SpannableString("R" + dataBean.getRequestedUserData().get(0).getMax_rate());
                     maxprice.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.colorDarkBlack)), 0, maxprice.length(), 0);
                     //  userName.setSpan(new StyleSpan(Typeface.BOLD), 0, userName.length(), 0);
                     builder.append(maxprice);
@@ -232,26 +241,26 @@ public class MyJobAdapter extends RecyclerView.Adapter {
 
                     holder.tvRangePrice.setText(builder);
                 }
+            }
 
-                holder.tvTime.setText(Constant.getDayDifference(dataBean.getCrd(), dataBean.getCurrentDateTime()));
-                //********"2018-07-04" date format converted into "04 july 2018"***********//
-                DateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
-                String start = dataBean.getJob_start_date();
+            holder.tvTime.setText(Constant.getDayDifference(dataBean.getCrd(), dataBean.getCurrentDateTime()));
+            //********"2018-07-04" date format converted into "04 july 2018"***********//
+            DateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
+            String start = dataBean.getJob_start_date();
+            Log.e("000", "setDataJobCell3: " + start);
+            try {
+                Date newStartDate;
+                newStartDate = sd.parse(start);
+                sd = new SimpleDateFormat("dd MMM yyyy");
+                start = sd.format(newStartDate);
 
-                try {
-                    Date newStartDate;
-                    newStartDate = sd.parse(start);
-                    sd = new SimpleDateFormat("dd MMM yyyy");
-                    start = sd.format(newStartDate);
-
-                    holder.tvDate.setText(dateTextColorChange(start));
-                    // holder.tvDate.setText(start);
-                } catch (ParseException e) {
-                    Log.e("k", e.getMessage());
-                }
-
+                holder.tvDate.setText(dateTextColorChange(start));
+                // holder.tvDate.setText(start);
+            } catch (ParseException e) {
+                Log.e("k", e.getMessage());
             }
         }
+
     }
 
     private void setDataJobCell2(MyViewHolderJob2 holder, int position) {
@@ -281,7 +290,7 @@ public class MyJobAdapter extends RecyclerView.Adapter {
 
             holder.tvCategory.setText(dataBean.getSub_category());
             holder.tvSubcategory.setText(dataBean.getParent_category());
-            holder.tvBudget.setText("$ " + dataBean.getJob_budget());
+            holder.tvBudget.setText("R" + dataBean.getJob_budget());
             holder.tvTime.setText(Constant.getDayDifference(dataBean.getCrd(), dataBean.getCurrentDateTime()));
 
             DateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
@@ -307,10 +316,10 @@ public class MyJobAdapter extends RecyclerView.Adapter {
 
             holder.tvCategory.setText(dataBean.getSub_category());
             holder.tvSubcategory.setText(dataBean.getParent_category());
-            holder.tvBudget.setText("$ " + dataBean.getJob_budget());
+            holder.tvBudget.setText("R" + dataBean.getJob_budget());
 
             String textApplication = dataBean.getTotal_request().trim().equals("1") ? mContext.getString(R.string.application) : mContext.getString(R.string.applications);
-            holder.tvRequested.setText("" + dataBean.getTotal_request() + textApplication);
+            holder.tvRequested.setText(dataBean.getTotal_request() + " " + textApplication);
 
 
             holder.tvTime.setText(Constant.getDayDifference(dataBean.getCrd(), dataBean.getCurrentDateTime()));
@@ -366,7 +375,7 @@ public class MyJobAdapter extends RecyclerView.Adapter {
         LinearLayout llMoreInfo;
         TextView tvMoreInfo;
 
-        public MyViewHolderJob1(View itemView) {
+        MyViewHolderJob1(View itemView) {
             super(itemView);
             tvDate = (TextView) itemView.findViewById(R.id.tv_date);
             tvTime = (TextView) itemView.findViewById(R.id.tv_time);
@@ -417,7 +426,7 @@ public class MyJobAdapter extends RecyclerView.Adapter {
         private LinearLayout llMoreInfo;
         private TextView tvMoreInfo;
 
-        public MyViewHolderJob2(View view) {
+        MyViewHolderJob2(View view) {
             super(view);
             tvDate = (TextView) view.findViewById(R.id.tv_date);
             tvTime = (TextView) view.findViewById(R.id.tv_time);
@@ -476,7 +485,7 @@ public class MyJobAdapter extends RecyclerView.Adapter {
         private TextView tvMoreInfo;
         private TextView tvOfferRequest;
 
-        public MyViewHolderJob3(View view3) {
+        MyViewHolderJob3(View view3) {
             super(view3);
             tvStartFrom = (TextView) view3.findViewById(R.id.tv_start_from);
             tvDate = (TextView) view3.findViewById(R.id.tv_date);
@@ -572,7 +581,11 @@ public class MyJobAdapter extends RecyclerView.Adapter {
         private TextView btnSendRequest;
         private LinearLayout llMoreInfo;
         private TextView tvMoreInfo;
-        public MyViewHolderJob4(View v4) {
+        private RelativeLayout date_rl;
+        private TextView tv_date1;
+
+
+        MyViewHolderJob4(View v4) {
             super(v4);
             tvDate = (TextView) v4.findViewById(R.id.tv_date);
             tvTime = (TextView) v4.findViewById(R.id.tv_time);
@@ -588,11 +601,13 @@ public class MyJobAdapter extends RecyclerView.Adapter {
             btnSendRequest = (TextView) v4.findViewById(R.id.btn_send_request);
             llMoreInfo = (LinearLayout) v4.findViewById(R.id.ll_more_info);
             tvMoreInfo = (TextView) v4.findViewById(R.id.tv_more_info);
+            date_rl = v4.findViewById(R.id.date_rl);
+            tv_date1 = (TextView) v4.findViewById(R.id.tv_date1);
             rlUserData.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(mContext, WorkerProfileDetailClientActivity.class);
-                    intent.putExtra("UserIdKey",""+myJobList.get(getAdapterPosition()).getRequestedUserData().get(0).getUserId());
+                    intent.putExtra("UserIdKey", "" + myJobList.get(getAdapterPosition()).getRequestedUserData().get(0).getUserId());
                     mContext.startActivity(intent);
                 }
             });
@@ -600,15 +615,15 @@ public class MyJobAdapter extends RecyclerView.Adapter {
             llMoreInfo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                if (myJobList.get(getAdapterPosition()).getJob_type().equals("1")){
-                    Intent intent = new Intent(mContext, SingleJobCompleteJobDetailActivity.class);
-                    intent.putExtra("JobIdKey",""+myJobList.get(getAdapterPosition()).getJobId());
-                    mContext.startActivity(intent);
-                }else {// MyOngoingJob More Info
-                    Intent intent = new Intent(mContext, CompleteOngoingJobDetailClientActivity.class);
-                    intent.putExtra("JobIdKey", ""+myJobList.get(getAdapterPosition()).getJobId());
-                    mContext.startActivity(intent);
-                }
+                    if (myJobList.get(getAdapterPosition()).getJob_type().equals("1")) {
+                        Intent intent = new Intent(mContext, SingleJobCompleteJobDetailActivity.class);
+                        intent.putExtra("JobIdKey", "" + myJobList.get(getAdapterPosition()).getJobId());
+                        mContext.startActivity(intent);
+                    } else {// MyOngoingJob More Info
+                        Intent intent = new Intent(mContext, CompleteOngoingJobDetailClientActivity.class);
+                        intent.putExtra("JobIdKey", "" + myJobList.get(getAdapterPosition()).getJobId());
+                        mContext.startActivity(intent);
+                    }
                 }
             });
         }

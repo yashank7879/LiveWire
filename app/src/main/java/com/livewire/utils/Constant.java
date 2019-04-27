@@ -30,8 +30,10 @@ import com.android.volley.NoConnectionError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.androidnetworking.error.ANError;
+import com.google.firebase.database.FirebaseDatabase;
 import com.livewire.R;
 import com.livewire.ui.activity.LoginActivity;
+import com.livewire.ui.activity.SettingActivity;
 import com.livewire.ui.activity.UserSelectionActivity;
 
 import org.json.JSONException;
@@ -334,6 +336,9 @@ public class Constant {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
+                        String f_id = PreferenceConnector.readString(con, PreferenceConnector.MY_USER_ID, "");
+                        FirebaseDatabase.getInstance().getReference().child(Constant.ARG_USERS).child(f_id).child("firebaseToken").setValue("");
+                        PreferenceConnector.clear(con);
                         logout(con);
                     }
                 });

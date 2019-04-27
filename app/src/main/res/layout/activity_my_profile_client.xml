@@ -346,7 +346,7 @@
                                                 android:layout_height="wrap_content"
                                                 android:layout_below="@+id/total_expenses"
                                                 android:layout_centerHorizontal="true"
-                                                android:text='@{userResponce.totalIncome != "" ? userResponce.totalIncome : "$ 0", default="N/A"}'
+                                                android:text='@{userResponce.totalIncome != "" ? userResponce.totalIncome : "R 0", default="N/A"}'
                                                 android:textColor="@color/colorDarkBlack" />
                                         </RelativeLayout>
 
@@ -431,7 +431,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_below="@+id/total_income"
                                     android:layout_marginStart="@dimen/_10sdp"
-                                    android:text='@{userResponce.totalIncome != "" ?  "$ "+userResponce.totalIncome  : "$ 0",default = "N/A"}'
+                                    android:text='@{userResponce.totalIncome != "" ?  "R"+userResponce.totalIncome  : "R0",default = "N/A"}'
                                     android:textColor="@color/colorDarkGray" />
 
 
@@ -454,7 +454,6 @@
                                     android:layout_alignParentEnd="true"
                                     android:layout_below="@+id/completed"
                                     android:layout_marginEnd="@dimen/_10sdp"
-                                    android:layout_toStartOf="@id/jobs"
                                     android:text='@{userResponce.totalIncome != "" ?  userResponce.totalIncome  : "0 ",default ="N/A"}'
                                     android:textColor="@color/colorDarkGray" />
 
@@ -490,7 +489,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_below="@+id/total_paid"
                                     android:layout_marginStart="@dimen/_10sdp"
-                                    android:text='@{userResponce.totalIncome != "" ?  "$ "+userResponce.totalIncome  : "$ 0",default = "N/A"}'
+                                    android:text='@{userResponce.totalIncome != "" ?  "R"+userResponce.totalIncome  : "R0",default = "N/A"}'
                                     android:textColor="@color/colorDarkGray" />
 
                                 <TextView

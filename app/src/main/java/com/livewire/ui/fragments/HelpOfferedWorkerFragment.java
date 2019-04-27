@@ -262,7 +262,6 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
                     .addBodyParameter("limit", "" + limit)            // limt = limit+10
                     .addBodyParameter("start", "" + start)           // start = 0
                     .addBodyParameter("skill", skillsStrin)         // subcateory id
-
                     .setPriority(Priority.MEDIUM)
                     .build().getAsJSONObject(new JSONObjectRequestListener() {
                 @Override
@@ -412,7 +411,7 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
                     dialog.dismiss();
                     if (subCategoryList.size() > 0) {
                         filterLayout.setVisibility(View.VISIBLE);
-                    }
+                    }else  filterLayout.setVisibility(View.GONE);
                 }
             });
 

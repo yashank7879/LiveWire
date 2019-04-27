@@ -228,165 +228,151 @@
                 android:paddingLeft="@dimen/_8sdp"
                 android:paddingTop="@dimen/_8sdp">
 
-                <TextView
-                    android:id="@+id/tv_details_of_help"
-                    style="@style/SmallPopinsMediumStyle"
-                    android:layout_width="wrap_content"
+
+                <LinearLayout
+                    android:id="@+id/ll_info"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:fontFamily="@font/poppins_medium"
-                    android:text="@string/deatils"
-                    android:textColor="@color/colorGreen" />
-
-
-
-
-                <TextView
-                    android:id="@+id/tv_category"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_details_of_help"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:text='@{workerResponcd.subCategoryName,  default = "N/A"}'
-                    android:textColor="@color/colorDarkBlack"
-                    android:textSize="@dimen/_12sdp" />
-
-                <!--     <TextView
-                         android:id="@+id/tv_date"
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
-                         android:layout_toStartOf="@+id/tv_date_month"
-                         android:layout_alignBaseline="@id/tv_category"
-                         android:text="23"
-                         style="@style/mediumPopinsRegularStyle"
-                         android:textColor="@color/colorDarkBlack"
-                         />
-
-                     <TextView
-                         android:id="@+id/tv_date_month"
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
-                         android:layout_alignParentEnd="true"
-                         android:fontFamily="@font/poppins_light"
-                         android:textColor="@color/colorDarkBlack"
-                         android:textSize="@dimen/_10sdp"
-                         android:layout_alignBaseline="@id/tv_category"
-                         android:text=" sep 2018"
-                         />-->
-
-                <TextView
-                    android:id="@+id/tv_sub_category"
-                    style="@style/smallPopinsRegularStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_category"
-                    android:layout_gravity="center"
-                    android:text='@{workerResponcd.parentCategoryName, default = "N/A"}'
-                    android:textColor="@color/colorDarkGray" />
-
-                <!--gone-->
-                <RelativeLayout
-                    android:id="@+id/rl_range"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_sub_category"
-                    android:visibility="visible">
-
+                    android:orientation="vertical">
                     <TextView
-                        android:id="@+id/tv_offer_rate"
-                        style="@style/smallPopinsRegularStyle"
+                        android:id="@+id/tv_details_of_help"
+                        style="@style/SmallPopinsMediumStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/_5sdp"
-                        android:text="@string/offered_rate"
-                        android:textColor="@color/colorDarkBlack" />
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="@string/deatils"
+                        android:textColor="@color/colorGreen" />
 
                     <TextView
-                        android:id="@+id/tv_offer_price"
+                        android:id="@+id/tv_category"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignBaseline="@id/tv_offer_rate"
-                        android:layout_toEndOf="@id/tv_offer_rate"
+                        android:layout_below="@+id/tv_details_of_help"
+                        android:layout_marginTop="@dimen/_5sdp"
                         android:fontFamily="@font/poppins_semibold"
-                        android:text='@{workerResponcd != null ? "$ "+workerResponcd.job_offer : "N/A",default = "N/A"}'
+                        android:text='@{workerResponcd.subCategoryName,  default = "N/A"}'
                         android:textColor="@color/colorDarkBlack"
                         android:textSize="@dimen/_12sdp" />
 
                     <TextView
-                        android:id="@+id/hr2"
-                        style="@style/SmallPopinsLightStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBaseline="@+id/tv_offer_price"
-                        android:layout_toEndOf="@+id/tv_offer_price"
-                        android:text="@string/hr"
-                        android:textColor="@color/colorDarkBlack"
-                        android:textSize="@dimen/_8sdp" />
-
-                    <TextView
-                        android:id="@+id/rate_range"
+                        android:id="@+id/tv_sub_category"
                         style="@style/smallPopinsRegularStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_offer_rate"
-                        android:text="@string/rate_range"
-                        android:textColor="@color/colorDarkBlack"
-                        />
+                        android:layout_below="@+id/tv_category"
+                        android:text='@{workerResponcd.parentCategoryName, default = "N/A"}'
+                        android:textColor="@color/colorDarkGray" />
 
-                    <TextView
-                        android:id="@+id/tv_range_price"
+                    <RelativeLayout
+                        android:id="@+id/rl_paid_amount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_offer_rate"
-                        android:layout_marginStart="@dimen/_5sdp"
-                        android:layout_toEndOf="@+id/rate_range"
-                        android:fontFamily="@font/poppins_semibold"
-                        android:text="@string/n_a"
-                        android:textSize="@dimen/_12sdp" />
+                        android:visibility="gone"
+                        >
+                        <TextView
+                            android:id="@+id/tv_paid_amount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/_5sdp"
+                            android:fontFamily="@font/poppins_regular"
+                            android:text="@string/paid_amount"
+                            android:textColor="@color/colorGreen"
+                            android:textSize="@dimen/_12sdp" />
 
-                    <TextView
-                        android:id="@+id/hr1"
-                        style="@style/SmallPopinsLightStyle"
+                        <TextView
+                            android:id="@+id/tv_amount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@id/tv_paid_amount"
+                            android:layout_toEndOf="@id/tv_paid_amount"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:textColor="@color/colorDarkBlack"
+                            android:textSize="@dimen/_12sdp"
+                            />
+
+                    </RelativeLayout>
+
+                    <!--gone-->
+                    <RelativeLayout
+                        android:id="@+id/rl_range"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignBaseline="@+id/tv_range_price"
-                        android:layout_toEndOf="@+id/tv_range_price"
-                        android:text="@string/hr"
-                        android:textColor="@color/colorDarkBlack"
-                        android:textSize="@dimen/_8sdp" />
+                        android:layout_below="@+id/tv_sub_category"
+                        android:visibility="visible">
 
-                </RelativeLayout>
+                        <TextView
+                            android:id="@+id/tv_offer_rate"
+                            style="@style/smallPopinsRegularStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/_5sdp"
+                            android:text="@string/offered_rate"
+                            android:textColor="@color/colorDarkBlack" />
 
-                <!--<TextView
-                    android:id="@+id/tv_budget"
-                    style="@style/smallPopinsRegularStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_sub_category"
-                    android:layout_marginEnd="@dimen/_5sdp"
-                    android:text="@string/budget"
-                    android:textColor="@color/colorDarkBlack"
-                   />
+                        <TextView
+                            android:id="@+id/tv_offer_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@id/tv_offer_rate"
+                            android:layout_toEndOf="@id/tv_offer_rate"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text='@{workerResponcd != null ? "R"+workerResponcd.job_offer : "N/A",default = "N/A"}'
+                            android:textColor="@color/colorDarkBlack"
+                            android:textSize="@dimen/_12sdp" />
 
-                <TextView
-                    android:id="@+id/tv_budget_price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@id/tv_budget"
-                    android:layout_toEndOf="@id/tv_budget"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:text="@string/n_a"
-                    android:textColor="@color/colorDarkBlack"
-                    android:textSize="@dimen/_12sdp" />-->
+                        <TextView
+                            android:id="@+id/hr2"
+                            style="@style/SmallPopinsLightStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@+id/tv_offer_price"
+                            android:layout_toEndOf="@+id/tv_offer_price"
+                            android:text="@string/hr"
+                            android:textColor="@color/colorDarkBlack"
+                            android:textSize="@dimen/_8sdp" />
+
+                        <TextView
+                            android:id="@+id/rate_range"
+                            style="@style/smallPopinsRegularStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tv_offer_rate"
+                            android:text="@string/rate_range"
+                            android:textColor="@color/colorDarkBlack"
+                            />
+
+                        <TextView
+                            android:id="@+id/tv_range_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tv_offer_rate"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:layout_toEndOf="@+id/rate_range"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="@string/n_a"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <TextView
+                            android:id="@+id/hr1"
+                            style="@style/SmallPopinsLightStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@+id/tv_range_price"
+                            android:layout_toEndOf="@+id/tv_range_price"
+                            android:text="@string/hr"
+                            android:textColor="@color/colorDarkBlack"
+                            android:textSize="@dimen/_8sdp" />
+
+                    </RelativeLayout>
+                </LinearLayout>
+
 
 
                 <View
                     android:id="@+id/view2_id"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_below="@+id/rl_range"
+                    android:layout_below="@+id/ll_info"
                     android:layout_marginEnd="@dimen/_8sdp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:background="@color/colorExtraLightGray" />
@@ -409,16 +395,6 @@
                     android:visibility="visible">
 
 
-                   <!-- <TextView
-                        android:id="@+id/tv_more_deatail"
-                        style="@style/SmallPopinsMediumStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:fontFamily="@font/poppins_medium"
-                        android:text="@string/more_details"
-                        android:textColor="@color/colorGreen" />
--->
                     <TextView
                         android:id="@+id/start_date"
                         style="@style/SmallPopinsMediumStyle"
@@ -525,23 +501,8 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/description"
                     android:layout_marginEnd="@dimen/_8sdp"
-                    android:text='@{workerResponcd != null ?  workerResponcd.job_description : "N/A" ,default = "N/A"}'
+                    android:text='@{!workerResponcd.job_description.empty  ?  workerResponcd.job_description : "N/A" ,default = "N/A"}'
                     android:textSize="@dimen/_10sdp" />
-
-                <!--          <Button
-                              android:id="@+id/btn_send_request"
-                              style="@style/smallPopinsRegularStyle"
-                              android:layout_width="@dimen/_85sdp"
-                              android:layout_height="@dimen/_25sdp"
-                              android:layout_below="@id/tv_description"
-                              android:layout_centerInParent="true"
-                              android:layout_margin="@dimen/_15sdp"
-                              android:background="@drawable/button_green_bg"
-                              android:text="@string/send_request"
-                              android:textAllCaps="false"
-                              android:textColor="@color/colorWhite"
-                              android:textSize="@dimen/_10sdp" />-->
-
 
                 <!--gone-->
                 <RelativeLayout
@@ -578,6 +539,263 @@
                         android:textSize="@dimen/_10sdp" />
 
                 </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/payment_info_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_description"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/tv_payment_info"
+                        style="@style/SmallPopinsMediumStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="@string/payment_info"
+                        android:textColor="@color/colorGreen" />
+
+                    <TextView
+                        android:id="@+id/tv_total_working_days"
+                        style="@style/SmallPopinsLightStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_payment_info"
+                        android:layout_marginEnd="@dimen/_8sdp"
+                        android:text="@string/total_working_days"
+                        android:textColor="@color/colorDarkBlack" />
+
+                    <TextView
+                        android:id="@+id/tv_offer_price1"
+                        style="@style/SmallPopinsLightStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_total_working_days"
+                        android:layout_marginEnd="@dimen/_8sdp"
+                        android:text="@string/offered_price"
+                        android:textColor="@color/colorDarkBlack" />
+
+                    <TextView
+                        android:id="@+id/tv_total_days"
+                        style="@style/SmallPopinsMediumStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_payment_info"
+                        android:layout_marginEnd="@dimen/_2sdp"
+                        android:layout_toStartOf="@+id/tv_days"
+                        android:text="0"
+                        android:textColor="@color/colorDarkBlack" />
+
+                    <TextView
+                        android:id="@+id/tv_days"
+                        style="@style/SmallPopinsMediumStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_below="@+id/tv_payment_info"
+                        android:layout_marginEnd="@dimen/_8sdp"
+                        android:text="@string/days"
+                        android:textColor="@color/colorDarkGray" />
+
+                    <TextView
+                        android:id="@+id/tv_offer_price_value"
+                        style="@style/SmallPopinsMediumStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_total_days"
+                        android:layout_marginEnd="@dimen/_2sdp"
+                        android:layout_toStartOf="@+id/tv_hr"
+                        android:text="$ 0.00"
+                        android:textColor="@color/colorDarkBlack" />
+
+                    <TextView
+                        android:id="@+id/tv_hr"
+                        style="@style/SmallPopinsMediumStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_below="@+id/tv_total_days"
+                        android:layout_marginEnd="@dimen/_8sdp"
+                        android:text="@string/hr"
+                        android:textColor="@color/colorDarkGray" />
+
+                    <View
+                        android:id="@+id/view5_id"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/tv_hr"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="@color/colorExtraLightGray" />
+
+                    <TextView
+                        android:id="@+id/tv_total_amount"
+                        style="@style/SmallPopinsLightStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/view5_id"
+                        android:layout_marginEnd="@dimen/_8sdp"
+                        android:text="@string/total_amount"
+                        android:textColor="@color/colorDarkBlack" />
+
+                    <TextView
+                        android:id="@+id/tv_total_price"
+                        style="@style/SmallPopinsMediumStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_below="@+id/view5_id"
+                        android:layout_marginEnd="@dimen/_8sdp"
+                        android:text="$ 00.0"
+                        android:textColor="@color/colorDarkBlack" />
+
+                    <View
+                        android:id="@+id/view6_id"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/tv_total_price"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="@color/colorExtraLightGray" />
+
+
+                    <TextView
+                        android:id="@+id/tv_job_review"
+                        style="@style/SmallPopinsMediumStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/view6_id"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="@string/job_reviews"
+                        android:textColor="@color/colorGreen"
+                        android:visibility="gone" />
+
+                    <RelativeLayout
+                        android:id="@+id/review_by_rl"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_job_review"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/tv_by_you"
+                            style="@style/SmallPopinsMediumStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:text="@string/by_you"
+                            android:textColor="@color/colorDarkBlack"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <TextView
+                            android:id="@+id/tv_review_time"
+                            style="@style/smallPopinsRegularStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_marginEnd="@dimen/_8sdp"
+                            android:text="@string/n_a"
+                            android:textColor="@color/colorDarkBlack"
+                            android:textSize="@dimen/_10sdp" />
+
+                        <RatingBar
+                            android:id="@+id/rating_bar_review"
+                            style="@style/Widget.AppCompat.RatingBar.Small"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tv_by_you"
+                            android:numStars="5"
+                            android:progressTint="@color/coloryellow"
+                            android:theme="@style/RatingBarTheme" />
+
+                        <TextView
+                            android:id="@+id/tv_review_description"
+                            style="@style/smallPopinsRegularStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/rating_bar_review"
+                            android:layout_marginBottom="@dimen/_10sdp"
+                            android:layout_marginEnd="@dimen/_8sdp"
+                            android:text='@string/n_a'
+                            android:textSize="@dimen/_10sdp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/review_user_rl"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/review_by_rl"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/tv_user_name_review"
+                            style="@style/SmallPopinsMediumStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:text="@string/n_a"
+                            android:textColor="@color/colorDarkBlack"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <TextView
+                            android:id="@+id/tv_user_time_review"
+                            style="@style/smallPopinsRegularStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:text="@string/n_a"
+                            android:layout_marginEnd="@dimen/_8sdp"
+                            android:textColor="@color/colorDarkBlack"
+                            android:textSize="@dimen/_10sdp" />
+
+                        <RatingBar
+                            android:id="@+id/rating_bar_user_review"
+                            style="@style/Widget.AppCompat.RatingBar.Small"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tv_user_name_review"
+                            android:numStars="5"
+                            android:progressTint="@color/coloryellow"
+                            android:theme="@style/RatingBarTheme" />
+
+                        <TextView
+                            android:id="@+id/tv_review_user_description"
+                            style="@style/smallPopinsRegularStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/rating_bar_user_review"
+                            android:layout_marginBottom="@dimen/_10sdp"
+                            android:layout_marginEnd="@dimen/_8sdp"
+                            android:text='@string/n_a'
+                            android:textSize="@dimen/_10sdp" />
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+                <Button
+                    android:id="@+id/btn_give_review"
+                    style="@style/smallPopinsRegularStyle"
+                    android:layout_width="@dimen/_85sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_below="@id/payment_info_layout"
+                    android:layout_centerInParent="true"
+                    android:layout_margin="@dimen/_15sdp"
+                    android:background="@drawable/button_black_bg"
+                    android:text="@string/give_review"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/_10sdp"
+                    android:visibility="gone" />
 
             </RelativeLayout>
 

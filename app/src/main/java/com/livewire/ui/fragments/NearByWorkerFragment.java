@@ -4,13 +4,20 @@ import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.graphics.Typeface;
 import android.location.Location;
+
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.ResolvableApiException;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationListener;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -35,7 +42,12 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
 import com.livewire.R;
 import com.livewire.adapter.NearByAdapterWorker;
@@ -46,6 +58,7 @@ import com.livewire.responce.NearByResponce;
 import com.livewire.ui.activity.EditProfileWorkerActivity;
 import com.livewire.ui.activity.MyProfileWorkerActivity;
 import com.livewire.utils.Constant;
+import com.livewire.utils.MyApplication;
 import com.livewire.utils.PreferenceConnector;
 import com.livewire.utils.ProgressDialog;
 
@@ -56,6 +69,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.support.v4.content.PermissionChecker.checkSelfPermission;
+import static com.livewire.ui.fragments.NearByClientFragment.REQUEST_CHECK_SETTINGS_GPS;
 import static com.livewire.utils.ApiCollection.BASE_URL;
 import static com.livewire.utils.ApiCollection.NEAR_BY_USER_API;
 
@@ -83,6 +97,25 @@ public class NearByWorkerFragment extends Fragment implements View.OnClickListen
     // integer for permissions results request
     private static final int ALL_PERMISSIONS_RESULT = 1011;
 
+    @NonNull
+    LocationCallback mLocationCallback = new LocationCallback() {
+        @Override
+        public void onLocationResult(@NonNull LocationResult locationResult) {
+            List<Location> locationList = locationResult.getLocations();
+            if (locationList.size() > 0) {
+                //The last location in the list is the newest
+                Location location = locationList.get(locationList.size() - 1);
+
+                setLatLng(location);
+            }
+        }
+    };
+    private FusedLocationProviderClient mFusedLocationClient;
+
+    private void setLatLng(Location location) {
+        MyApplication.latitude = location.getLatitude();
+        MyApplication.longitude = location.getLongitude();
+    }
 
     public NearByWorkerFragment() {
         //"""""  Required empty public constructor  """""""""//
@@ -111,7 +144,7 @@ public class NearByWorkerFragment extends Fragment implements View.OnClickListen
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //  actionBarIntialize(view);
-
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(mContext);
         getCurrentLocation();
 
 
@@ -167,11 +200,7 @@ public class NearByWorkerFragment extends Fragment implements View.OnClickListen
                                     if (status.equals("success")) {
                                         nearByResponce = new Gson().fromJson(String.valueOf(response), NearByResponce.class);
                                         nearByAdapter();
-
-
-
                                         //checkVisibleFragmnet(response);
-
                                     } else {
                                         Constant.snackBar(binding.mainLayout, message);
 
@@ -412,11 +441,89 @@ public class NearByWorkerFragment extends Fragment implements View.OnClickListen
 
         if (location != null) {
             getNearByListApi();
+            setLatLng(location);
            // Toast.makeText(mContext, ""+"Latitude : " + location.getLatitude() + "\nLongitude : " + location.getLongitude(), Toast.LENGTH_SHORT).show();
            // locationTv.setText("Latitude : " + location.getLatitude() + "\nLongitude : " + location.getLongitude());
+        }else{
+            onGpsAutomatic();
         }
 
         startLocationUpdates();
+    }
+
+    private void onGpsAutomatic() {
+
+        int permissionLocation = ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.ACCESS_FINE_LOCATION);
+        if (permissionLocation == PackageManager.PERMISSION_GRANTED) {
+
+            locationRequest = new LocationRequest();
+            locationRequest.setInterval(3000);
+            locationRequest.setFastestInterval(3000);
+            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+            LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+                    .addLocationRequest(locationRequest);
+            builder.setAlwaysShow(true);
+            builder.setNeedBle(true);
+
+            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
+            mFusedLocationClient.requestLocationUpdates(locationRequest, mLocationCallback, Looper.myLooper());
+
+            Task<LocationSettingsResponse> task =
+                    LocationServices.getSettingsClient(getActivity()).checkLocationSettings(builder.build());
+
+            task.addOnCompleteListener(task1 -> {
+                try {
+                    //getting target response use below code
+                    LocationSettingsResponse response = task1.getResult(ApiException.class);
+
+                    // All location settings are satisfied. The client can initialize location
+                    // requests here.
+                    int permissionLocation1 = ContextCompat
+                            .checkSelfPermission(getActivity(),
+                                    Manifest.permission.ACCESS_FINE_LOCATION);
+                    if (permissionLocation1 == PackageManager.PERMISSION_GRANTED) {
+
+                        mFusedLocationClient.getLastLocation()
+                                .addOnSuccessListener(getActivity(), location -> {
+                                    // Got last known location. In some rare situations this can be null.
+                                    if (location != null) {
+                                        // Logic to handle location object
+                                        setLatLng(location);
+                                    } else {
+                                        //Location not available
+                                        Log.e("Test", "Location not available");
+                                        //  AppLogger.e("Test", "Location not available");
+                                    }
+                                });
+                    }
+                } catch (ApiException exception) {
+                    switch (exception.getStatusCode()) {
+                        case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                            // Location settings are not satisfied. But could be fixed by showing the
+                            // user a dialog.
+                            try {
+                                // Cast to a resolvable exception.
+                                ResolvableApiException resolvable = (ResolvableApiException) exception;
+                                // Show the dialog by calling startResolutionForResult(),
+                                // and check the result in onActivityResult().
+                                resolvable.startResolutionForResult(
+                                        getActivity(),
+                                        REQUEST_CHECK_SETTINGS_GPS);
+                            } catch (IntentSender.SendIntentException e) {
+                                // Ignore the error.
+                            } catch (ClassCastException e) {
+                                // Ignore, should be an impossible error.
+                            }
+                            break;
+                        case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                            // Location settings are not satisfied. However, we have no way to fix the
+                            // settings so we won't show the dialog.
+                            break;
+                    }
+                }
+            });
+        }
     }
 
     private void startLocationUpdates() {
