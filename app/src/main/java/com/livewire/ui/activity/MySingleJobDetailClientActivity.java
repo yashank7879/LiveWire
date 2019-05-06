@@ -1,6 +1,7 @@
 package com.livewire.ui.activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.v7.app.AppCompatActivity;
@@ -39,18 +40,19 @@ import java.util.Set;
 
 import static com.livewire.utils.ApiCollection.BASE_URL;
 import static com.livewire.utils.ApiCollection.CONFIRM_PAYMENT_API;
+import static com.livewire.utils.ApiCollection.DELETE_JOB_API;
 import static com.livewire.utils.ApiCollection.JOBPOSTSEND_GET_CLIENT_JOB_DETAIL_API;
 
 public class MySingleJobDetailClientActivity extends AppCompatActivity implements View.OnClickListener {
     ActivityMySingleJobDetailClientBinding binding;
     private static final String TAG = MySingleJobDetailClientActivity.class.getName();
-
     private ProgressDialog progressDialog;
     private String JobId = "";
     private String usetId = "";
     private String budget = "";
     private String workerName = "";
     private String workerProfilePic = "";
+    private JobDetailClientResponce dataBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +69,8 @@ public class MySingleJobDetailClientActivity extends AppCompatActivity implement
         binding.btnEndJob.setOnClickListener(this);
         binding.llChat.setOnClickListener(this);
         binding.rlUserData.setOnClickListener(this);
-
+        binding.ivEditPost.setOnClickListener(this);
+        binding.ivDeletePost.setOnClickListener(this);
         if (getIntent().getSerializableExtra("JobIdKey") != null) {
             //MyjobResponceClient.DataBean dataBean = (MyjobResponceClient.DataBean) getIntent().getSerializableExtra("MyJobDetail");
             JobId = getIntent().getStringExtra("JobIdKey");
@@ -90,17 +93,16 @@ public class MySingleJobDetailClientActivity extends AppCompatActivity implement
             binding.tvDateMonth.setText(Constant.DateFomatChange(dataBean.getJob_start_date()).substring(3));
 
             if (dataBean.getTotal_request().equals("0")) {   // no requested yet
-                //*//*
                 binding.tvNoRequest.setVisibility(View.VISIBLE);
                 binding.rlUserData.setVisibility(View.GONE);
                 binding.rlMultiImg.setVisibility(View.GONE);
-                //   binding.llChat.setVisibility(View.GONE);
+                binding.ivEditPost.setVisibility(View.VISIBLE);//Visible when no one sent you request and also you not send any request : user can post edit
+                binding.ivDeletePost.setVisibility(View.VISIBLE);//Visible when no one sent you request and also you not send any request : user can post edit
+                //binding.llChat.setVisibility(View.GONE);
             } else if (/*dataBean.getTotal_request().equals("1") &&*/ dataBean.getJob_confirmed().equals("1")) { // jobconfirmed
-
                 if (!dataBean.getRequestedUserData().get(0).getRating().isEmpty()) {
                     binding.ratingBar.setRating(Float.parseFloat(dataBean.getRequestedUserData().get(0).getRating()));
                 }
-
                 binding.rlUserData.setVisibility(View.VISIBLE);
                 binding.llChat.setVisibility(View.VISIBLE);
                 binding.btnEndJob.setVisibility(View.VISIBLE);
@@ -116,9 +118,7 @@ public class MySingleJobDetailClientActivity extends AppCompatActivity implement
 
                 binding.tvName.setText(dataBean.getRequestedUserData().get(0).getName());
                 binding.tvDistance.setText(dataBean.getRequestedUserData().get(0).getDistance_in_km() + " Km away");
-
-
-            } else {   // multiple images show
+            } else {// multiple images show
 
                 binding.rlMultiImg.setVisibility(View.VISIBLE);
                 binding.rlUserData.setVisibility(View.GONE);
@@ -187,7 +187,79 @@ public class MySingleJobDetailClientActivity extends AppCompatActivity implement
                 intent.putExtra("UserIdKey", usetId);
                 startActivity(intent);
                 break;
+            case R.id.iv_edit_post:
+                intent = new Intent(this, EditShortJobActivity.class);
+                intent.putExtra("JobDetail",dataBean);
+                startActivity(intent);
+                break;
+            case R.id.iv_delete_post:
+                aleartDeleteDialog();
+
+                break;
             default:
+        }
+    }
+
+    private void aleartDeleteDialog() {
+        android.app.AlertDialog.Builder builder1 = new android.app.AlertDialog.Builder(this);
+        builder1.setTitle("Alert");
+        builder1.setMessage("Are you sure you want to delete this job?");
+        builder1.setCancelable(true);
+        builder1.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        deletePostApi();
+                        dialog.cancel();
+                    }
+                });
+        builder1.setNegativeButton("No",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        android.app.AlertDialog alert11 = builder1.create();
+        alert11.show();
+
+    }
+
+    private void deletePostApi() {
+        if (Constant.isNetworkAvailable(this, binding.detailMainLayout)) {
+            progressDialog.show();
+            AndroidNetworking.post(BASE_URL + DELETE_JOB_API)
+                    .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
+                    .addBodyParameter("job_id", JobId)
+                    .setPriority(Priority.MEDIUM)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            progressDialog.dismiss();
+                            String status = null;
+                            try {
+                                status = response.getString("status");
+                                String message = response.getString("message");
+                                if (status.equals("success")) {//checkout_id
+                                   onBackPressed();
+                                } else {
+                                    progressDialog.dismiss();
+                                    Constant.snackBar(binding.detailMainLayout, message);
+                                }
+                            } catch (JSONException e) {
+                                Log.d(TAG, e.getMessage());
+                            }
+
+                        }
+
+                        @Override
+                        public void onError(ANError anError) {
+                            Log.d(TAG, anError.getErrorDetail());
+                            progressDialog.dismiss();
+                        }
+                    });
         }
     }
 
@@ -259,14 +331,19 @@ public class MySingleJobDetailClientActivity extends AppCompatActivity implement
                                 status = response.getString("status");
                                 String message = response.getString("message");
                                 if (status.equals("success")) {
-                                    JobDetailClientResponce dataBean = new Gson().fromJson(String.valueOf(response), JobDetailClientResponce.class);
+                                    binding.rlMsg.setVisibility(View.GONE);
+                                    binding.subMainLayout.setVisibility(View.VISIBLE);
+                                     dataBean = new Gson().fromJson(String.valueOf(response), JobDetailClientResponce.class);
                                     setMyJobDetails(dataBean.getData());
                                     binding.setJobDetail(dataBean.getData());
 
                                     binding.tvTime.setText(Constant.getDayDifference(dataBean.getData().getCrd(), dataBean.getData().getCurrentDateTime()));
                                 } else {
+                                    binding.rlMsg.setVisibility(View.VISIBLE);
+                                    binding.subMainLayout.setVisibility(View.GONE);
+                                    binding.tvMsg.setText(message);
                                     progressDialog.dismiss();
-                                    Constant.snackBar(binding.detailMainLayout, message);
+                                   // Constant.snackBar(binding.detailMainLayout, message);
                                 }
                             } catch (JSONException e) {
                                 Log.d(TAG, e.getMessage());

@@ -1,11 +1,9 @@
 package com.livewire.firebaseservises;
 
-import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
@@ -28,7 +26,6 @@ import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
 
 import static com.livewire.utils.Constant.MY_UID;
-
 
 /**
  * Created by mindiii on 6/23/18.
@@ -56,14 +53,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             titleName = remoteMessage.getData().get("titleName");
         }
         Constant.printLogMethod(Constant.LOG_VALUE, "notifcation", remoteMessage.getData().toString());
-        Constant.printLogMethod(Constant.LOG_VALUE, "notifcation", PreferenceConnector.readString(this, PreferenceConnector.USER_MODE, ""));
         sendNotification(userId, message, currentTime, tittle, type, opponentChatId, titleName);
     }
 
     private void sendNotification(String userId, String message, String currentTime, String tittle, String type, String opponentChatId, String titleName) {
         int iUniqueId = (int) (System.currentTimeMillis() & 0xfffffff);
         PendingIntent pendingIntent = null;
-
         switch (type) {
             case "Ongoing_job_request": {
                 if (PreferenceConnector.readString(this, PreferenceConnector.USER_MODE, "").equals(userType)) {

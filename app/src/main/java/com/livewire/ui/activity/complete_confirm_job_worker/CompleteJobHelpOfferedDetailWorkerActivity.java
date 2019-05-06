@@ -59,13 +59,11 @@ public class CompleteJobHelpOfferedDetailWorkerActivity extends AppCompatActivit
             binding.tvJobStatus.setVisibility(View.VISIBLE);
             binding.rlUserData.setVisibility(View.VISIBLE);
 
-
             if (getIntent().getStringExtra("CompleteJobKey") != null) {
                 binding.tvOfferRate.setText(R.string.paid_amount);
                 binding.tvOfferRate.setTextColor(ContextCompat.getColor(this, R.color.colorGreen));
                 binding.paymentInfoLayout.setVisibility(View.VISIBLE);
                 binding.btnGiveReview.setVisibility(View.VISIBLE);
-
             }
         }
 
@@ -206,7 +204,6 @@ public class CompleteJobHelpOfferedDetailWorkerActivity extends AppCompatActivit
                     intent.putExtra("UserIdKey", userId);
                     startActivity(intent);
                 }
-
             }
             break;
             default:
@@ -226,7 +223,6 @@ public class CompleteJobHelpOfferedDetailWorkerActivity extends AppCompatActivit
             public void onReviewOnClick(String description, float rating, LinearLayout layout) {
                 giveReviewApi(description, rating, dialog, layout);
             }
-
             @Override
             public void onReviewCancel() {
 
@@ -261,7 +257,6 @@ public class CompleteJobHelpOfferedDetailWorkerActivity extends AppCompatActivit
                             binding.tvReviewTime.setText("just now");
                             binding.btnGiveReview.setVisibility(View.GONE);
                             binding.tvJobReview.setVisibility(View.VISIBLE);
-
                             //  Constant.snackBar(binding.detailMainLayout, message);
                         } else {
                             Constant.snackBar(layout, message);

@@ -78,7 +78,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/_8sdp"
                         android:layout_marginTop="@dimen/_8sdp"
-                        android:text="@string/applied_by"
+                        android:text="@string/applicants"
                         android:textColor="@color/colorGreen" />
 
                     <RelativeLayout
@@ -157,7 +157,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_request"
                         android:layout_marginBottom="@dimen/_8sdp"
-                        android:text="@string/no_appication_yet"
+                        android:text="@string/no_applicants_yet"
                         android:textColor="@color/colorDarkGray"
                         android:visibility="gone" />
 

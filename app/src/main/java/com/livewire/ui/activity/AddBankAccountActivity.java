@@ -155,9 +155,9 @@ public class AddBankAccountActivity extends AppCompatActivity implements View.On
             binding.branchCode.requestFocus();
             Constant.hideSoftKeyBoard(this,binding.branchCode);
             Constant.snackBar(binding.svAddbankLayout, "Single space should allowed here.");
-        }/*else if (Validation.isEmpty(binding.etBankName)) {
+        }else if (Validation.isEmpty(binding.etBankName)) {
             Constant.snackBar(binding.svAddbankLayout, "Please enter bank name");
-        }*/
+        }
         else {
             AddBankAccontModel model = new AddBankAccontModel();
             model.firstName = binding.accHolderFirstName.getText().toString().trim();
@@ -301,7 +301,9 @@ public class AddBankAccountActivity extends AppCompatActivity implements View.On
         binding.accHolderFirstName.setText(bankAccDetailResonce.getBank_detail().getFirstNameX());
         binding.accHolderLastName.setText(bankAccDetailResonce.getBank_detail().getLastNameX());
         binding.branchCode.setText(bankAccDetailResonce.getBank_detail().getBranch_code());
-      /*  binding.postalCode.setText(bankAccDetailResonce.getBank_detail().getPostalCode());
+        binding.etBankName.setText(bankAccDetailResonce.getBank_detail().getBankName());
+
+        /*  binding.postalCode.setText(bankAccDetailResonce.getBank_detail().getPostalCode());
         binding.ssnLast.setText(bankAccDetailResonce.getBank_detail().getSsnLast());
         binding.tvDob.setText(dateFomatChange(bankAccDetailResonce.getBank_detail().getDob()));*/
 

@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.ScrollView;
 
@@ -90,12 +91,18 @@ public class JobOnGoingDetailWorkerActivity extends AppCompatActivity implements
                             try {
                                 status = response.getString("status");
                                 String message = response.getString("message");
+                                Log.e(TAG, "onResponse: "+message );
+
                                 if (status.equals("success")) {
+                                    binding.tvMsg.setVisibility(View.GONE);
+                                    binding.subMainLayout.setVisibility(View.VISIBLE);
                                     workerResponcd = new Gson().fromJson(String.valueOf(response),JobDetailWorkerResponce.class);
                                     binding.setWorkerResponcd(workerResponcd.getData());
                                     setJobDetailData(workerResponcd);
                                 }else {
-                                    Constant.snackBar(binding.detailMainLayout,message);
+                                    binding.tvMsg.setVisibility(View.VISIBLE);
+                                    binding.subMainLayout.setVisibility(View.GONE);
+                                    binding.tvMsg.setText(message);
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();

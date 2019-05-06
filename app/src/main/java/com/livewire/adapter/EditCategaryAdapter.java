@@ -32,8 +32,9 @@ public class EditCategaryAdapter extends RecyclerView.Adapter<EditCategaryAdapte
         this.mContext = context;
     }
 
+    @NonNull
     @Override
-    public EditCategaryAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public EditCategaryAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.category_cell, parent, false);
 

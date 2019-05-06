@@ -4,12 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="jobDetail"
             type="com.livewire.responce.JobDetailWorkerResponce.DataBean" />
-
-
     </data>
 
     <ScrollView

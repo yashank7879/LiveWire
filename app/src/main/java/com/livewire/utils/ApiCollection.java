@@ -27,6 +27,7 @@ public class ApiCollection {
     public static final String CHANGE_USER_MODE_API = "user/changeUserMode";
     public static final String NEAR_BY_USER_API = "user/nearByUser";
     public static final String DELETE_VIDEO_API = "user/delete_video";
+    public static final String UPDATE_JOB_API = "Jobpost/updateJob";
 
     //http://dev.livewire.work/apiv2/user/changeUserMode
     //http://dev.livewire.work/apiv2/Jobpost/clientJobPost
@@ -42,6 +43,7 @@ public class ApiCollection {
     public static final String CHECK_SOCIAL_STATUS_API = "user/checkSocialStatus";
     public static final String CONFIRM_PAYMENT_API = "Payment/confirmPayment";
     public static final String COMPLETE_PAYMENT_API = "Payment/complete_payment";
+    public static final String DELETE_JOB_API = "Jobpost/deleteJob";
 
 
     public static final String ADD_BANK_ACCOUNT_API = "Payment/addBankAccount";

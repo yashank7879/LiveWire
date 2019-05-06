@@ -65,7 +65,7 @@
                 android:layout_marginLeft="@dimen/_20sdp"
                 android:layout_marginRight="@dimen/_20sdp"
                 android:gravity="center_horizontal"
-                android:text="@string/there_are_many_variations_of_passages_of_loreal_ipsum_available_humour"
+                android:text="@string/a_video_is_a_good_way_to_introduce_yourself_load_a_saved_video_or_record_one_right_here"
                 android:textColor="@color/colorDarkGray" />
 
 

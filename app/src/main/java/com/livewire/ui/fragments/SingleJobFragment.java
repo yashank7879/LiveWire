@@ -1,3 +1,4 @@
+
 package com.livewire.ui.fragments;
 
 import android.app.DatePickerDialog;
@@ -10,12 +11,15 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.ListPopupWindow;
+import android.support.v7.widget.PopupMenu;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.text.method.ScrollingMovementMethod;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +31,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
@@ -76,21 +81,26 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
     private TextView tvSelectDate;
     private TextView tvLocation;
     private Context mContext;
-    private int width;
     private Spinner subCategorySpinner;
     private ScrollView mainLayout;
-    private AddSkillsResponce skillsResponce;
-    private ProgressDialog progressDialog;
-    private Calendar startDateTime;
-    private LatLng locationLatLng;
     private EditText etBudget;
     private EditText etDescription;
     private Button btnCancel;
+
     private String skillId;
     private String locationPlace;
     private List<String> currencyList = new ArrayList<>();
     private String currency = "";
     private Spinner currencySpinner;
+    private AddSkillsResponce skillsResponce;
+    private ProgressDialog progressDialog;
+    private Calendar startDateTime;
+    private int width;
+    private LatLng locationLatLng;
+
+    private PopupWindow popupWindow;
+    private TextView tv_currency;
+    private RelativeLayout rlCurrencySpinner;
 
     @Nullable
     @Override
@@ -116,19 +126,27 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
         RelativeLayout selectSkillsRl = view.findViewById(R.id.select_skills_rl);
         tvSelectSkill = view.findViewById(R.id.tv_select_skill);
         RelativeLayout selectDateRl = view.findViewById(R.id.select_date_rl);
+        rlCurrencySpinner = view.findViewById(R.id.rl_currency_spinner);
         tvSelectDate = view.findViewById(R.id.tv_select_date);
         RelativeLayout locationRl = view.findViewById(R.id.location_rl);
         tvLocation = view.findViewById(R.id.tv_location);
         etBudget = view.findViewById(R.id.et_budget);
         btnCancel = view.findViewById(R.id.btn_cancel);
         etDescription = view.findViewById(R.id.et_description);
-         currencySpinner = view.findViewById(R.id.currency_spinner);
+        currencySpinner = view.findViewById(R.id.currency_spinner);
+        tv_currency = view.findViewById(R.id.tv_currency);
 
         tvLocation.setOnClickListener(this);
+        rlCurrencySpinner.setOnClickListener(this);
         tvLocation.setSelected(true);
         tvLocation.setHorizontallyScrolling(true);
         tvLocation.setMovementMethod(new ScrollingMovementMethod());
         tvLocation.setHint(R.string.location);
+
+        RelativeLayout.LayoutParams newLayoutParams = new RelativeLayout.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        newLayoutParams.addRule(RelativeLayout.BELOW, tv_currency.getId());
+        //newLayoutParams.setMargins(5,5,5,5);
+        currencySpinner.setLayoutParams(newLayoutParams);
 
         ArrayAdapter currencyAdapter = new ArrayAdapter<>(mContext, R.layout.spinner_item, currencyList);
         currencyAdapter.setDropDownViewResource(R.layout.spinner_drop_down);
@@ -142,7 +160,8 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
         selectSkillsRl.setOnClickListener(this);
         selectDateRl.setOnClickListener(this);
         btnCancel.setOnClickListener(this);
-        view.findViewById(R.id.btn_share).setOnClickListener(this);
+        TextView btnShare = view.findViewById(R.id.btn_share);
+        btnShare.setOnClickListener(this);
 
         //"""""" textWacher for bid price e.g "12345.99"
         etBudget.addTextChangedListener(new TextWatcher() {
@@ -153,14 +172,14 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            /*this method is not used*/
+                /*this method is not used*/
             }
 
             @Override
             public void afterTextChanged(Editable editable) { //""""""""" price format "15455.15"
                 String str = etBudget.getText().toString();
                 if (str.isEmpty()) return;
-                String str2 = perfectDecimal(str, 6, 2);
+                String str2 = Constant.perfectDecimal(str, 6, 2);
                 if (!str2.equals(str)) {
                     etBudget.setText(str2);
                     int pos = etBudget.getText().length();
@@ -168,6 +187,7 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
                 }
             }
         });
+
 
         loadSkillsData();
     }
@@ -184,34 +204,6 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
         if (isVisibleToUser) {
             clearData();
         }
-    }
-
-    public String perfectDecimal(String str, int maxBeforePoint, int maxDecimal) { //price format "15455.15"
-        if (str.charAt(0) == '.') str = "0" + str;
-        int max = str.length();
-
-        String rFinal = "";
-        boolean after = false;
-        int i = 0;
-        int up = 0;
-        int decimal = 0;
-        char t;
-        while (i < max) {
-            t = str.charAt(i);
-            if (t != '.' && !after) {
-                up++;
-                if (up > maxBeforePoint) return rFinal;
-            } else if (t == '.') {
-                after = true;
-            } else {
-                decimal++;
-                if (decimal > maxDecimal)
-                    return rFinal;
-            }
-            rFinal = rFinal + t;
-            i++;
-        }
-        return rFinal;
     }
 
 
@@ -236,8 +228,33 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
             case R.id.btn_cancel:
                 clearData();
                 break;
+            case R.id.rl_currency_spinner:
+                currencySpinner.performClick();
+                break;
         }
+    }
 
+    private void popupMenuOpen() {
+        LayoutInflater layoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        assert layoutInflater != null;
+        View customView = layoutInflater.inflate(R.layout.sub_cat_cell, null);
+
+        //instantiate popup window
+        popupWindow = new PopupWindow(customView, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
+
+        //display the popup window
+        //popupWindow.showAtLocation(tv_apply, Gravity.CENTER, 0, 0);
+
+
+        /*PopupMenu popup = new PopupMenu(mContext, tv_apply, Gravity.START,0,R.style.PopupMenuMoreCentralized);
+        //Inflating the Popup using xml file
+        popup.getMenuInflater().inflate(R.menu.popup_menu, popup.getMenu());
+
+        popup.getMenu().add("One");
+        popup.getMenu().add("Two");
+        popup.getMenu().add("Three");
+        popup.getMenu().add("Four");
+        popup.show();*/
     }
 
     private void clearData() {
@@ -248,6 +265,7 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
             etBudget.setText("");
             etDescription.setText("");
             tvLocation.setHint(R.string.location);
+            tv_currency.setText(null);
             currencySpinner.setSelection(0);
         }
     }
@@ -394,10 +412,10 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
             Constant.snackBar(mainLayout, "Please Select Skill");
         } else if (Validation.isEmpty(tvSelectDate)) {
             Constant.snackBar(mainLayout, "Please Select Date");
-        } else if (Validation.isEmpty(etBudget)) {
-            Constant.snackBar(mainLayout, "Please enter Budget");
         } else if (currency.equals("Currency")) {
             Constant.snackBar(mainLayout, "Please select currency");
+        } else if (Validation.isEmpty(etBudget)) {
+            Constant.snackBar(mainLayout, "Please enter Budget");
         } else if (etBudget.getText().toString().trim().equals("0")) {
             Constant.snackBar(mainLayout, "Please enter correct Budget");
         } else if (Float.parseFloat(etBudget.getText().toString()) < 3) {
@@ -406,7 +424,7 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
             Constant.snackBar(mainLayout, "Please enter your Location");
         }/* else if (Validation.isEmpty(etDescription)) {
             Constant.snackBar(mainLayout, "Please enter job Description");
-        }*/  else {
+        }*/ else {
             JobCreationModel model = new JobCreationModel();
             model.skill = skillId;
             model.job_start_date = tvSelectDate.getText().toString();
@@ -445,6 +463,7 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
                             tvSelectDate.setText("");
                             etBudget.setText("");
                             etDescription.setText("");
+                            tv_currency.setText(null);
                             currencySpinner.setSelection(0);
                         } else {
                             Constant.snackBar(mainLayout, message);
@@ -476,7 +495,8 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
                 break;
             case R.id.currency_spinner:
                 currency = currencyList.get(position);
-                Log.e(TAG, "onItemSelected: " + currency);
+                if (!currency.equals("Currency"))
+                    tv_currency.setText(currency);
                 break;
         }
     }

@@ -234,11 +234,11 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_below="@+id/btn_send_request"
-                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_3sdp"
                 android:layout_marginBottom="@dimen/_3sdp"
                 android:background="?android:attr/selectableItemBackground"
-                android:paddingBottom="@dimen/_5sdp"
-                android:paddingTop="@dimen/_5sdp"
+                android:paddingBottom="@dimen/_3sdp"
+                android:paddingTop="@dimen/_3sdp"
                 android:paddingEnd="@dimen/_10sdp"
 
                 >
@@ -251,7 +251,7 @@
                     android:fontFamily="@font/poppins_medium"
                     android:text="@string/more_info"
                     android:textColor="@color/colorGreen"
-                    android:textSize="@dimen/_9sdp" />
+                    android:textSize="@dimen/_11sdp" />
 
                 <ImageView
                     android:layout_width="@dimen/_9sdp"

@@ -66,6 +66,9 @@
     <string name="max_price">Max Price</string>
     <string name="short_term">SHORT TERM</string>
     <string name="short_term1">Short term</string>
+    <string name="find_long_term_help_paid_by_the_hour_to_ease_the_stress_of_daily_living_worker_profile_video_and_chat_will_help_you_find_the_perfect_match_for_your_family">Find long term help, paid by the hour to ease the stress of daily living. Worker profile video and chat will help you find the perfect match for your family.</string>
+    <string name="find_help_in_once_off_situations_where_a_helping_hand_is_needed_view_worker_profile_videos_and_chat_to_them_before_you_hire_a_budget_is_set_for_these_projects">Find help in ONCE off situations where a helping hand is needed. View worker profile videos and chat to them before you hire. A budget is set for these projects</string>
+
 
     <!-- filter dialog  -->
     <string name="apply">Apply</string>
@@ -120,8 +123,8 @@
     <string name="applicants">Applicants</string>
     <string name="applications">Applications</string>
     <string name="application">Application</string>
-    <string name="no_appication_yet">No Applications Yet</string>
-    <string name="no_offer_application_yet">No Applications Yet</string>
+    <string name="no_applicants_yet">No applicants yet</string>
+    <string name="no_offer_application_yet">No applicants yet</string>
     <string name="under_devlopment_mode">Under Devlopment Mode</string>
     <string name="applied_by">Applied by</string>
     <string name="members_applied">Members applied</string>
@@ -233,6 +236,7 @@
     <string name="total_working_days">Total Working Days</string>
     <string name="offered_price">Offered Price</string>
     <string name="offer_work">Offer Work</string>
+    <string name="view_candidate">View Candidates</string>
     <string name="total_amount">Total Amount</string>
     <string name="job_reviews">Work Reviews</string>
     <string name="by_you">By You</string>
@@ -387,4 +391,13 @@
 
     <string name="bank_name">Bank name</string>
     <string name="this_user_dont_have_any_review_yet">This user don\'t have any review yet</string>
+    <string name="currency">Currency</string>
+    <string name="job_doesn_t_exist">job doesn\'t exist.</string>
+    <string name="application_decline">Application Decline</string>
+    <string name="introduce_yourself">Introduce Yourself</string>
+    <string name="tell_us_a_about_your_life_experience_qualifications_and_passions">Tell us a about your life, experience, qualifications and passions</string>
+    <string name="add_the_skills_you_would_like_to_offer_and_your_hourly_rate_for_each">Add the skills you would like to offer and your hourly rate for each.</string>
+    <string name="a_video_is_a_good_way_to_introduce_yourself_load_a_saved_video_or_record_one_right_here">A video is a good way to introduce yourself. Load a saved video or record one right here.</string>
+    <string name="live_wire_will_find_workers_with_the_skills_you_are_looking_for_you_can_then_view_their_hourly_rates_profile_video_and_chat_to_candidates_before_recruiting">Live Wire will find workers with the skills you are looking for. You can then view their hourly rates, profile video and chat to candidates before recruiting.</string>
+    <string name="write_us">Write us…</string>
 </resources>

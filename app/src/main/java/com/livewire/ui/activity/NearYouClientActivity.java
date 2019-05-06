@@ -64,6 +64,8 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
     private int start = 0;
     private List<String> currencyList = new ArrayList<>();
     private String currency;
+    private TextView tv_currency;
+    private RelativeLayout rlCurrency;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -202,9 +204,16 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
         dialog.getWindow().setLayout((width * 10) / 11, WindowManager.LayoutParams.WRAP_CONTENT);
         final RelativeLayout mainLayout1 = dialog.findViewById(R.id.c_dialog_main_layout);
         TextView tvCancel = dialog.findViewById(R.id.tv_cancel);
+        rlCurrency = dialog.findViewById(R.id.rl_currency);
+        tv_currency = dialog.findViewById(R.id.tv_currency);
         Button btnSendRequest = dialog.findViewById(R.id.btn_send_request);
         final EditText etOfferPrice = dialog.findViewById(R.id.et_offer_price);
         Spinner CurrencySpinner = dialog.findViewById(R.id.currency_spinner);
+
+        RelativeLayout.LayoutParams newLayoutParams = new RelativeLayout.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        newLayoutParams.addRule(RelativeLayout.BELOW, tv_currency.getId());
+        //newLayoutParams.setMargins(5,5,5,5);
+        CurrencySpinner.setLayoutParams(newLayoutParams);
 
         ArrayAdapter currencyAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, currencyList);
         currencyAdapter.setDropDownViewResource(R.layout.spinner_drop_down);
@@ -264,6 +273,14 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
             }
         });
 
+        rlCurrency.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CurrencySpinner.performClick();
+            }
+        });
+
+
 
         dialog.show();
         dialog.setCancelable(false);
@@ -303,7 +320,8 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
         switch (parent.getId()) {
             case R.id.currency_spinner:
                 currency = currencyList.get(position);
-                Log.e("fkjgh", "onItemSelected: " + currency);
+                if (!currency.equals("Currency"))
+                    tv_currency.setText(currency);
                 break;
         }
     }

@@ -108,13 +108,17 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
                                 status = response.getString("status");
                                 String message = response.getString("message");
                                 if (status.equals("success")) {
+                                    binding.subMainLayout.setVisibility(View.VISIBLE);
+                                    binding.tvMsg.setVisibility(View.GONE);
                                     JobDetailWorkerResponce workerResponce = new Gson().fromJson(String.valueOf(response), JobDetailWorkerResponce.class);
                                     binding.setJobDetail(workerResponce.getData());
                                     setWorkerDataResponce(workerResponce.getData());
                                     userId = workerResponce.getData().getUserId();
-
                                 } else {
-                                    Constant.snackBar(binding.detailMainLayout, message);
+                                    binding.subMainLayout.setVisibility(View.GONE);
+                                    binding.tvMsg.setVisibility(View.VISIBLE);
+                                    binding.tvMsg.setText(""+message);
+                                    ///Constant.snackBar(binding.detailMainLayout, message);
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -144,6 +148,11 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
             binding.btnSendRequest.setText(R.string.Work_offer_pending);
             binding.btnSendRequest.setTextColor(ContextCompat.getColor(this, R.color.colorOrange));
             binding.btnSendRequest.setClickable(false);
+        }else if (jobDetail.getJob_confirmed().equals("2")) {// job not accepted
+            binding.btnSendRequest.setClickable(false);
+            binding.btnSendRequest.setText(R.string.application_decline);
+            binding.btnSendRequest.setBackground(null);
+            binding.btnSendRequest.setTextColor(ContextCompat.getColor(this,R.color.colorRed));
         } else if (jobDetail.getJob_confirmed().equals("3")) {// job not send
             binding.btnSendRequest.setBackground(this.getResources().getDrawable(R.drawable.button_black_bg));
             binding.btnSendRequest.setText(R.string.apply);
@@ -329,7 +338,6 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
                         e.printStackTrace();
                     }
                 }
-
                 @Override
                 public void onError(ANError anError) {
                     progressDialog.dismiss();

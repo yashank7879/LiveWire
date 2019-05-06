@@ -102,9 +102,16 @@ public class HelpOfferedAdapter extends RecyclerView.Adapter<HelpOfferedAdapter.
                holder.btnSendRequest.setClickable(false);
    /*        }else if (dataBean.getJob_confirmed().equals("1")){// accepted
                holder.btnSendRequest.setClickable(false);
-           }else if (dataBean.getJob_confirmed().equals("2")){// job not accepted
-            holder.btnSendRequest.setClickable(false);*/
-            }else if (dataBean.getJob_confirmed().equals("3")){// job not send
+           }*/
+
+            }
+           else if (dataBean.getJob_confirmed().equals("2")) {// job not accepted
+               holder.btnSendRequest.setClickable(false);
+               holder.btnSendRequest.setText(R.string.application_decline);
+               holder.btnSendRequest.setBackground(null);
+               holder.btnSendRequest.setTextColor(ContextCompat.getColor(mContext,R.color.colorRed));
+
+           }else if (dataBean.getJob_confirmed().equals("3")){// job not send
                holder.btnSendRequest.setBackground(mContext.getResources().getDrawable(R.drawable.button_black_bg));
                holder.btnSendRequest.setText(R.string.apply);
                holder.btnSendRequest.setTextColor(ContextCompat.getColor(mContext,R.color.colorWhite));
@@ -178,8 +185,6 @@ public class HelpOfferedAdapter extends RecyclerView.Adapter<HelpOfferedAdapter.
                 }
             });
 
-
-
             rlUserDetail.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -223,7 +228,6 @@ public class HelpOfferedAdapter extends RecyclerView.Adapter<HelpOfferedAdapter.
         void userInfoDetailOnClick(String userId);
         void sendRequestOnClick(HelpOfferedResponce.DataBean dataBean, String key, int pos);
     }
-
 }
 
 

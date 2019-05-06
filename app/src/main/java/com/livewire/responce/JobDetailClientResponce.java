@@ -1,12 +1,13 @@
 package com.livewire.responce;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by mindiii on 11/21/18.
  */
 
-public class JobDetailClientResponce {
+public class JobDetailClientResponce implements Serializable {
 
     /**
      * status : success
@@ -51,10 +52,11 @@ public class JobDetailClientResponce {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable {
         /**
          * jobId : 178
          * category_id : 7
+         * parent_category_id : 1
          * job_start_date : 2018-11-19
          * job_end_date : 0000-00-00
          * job_budget : 33
@@ -77,6 +79,7 @@ public class JobDetailClientResponce {
 
         private String jobId;
         private String category_id;
+        private String parent_category_id;
         private String job_start_date;
         private String job_end_date;
         private String job_budget;
@@ -267,7 +270,15 @@ public class JobDetailClientResponce {
             this.number_of_days = number_of_days;
         }
 
-        public static class RequestedUserDataBean {
+        public String getParent_category_id() {
+            return parent_category_id;
+        }
+
+        public void setParent_category_id(String parent_category_id) {
+            this.parent_category_id = parent_category_id;
+        }
+
+        public static class RequestedUserDataBean implements Serializable {
             /**
              * userId : 135
              * userType : worker

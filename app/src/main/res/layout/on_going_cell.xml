@@ -255,8 +255,8 @@
                 android:layout_below="@+id/rl_range"
                 android:layout_centerVertical="true"
                 android:background="?android:attr/selectableItemBackground"
-                android:paddingBottom="@dimen/_5sdp"
-                android:paddingTop="@dimen/_5sdp">
+                android:paddingBottom="@dimen/_3sdp"
+                android:paddingTop="@dimen/_3sdp">
 
                 <TextView
                     android:id="@+id/tv_more_info"
@@ -266,7 +266,7 @@
                     android:fontFamily="@font/poppins_medium"
                     android:text="@string/more_info"
                     android:textColor="@color/colorGreen"
-                    android:textSize="@dimen/_9sdp" />
+                    android:textSize="@dimen/_11sdp" />
 
                 <ImageView
                     android:layout_width="@dimen/_9sdp"

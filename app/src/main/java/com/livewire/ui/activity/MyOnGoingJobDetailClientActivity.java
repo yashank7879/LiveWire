@@ -1,6 +1,7 @@
 package com.livewire.ui.activity;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
@@ -45,6 +46,7 @@ import static com.livewire.utils.ApiCollection.ADD_REVIEW_API;
 import static com.livewire.utils.ApiCollection.BASE_URL;
 import static com.livewire.utils.ApiCollection.CANCLE_JOB_BY_CLIENT_API;
 import static com.livewire.utils.ApiCollection.CONFIRM_PAYMENT_API;
+import static com.livewire.utils.ApiCollection.DELETE_JOB_API;
 import static com.livewire.utils.ApiCollection.JOBPOSTSEND_GET_CLIENT_JOB_DETAIL_API;
 
 public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implements View.OnClickListener {
@@ -60,6 +62,7 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
     private String jobRequestId = "";
     private String noOfDays = "";
     private String name="";
+    private JobDetailClientResponce JobDetail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +84,8 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
         binding.llChat.setOnClickListener(this);
         binding.rlUserData.setOnClickListener(this);
         binding.btnSendOffer.setOnClickListener(this);
+        binding.ivEditPost.setOnClickListener(this);
+        binding.ivDeletePost.setOnClickListener(this);
 
 
         if (getIntent().getStringExtra("JobIdKey") != null) {
@@ -123,6 +128,8 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
                 binding.tvStartDate.setText(Constant.DateFomatChange(dataBean.getData().getJob_start_date()));
                 binding.tvEndDate.setText(Constant.DateFomatChange(dataBean.getData().getJob_end_date()));
 
+                binding.ivEditPost.setVisibility(View.VISIBLE);//Visible when no one sent you request and also you not send any request : user can edit posted work
+                binding.ivDeletePost.setVisibility(View.VISIBLE);//Visible when no one sent you request and also you not send any request : user can edit posted work
                 jobId = dataBean.getData().getJobId();
 
 
@@ -287,8 +294,79 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
             case R.id.btn_give_review:
                 openReviewDialog();
                 break;
+            case R.id.iv_edit_post:
+                intent = new Intent(this,EditLongTermJobActivity.class);
+                intent.putExtra("JobDetail",JobDetail);
+                startActivity(intent);
+                break;
+            case R.id.iv_delete_post:
+                aleartDeleteDialog();
 
+                break;
             default:
+        }
+    }
+
+    private void aleartDeleteDialog() {
+        android.app.AlertDialog.Builder builder1 = new android.app.AlertDialog.Builder(this);
+        builder1.setTitle("Alert");
+        builder1.setMessage("Are you sure you want to delete this job?");
+        builder1.setCancelable(true);
+        builder1.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        deletePostApi();
+                        dialog.cancel();
+                    }
+                });
+        builder1.setNegativeButton("No",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        android.app.AlertDialog alert11 = builder1.create();
+        alert11.show();
+
+    }
+
+    private void deletePostApi() {
+        if (Constant.isNetworkAvailable(this, binding.detailMainLayout)) {
+            progressDialog.show();
+            AndroidNetworking.post(BASE_URL + DELETE_JOB_API)
+                    .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
+                    .addBodyParameter("job_id", jobId)
+                    .setPriority(Priority.MEDIUM)
+                    .build()
+                    .getAsJSONObject(new JSONObjectRequestListener() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            progressDialog.dismiss();
+                            String status = null;
+                            try {
+                                status = response.getString("status");
+                                String message = response.getString("message");
+                                if (status.equals("success")) {//checkout_id
+                                    onBackPressed();
+                                } else {
+                                    progressDialog.dismiss();
+                                    Constant.snackBar(binding.detailMainLayout, message);
+                                }
+                            } catch (JSONException e) {
+                                Log.d(TAG, e.getMessage());
+                            }
+
+                        }
+
+                        @Override
+                        public void onError(ANError anError) {
+                            Log.d(TAG, anError.getErrorDetail());
+                            progressDialog.dismiss();
+                        }
+                    });
         }
     }
 
@@ -462,7 +540,9 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
                                 status = response.getString("status");
                                 String message = response.getString("message");
                                 if (status.equals("success")) {
-                                    JobDetailClientResponce JobDetail = new Gson().fromJson(String.valueOf(response), JobDetailClientResponce.class);
+                                    binding.tvMsg.setVisibility(View.GONE);
+                                    binding.subMainLayout.setVisibility(View.VISIBLE);
+                                     JobDetail = new Gson().fromJson(String.valueOf(response), JobDetailClientResponce.class);
                                     setMyJobDetails(JobDetail);
                                     binding.setDataBean(JobDetail.getData());
 
@@ -470,7 +550,10 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
 
                                 } else {
                                     progressDialog.dismiss();
-                                    Constant.snackBar(binding.detailMainLayout, message);
+                                    binding.tvMsg.setVisibility(View.VISIBLE);
+                                    binding.subMainLayout.setVisibility(View.GONE);
+                                    binding.tvMsg.setText(message);
+                                    //Constant.snackBar(binding.detailMainLayout, message);
                                 }
                             } catch (JSONException e) {
                                 Log.d(TAG, e.getMessage());
@@ -480,6 +563,7 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
                         @Override
                         public void onError(ANError anError) {
                             Log.d(TAG, anError.getErrorDetail());
+                            Constant.errorHandle(anError,MyOnGoingJobDetailClientActivity.this);
                             progressDialog.dismiss();
                         }
                     });
@@ -540,6 +624,7 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
                         @Override
                         public void onError(ANError anError) {
                             dialog.dismiss();
+                            Constant.errorHandle(anError,MyOnGoingJobDetailClientActivity.this);
                             Log.d(TAG, anError.getErrorDetail());
                             progressDialog.dismiss();
                         }

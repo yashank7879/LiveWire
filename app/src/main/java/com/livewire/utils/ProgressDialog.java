@@ -10,7 +10,6 @@ import android.view.Window;
 import com.livewire.R;
 
 public class ProgressDialog extends Dialog {
-
     Context context;
     public ProgressDialog(Context context) {
         super(context);

@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
             name="dataBean"
             type="com.livewire.responce.CompleteJobResponce.DataBean" />
@@ -22,8 +21,6 @@
             android:orientation="horizontal"
             android:visibility="invisible"
             >
-
-
 
             <TextView
                 android:id="@+id/tv_start_from"
@@ -232,11 +229,11 @@
                 android:layout_alignParentEnd="true"
                 android:layout_below="@+id/btn_send_request"
                 android:layout_marginBottom="@dimen/_3sdp"
-                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_3sdp"
                 android:background="?android:attr/selectableItemBackground"
                 android:paddingBottom="@dimen/_5sdp"
                 android:paddingEnd="@dimen/_10sdp"
-                android:paddingTop="@dimen/_5sdp"
+                android:paddingTop="@dimen/_3sdp"
 
                 >
 
@@ -248,7 +245,7 @@
                     android:fontFamily="@font/poppins_medium"
                     android:text="@string/more_info"
                     android:textColor="@color/colorGreen"
-                    android:textSize="@dimen/_9sdp" />
+                    android:textSize="@dimen/_11sdp" />
 
                 <ImageView
                     android:layout_width="@dimen/_9sdp"

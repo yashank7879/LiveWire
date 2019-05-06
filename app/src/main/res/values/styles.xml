@@ -128,4 +128,11 @@
         <item name="android:textSize">@dimen/_12sdp</item>
 
     </style>
+
+    <style name="PopupMenuMoreCentralized" parent="@android:style/TextAppearance.DeviceDefault.Widget.PopupMenu.Small">
+        <item name="android:dropDownHorizontalOffset">4dp</item>
+        <item name="android:dropDownVerticalOffset">-6dp</item>
+        <item name="android:textSize">@dimen/_8sdp</item>
+        <item name="android:textColor">#E91673</item>
+    </style>
 </resources>

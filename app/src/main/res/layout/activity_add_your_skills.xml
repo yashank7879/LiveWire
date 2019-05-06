@@ -63,7 +63,7 @@
         android:layout_marginLeft="@dimen/_20sdp"
         android:layout_marginRight="@dimen/_20sdp"
         android:gravity="center_horizontal"
-        android:text="@string/there_are_many_variations_of_passages_of_loreal_ipsum_available_humour"
+        android:text="@string/add_the_skills_you_would_like_to_offer_and_your_hourly_rate_for_each"
         android:textColor="@color/colorDarkGray" />
 
 

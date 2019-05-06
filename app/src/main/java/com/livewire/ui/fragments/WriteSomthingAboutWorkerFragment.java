@@ -575,7 +575,7 @@ public class WriteSomthingAboutWorkerFragment extends Fragment implements View.O
 
 
 
- /*   //""""start date picker dialog """""""""""""
+    //""""start date picker dialog """""""""""""
     private void openDobDialog() {
         final Calendar calendar = Calendar.getInstance();
         mYear = calendar.get(Calendar.YEAR);
@@ -590,7 +590,7 @@ public class WriteSomthingAboutWorkerFragment extends Fragment implements View.O
                 startDateTime.set(Calendar.YEAR, year);
                 startDateTime.set(Calendar.MONTH, month);
                 startDateTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                /*//********Date time Format**************//*/
+                /*******Date time Format*************/
                 SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy");
                 Log.e(TAG, "onDateSet: " + sdf2.format(startDateTime.getTime()));
                 PreferenceConnector.writeString(mContext, PreferenceConnector.USER_DOB, sdf1.format(startDateTime.getTime()));
@@ -609,7 +609,7 @@ public class WriteSomthingAboutWorkerFragment extends Fragment implements View.O
 
         startDateDialog.show();
 
-    }*/
+    }
 
 
 }

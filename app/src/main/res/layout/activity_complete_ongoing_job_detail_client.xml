@@ -156,7 +156,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_request"
                         android:layout_marginBottom="@dimen/_8sdp"
-                        android:text="@string/no_appication_yet"
+                        android:text="@string/no_applicants_yet"
                         android:textColor="@color/colorDarkGray"
                         android:visibility="gone" />
 

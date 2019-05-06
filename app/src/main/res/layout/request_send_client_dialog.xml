@@ -51,15 +51,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/_5sdp"
-        android:layout_marginLeft="@dimen/_15sdp"
+        android:layout_marginStart="@dimen/_15sdp"
         android:layout_below="@+id/tv_content"
         >
 
         <RelativeLayout
+            android:id="@+id/rl_currency"
             android:layout_width="0dp"
             android:layout_weight=".8"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/_2sdp" >
+            <TextView
+                android:id="@+id/tv_currency"
+                style="@style/SmallPopinsLightStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/currency"
+                android:textColor="@color/colorBlack"
+                android:gravity="bottom"
+                android:textColorHint="@color/colorLightGray"                    android:layout_centerVertical="true"
+                android:layout_alignParentTop="true"
+                />
+
             <Spinner
                 android:id="@+id/currency_spinner"
                 android:layout_width="match_parent"
@@ -67,7 +80,7 @@
                 android:layout_gravity="center"
                 android:background="@color/colorBlackTransparent"
                 android:clickable="true"
-                android:dropDownWidth="@dimen/_80sdp"
+                android:dropDownWidth="@dimen/_100sdp"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:fontFamily="@font/poppins_regular"
@@ -114,7 +127,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_1sdp"
-                android:layout_marginTop="@dimen/_25sdp"
+                android:layout_marginTop="@dimen/_20sdp"
                 android:layout_marginBottom="@dimen/_5sdp"
                 android:background="@color/colorLightGray"
                 />

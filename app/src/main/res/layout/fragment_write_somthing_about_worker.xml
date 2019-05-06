@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="@dimen/_10sdp"
-                android:text="@string/write_something_about_yourself"
+                android:text="@string/introduce_yourself"
                 android:textColor="@color/colorDarkBlack" />
 
             <TextView
@@ -65,7 +65,7 @@
                 android:layout_marginLeft="@dimen/_20sdp"
                 android:layout_marginRight="@dimen/_20sdp"
                 android:gravity="center_horizontal"
-                android:text="@string/there_are_many_variations_of_passages_of_loreal_ipsum_available_humour"
+                android:text="@string/tell_us_a_about_your_life_experience_qualifications_and_passions"
                 android:textColor="@color/colorDarkGray" />
 
 
@@ -132,7 +132,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@null"
-                    android:hint="@string/about_me"
+                    android:hint="@string/write_us"
                     android:maxHeight="@dimen/_120sdp"
                     android:padding="@dimen/_5sdp"
                     android:maxLength="200"

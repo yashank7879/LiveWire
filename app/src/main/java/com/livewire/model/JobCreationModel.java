@@ -8,6 +8,8 @@ import com.google.gson.annotations.SerializedName;
 
 public class JobCreationModel {
     public String skill = "";
+    @SerializedName("job_id")
+    public String job_id = "";
     @SerializedName("job_start_date")
     public String job_start_date = "";
     @SerializedName("job_end_date")

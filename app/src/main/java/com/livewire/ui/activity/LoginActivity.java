@@ -296,8 +296,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             model.socialId = graphObject.getString("id");
                             model.socialType = "fb";
                             signUpApiForSocial(model);*/
-
-
                         //Toast.makeText(LoginActivity.this, "Name" + fb_mail, Toast.LENGTH_SHORT).show();
                     } else checkSocialfbLogin(fbId,"fb");
                 } catch (JSONException e) {

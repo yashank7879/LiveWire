@@ -24,14 +24,23 @@
         android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        >
+        android:theme="@style/AppTheme">
+        <activity android:name=".ui.activity.EditLongTermJobActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
+
+        <activity android:name=".ui.activity.EditShortJobActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
+
         <service
             android:name="com.oppwa.mobile.connect.service.ConnectService"
-            android:exported="false"/>
+            android:exported="false" />
+
         <activity
             android:name=".ui.activity.SplashActivity"
-            android:theme="@style/Transparent">
+            android:theme="@style/Transparent"
+           >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -50,22 +59,21 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_notify_icon_blk" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@color/colorDarkBlack" />
-        <!-- //""""live  """""// -->
-            <meta-data
+            android:resource="@color/colorDarkBlack" /> <!-- //""""live  """""// -->
+        <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCucTprgN5-CrntVDNXCFhQpIgGHAswJo8" />
-      <!--//"""""""""  dev """"""""//-->
-        <!--<meta-data
+            android:value="AIzaSyCucTprgN5-CrntVDNXCFhQpIgGHAswJo8" /> <!-- //"""""""""  dev """"""""// -->
+        <!--
+<meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCiDGPgr1JZQNIGW0o8JbYXY9GT1ieNGiI" />-->
-        <!--android:value="AIzaSyBXpnvpXkyQzRem7Rr9hcjpiS24AYdMTnA"-->
+            android:value="AIzaSyCiDGPgr1JZQNIGW0o8JbYXY9GT1ieNGiI" />
+        -->
+        <!-- android:value="AIzaSyBXpnvpXkyQzRem7Rr9hcjpiS24AYdMTnA" -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -75,13 +83,11 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
         <service android:name=".firebaseservises.MyFirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-
 
         <receiver
             android:name=".peach.reciver.CheckoutBroadcastReceiver"
@@ -89,30 +95,25 @@
 
         <service
             android:name="com.oppwa.mobile.connect.service.ConnectService"
-            android:exported="false"/>
+            android:exported="false" />
 
         <activity
             android:name="com.oppwa.mobile.connect.checkout.dialog.CheckoutActivity"
-            tools:replace="android:theme"
+            android:exported="false"
+            android:launchMode="singleTop"
             android:theme="@style/CustomCheckoutTheme"
             android:windowSoftInputMode="adjustResize"
-            android:exported="false"
-            android:launchMode="singleTop"/>
-
-    <!--    <activity
+            tools:replace="android:theme" />
+        <!--
+    <activity
             tools:replace="android:theme"
             android:name="com.oppwa.mobile.connect.checkout.dialog.CheckoutActivity"
             android:theme="@style/Theme.Checkout.Dark"
             android:windowSoftInputMode="adjustPan"
             android:exported="false"
-            android:launchMode="singleTop"/>-->
-
-        <activity
-            android:name=".ui.activity.credit_card.AddCreditCardActivity">
-
-
-        </activity>
-
+            android:launchMode="singleTop"/>
+        -->
+        <activity android:name=".ui.activity.credit_card.AddCreditCardActivity" />
         <activity
             android:name=".ui.activity.WorkerMainActivity"
             android:screenOrientation="portrait"
@@ -263,10 +264,12 @@
             android:name=".ui.activity.AddBankAccountActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
-      <!--  <activity
+        <!--
+  <activity
             android:name=".ui.activity.credit_card.AddCreditCardActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />-->
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        -->
         <activity
             android:name=".ui.activity.credit_card.CreditCardActivity"
             android:screenOrientation="portrait"
@@ -320,29 +323,28 @@
             android:name=".ui.activity.UploadIntroVideoActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
-
-        <activity android:name=".ui.activity.MyProfileWorkerActivity"
+        <activity
+            android:name=".ui.activity.MyProfileWorkerActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
-
-        <activity android:name=".ui.activity.OtherReviewListActivity"
+        <activity
+            android:name=".ui.activity.OtherReviewListActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden"
-            />
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.activity.MakePaymentActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <data android:scheme="@string/checkout_ui_callback_scheme" />
 
-        <activity android:name=".ui.activity.MakePaymentActivity"
-        android:screenOrientation="portrait"
-        android:launchMode="singleTask">
-        <intent-filter>
-            <data android:scheme="@string/checkout_ui_callback_scheme"/>
+                <action android:name="android.intent.action.VIEW" />
 
-            <action android:name="android.intent.action.VIEW"/>
-
-            <category android:name="android.intent.category.DEFAULT"/>
-            <category android:name="android.intent.category.BROWSABLE"/>
-        </intent-filter>
+                <category android:name="android.intent.category.DEFAULT"
+                    />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
         </activity>
-
     </application>
 
 </manifest>

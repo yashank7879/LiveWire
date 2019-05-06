@@ -257,10 +257,7 @@ public class Constant {
 
     DateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
     String start = startDate;
-
-            try
-
-    {
+    try {
         Date newStartDate;
         newStartDate = sd.parse(start);
         sd = new SimpleDateFormat("dd MMM yyyy");
@@ -387,5 +384,32 @@ public class Constant {
             alert.show();
         }
 
+    }
+    public static String perfectDecimal(String str, int maxBeforePoint, int maxDecimal) { //price format "15455.15"
+        if (str.charAt(0) == '.') str = "0" + str;
+        int max = str.length();
+
+        String rFinal = "";
+        boolean after = false;
+        int i = 0;
+        int up = 0;
+        int decimal = 0;
+        char t;
+        while (i < max) {
+            t = str.charAt(i);
+            if (t != '.' && !after) {
+                up++;
+                if (up > maxBeforePoint) return rFinal;
+            } else if (t == '.') {
+                after = true;
+            } else {
+                decimal++;
+                if (decimal > maxDecimal)
+                    return rFinal;
+            }
+            rFinal = rFinal + t;
+            i++;
+        }
+        return rFinal;
     }
 }

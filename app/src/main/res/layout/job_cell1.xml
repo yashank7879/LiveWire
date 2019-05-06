@@ -106,7 +106,8 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/iv_profile_img">
+            android:layout_below="@+id/iv_profile_img"
+            android:layout_marginBottom="@dimen/_5sdp">
 
             <TextView
                 android:id="@+id/tv_requested"
@@ -126,8 +127,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:background="?android:attr/selectableItemBackground"
-                android:paddingBottom="@dimen/_5sdp"
-                android:paddingTop="@dimen/_5sdp">
+                android:paddingBottom="@dimen/_3sdp"
+                android:paddingTop="@dimen/_3sdp">
 
                 <TextView
                     android:id="@+id/tv_more_info"
@@ -137,7 +138,7 @@
                     android:fontFamily="@font/poppins_medium"
                     android:text="@string/more_info"
                     android:textColor="@color/colorGreen"
-                    android:textSize="@dimen/_9sdp" />
+                    android:textSize="@dimen/_11sdp" />
 
                 <ImageView
                     android:layout_width="@dimen/_9sdp"

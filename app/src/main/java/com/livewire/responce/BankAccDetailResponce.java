@@ -87,6 +87,7 @@ public class BankAccDetailResponce {
         private String crdX;
         @SerializedName("upd")
         private String updX;
+        private String bankName;
 
         public String getBankAccIdX() {
             return bankAccIdX;
@@ -166,6 +167,14 @@ public class BankAccDetailResponce {
 
         public void setUpdX(String updX) {
             this.updX = updX;
+        }
+
+        public String getBankName() {
+            return bankName;
+        }
+
+        public void setBankName(String bankName) {
+            this.bankName = bankName;
         }
     }
 }

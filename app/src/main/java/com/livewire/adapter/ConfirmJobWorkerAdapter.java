@@ -103,16 +103,19 @@ public class ConfirmJobWorkerAdapter extends RecyclerView.Adapter<ConfirmJobWork
 
 
             // @{!dataBean.job_budget.equals("") ? "$ "+dataBean.job_budget : "$ "+ dataBean.job_offer, default= "$ 0"}
-            if (!dataBean.getNumber_of_days().isEmpty() && !dataBean.getJob_offer().isEmpty()) {
-                float paidAmount = Float.parseFloat(dataBean.getNumber_of_days()) * Float.parseFloat(dataBean.getJob_offer()) * Float.parseFloat(dataBean.getJob_time_duration());
-                holder.tvBudget.setText("R" + paidAmount);
 
-            } else if (!dataBean.getJob_offer().equals("0")) {
-                holder.tvBudget.setText("R" + dataBean.getJob_offer());
 
-            } else {
-                holder.tvBudget.setText("R" + dataBean.getJob_budget());
-            }
+               if (!dataBean.getNumber_of_days().isEmpty() && !dataBean.getJob_offer().isEmpty() && dataBean.getRequest_status().equals("4")) {
+                   float paidAmount = Float.parseFloat(dataBean.getNumber_of_days()) * Float.parseFloat(dataBean.getJob_offer()) * Float.parseFloat(dataBean.getJob_time_duration());
+                   holder.tvBudget.setText("R" + paidAmount);
+
+               } else if (!dataBean.getJob_offer().equals("0") ) {
+                   holder.tvBudget.setText("R" + dataBean.getJob_offer());
+
+               } else {
+                   holder.tvBudget.setText("R" + dataBean.getJob_budget());
+               }
+
         }
 
     }
@@ -122,7 +125,6 @@ public class ConfirmJobWorkerAdapter extends RecyclerView.Adapter<ConfirmJobWork
     public int getItemCount() {
         return dataBeanList.size();
     }
-
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private final ViewDataBinding binding;
