@@ -26,7 +26,6 @@ import static com.livewire.utils.Constant.setListViewHeightBasedOnChildren;
  */
 
 public class CategaryAdapter extends RecyclerView.Adapter<CategaryAdapter.MyViewHolder> {
-
     private ArrayList<AddedSkillBean> categaryList;
     private Context mContext;
     private boolean expand = false;

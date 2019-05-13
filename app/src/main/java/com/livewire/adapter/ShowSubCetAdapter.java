@@ -64,7 +64,7 @@ class ShowSubCetAdapter extends BaseAdapter {
             holder.subCategoryText.setTag(position);
             holder.subCategoryText.setVisibility(View.VISIBLE);
             holder.subCategoryText.setText(object.getCategoryName());
-            String price= "R"+object.getMin_rate()+" - R"+object.getMax_rate();
+            String price= "R"+object.getMin_rate()/*+" - R"+object.getMax_rate()*/;
             holder.tvPrice.setText(price);
 
             /*holder.ivCancel.setOnClickListener(new View.OnClickListener() {

@@ -24,6 +24,7 @@ import com.livewire.responce.JobDetailClientResponce;
 import com.livewire.ui.activity.ClientMainActivity;
 import com.livewire.ui.activity.NearYouClientActivity;
 import com.livewire.ui.activity.WorkerMainActivity;
+import com.livewire.ui.activity.chat.ChattingActivity;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
 import com.livewire.utils.ProgressDialog;
@@ -41,6 +42,8 @@ public class NotificationMyOnGoingJobDetailClientActivity extends AppCompatActiv
     private ProgressDialog progressDialog;
     private Button btnSendOffer;
     private String jobId = "";
+    private String userId="";
+    private String workerProfilePic="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +56,7 @@ public class NotificationMyOnGoingJobDetailClientActivity extends AppCompatActiv
     private void intializeView() {
         progressDialog = new ProgressDialog(this);
         findViewById(R.id.iv_back).setOnClickListener(this);
+        binding.llChat.setOnClickListener(this);
         Bundle extras = getIntent().getExtras();
        assert extras != null;
         String userType =  extras.getString("for_user_type");
@@ -78,6 +82,7 @@ public class NotificationMyOnGoingJobDetailClientActivity extends AppCompatActiv
     }
 
     private void setMyJobDetails(final JobDetailClientResponce.DataBean dataBean) {
+
         if (dataBean.getJob_type().equals("2")) {///"""""""""" ONGOING JOB
             if (dataBean.getTotal_request().equals("0")) {  // NO OFFER SEND YET
                 binding.btnSendOffer.setVisibility(View.VISIBLE);
@@ -122,7 +127,6 @@ public class NotificationMyOnGoingJobDetailClientActivity extends AppCompatActiv
                             binding.tvJobStatus.setBackground(getResources().getDrawable(R.drawable.doteted_green_shape));
                             binding.tvJobStatus.setTextColor(ContextCompat.getColor(this, R.color.colorGreen));
                         }
-
                         break;
                     default: // in progress job
                         binding.tvJobStatus.setBackground(getResources().getDrawable(R.drawable.doteted_green_shape));
@@ -138,9 +142,13 @@ public class NotificationMyOnGoingJobDetailClientActivity extends AppCompatActiv
                 binding.btnSendOffer.setVisibility(View.GONE);
 
 
+                userId = dataBean.getRequestedUserData().get(0).getUserId();
+                workerProfilePic = dataBean.getRequestedUserData().get(0).getProfileImage();
+
+
                 // binding.tvName.setText(dataBean.getRequestedUserData().get(0).getName());
 
-                binding.tvDistance.setText(dataBean.getRequestedUserData().get(0).getDistance_in_km() + " Km away");
+                binding.tvDistance.setText(dataBean.getRequestedUserData().get(0).getDistance_in_km() + " Km");
 
                 Picasso.with(binding.ivProfileImg.getContext())
                         .load(dataBean.getRequestedUserData()
@@ -149,7 +157,7 @@ public class NotificationMyOnGoingJobDetailClientActivity extends AppCompatActiv
 
                 SpannableStringBuilder builder = new SpannableStringBuilder();
                 SpannableString minprice = new SpannableString("R" + dataBean.getRequestedUserData().get(0).getMin_rate());
-                minprice.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorDarkBlack)), 0, minprice.length(), 0);
+                /*minprice.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorDarkBlack)), 0, minprice.length(), 0);
                 //  userName.setSpan(new StyleSpan(Typeface.BOLD), 0, userName.length(), 0);
                 builder.append(minprice);
                 SpannableString toString = new SpannableString(" to ");
@@ -158,8 +166,8 @@ public class NotificationMyOnGoingJobDetailClientActivity extends AppCompatActiv
 
                 SpannableString maxprice = new SpannableString("R" + dataBean.getRequestedUserData().get(0).getMax_rate());
                 maxprice.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorDarkBlack)), 0, maxprice.length(), 0);
-                //  userName.setSpan(new StyleSpan(Typeface.BOLD), 0, userName.length(), 0);
-                builder.append(maxprice);
+                //  userName.setSpan(new StyleSpan(Typeface.BOLD), 0, userName.length(), 0);*/
+                builder.append(minprice);
 
 
                 binding.tvRangePrice.setText(builder);
@@ -175,6 +183,14 @@ public class NotificationMyOnGoingJobDetailClientActivity extends AppCompatActiv
             case R.id.iv_back:
                 onBackPressed();
                 break;
+            case R.id.ll_chat: {
+                Intent intent = new Intent(this, ChattingActivity.class);
+                intent.putExtra("otherUID", userId);
+                intent.putExtra("titleName", binding.tvName.getText().toString().trim());
+                intent.putExtra("profilePic", workerProfilePic);
+                startActivity(intent);
+            }
+            break;
 
             default:
         }

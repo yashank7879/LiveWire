@@ -69,6 +69,9 @@ public class Constant {
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 13;
     public static final boolean LOG_VALUE= true;
     public static String MY_UID= "";
+    public static final String CLIENT="client";//hirrer
+    public static final String WORKER="worker"; //worker
+    public static boolean fromProfile= false; //worker
 
 
     public static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 12;
@@ -411,5 +414,21 @@ public class Constant {
             i++;
         }
         return rFinal;
+    }
+
+
+    public static void showAvaialabilityAlert(Context mContext) {
+        final android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(mContext);
+        builder.setTitle("Alert");
+        builder.setMessage("Looks like you are offline. Please turn ON your availability to apply.");
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        android.support.v7.app.AlertDialog dialog = builder.create();
+        dialog.getWindow().getAttributes().windowAnimations = R.style.CustomDialog;
+        dialog.show();
     }
 }

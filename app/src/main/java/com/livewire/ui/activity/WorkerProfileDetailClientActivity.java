@@ -36,7 +36,6 @@ import static com.livewire.utils.ApiCollection.BASE_URL;
 /**
  * Created by mindiii on 11/29/18.
  */
-
 public class WorkerProfileDetailClientActivity extends AppCompatActivity implements View.OnClickListener {
     ActivityWorkerProfileDetailClientActivityBinding binding;
     private ProgressDialog progressDialog;

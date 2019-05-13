@@ -1,0 +1,135 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:id="@+id/main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.loopeer.shadow.ShadowView
+            android:id="@+id/sv_action_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:shadowColor="@color/colorDarkGray"
+            app:shadowMarginBottom="3dp"
+            app:shadowRadius="@dimen/_5sdp"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:weightSum="2"
+                android:gravity="center"
+                >
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:id="@+id/exchange_btn"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:orientation="vertical">
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:background="@color/colorLightGray"
+                    />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:id="@+id/auction_btn"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:orientation="vertical">
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </com.loopeer.shadow.ShadowView>
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/sliding_tabs"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            app:tabSelectedTextColor="@color/colorBlack"
+            app:tabMode="fixed"
+            app:tabIndicatorColor="@color/colorBlack"
+            app:tabTextColor="@color/colorDarkGray"
+            app:tabTextAppearance="@style/MyTabLayoutTextAppearance"
+            />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/sliding_tabs" />
+
+
+
+
+
+
+        <!-- <android.support.v7.widget.RecyclerView
+             android:id="@+id/rv_near_you"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:layout_below="@id/action_bar1"
+             android:visibility="gone">
+
+         </android.support.v7.widget.RecyclerView>
+
+         <TextView
+             android:id="@+id/tv_no_data"
+             style="@style/mediumPopinsRegularStyle"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_centerInParent="true"
+             android:text="@string/no_near_by_you"
+             android:textColor="@color/colorGreen" />
+
+
+         <RelativeLayout
+             android:id="@+id/rl_update_profile"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_centerInParent="true"
+             android:visibility="gone">
+
+             <Button
+                 android:id="@+id/btn_update"
+                 style="@style/SmallPopinsLightStyle"
+                 android:layout_width="@dimen/_120sdp"
+                 android:layout_height="@dimen/_30sdp"
+                 android:layout_centerHorizontal="true"
+                 android:layout_margin="@dimen/_8sdp"
+                 android:background="@drawable/button_green_bg"
+                 android:text="@string/update_profile"
+                 android:textAllCaps="false"
+                 android:textColor="@color/colorWhite" />
+
+             <TextView
+                 android:id="@+id/tv_add_loc"
+                 style="@style/mediumPopinsRegularStyle"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_below="@id/btn_update"
+                 android:gravity="center"
+                 android:text="@string/please_update_your_location_to_know_live_wires_near_you"
+                 android:textColor="@color/colorGreen"
+
+                 />
+
+         </RelativeLayout>-->
+
+    </RelativeLayout>
+</layout>

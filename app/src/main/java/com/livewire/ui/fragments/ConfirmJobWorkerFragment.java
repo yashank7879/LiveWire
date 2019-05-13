@@ -374,6 +374,9 @@ public class ConfirmJobWorkerFragment extends Fragment implements View.OnClickLi
             tvCancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    /*jobType="";
+                    skillsStrin ="";
+                    confirmJobApi();*/
                     dialog.dismiss();
                 }
             });

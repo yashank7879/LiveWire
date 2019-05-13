@@ -42,7 +42,7 @@ import com.livewire.ui.activity.chat.ChattingActivity;
 import com.livewire.ui.fragments.ChatClientFragment;
 import com.livewire.ui.fragments.MyJobClientFragment;
 import com.livewire.ui.fragments.NearByClientFragment;
-import com.livewire.ui.fragments.NotificationClientFragment;
+import com.livewire.ui.fragments.notification_client_tab.NotificationClientBaseFragment;
 import com.livewire.ui.fragments.PostJobHomeFragment;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
@@ -53,8 +53,6 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import static com.livewire.utils.ApiCollection.BASE_URL;
 
@@ -140,9 +138,9 @@ public class ClientMainActivity extends AppCompatActivity implements View.OnClic
 
         AlertDialog.Builder builder1 = new AlertDialog.Builder(ClientMainActivity.this);
         builder1.setTitle("Alert");
-        builder1.setMessage("You Need To Switch Your Profile");
+        builder1.setMessage(R.string.please_switch_user_mode_to_do_this);
         builder1.setCancelable(true);
-        builder1.setPositiveButton("Yes",
+        builder1.setPositiveButton("OK",
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
@@ -151,7 +149,7 @@ public class ClientMainActivity extends AppCompatActivity implements View.OnClic
                         dialog.cancel();
                     }
                 });
-        builder1.setNegativeButton("No",
+        builder1.setNegativeButton("NO",
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
@@ -313,7 +311,8 @@ public class ClientMainActivity extends AppCompatActivity implements View.OnClic
                         binding.ivNotification.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorGreen)));
                     }
                     binding.ivNotificatonDot.setVisibility(View.VISIBLE);
-                    replaceFragment(new NotificationClientFragment(), false, R.id.fl_container);
+                   // replaceFragment(new NotificationClientFragment(), false, R.id.fl_container);
+                    replaceFragment(new NotificationClientBaseFragment(), false, R.id.fl_container);
                     clickId = R.id.notification_ll;
                 }
                 break;

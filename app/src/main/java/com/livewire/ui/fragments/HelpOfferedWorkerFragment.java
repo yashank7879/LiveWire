@@ -30,6 +30,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -58,7 +59,9 @@ import java.util.ArrayList;
 import static com.livewire.utils.ApiCollection.BASE_URL;
 import static com.livewire.utils.ApiCollection.GET_JOB_LIST_API;
 import static com.livewire.utils.ApiCollection.GET_SUBCATEGORY_LIST_API;
+import static com.livewire.utils.ApiCollection.GET_WORKER_SKILL_API;
 import static com.livewire.utils.ApiCollection.JOBPOSTSEND_REQUEST_2_API;
+import static com.livewire.utils.Constant.fromProfile;
 
 
 public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener, SubCategoryAdapter.SubCategoryLisner, HelpOfferedAdapter.HelpOfferItemListener {
@@ -188,13 +191,24 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
     @Override
     public void onResume() {
         super.onResume();
+        if (fromProfile) {
+            skillsStrin = "";
+            newJobValue = "";
+            pendingRequestValue = "";
+            subCategoryList.clear();
+            subCategoryTempList.clear();
+            filterLayout.setVisibility(View.GONE);
+            addItemsInSubCategoryTempList();
+        }
         helpOfferedApi();
+
     }
 
     //"""""""""" sub category list api """""""""""""//
     private void SubCategoryListApi() {
         if (Constant.isNetworkAvailable(mContext, mainLayout)) {
-            AndroidNetworking.get(BASE_URL + GET_SUBCATEGORY_LIST_API)
+            AndroidNetworking.get(BASE_URL + GET_WORKER_SKILL_API)
+                    .addHeaders("authToken", PreferenceConnector.readString(mContext, PreferenceConnector.AUTH_TOKEN,""))
                     .setPriority(Priority.MEDIUM)
                     .build()
                     .getAsJSONObject(new JSONObjectRequestListener() {
@@ -212,7 +226,10 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
                                     addItemsInSubCategoryTempList();
 
                                 } else {
-                                    Constant.snackBar(mainLayout, message);
+                                    SubCategoryResponse.DataBean dataBean = new SubCategoryResponse.DataBean();
+                                    dataBean.setCategoryName("Skills");
+                                    subCategoryTempList.add(0, dataBean);
+                                    //Constant.snackBar(mainLayout, message);
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -222,7 +239,7 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
 
                         @Override
                         public void onError(ANError anError) {
-
+                            Constant.errorHandle(anError,getActivity());
                         }
                     });
         }
@@ -230,6 +247,7 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
 
     // create static responce list
     private void addItemsInSubCategoryTempList() {
+
         for (int i = 0; i < subCategoryResponse.getData().size(); i++) {
             SubCategoryResponse.DataBean dataBean = new SubCategoryResponse.DataBean();
             dataBean.setCategoryName(subCategoryResponse.getData().get(i).getCategoryName());
@@ -299,6 +317,7 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
             });
         }
     }
+
 
 
     @Override
@@ -443,7 +462,6 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
             case R.id.sub_category_spinner:
                 // if (!subCategoryResponse.getData().get(subCategorySpinner.getSelectedItemPosition()).getCategoryName().equals("Skills")) {
                 if (!subCategoryTempList.get(subCategorySpinner.getSelectedItemPosition()).getCategoryName().equals("Skills")) {
-
                     CategoryModel category = new CategoryModel();
                     category.setCategoryName(subCategoryTempList.get(subCategorySpinner.getSelectedItemPosition()).getCategoryName());
                     category.setCategoryId(subCategoryTempList.get(subCategorySpinner.getSelectedItemPosition()).getCategoryId());
@@ -460,9 +478,7 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-
     }
-
 
     @Override
     public void subCategoryItemOnClick(int pos, CategoryModel categoryModel, String key) {
@@ -520,7 +536,6 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
             sb.append(",");
         }
         skillsStrin = String.valueOf(sb);
-
         return skillsStrin;
     }
 
@@ -539,19 +554,23 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
        /* dataBean.setJob_confirmed("0");
         offeredAdapter.notifyDataSetChanged();
         sendRequestApi(dataBean.getJobId(), dataBean.getUserId(), pos);*/
-
-        if (PreferenceConnector.readString(mContext, PreferenceConnector.IS_BANK_ACC, "0").equals("1")) {
-            dataBean.setJob_confirmed("0");
-            offeredAdapter.notifyDataSetChanged();
-            sendRequestApi(dataBean.getJobId(), dataBean.getUserId(), pos);
-        } else {
-            showAddBankAccountDialog();
-        }
+       if (PreferenceConnector.readString(mContext,PreferenceConnector.AVAILABILITY_1,"").equals("1")) {// check avaialability
+           if (PreferenceConnector.readString(mContext, PreferenceConnector.IS_BANK_ACC, "0").equals("1")) {// check bank account detail
+               dataBean.setJob_confirmed("0");
+               offeredAdapter.notifyDataSetChanged();
+               sendRequestApi(dataBean.getJobId(), dataBean.getUserId(), pos);
+           } else {
+               showAddBankAccountDialog();
+           }
+       }else{
+        Constant.showAvaialabilityAlert(mContext);
+       }
     }
 
     @Override
     public void userInfoDetailOnClick(String userId) {
         if (Constant.isNetworkAvailable(mContext, mainLayout)) {
+
             Intent intent = new Intent(mContext, ClientProfileDetailWorkerActivity.class);
             intent.putExtra("UserIdKey", userId);
             startActivity(intent);

@@ -42,7 +42,7 @@ import com.livewire.ui.fragments.ChatWorkerFragment;
 import com.livewire.ui.fragments.JobRequestFragment;
 import com.livewire.ui.fragments.MyJobWorkerFragment;
 import com.livewire.ui.fragments.NearByWorkerFragment;
-import com.livewire.ui.fragments.NotificationWorkerFragment;
+import com.livewire.ui.fragments.notification_worker_tab.NotificationworkerBaseFragment;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
 import com.livewire.utils.ProgressDialog;
@@ -264,7 +264,8 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
                         binding.ivNotification.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorBlack)));
                     }
                     binding.ivNotificationDot.setVisibility(View.VISIBLE);
-                    replaceFragment(new NotificationWorkerFragment(), false, R.id.fl_container);
+                   // replaceFragment(new NotificationWorkerFragment(), false, R.id.fl_container);
+                    replaceFragment(new NotificationworkerBaseFragment(), false, R.id.fl_container);
                     clickId = R.id.ll_notificaton;
                 }
                 break;
@@ -306,27 +307,18 @@ public class WorkerMainActivity extends AppCompatActivity implements View.OnClic
     public void showAlertWorkerDialog() {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(WorkerMainActivity.this);
         builder1.setTitle("Alert");
-        builder1.setMessage("You Need To Switch Your Profile");
+        builder1.setMessage(R.string.please_switch_user_mode_to_do_this);
         builder1.setCancelable(true);
-        builder1.setPositiveButton("Yes",
+        builder1.setPositiveButton("OK",
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         Intent intent = new Intent(WorkerMainActivity.this, MyProfileWorkerActivity.class);
                         startActivity(intent);
-                        /*Intent intent = new Intent(this, WorkerMainActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        intent.putExtra("MyProfile", "MyProfile");
-                        intent.putExtra(USER_ID, userId);
-                        intent.putExtra("body", message);
-                        intent.putExtra(CONSTANTTYPE, type);
-                        pendingIntent = PendingIntent.getActivity(this, iUniqueId, intent, PendingIntent.FLAG_ONE_SHOT);
-                        sendNotification(tittle, message, pendingIntent);*/
                         dialog.cancel();
-
                     }
                 });
-        builder1.setNegativeButton("No",
+        builder1.setNegativeButton("NO",
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {

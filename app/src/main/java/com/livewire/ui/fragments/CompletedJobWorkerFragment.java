@@ -168,11 +168,10 @@ public class CompletedJobWorkerFragment extends Fragment implements View.OnClick
         };
 
         recyclerView.addOnScrollListener(scrollListener);
-
         //""""""""" floating button hide when scroll down """"""""//
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 if (dy > 0 && btnFilter.getVisibility() == View.VISIBLE) {
                     btnFilter.hide();
@@ -385,6 +384,9 @@ public class CompletedJobWorkerFragment extends Fragment implements View.OnClick
             tvCancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    /*jobType="";
+                    skillsStrin ="";
+                    confirmJobApi();*/
                     dialog.dismiss();
                 }
             });

@@ -22,9 +22,6 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -34,15 +31,9 @@ import com.google.gson.Gson;
 import com.iceteck.silicompressorr.SiliCompressor;
 import com.livewire.R;
 import com.livewire.databinding.FragmentWriteSomthingAboutWorkerBinding;
-import com.livewire.multiple_file_upload.MultiPartRequest;
-import com.livewire.multiple_file_upload.Template;
-import com.livewire.multiple_file_upload.VolleyMySingleton;
 import com.livewire.responce.SignUpResponce;
 import com.livewire.ui.activity.ClientMainActivity;
-import com.livewire.ui.activity.CompleteProfileActivity;
-import com.livewire.ui.activity.EditProfileWorkerActivity;
-import com.livewire.ui.activity.MyProfileClientActivity;
-import com.livewire.ui.activity.UploadIntroVideoActivity;
+import com.livewire.ui.activity.complete_profile.UploadIntroVideoActivity;
 import com.livewire.ui.activity.WorkerMainActivity;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PermissionAll;
@@ -57,10 +48,7 @@ import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import static com.livewire.utils.ApiCollection.BASE_URL;
 import static com.livewire.utils.ApiCollection.CHANGE_USER_MODE_API;
@@ -109,7 +97,7 @@ public class WriteSomthingAboutWorkerFragment extends Fragment implements View.O
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_write_somthing_about_worker, container, false);

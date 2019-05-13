@@ -147,7 +147,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:fontFamily="@font/poppins_medium"
-                                        android:text='@{workerResponcd != null ? workerResponcd.distance_in_km + " Km away" : "N/A", default = "N/A"}'
+                                        android:text='@{workerResponcd != null ? workerResponcd.distance_in_km + " Km" : "N/A", default = "N/A"}'
                                         android:textColor="@color/colorDarkGray"
                                         android:textSize="@dimen/_9sdp" />
 
@@ -284,7 +284,7 @@
 
                                 <TextView
                                     android:id="@+id/tv_category"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="@dimen/_220sdp"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/_5sdp"
                                     android:fontFamily="@font/poppins_semibold"
@@ -296,7 +296,7 @@
                                 <TextView
                                     android:id="@+id/tv_sub_category"
                                     style="@style/smallPopinsRegularStyle"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="@dimen/_220sdp"
                                     android:layout_height="wrap_content"
                                     android:text='@{workerResponcd.parentCategoryName, default = "N/A"}'
                                     android:textColor="@color/colorDarkGray" />
@@ -383,6 +383,7 @@
                                         android:layout_below="@+id/tv_offer_rate"
                                         android:layout_marginStart="@dimen/_5sdp"
                                         android:layout_toEndOf="@+id/rate_range"
+                                        android:textColor="@color/colorDarkBlack"
                                         android:fontFamily="@font/poppins_semibold"
                                         android:text="@string/n_a"
                                         android:textSize="@dimen/_12sdp" />
@@ -584,13 +585,19 @@
 
                             </RelativeLayout>
 
-
                             <RelativeLayout
                                 android:id="@+id/payment_info_layout"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/tv_description"
                                 android:visibility="gone">
+
+                                <View
+                                    android:id="@+id/view4_id"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:layout_marginEnd="@dimen/_8sdp"
+                                    android:background="@color/colorExtraLightGray" />
 
                                 <TextView
                                     android:id="@+id/tv_payment_info"

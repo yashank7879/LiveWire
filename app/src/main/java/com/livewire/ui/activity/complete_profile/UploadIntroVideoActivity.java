@@ -1,4 +1,4 @@
-package com.livewire.ui.activity;
+package com.livewire.ui.activity.complete_profile;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,7 +10,6 @@ import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,14 +17,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.livewire.R;
-import com.livewire.cropper.CropImage;
-import com.livewire.cropper.CropImageView;
 import com.livewire.databinding.ActivityUploadIntroVideoBinding;
 import com.livewire.model.IntroVideoModal;
+import com.livewire.ui.activity.ClientMainActivity;
 import com.livewire.ui.fragments.WriteSomthingAboutWorkerFragment;
 import com.livewire.utils.Constant;
 import com.livewire.utils.ImageRotator;
@@ -34,7 +29,6 @@ import com.livewire.utils.PreferenceConnector;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.UUID;
@@ -84,7 +78,9 @@ public class UploadIntroVideoActivity extends AppCompatActivity implements View.
                 if (finalVideoUri == null ) {
                     Constant.snackBar(binding.mainLayout,getString(R.string.please_add_intro_video));
                 }else {
-                    replaceFragment(new WriteSomthingAboutWorkerFragment(), true, R.id.fl_container);
+                    Intent intent1 = new Intent(this,WriteSometingActivity.class);
+                    startActivity(intent1);
+                   // replaceFragment(new WriteSomthingAboutWorkerFragment(), true, R.id.fl_container);
                 }
                 break;
             case R.id.iv_back:
@@ -97,7 +93,9 @@ public class UploadIntroVideoActivity extends AppCompatActivity implements View.
                 finish();
                 break;
             case R.id.btn_skip:
-                replaceFragment(new WriteSomthingAboutWorkerFragment(), true, R.id.fl_container);
+                Intent intent1 = new Intent(this,WriteSometingActivity.class);
+                startActivity(intent1);
+              //  replaceFragment(new WriteSomthingAboutWorkerFragment(), true, R.id.fl_container);
                 break;
             case R.id.rl_video: {
                 if (finalVideoUri != null) {

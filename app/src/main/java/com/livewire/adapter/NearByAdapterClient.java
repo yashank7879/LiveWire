@@ -53,7 +53,7 @@ public class NearByAdapterClient extends RecyclerView.Adapter<NearByAdapterClien
                     .placeholder(R.drawable.ic_user)
                     .into(holder.ivProfileImg);
             assert dataBean.getDistance_in_km() != null;
-            holder.tvDistance.setText(dataBean.getDistance_in_km() + " Km away");
+            holder.tvDistance.setText(dataBean.getDistance_in_km() + " Km");
             float rating =  dataBean.getRating().isEmpty() ? 0:Float.parseFloat(dataBean.getRating());
                 holder.ratingBar.setRating(rating);
 

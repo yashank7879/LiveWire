@@ -117,7 +117,7 @@ public class MySingleJobDetailClientActivity extends AppCompatActivity implement
                                 .get(0).getProfileImage()).fit().into(binding.ivProfileImg);
 
                 binding.tvName.setText(dataBean.getRequestedUserData().get(0).getName());
-                binding.tvDistance.setText(dataBean.getRequestedUserData().get(0).getDistance_in_km() + " Km away");
+                binding.tvDistance.setText(dataBean.getRequestedUserData().get(0).getDistance_in_km() + " Km");
             } else {// multiple images show
 
                 binding.rlMultiImg.setVisibility(View.VISIBLE);

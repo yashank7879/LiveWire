@@ -11,7 +11,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,6 +24,7 @@ import com.livewire.R;
 import com.livewire.adapter.ShowSkillsAdapter;
 import com.livewire.databinding.ActivityMyProfileClientBinding;
 import com.livewire.responce.MyProfileResponce;
+import com.livewire.ui.activity.complete_profile.AddYourSkillsActivity;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
 import com.livewire.utils.ProgressDialog;
@@ -59,8 +59,8 @@ public class MyProfileClientActivity extends AppCompatActivity implements View.O
         showSkillsAdapter = new ShowSkillsAdapter(this, showSkillBeans);
         binding.rvSkillData.setAdapter(showSkillsAdapter);
         actionBarIntialize();
-        if (getIntent().getStringExtra("SignUp") != null){
-             fromSignUp = getIntent().getStringExtra("SignUp");
+        if (getIntent().getStringExtra("SignUp") != null) {
+            fromSignUp = getIntent().getStringExtra("SignUp");
             binding.actionBar1.ivBack.setVisibility(View.GONE);
             binding.llHirer.setOnClickListener(this);
         }
@@ -69,14 +69,21 @@ public class MyProfileClientActivity extends AppCompatActivity implements View.O
         binding.btnLogout.setOnClickListener(this);
         binding.btnEdit.setOnClickListener(this);
         binding.rlVideoImg.setOnClickListener(this);
-       // binding.completed.setOnClickListener(this);
+        // binding.completed.setOnClickListener(this);
         // binding.cvCompleteJob.setOnClickListener(this);
         binding.ivProfile.setOnClickListener(this);
         binding.rlRatingBar.setOnClickListener(this);
         binding.llWorker.setOnClickListener(this);
         //PreferenceConnector.writeString(this, PreferenceConnector.USER_DOB, "");
+        //""""""" clear prefrence for """""""""//
         PreferenceConnector.writeString(this, PreferenceConnector.SELECTED_VIDEO, "");
         PreferenceConnector.writeString(this, PreferenceConnector.ABOUT_ME, "");
+        PreferenceConnector.writeString(this, PreferenceConnector.FIRST_NAME, "");
+        PreferenceConnector.writeString(this, PreferenceConnector.LAST_NAME, "");
+        PreferenceConnector.writeString(this, PreferenceConnector.BANK_ACC_NO, "");
+        PreferenceConnector.writeString(this, PreferenceConnector.BRANCH_CODE, "");
+        PreferenceConnector.writeString(this, PreferenceConnector.BANK_NAME,"");
+
 
         myProfileApi();
     }
@@ -157,10 +164,15 @@ public class MyProfileClientActivity extends AppCompatActivity implements View.O
 
             case R.id.ll_worker: {
                 String dob = PreferenceConnector.readString(this, PreferenceConnector.USER_DOB, "");
-                if (dob.equals("0")) {
+                String completeProfile = PreferenceConnector.readString(this, PreferenceConnector.COMPLETE_PROFILE_STATUS, "");
+                if (dob.equals("0")) { //first time ask for are u over 40?
                     ageAlertDiaog();
                 } else {
-                    ChangeModeApi();
+                    if (completeProfile.equals("1")) { // if profile is complete so mode will be change
+                        ChangeModeApi();
+                    } else { // profile is not completed so it will go the add skill activity(Complete profile steps)
+                        startActivity(new Intent(MyProfileClientActivity.this, AddYourSkillsActivity.class));
+                    }
                 }
                 /* if (PreferenceConnector.readString(this, PreferenceConnector.COMPLETE_PROFILE_STATUS, "").equals("0")) {
                     startActivity(new Intent(this, AddYourSkillsActivity.class));
@@ -182,8 +194,8 @@ public class MyProfileClientActivity extends AppCompatActivity implements View.O
                     binding.ivClient.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorWhite)));
                 }
 
-               if (fromSignUp.equals("SignUp")) {
-                   finishAffinity();
+                if (fromSignUp.equals("SignUp")) {
+                    finishAffinity();
                     intent = new Intent(MyProfileClientActivity.this, ClientMainActivity.class);
                     startActivity(intent);
                     finish();
@@ -213,22 +225,26 @@ public class MyProfileClientActivity extends AppCompatActivity implements View.O
                                 String message = response.getString("message");
                                 if (status.equals("success")) {
 
-                                    if (PreferenceConnector.readString(MyProfileClientActivity.this, PreferenceConnector.USER_MODE, "").equals("worker")) { //switch worker to clint
-                                        PreferenceConnector.writeString(MyProfileClientActivity.this, PreferenceConnector.USER_MODE, "client");
+                                    if (PreferenceConnector.readString(MyProfileClientActivity.this, PreferenceConnector.USER_MODE, "").equals(Constant.WORKER)) { //switch worker to clint
+                                        PreferenceConnector.writeString(MyProfileClientActivity.this, PreferenceConnector.USER_MODE, Constant.CLIENT);
                                         finishAffinity();
                                         Intent intent = new Intent(MyProfileClientActivity.this, ClientMainActivity.class);
                                         startActivity(intent);
                                         finish();
                                     } else {//switch client to worker
-                                        PreferenceConnector.writeString(MyProfileClientActivity.this, PreferenceConnector.USER_MODE, "worker");
-                                        if (PreferenceConnector.readString(MyProfileClientActivity.this, PreferenceConnector.COMPLETE_PROFILE_STATUS, "").equals("0")) {
+                                        PreferenceConnector.writeString(MyProfileClientActivity.this, PreferenceConnector.USER_MODE, Constant.WORKER);
+                                      /*  if (PreferenceConnector.readString(MyProfileClientActivity.this, PreferenceConnector.COMPLETE_PROFILE_STATUS, "").equals("0")) {
                                             startActivity(new Intent(MyProfileClientActivity.this, AddYourSkillsActivity.class));
                                         } else {
                                             finishAffinity();
                                             Intent intent = new Intent(MyProfileClientActivity.this, WorkerMainActivity.class);
                                             startActivity(intent);
                                             finish();
-                                        }
+                                        }*/
+                                        finishAffinity();
+                                        Intent intent = new Intent(MyProfileClientActivity.this, WorkerMainActivity.class);
+                                        startActivity(intent);
+                                        finish();
                                     }
 
                                 } else {
@@ -250,7 +266,7 @@ public class MyProfileClientActivity extends AppCompatActivity implements View.O
 
     //"""""""""' my profile worker side""""""""""""""//
     private void myProfileApi() {// help offer api calling
-        if (Constant.isNetworkAvailable(this, binding.svProfile)){
+        if (Constant.isNetworkAvailable(this, binding.svProfile)) {
             progressDialog.show();
             AndroidNetworking.get(BASE_URL + GET_MY_USER_PROFILE_API)
                     .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
@@ -307,7 +323,7 @@ public class MyProfileClientActivity extends AppCompatActivity implements View.O
         }
     }
 
-    private void ageAlertDiaog(){
+    private void ageAlertDiaog() {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(MyProfileClientActivity.this);
         builder1.setTitle("Alert");
         builder1.setMessage("Are you over 40 Years?");
@@ -361,7 +377,9 @@ public class MyProfileClientActivity extends AppCompatActivity implements View.O
                                 String message = response.getString("message");
                                 if (status.equals("success")) {
                                     PreferenceConnector.writeString(MyProfileClientActivity.this, PreferenceConnector.USER_DOB, "1");
-                                    ChangeModeApi();
+                                    startActivity(new Intent(MyProfileClientActivity.this, AddYourSkillsActivity.class));
+
+                                    // ChangeModeApi();
                                 } else {
                                     Constant.snackBar(binding.svProfile, message);
                                 }

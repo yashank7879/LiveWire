@@ -290,7 +290,7 @@ public class EditLongTermJobActivity extends AppCompatActivity implements View.O
          DatePickerDialog startDateDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-               // startDateTime = Calendar.getInstance();
+                startDateTime = Calendar.getInstance();
                 startDateTime.set(Calendar.YEAR, year);
                 startDateTime.set(Calendar.MONTH, month);
                 startDateTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);

@@ -55,8 +55,9 @@
 
             <TextView
                 android:id="@+id/tv_category"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/_180sdp"
                 android:layout_height="wrap_content"
+                android:singleLine="true"
                 android:fontFamily="@font/poppins_semibold"
                 android:text='@{dataBean.subCategoryName, default = "N/A"}'
                 android:textColor="@color/colorDarkBlack"
@@ -65,8 +66,9 @@
             <TextView
                 android:id="@+id/tv_subcategory"
                 style="@style/smallPopinsRegularStyle"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/_180sdp"
                 android:layout_height="wrap_content"
+                android:singleLine="true"
                 android:layout_below="@+id/tv_category"
                 android:text='@{dataBean.parentCategoryName, default = "N/A"}'
                 android:textColor="@color/colorDarkGray" />
@@ -148,7 +150,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_medium"
-                    android:text='@{dataBean.distance_in_km +" 1 km away",default = "N/A"}'
+                    android:text='@{dataBean.distance_in_km +" km",default = "N/A"}'
                     android:textColor="@color/colorDarkGray"
                     android:textSize="@dimen/_9sdp" />
 

@@ -66,6 +66,7 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
     private String currency;
     private TextView tv_currency;
     private RelativeLayout rlCurrency;
+    private float minRange;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -186,6 +187,7 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
     @Override
     public void requestBtnOnclick(NearYouResponce.DataBean response) {
         openRequestDialog(response.getUserId());
+        minRange = Float.parseFloat(response.getMin_rate());
     }
 
     @Override
@@ -231,8 +233,8 @@ public class NearYouClientActivity extends AppCompatActivity implements View.OnC
                     Constant.snackBar(mainLayout1, "Please enter offer price");
                 } else if (etOfferPrice.getText().toString().trim().equals("0")) {
                     Constant.snackBar(mainLayout1, "Offer price should not be zero");
-                } else if (Float.parseFloat(etOfferPrice.getText().toString()) < 3) {
-                    Constant.snackBar(mainLayout1, "Offer rate should not be less than 3 dollar");
+                } else if (Float.parseFloat(etOfferPrice.getText().toString()) < minRange) {
+                    Constant.snackBar(mainLayout1, "The candidate's minimum hourly rate is R"+minRange);
                 } else {
                     dialog.dismiss();
                     sendOfferRequestApi(etOfferPrice.getText().toString().trim(), mainLayout1, userId);

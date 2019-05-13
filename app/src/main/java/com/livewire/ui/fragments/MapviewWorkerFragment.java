@@ -62,7 +62,6 @@ import static com.livewire.utils.ApiCollection.NEAR_BY_USER_API;
  */
 public class MapviewWorkerFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener, GoogleMap.OnMarkerClickListener, InfoWindowManager.WindowShowListener {
     private static final String TAG = MapviewWorkerFragment.class.getName();
-
     // TODO: Rename parameter arguments, choose names that match
     FragmentMapviewBinding binding;
     private static final String ARG_PARAM1 = "param1";
@@ -223,9 +222,7 @@ public class MapviewWorkerFragment extends Fragment implements OnMapReadyCallbac
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-
                         }
-
                         @Override
                         public void onError(ANError anError) {
                             progressDialog.dismiss();
@@ -238,11 +235,14 @@ public class MapviewWorkerFragment extends Fragment implements OnMapReadyCallbac
     private void showMarkers(NearByResponce.DataBean data) {
         if (mMap != null) {
             try {
-                final Marker marker2 = mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(data.getLatitude()), Double.parseDouble(data.getLongitude()))).snippet(data.getUserId()));
+                double lat = Double.parseDouble(data.getLatitude()) + 0.005;
+                double lng = Double.parseDouble(data.getLongitude()) + 0.005;
+                Log.e(TAG, "change lat"+lat +"------"+"change lng"+lng);
+                Log.e(TAG, "actual lat"+data.getLatitude() +"------"+"actual lng"+data.getLongitude());
+                final Marker marker2 = mMap.addMarker(new MarkerOptions().position(new LatLng(lat,lng)).snippet(data.getUserId()));
                 final int offsetX = (int) getResources().getDimension(R.dimen.marker_offset_x);
                 final int offsetY = (int) getResources().getDimension(R.dimen.marker_offset_y);
-                final InfoWindow.MarkerSpecification markerSpec =
-                        new InfoWindow.MarkerSpecification(offsetX, offsetY);
+                final InfoWindow.MarkerSpecification markerSpec = new InfoWindow.MarkerSpecification(offsetX, offsetY);
                 InfoWindow formWindow = new InfoWindow(marker2, markerSpec, CustomInfoWindowFragment.newInstance(data));
                 mMap.setOnMarkerClickListener(MapviewWorkerFragment.this);
                 markerList.add(marker2);

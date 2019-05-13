@@ -25,6 +25,7 @@ import com.livewire.ui.activity.ClientMainActivity;
 
 import com.livewire.ui.activity.RequestClientActivity;
 import com.livewire.ui.activity.WorkerMainActivity;
+import com.livewire.ui.activity.chat.ChattingActivity;
 import com.livewire.ui.activity.credit_card.AddCreditCardActivity;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
@@ -46,6 +47,7 @@ public class NotificationMySingleJobDetailClientActivity extends AppCompatActivi
     private String workerName="";
     private ProgressDialog progressDialog;
     private String jobId = "";
+    private String workerProfilePic="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +61,7 @@ public class NotificationMySingleJobDetailClientActivity extends AppCompatActivi
         progressDialog = new ProgressDialog(this);
         binding.ivBack.setOnClickListener(this);
         binding.flMultiImg.setOnClickListener(this);
+        binding.llChat.setOnClickListener(this);
         Bundle extras = getIntent().getExtras();
         assert extras != null;
         String userType =  extras.getString("for_user_type");
@@ -104,12 +107,16 @@ public class NotificationMySingleJobDetailClientActivity extends AppCompatActivi
                 binding.tvNoRequest.setVisibility(View.GONE);
                 binding.rlMultiImg.setVisibility(View.GONE);
 
+                usetId = dataBean.getRequestedUserData().get(0).getUserId(); //worker user id to give review
+                workerName = dataBean.getRequestedUserData().get(0).getName();//worker name
+                workerProfilePic = dataBean.getRequestedUserData().get(0).getProfileImage();
+
                 Picasso.with(binding.ivProfileImg.getContext())
                         .load(dataBean.getRequestedUserData()
                                 .get(0).getProfileImage()).fit().into(binding.ivProfileImg);
 
                 binding.tvName.setText(dataBean.getRequestedUserData().get(0).getName());
-                binding.tvDistance.setText(dataBean.getRequestedUserData().get(0).getDistance_in_km() + " Km away");
+                binding.tvDistance.setText(dataBean.getRequestedUserData().get(0).getDistance_in_km() + " Km");
 
             } else {   // multiple images show
 
@@ -194,6 +201,13 @@ public class NotificationMySingleJobDetailClientActivity extends AppCompatActivi
                 intent.putExtra("PaymentKey", budget);
                 intent.putExtra("JobIdKey", JobId);
                 intent.putExtra("UserIdKey", usetId);
+                startActivity(intent);
+                break;
+            case R.id.ll_chat:
+                intent = new Intent(this, ChattingActivity.class);
+                intent.putExtra("otherUID", usetId);
+                intent.putExtra("titleName", workerName);
+                intent.putExtra("profilePic", workerProfilePic);
                 startActivity(intent);
                 break;
             default:

@@ -1,4 +1,4 @@
-package com.livewire.ui.activity;
+package com.livewire.ui.activity.complete_profile;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -64,7 +64,6 @@ public class AddYourSkillsActivity extends AppCompatActivity implements View.OnC
     private ArrayAdapter<AddSkillsResponce.DataBean.SubcatBean> subCateoryAdapter;
     private ArrayList<SubCategoryModel> subCategoryModelList = new ArrayList<>();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,7 +87,7 @@ public class AddYourSkillsActivity extends AppCompatActivity implements View.OnC
         categoryAdapter.setDropDownViewResource(R.layout.spinner_drop_down);*/
         binding.btnNext.setOnClickListener(this);
         binding.ivBack.setOnClickListener(this);
-        binding.tvCancel.setOnClickListener(this);
+        binding.btnSkip.setOnClickListener(this);
         binding.addSkillsRl.setOnClickListener(this);
         loadSkillsData();
     }
@@ -183,19 +182,19 @@ public class AddYourSkillsActivity extends AppCompatActivity implements View.OnC
             case R.id.iv_back:
                 onBackPressed();
                 break;
-            case R.id.tv_cancel:
-                finishAffinity();
-                Intent intent = new Intent(this, ClientMainActivity.class);
-                startActivity(intent);
-                finish();
-                break;
             case R.id.add_skills_rl:
                 showAddSkillsDialog();
+                break;
+                case R.id.btn_skip:
+                    Intent intent = new Intent(this, UploadIntroVideoActivity.class);
+                    startActivity(intent);
                 break;
         }
     }
 
-    @Override
+
+
+/*    @Override
     public void onBackPressed() {// it will move to the Worker main activity
         super.onBackPressed();
         finishAffinity();
@@ -203,7 +202,7 @@ public class AddYourSkillsActivity extends AppCompatActivity implements View.OnC
         intent.putExtra("workerMyProfile","workerMyProfile");
         startActivity(intent);
         finish();
-    }
+    }*/
 
     //"""""""""show dialog for add skills""""""""""""""""//
     private void showAddSkillsDialog() {
@@ -216,7 +215,7 @@ public class AddYourSkillsActivity extends AppCompatActivity implements View.OnC
             TextView tvCancel = dialog.findViewById(R.id.tv_cancel);
             final RelativeLayout addSkillsLayout = dialog.findViewById(R.id.add_skills_layout);
             final EditText etMinPrice = dialog.findViewById(R.id.et_min_price);
-            final EditText etMaxPrice = dialog.findViewById(R.id.et_max_price);
+           // final EditText etMaxPrice = dialog.findViewById(R.id.et_max_price);
             Button btnAddSkills = dialog.findViewById(R.id.btn_add_skills);
             final Spinner categorySpinner = dialog.findViewById(R.id.category_spinner);
             subCategorySpinner = dialog.findViewById(R.id.sub_category_spinner);
@@ -225,12 +224,12 @@ public class AddYourSkillsActivity extends AppCompatActivity implements View.OnC
             categoryAdapter.setDropDownViewResource(R.layout.spinner_drop_down);
             categorySpinner.setOnItemSelectedListener(this);
             categorySpinner.setAdapter(categoryAdapter);
-            Constant.hideSoftKeyBoard(AddYourSkillsActivity.this, etMaxPrice);
+            Constant.hideSoftKeyBoard(AddYourSkillsActivity.this, etMinPrice);
             btnAddSkills.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    dialogValidations(categorySpinner, etMinPrice, etMaxPrice, addSkillsLayout, dialog);
-                    Constant.hideSoftKeyBoard(AddYourSkillsActivity.this, etMaxPrice);
+                    dialogValidations(categorySpinner, etMinPrice, addSkillsLayout, dialog);
+                    Constant.hideSoftKeyBoard(AddYourSkillsActivity.this, etMinPrice);
 
                 }
             });
@@ -238,22 +237,18 @@ public class AddYourSkillsActivity extends AppCompatActivity implements View.OnC
             tvCancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Constant.hideSoftKeyBoard(AddYourSkillsActivity.this, etMaxPrice);
+                    Constant.hideSoftKeyBoard(AddYourSkillsActivity.this, etMinPrice);
                     dialog.dismiss();
                 }
             });
 
-            etMaxPrice.addTextChangedListener(new TextWatcher() {
+        /*    etMaxPrice.addTextChangedListener(new TextWatcher() {
                 @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                }
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {  }
 
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
                 }
-
                 @Override
                 public void afterTextChanged(Editable editable) {
                     String str = etMaxPrice.getText().toString();
@@ -265,7 +260,8 @@ public class AddYourSkillsActivity extends AppCompatActivity implements View.OnC
                         etMaxPrice.setSelection(pos);
                     }
                 }
-            });
+            });*/
+
             etMinPrice.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -290,7 +286,6 @@ public class AddYourSkillsActivity extends AppCompatActivity implements View.OnC
                 }
             });
 
-
             dialog.setCancelable(false);
             dialog.show();
         } else loadSkillsData();
@@ -298,7 +293,7 @@ public class AddYourSkillsActivity extends AppCompatActivity implements View.OnC
 
 
     ///"""""""""""" dialog validationd""""""""""""
-    private void dialogValidations(Spinner categorySpinner, TextView minPrice, TextView maxPrice, RelativeLayout addSkillsLayout, Dialog dialog) {
+    private void dialogValidations(Spinner categorySpinner, TextView minPrice, RelativeLayout addSkillsLayout, Dialog dialog) {
 /*        int minPric = Integer.parseInt(minPrice.getText().toString());
         int maxPric = Integer.parseInt(maxPrice.getText().toString());*/
         if (skillsResponce.getData().get(categorySpinner.getSelectedItemPosition()).getCategoryName().equals("Select Category")) {
@@ -308,19 +303,23 @@ public class AddYourSkillsActivity extends AppCompatActivity implements View.OnC
         } else if (minPrice.getText().toString().equals("") || minPrice.getText().toString().length() == 0) {
             Constant.snackBar(addSkillsLayout, "Please enter min price");
             minPrice.requestFocus();
-        }else if (Float.parseFloat(minPrice.getText().toString()) <  3 ) {
-            Constant.snackBar(addSkillsLayout, "Min price should not be less than 3 dollar");
+        }else if (Float.parseFloat(minPrice.getText().toString()) <  1 ) {
+            Constant.snackBar(addSkillsLayout, "Min price should not be less than 1 Rand");
             minPrice.requestFocus();
-        } else if (maxPrice.getText().toString().equals("") || maxPrice.getText().toString().length() == 0) {
+        }
+
+        /*else if (maxPrice.getText().toString().equals("") || maxPrice.getText().toString().length() == 0) {
             Constant.snackBar(addSkillsLayout, "Please enter max price");
             maxPrice.requestFocus();
-        }/*else if ((maxPric-minPric) < 0){
+        }else if ((maxPric-minPric) < 0){
             Constant.snackBar(addSkillsLayout, "Min price and Max price can't be same");
             maxPrice.requestFocus();
-        }*/ else if (Float.parseFloat(minPrice.getText().toString()) >= Float.parseFloat(maxPrice.getText().toString())) {
+        } else if (Float.parseFloat(minPrice.getText().toString()) >= Float.parseFloat(maxPrice.getText().toString())) {
             Constant.snackBar(addSkillsLayout, "Min price always less than Max price");
             minPrice.requestFocus();
-        } else {
+        }*/
+
+        else {
             Constant.hideSoftKeyBoard(this, minPrice);
             AddSkillsResponce.DataBean dataBean = skillsResponce.getData().get(categorySpinner.getSelectedItemPosition());
             AddedSkillBean addedSkillBean = new AddedSkillBean();
@@ -331,7 +330,7 @@ public class AddYourSkillsActivity extends AppCompatActivity implements View.OnC
             AddedSkillBean.SubCatagory subCatagory = new AddedSkillBean.SubCatagory();
             subCatagory.setSubCatId(subcatBean.getCategoryId());
             subCatagory.setSubName(subcatBean.getCategoryName());
-            subCatagory.setMax_rate(Float.parseFloat(maxPrice.getText().toString()));
+           // subCatagory.setMax_rate(Float.parseFloat(maxPrice.getText().toString()));
             subCatagory.setMin_rate(Float.parseFloat(minPrice.getText().toString()));
 
             boolean isExsist = false;
@@ -410,7 +409,6 @@ public class AddYourSkillsActivity extends AppCompatActivity implements View.OnC
                 subCateoryAdapter.setDropDownViewResource(R.layout.spinner_drop_down);
                 subCategorySpinner.setOnItemSelectedListener(this);
                 subCategorySpinner.setAdapter(subCateoryAdapter);
-
                 // ivCategorySpin.startAnimation(AnimationUtils.loadAnimation(this, R.anim.spinner_icon_rotator));
                 //   }
                 break;
@@ -419,7 +417,6 @@ public class AddYourSkillsActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
-
     }
 
     @Override

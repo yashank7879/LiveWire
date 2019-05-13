@@ -163,7 +163,7 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 />
 
-            <TextView
+            <!--<TextView
                 android:id="@+id/tv_doll1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -193,7 +193,7 @@
                 android:layout_below="@+id/et_max_price"
                 android:layout_toRightOf="@+id/et_min_price"
                 android:layout_marginTop="@dimen/_5sdp"
-                />
+                />-->
 
         </RelativeLayout>
 

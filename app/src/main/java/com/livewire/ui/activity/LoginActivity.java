@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -99,6 +100,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private String email = "";
     private SpannableString please;
     private TextView tvSignup;
+    private Button btnWatchVideo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,6 +163,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         fbLogInBtn = findViewById(R.id.btn_fb_sign_in);
         forgotpassId = findViewById(R.id.forgotpass_id);
         fb_btn = findViewById(R.id.fb_btn);
+        btnWatchVideo = findViewById(R.id.btn_watch_video);
 
         fb_btn.setReadPermissions("email");
 
@@ -169,6 +172,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
 
         forgotpassId.setOnClickListener(this);
+        btnWatchVideo.setOnClickListener(this);
         googleLogInBtn.setOnClickListener(this);
         tvSignup.setOnClickListener(this);
         fbLogInBtn.setOnClickListener(this);
@@ -248,6 +252,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.fb_btn:
                 fbResponce();
                 break;
+                case R.id.btn_watch_video:
+                    if (Constant.isNetworkAvailable(this, mainLayout)) {
+                 /*   Intent intent = new Intent(this, PlayVideoActivity.class);
+                    intent.putExtra("VideoUrlKey", videoUrl);
+                    startActivity(intent);*/
+                        Intent i = new Intent(Intent.ACTION_VIEW);
+                        i.setDataAndType(Uri.parse("https://livewire.work/uploads/LiveWireHomeVideol.mp4"), "video/mp4");
+                        startActivity(i);
+                    }
+                    break;
         }
     }
 

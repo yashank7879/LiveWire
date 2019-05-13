@@ -59,6 +59,7 @@ public class JobDetailWorkerResponce {
          * profileImage : https://livewire.work/./uploads/profile/thumb/iVjgR4pMxPqcIzAK.jpg
          * jobId : 207
          * category_id : 7
+         * job_status : 0
          * job_start_date : 2018-11-20
          * job_end_date : 2018-12-29
          * job_offer : 55
@@ -120,6 +121,7 @@ public class JobDetailWorkerResponce {
         private String number_of_days="";
         private String review_status="";
         private String rating="";
+        private String job_status="";
 
         public String getUserId() {
             return userId;
@@ -343,6 +345,14 @@ public class JobDetailWorkerResponce {
 
         public void setRating(String rating) {
             this.rating = rating;
+        }
+
+        public String getJob_status() {
+            return job_status;
+        }
+
+        public void setJob_status(String job_status) {
+            this.job_status = job_status;
         }
     }
 

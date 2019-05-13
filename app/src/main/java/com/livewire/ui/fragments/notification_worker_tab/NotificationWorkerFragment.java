@@ -1,4 +1,4 @@
-package com.livewire.ui.fragments;
+package com.livewire.ui.fragments.notification_worker_tab;
 
 
 import android.app.AlertDialog;
@@ -10,8 +10,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +26,7 @@ import com.google.gson.Gson;
 import com.livewire.R;
 import com.livewire.adapter.NotificationAdapter;
 import com.livewire.databinding.ActivityNotificationListWorkerBinding;
+import com.livewire.pagination.EndlessRecyclerViewScrollListener;
 import com.livewire.responce.NotificationResponce;
 import com.livewire.ui.activity.JobHelpOfferedDetailWorkerActivity;
 import com.livewire.ui.activity.JobOnGoingDetailWorkerActivity;
@@ -52,6 +55,8 @@ public class NotificationWorkerFragment extends Fragment implements View.OnClick
     public static final String USER_ID = "reference_id";
     public static final String CONSTANTTYPE = "type";
     private Context mContext;
+    private int limit = 5;
+    private int start = 0;
 
     public NotificationWorkerFragment() {
         // Required empty public constructor
@@ -64,7 +69,7 @@ public class NotificationWorkerFragment extends Fragment implements View.OnClick
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
        binding = DataBindingUtil.inflate(inflater,R.layout.activity_notification_list_worker, container, false);
@@ -83,6 +88,32 @@ public class NotificationWorkerFragment extends Fragment implements View.OnClick
         binding.recyclerView.addItemDecoration(new
                 DividerItemDecoration(mContext,
                 DividerItemDecoration.VERTICAL));
+
+        //******  Pagination """""""""""""""//
+        EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                limit = limit + 5; //load 5 items in recyclerview
+                if (Constant.isNetworkAvailable(mContext, binding.mainLayout)) {
+                    // progressDialog.show();
+                    notificationListApi();
+                }
+            }
+        };
+        binding.recyclerView.addOnScrollListener(scrollListener);
+
+
+        binding.swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() { //swipe to refresh rcyclerview data
+                binding.swipeRefresh.setRefreshing(false);
+                if (Constant.isNetworkAvailable(mContext, binding.mainLayout)) {
+                    notificationListApi();
+                }
+            }
+        });
+
+
         notificationListApi();
     }
 
@@ -96,8 +127,11 @@ public class NotificationWorkerFragment extends Fragment implements View.OnClick
     private void notificationListApi() {
         if (Constant.isNetworkAvailable(mContext, binding.mainLayout)) {
             progressDialog.show();
-            AndroidNetworking.get(BASE_URL + NOTIFICATION_LIST_API)
+            AndroidNetworking.post(BASE_URL + NOTIFICATION_LIST_API)
                     .addHeaders("authToken", PreferenceConnector.readString(mContext, PreferenceConnector.AUTH_TOKEN, ""))
+                    .addBodyParameter("user_type","worker")
+                    .addBodyParameter("limit", "" + limit)
+                    .addBodyParameter("start", "" + start)
                     .setPriority(Priority.MEDIUM)
                     .build()
                     .getAsJSONObject(new JSONObjectRequestListener() {
@@ -110,14 +144,13 @@ public class NotificationWorkerFragment extends Fragment implements View.OnClick
                                 status = response.getString("status");
                                 String message = response.getString("message");
                                 if (status.equals("success")) {
+                                    notifiList.clear();
                                     notificationResponse = new Gson().fromJson(String.valueOf(response), NotificationResponce.class);
                                     binding.tvNoData.setVisibility(View.GONE);
                                     String currentTime = response.getString("currentDateTime");
                                     notificationAdapter.getCurrentTime(currentTime);
                                     notifiList.addAll(notificationResponse.getData());
                                     notificationAdapter.notifyDataSetChanged();
-
-
                                 } else {
                                     notifiList.clear();
                                     notificationAdapter.notifyDataSetChanged();
@@ -148,7 +181,7 @@ public class NotificationWorkerFragment extends Fragment implements View.OnClick
             case "Ongoing_job_request":
             //case "Ongoing_job_accepted":
                 intent = new Intent(mContext, JobOnGoingDetailWorkerActivity.class);
-                intent.putExtra("JobDetail", dataBean.getNotification_message().getReference_id());
+                intent.putExtra("JobIdKey", dataBean.getNotification_message().getReference_id());
                 intent.putExtra("body", dataBean.getNotification_message().getBody());
                 intent.putExtra(CONSTANTTYPE, dataBean.getNotification_message().getType());
                 startActivity(intent);
@@ -185,9 +218,9 @@ public class NotificationWorkerFragment extends Fragment implements View.OnClick
     public void showAlertWorkerDialog() {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(mContext);
         builder1.setTitle("Alert");
-        builder1.setMessage("You Need To Switch Your Profile");
+        builder1.setMessage(R.string.please_switch_user_mode_to_do_this);
         builder1.setCancelable(true);
-        builder1.setPositiveButton("Yes",
+        builder1.setPositiveButton("OK",
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
@@ -202,10 +235,9 @@ public class NotificationWorkerFragment extends Fragment implements View.OnClick
                         pendingIntent = PendingIntent.getActivity(this, iUniqueId, intent, PendingIntent.FLAG_ONE_SHOT);
                         sendNotification(tittle, message, pendingIntent);*/
                         dialog.cancel();
-
                     }
                 });
-        builder1.setNegativeButton("No",
+        builder1.setNegativeButton("NO",
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
@@ -227,3 +259,5 @@ public class NotificationWorkerFragment extends Fragment implements View.OnClick
         }
     }
 }
+
+//,

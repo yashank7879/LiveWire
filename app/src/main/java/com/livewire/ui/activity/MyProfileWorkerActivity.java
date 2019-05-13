@@ -36,6 +36,7 @@ import java.util.List;
 import static com.livewire.utils.ApiCollection.BASE_URL;
 import static com.livewire.utils.ApiCollection.CHANGE_USER_MODE_API;
 import static com.livewire.utils.ApiCollection.GET_MY_PROFILE_API;
+import static com.livewire.utils.Constant.fromProfile;
 
 public class MyProfileWorkerActivity extends AppCompatActivity implements View.OnClickListener {
     FragmentMyProfileWorkerBinding binding;
@@ -66,6 +67,7 @@ public class MyProfileWorkerActivity extends AppCompatActivity implements View.O
         binding.rlRatingBar.setOnClickListener(this);
         binding.llHirer.setOnClickListener(this);
         binding.llWorker.setOnClickListener(this);
+        fromProfile = true;
         myProfileApi();
     }
 
@@ -182,8 +184,6 @@ public class MyProfileWorkerActivity extends AppCompatActivity implements View.O
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     binding.ivClient.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorDarkGray)));
                 }
-
-
             }
             break;
             case R.id.ll_hirer: {

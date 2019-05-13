@@ -52,6 +52,7 @@ public class ApiCollection {
     public static final String GET_SUBCATEGORY_LIST_API = "user/getSubcategoryList";
     public static final String GET_MY_REVIEW_LIST_API = "user/getReviewList";
     public static final String GET_OTHER_REVIEW_LIST_API = "user/getUserRevies";
+    public static final String GET_WORKER_SKILL_API = "user/getWorkerSkill";
 
     public static final String ADD_REVIEW_API = "user/addReview";
     public static final String GET_MY_USER_PROFILE_API = "user/getUserProfile";

@@ -163,7 +163,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/poppins_medium"
-                                    android:text="1 km away"
+                                    android:text="1 km "
                                     android:textColor="@color/colorDarkGray"
                                     android:textSize="@dimen/_9sdp" />
 
@@ -309,6 +309,7 @@
                             android:paddingEnd="@dimen/_10sdp"
                             android:paddingBottom="@dimen/_3sdp"
                             android:text="@string/n_a"
+                            android:visibility="visible"
                             android:textAllCaps="false"
                             android:textColor="@color/colorOrange"
                             android:textSize="@dimen/_10sdp" />
@@ -320,6 +321,8 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/tv_details_of_help"
                             android:layout_gravity="center"
+                            android:layout_toStartOf="@+id/tv_job_status"
+                            android:layout_alignParentStart="true"
                             android:layout_marginTop="@dimen/_5sdp"
                             android:fontFamily="@font/poppins_semibold"
                             android:text='@{dataBean.sub_category, default = "N/A"}'
@@ -330,7 +333,7 @@
                         <TextView
                             android:id="@+id/tv_sub_category"
                             style="@style/smallPopinsRegularStyle"
-                            android:layout_width="wrap_content"
+                            android:layout_width="@dimen/_200sdp"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/tv_category"
                             android:layout_gravity="center"
@@ -396,6 +399,7 @@
                                 android:layout_toEndOf="@+id/rate_range"
                                 android:fontFamily="@font/poppins_semibold"
                                 android:text="@string/n_a"
+                                android:textColor="@color/colorDarkBlack"
                                 android:textSize="@dimen/_12sdp" />
 
                             <TextView

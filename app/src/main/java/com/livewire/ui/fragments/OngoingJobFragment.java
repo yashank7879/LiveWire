@@ -179,7 +179,6 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
         //newLayoutParams.setMargins(5,5,5,5);
         binding.hourRequireSpinner.setLayoutParams(newLayoutParams);
 
-
         binding.tvLocation.setOnClickListener(this);
         binding.tvLocation.setSelected(true);
         binding.tvLocation.setHorizontallyScrolling(true);
@@ -529,7 +528,6 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
             categorySpinner.setOnItemSelectedListener(this);
             categorySpinner.setAdapter(categoryAdapter);
 
-
             tvCancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -624,7 +622,6 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
                 break;
 
             case R.id.hour_require_spinner:
-
                 if (!parent.getSelectedItem().toString().equals("Hour Required Per Day")) {
                     binding.tvHourRequierd.setText(parent.getSelectedItem().toString());
                     hourRequired = parent.getSelectedItem().toString();

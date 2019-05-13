@@ -1,4 +1,4 @@
-package com.livewire.ui.fragments;
+package com.livewire.ui.fragments.notification_client_tab;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -10,8 +10,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +30,7 @@ import com.livewire.adapter.HelpOfferedAdapter;
 import com.livewire.adapter.NotificationAdapter;
 import com.livewire.databinding.FragmentChatWorkerBinding;
 import com.livewire.databinding.FragmentNotificationClientBinding;
+import com.livewire.pagination.EndlessRecyclerViewScrollListener;
 import com.livewire.responce.NotificationResponce;
 import com.livewire.responce.SubCategoryResponse;
 import com.livewire.ui.activity.MyOnGoingJobDetailClientActivity;
@@ -61,6 +64,9 @@ public class NotificationClientFragment extends Fragment implements View.OnClick
     public static final String CURRENTTIME = "currentTime";
     public static final String USER_ID = "reference_id";
     public static final String CONSTANTTYPE = "type";
+    private String userNotification="";
+    private int limit = 5;
+    private int start = 0;
 
     public NotificationClientFragment() {
         // Required empty public constructor
@@ -87,6 +93,31 @@ public class NotificationClientFragment extends Fragment implements View.OnClick
         binding.recyclerView.addItemDecoration(new
                 DividerItemDecoration(mContext,
                 DividerItemDecoration.VERTICAL));
+
+        //******  Pagination """""""""""""""//
+        EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                limit = limit + 5; //load 5 items in recyclerview
+                if (Constant.isNetworkAvailable(mContext, binding.mainLayout)) {
+                    // progressDialog.show();
+                    notificationListApi();
+                }
+            }
+        };
+        binding.recyclerView.addOnScrollListener(scrollListener);
+
+        binding.swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() { //swipe to refresh rcyclerview data
+                binding.swipeRefresh.setRefreshing(false);
+                if (Constant.isNetworkAvailable(mContext, binding.mainLayout)) {
+                    notificationListApi();
+                }
+            }
+        });
+
+
         notificationListApi();
 
         actionBarIntialize(view);
@@ -109,14 +140,21 @@ public class NotificationClientFragment extends Fragment implements View.OnClick
         ivProfile.setVisibility(View.VISIBLE);
 
         ivProfile.setOnClickListener(this);
+
+
+
+
     }
 
     //"""""""""" notification list api """""""""""""//
     private void notificationListApi() {
         if (Constant.isNetworkAvailable(mContext, binding.mainLayout)) {
             progressDialog.show();
-            AndroidNetworking.get(BASE_URL + NOTIFICATION_LIST_API)
+            AndroidNetworking.post(BASE_URL + NOTIFICATION_LIST_API)
                     .addHeaders("authToken", PreferenceConnector.readString(mContext, PreferenceConnector.AUTH_TOKEN, ""))
+                    .addBodyParameter("user_type","client")
+                    .addBodyParameter("limit", "" + limit)
+                    .addBodyParameter("start", "" + start)
                     .setPriority(Priority.MEDIUM)
                     .build()
                     .getAsJSONObject(new JSONObjectRequestListener() {
@@ -129,13 +167,13 @@ public class NotificationClientFragment extends Fragment implements View.OnClick
                                 status = response.getString("status");
                                 String message = response.getString("message");
                                 if (status.equals("success")) {
+                                    notifiList.clear();
                                     notificationResponse = new Gson().fromJson(String.valueOf(response), NotificationResponce.class);
                                     binding.tvNoData.setVisibility(View.GONE);
                                     String currentTime = response.getString("currentDateTime");
                                     notificationAdapter.getCurrentTime(currentTime);
                                     notifiList.addAll(notificationResponse.getData());
                                     notificationAdapter.notifyDataSetChanged();
-
 
                                 } else {
                                     notifiList.clear();
@@ -205,9 +243,9 @@ public class NotificationClientFragment extends Fragment implements View.OnClick
     public void showAlertWorkerDialog() {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(mContext);
         builder1.setTitle("Alert");
-        builder1.setMessage("You Need To Switch Your Profile");
+        builder1.setMessage(R.string.please_switch_user_mode_to_do_this);
         builder1.setCancelable(true);
-        builder1.setPositiveButton("Yes",
+        builder1.setPositiveButton("OK",
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
@@ -225,7 +263,7 @@ public class NotificationClientFragment extends Fragment implements View.OnClick
 
                     }
                 });
-        builder1.setNegativeButton("No",
+        builder1.setNegativeButton("NO",
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {

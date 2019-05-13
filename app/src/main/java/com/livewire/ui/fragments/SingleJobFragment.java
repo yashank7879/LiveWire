@@ -418,8 +418,8 @@ public class SingleJobFragment extends Fragment implements View.OnClickListener,
             Constant.snackBar(mainLayout, "Please enter Budget");
         } else if (etBudget.getText().toString().trim().equals("0")) {
             Constant.snackBar(mainLayout, "Please enter correct Budget");
-        } else if (Float.parseFloat(etBudget.getText().toString()) < 3) {
-            Constant.snackBar(mainLayout, "Budget price should not be less than 3 dollar");
+        } else if (Float.parseFloat(etBudget.getText().toString()) < 1) {
+            Constant.snackBar(mainLayout, "Budget price should not be less than 1 Rand");
         } else if (Validation.isEmpty(tvLocation)) {
             Constant.snackBar(mainLayout, "Please enter your Location");
         }/* else if (Validation.isEmpty(etDescription)) {

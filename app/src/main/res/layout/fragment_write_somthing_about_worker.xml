@@ -13,7 +13,7 @@
             android:layout_height="match_parent"
             android:background="@color/colorWhite"
             android:orientation="vertical"
-            tools:context="com.livewire.ui.activity.AddYourSkillsActivity">
+            tools:context="com.livewire.ui.activity.complete_profile.AddYourSkillsActivity">
 
             <RelativeLayout
                 android:layout_width="match_parent"

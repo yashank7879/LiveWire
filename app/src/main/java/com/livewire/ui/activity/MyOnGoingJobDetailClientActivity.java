@@ -119,7 +119,7 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
                 binding.btnSendOffer.setVisibility(View.VISIBLE);
                 binding.rlMoredetail.setVisibility(View.VISIBLE);
                 binding.tvNoRequest.setVisibility(View.VISIBLE);
-                binding.tvJobStatus.setVisibility(View.GONE);
+                binding.tvJobStatus.setVisibility(View.INVISIBLE);
                 binding.llChat.setVisibility(View.GONE);
                 binding.rlUserData.setVisibility(View.GONE);
                 binding.rlRange.setVisibility(View.GONE);
@@ -175,9 +175,9 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
                             getWorkerData(dataBean);
                             break;
                         }
-                    case "4":{
+                    case "4":{// completed
                         binding.rlPaymentInfo.setVisibility(View.VISIBLE);
-                       binding.tvJobStatus.setVisibility(View.GONE);
+                       binding.tvJobStatus.setVisibility(View.INVISIBLE);
                         userId = dataBean.getData().getRequestedUserData().get(0).getUserId();
                         float totalPrice = Float.parseFloat(dataBean.getData().getJob_time_duration()) *
                                 Float.parseFloat(dataBean.getData().getNumber_of_days())
@@ -220,7 +220,7 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
 
                 binding.tvName.setText(dataBean.getData().getRequestedUserData().get(0).getName());
 
-                binding.tvDistance.setText(dataBean.getData().getRequestedUserData().get(0).getDistance_in_km() + " Km away");
+                binding.tvDistance.setText(dataBean.getData().getRequestedUserData().get(0).getDistance_in_km() + " Km");
 
                 userId = dataBean.getData().getRequestedUserData().get(0).getUserId();
 
@@ -233,7 +233,7 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
 
                 SpannableStringBuilder builder = new SpannableStringBuilder();
                 SpannableString minprice = new SpannableString("R" + dataBean.getData().getRequestedUserData().get(0).getMin_rate());
-                minprice.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorDarkBlack)), 0, minprice.length(), 0);
+               /* minprice.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorDarkBlack)), 0, minprice.length(), 0);
                 //  userName.setSpan(new StyleSpan(Typeface.BOLD), 0, userName.length(), 0);
                 builder.append(minprice);
                 SpannableString toString = new SpannableString(" to ");
@@ -243,10 +243,9 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
                 SpannableString maxprice = new SpannableString("R" + dataBean.getData().getRequestedUserData().get(0).getMax_rate());
                 maxprice.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorDarkBlack)), 0, maxprice.length(), 0);
                 //  userName.setSpan(new StyleSpan(Typeface.BOLD), 0, userName.length(), 0);
-                builder.append(maxprice);
+                builder.append(maxprice);*/
 
-
-                binding.tvRangePrice.setText(builder);
+                binding.tvRangePrice.setText(minprice);
 
             }
 
@@ -477,7 +476,6 @@ public class MyOnGoingJobDetailClientActivity extends AppCompatActivity implemen
                         }
                     });
         }
-
     }
 
     private void openWorkingDaysDialog() {

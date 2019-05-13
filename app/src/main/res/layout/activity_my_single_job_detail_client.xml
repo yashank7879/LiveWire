@@ -164,7 +164,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/poppins_medium"
-                                    android:text="1 km away"
+                                    android:text="1 km "
                                     android:textColor="@color/colorDarkGray"
                                     android:textSize="@dimen/_9sdp" />
 
@@ -335,6 +335,8 @@
                             android:layout_gravity="center"
                             android:layout_marginTop="@dimen/_5sdp"
                             android:fontFamily="@font/poppins_semibold"
+                            android:layout_toStartOf="@id/tv_date1"
+                            android:layout_alignParentStart="true"
                             android:text='@{jobDetail.sub_category,default = "N/A"}'
                             android:textColor="@color/colorDarkBlack"
                             android:textSize="@dimen/_12sdp" />
@@ -364,11 +366,11 @@
                         <TextView
                             android:id="@+id/tv_sub_category"
                             style="@style/smallPopinsRegularStyle"
-                            android:layout_width="wrap_content"
+                            android:layout_width="@dimen/_200sdp"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/tv_category"
                             android:layout_gravity="center"
-                            android:text='@{jobDetail.parent_category,default = "N/A"}'
+                            android:text='@{jobDetail.parent_category, default = "N/A"}'
                             android:textColor="@color/colorDarkGray" />
 
 
@@ -571,16 +573,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_500sdp"
                 android:layout_below="@+id/action_bar"
-                android:layout_centerInParent="true"
-                >
-            <TextView
-                android:id="@+id/tv_msg"
-                style="@style/mediumPopinsRegularStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:textColor="@color/colorBlack"
-                />
+                android:layout_centerVertical="true"
+                android:layout_marginTop="0dp">
+
+                <TextView
+                    android:id="@+id/tv_msg"
+                    style="@style/mediumPopinsRegularStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:textColor="@color/colorBlack" />
             </RelativeLayout>
 
         </RelativeLayout>

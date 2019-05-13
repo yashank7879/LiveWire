@@ -344,6 +344,19 @@
 
             </LinearLayout>
 
+
+            <Button
+                android:id="@+id/btn_watch_video"
+                android:layout_width="@dimen/_120sdp"
+                android:layout_height="@dimen/_28sdp"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/_5sdp"
+                android:background="@drawable/button_green_bg"
+                android:fontFamily="@font/poppins_light"
+                android:text="@string/watch_video"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_14sdp" />
         </LinearLayout>
 
         <ProgressBar
@@ -359,6 +372,8 @@
             android:layout_height="wrap_content"
             android:visibility="gone"
             />
+
+
 
     </RelativeLayout>
 

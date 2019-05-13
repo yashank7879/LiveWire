@@ -66,18 +66,20 @@
 
         <TextView
             android:id="@+id/tv_category"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/_180sdp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_semibold"
             android:text="@string/n_a"
+            android:singleLine="true"
             android:textColor="@color/colorDarkBlack"
             android:textSize="@dimen/_12sdp" />
 
         <TextView
             android:id="@+id/tv_subcategory"
             style="@style/smallPopinsRegularStyle"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/_180sdp"
             android:layout_height="wrap_content"
+            android:singleLine="true"
             android:layout_below="@+id/tv_category"
             android:text="@string/n_a"
             android:textColor="@color/colorDarkGray" />

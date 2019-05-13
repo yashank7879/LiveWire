@@ -49,20 +49,22 @@
 
         <TextView
             android:id="@+id/tv_category"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/_180sdp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_semibold"
             android:text="Cook"
+            android:singleLine="true"
             android:textColor="@color/colorDarkBlack"
             android:textSize="@dimen/_12sdp" />
 
         <TextView
             android:id="@+id/tv_subcategory"
             style="@style/smallPopinsRegularStyle"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/_180sdp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_category"
             android:text="House &amp; Home"
+            android:singleLine="true"
             android:textColor="@color/colorDarkGray" />
 
         <TextView

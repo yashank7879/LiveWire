@@ -24,6 +24,7 @@ import com.livewire.responce.HelpOfferedResponce;
 import com.livewire.responce.JobDetailWorkerResponce;
 import com.livewire.ui.activity.ClientMainActivity;
 import com.livewire.ui.activity.WorkerMainActivity;
+import com.livewire.ui.activity.chat.ChattingActivity;
 import com.livewire.ui.dialog.ReviewDialog;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
@@ -48,6 +49,7 @@ public class NotificationJobHelpOfferedDetailWorkerActivity extends AppCompatAct
     private String userId = "";
     private String jobId = "";
     private String name = "";
+    private String clientProfileImg="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,9 +90,8 @@ public class NotificationJobHelpOfferedDetailWorkerActivity extends AppCompatAct
     private void intializeViews() {
         progressDialog = new ProgressDialog(this);
         binding.btnSendRequest.setOnClickListener(this);
+        binding.llChat.setOnClickListener(this);
         findViewById(R.id.iv_back).setOnClickListener(this);
-
-
     }
 
     private void getJobDetailApi() {
@@ -115,6 +116,7 @@ public class NotificationJobHelpOfferedDetailWorkerActivity extends AppCompatAct
                                     binding.setJobDetail(workerResponce.getData());
                                     setWorkerDataResponce(workerResponce);
                                     userId = workerResponce.getData().getUserId();
+                                    clientProfileImg = workerResponce.getData().getProfileImage();
 
                                 } else {
                                     Constant.snackBar(binding.detailMainLayout, message);
@@ -153,7 +155,7 @@ public class NotificationJobHelpOfferedDetailWorkerActivity extends AppCompatAct
                 break;
             case "2":
                 binding.btnSendRequest.setClickable(false);
-                binding.btnSendRequest.setText("Application Decline");
+                binding.btnSendRequest.setText(R.string.application_decline);
                 binding.btnSendRequest.setBackground(null);
                 binding.btnSendRequest.setTextColor(ContextCompat.getColor(this,R.color.colorRed));
                 break;
@@ -232,6 +234,14 @@ public class NotificationJobHelpOfferedDetailWorkerActivity extends AppCompatAct
                 break;
             case R.id.btn_dilog:
                 break;
+            case R.id.ll_chat: {
+                Intent intent = new Intent(this, ChattingActivity.class);
+                intent.putExtra("otherUID", userId);
+                intent.putExtra("titleName", binding.tvName.getText().toString().trim());
+                intent.putExtra("profilePic", clientProfileImg);
+                startActivity(intent);
+            }
+            break;
             default:
         }
     }

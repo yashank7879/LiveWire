@@ -63,7 +63,7 @@ public class OngoingAdapter extends RecyclerView.Adapter<OngoingAdapter.MyViewHo
             holder.tvSubcategory.setText(dataBean.getParentCategoryName());
             holder.tvOfferPrice.setText(dataBean.getJob_offer_rate());
             holder.tvName.setText(dataBean.getName());
-            holder.tvDistance.setText(dataBean.getDistance_in_km() + " Km away");
+            holder.tvDistance.setText(dataBean.getDistance_in_km() + " Km");
             holder.tvTime.setText(Constant.getDayDifference(dataBean.getCrd(), dataBean.getCurrentDateTime()));
 
             if (dataBean.getRating() != null) {

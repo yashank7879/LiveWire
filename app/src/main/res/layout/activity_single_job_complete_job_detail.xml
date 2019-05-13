@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="jobDetail"
             type="com.livewire.responce.JobDetailClientResponce.DataBean" />
@@ -78,68 +79,69 @@
                     android:id="@+id/rl_user_data"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_posted_by"
-                    >
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/iv_profile_img"
-                    android:layout_width="@dimen/_35sdp"
-                    android:layout_height="@dimen/_35sdp"
-                    android:layout_marginEnd="@dimen/_10sdp"
-                    android:layout_marginStart="@dimen/_8sdp"
-                    android:src="@drawable/ic_user"
-                    app:civ_border_color="@color/colorGreen"
-                    app:civ_border_width="1dp" />
+                    android:layout_below="@+id/tv_posted_by">
 
-                <TextView
-                    android:id="@+id/tv_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/iv_profile_img"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:text='@{jobDetail.requestedUserData.get(0).name, default= "N/A"}'
-                    android:textColor="@color/colorDarkBlack"
-                    android:textSize="@dimen/_12sdp" />
-
-                <RatingBar
-                    android:id="@+id/rating_bar"
-                    style="@style/Widget.AppCompat.RatingBar.Small"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_name"
-                    android:layout_toEndOf="@+id/iv_profile_img"
-                    android:numStars="5"
-                    android:progressTint="@color/coloryellow"
-                    android:theme="@style/RatingBarTheme" />
-
-                <LinearLayout
-                    android:id="@+id/ll_km_away"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/rating_bar"
-                    android:layout_marginBottom="@dimen/_5sdp"
-                    android:layout_toEndOf="@+id/iv_profile_img">
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/iv_profile_img"
+                        android:layout_width="@dimen/_35sdp"
+                        android:layout_height="@dimen/_35sdp"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:src="@drawable/ic_user"
+                        app:civ_border_color="@color/colorGreen"
+                        app:civ_border_width="1dp" />
 
                     <TextView
-                        android:id="@+id/tv_distance"
+                        android:id="@+id/tv_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins_medium"
-                        android:text='@{jobDetail.requestedUserData.get(0).distance_in_km + " Km away" , default = "N/A"}'
-                        android:textColor="@color/colorDarkGray"
-                        android:textSize="@dimen/_9sdp" />
+                        android:layout_toEndOf="@+id/iv_profile_img"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text='@{jobDetail.requestedUserData.get(0).name, default= "N/A"}'
+                        android:textColor="@color/colorDarkBlack"
+                        android:textSize="@dimen/_12sdp" />
 
-                    <ImageView
-                        android:layout_width="@dimen/_10sdp"
-                        android:layout_height="@dimen/_10sdp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginStart="@dimen/_3sdp"
-                        app:srcCompat="@drawable/ic_sent_mail"
+                    <RatingBar
+                        android:id="@+id/rating_bar"
+                        style="@style/Widget.AppCompat.RatingBar.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_name"
+                        android:layout_toEndOf="@+id/iv_profile_img"
+                        android:numStars="5"
+                        android:progressTint="@color/coloryellow"
+                        android:theme="@style/RatingBarTheme" />
 
-                        />
+                    <LinearLayout
+                        android:id="@+id/ll_km_away"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/rating_bar"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:layout_toEndOf="@+id/iv_profile_img">
 
-                </LinearLayout>
+                        <TextView
+                            android:id="@+id/tv_distance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_medium"
+                            android:text='@{jobDetail.requestedUserData.get(0).distance_in_km + " Km" , default = "N/A"}'
+                            android:textColor="@color/colorDarkGray"
+                            android:textSize="@dimen/_9sdp" />
+
+                        <ImageView
+                            android:layout_width="@dimen/_10sdp"
+                            android:layout_height="@dimen/_10sdp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="@dimen/_3sdp"
+                            app:srcCompat="@drawable/ic_sent_mail"
+
+                            />
+
+                    </LinearLayout>
 
                 </RelativeLayout>
+
                 <TextView
                     android:id="@+id/tv_time"
                     style="@style/SmallPopinsMediumStyle"
@@ -148,10 +150,10 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginTop="@dimen/_8sdp"
                     android:background="@drawable/time_shape"
-                    android:paddingBottom="@dimen/_3sdp"
-                    android:paddingEnd="@dimen/_5sdp"
                     android:paddingStart="@dimen/_15sdp"
                     android:paddingTop="@dimen/_3sdp"
+                    android:paddingEnd="@dimen/_5sdp"
+                    android:paddingBottom="@dimen/_3sdp"
                     android:text="@string/n_a"
                     android:textAllCaps="false"
                     android:textColor="@color/colorWhite"
@@ -160,8 +162,8 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
                     android:layout_below="@+id/tv_time"
+                    android:layout_alignParentEnd="true"
                     android:layout_margin="@dimen/_3sdp"
                     android:padding="@dimen/_5sdp"
                     tools:ignore="UseCompoundDrawables">
@@ -170,8 +172,8 @@
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"
                         android:layout_gravity="center"
-                        android:layout_marginEnd="@dimen/_5sdp"
                         android:layout_marginStart="@dimen/_3sdp"
+                        android:layout_marginEnd="@dimen/_5sdp"
                         android:background="@drawable/circle_green_bg"
                         android:padding="@dimen/_5sdp"
                         app:srcCompat="@drawable/ic_chat" />
@@ -198,8 +200,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/details_id"
             android:layout_marginLeft="@dimen/_5sdp"
-            android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginTop="-1dp"
+            android:layout_marginRight="@dimen/_5sdp"
             app:shadowColor="#666666"
             app:shadowMarginBottom="3dp"
             app:shadowMarginLeft="3dp"
@@ -209,8 +211,8 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="@dimen/_8sdp"
-                android:paddingStart="@dimen/_8sdp">
+                android:paddingStart="@dimen/_8sdp"
+                android:paddingTop="@dimen/_8sdp">
 
                 <TextView
                     android:id="@+id/tv_details_of_help"
@@ -227,7 +229,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_details_of_help"
+                    android:layout_alignParentStart="true"
                     android:layout_gravity="center"
+                    android:layout_toLeftOf="@+id/tv_date"
                     android:fontFamily="@font/poppins_semibold"
                     android:text='@{jobDetail.sub_category, default= "N/A"}'
                     android:textColor="@color/colorDarkBlack"
@@ -240,47 +244,48 @@
                     android:layout_height="wrap_content"
                     android:layout_alignBaseline="@+id/tv_details_of_help"
                     android:layout_alignParentEnd="true"
-                    android:text="@string/short_term1"
-                    android:textColor="@color/colorDarkBlack"
-                    android:paddingRight="@dimen/_8sdp"
-                    android:paddingLeft="@dimen/_8sdp"
-                    android:textSize="@dimen/_10sdp"
-                    android:paddingTop="@dimen/_2sdp"
-                    android:paddingBottom="@dimen/_2sdp"
                     android:layout_marginEnd="@dimen/_minus2sdp"
                     android:background="@drawable/doteted_balck_shape"
-                    />
+                    android:paddingLeft="@dimen/_8sdp"
+                    android:paddingTop="@dimen/_2sdp"
+                    android:paddingRight="@dimen/_8sdp"
+                    android:paddingBottom="@dimen/_2sdp"
+                    android:text="@string/short_term1"
+                    android:textColor="@color/colorDarkBlack"
+                    android:textSize="@dimen/_10sdp" />
+
                 <TextView
                     android:id="@+id/tv_date"
                     style="@style/mediumPopinsRegularStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_job_type"
+                    android:layout_marginTop="@dimen/_5sdp"
                     android:layout_toStartOf="@+id/tv_date_month"
                     android:text="@string/n_a"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:layout_below="@+id/tv_job_type"
                     android:textColor="@color/colorDarkBlack" />
 
                 <TextView
                     android:id="@+id/tv_date_month"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
                     android:layout_below="@+id/tv_job_type"
+                    android:layout_alignBaseline="@+id/tv_date"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="@dimen/_8sdp"
                     android:fontFamily="@font/poppins_light"
                     android:text="@string/n_a"
-                    android:layout_alignBaseline="@+id/tv_date"
                     android:textColor="@color/colorDarkBlack"
-                    android:textSize="@dimen/_10sdp"
-                    android:layout_marginEnd="@dimen/_8sdp"
-                    />
+                    android:textSize="@dimen/_10sdp" />
 
                 <TextView
                     android:id="@+id/tv_sub_category"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_category"
+                    android:layout_alignParentStart="true"
                     android:layout_gravity="center"
+                    android:layout_toLeftOf="@+id/tv_date"
                     android:fontFamily="@font/poppins_regular"
                     android:text='@{jobDetail.parent_category, default= "N/A"}'
                     android:textColor="@color/colorDarkGray"
@@ -338,20 +343,19 @@
                     android:textSize="@dimen/_10sdp" />
 
 
-
                 <TextView
                     android:id="@+id/tv_job_review"
                     style="@style/SmallPopinsMediumStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
                     android:layout_below="@+id/tv_description"
+                    android:layout_alignParentStart="true"
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
                     android:fontFamily="@font/poppins_medium"
                     android:text="@string/job_reviews"
-                    android:visibility="gone"
-                    android:textColor="@color/colorGreen" />
+                    android:textColor="@color/colorGreen"
+                    android:visibility="gone" />
 
                 <RelativeLayout
                     android:id="@+id/payment_info_layout"
@@ -384,8 +388,8 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:layout_marginTop="@dimen/_5sdp"
-                            android:text="@string/n_a"
                             android:layout_marginEnd="@dimen/_8sdp"
+                            android:text="@string/n_a"
                             android:textColor="@color/colorDarkBlack"
                             android:textSize="@dimen/_10sdp" />
 
@@ -405,8 +409,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/rating_bar_review"
-                            android:layout_marginBottom="@dimen/_10sdp"
                             android:layout_marginEnd="@dimen/_8sdp"
+                            android:layout_marginBottom="@dimen/_10sdp"
                             android:text='N/A'
                             android:textSize="@dimen/_10sdp" />
                     </RelativeLayout>
@@ -416,8 +420,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/review_by_rl"
-                        android:visibility="gone"
-                        >
+                        android:visibility="gone">
 
                         <TextView
                             android:id="@+id/tv_user_name_review"
@@ -437,8 +440,8 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:layout_marginTop="@dimen/_5sdp"
-                            android:text="@string/n_a"
                             android:layout_marginEnd="@dimen/_8sdp"
+                            android:text="@string/n_a"
                             android:textColor="@color/colorDarkBlack"
                             android:textSize="@dimen/_10sdp" />
 
@@ -458,12 +461,11 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/rating_bar_user_review"
-                            android:layout_marginBottom="@dimen/_10sdp"
                             android:layout_marginEnd="@dimen/_8sdp"
+                            android:layout_marginBottom="@dimen/_10sdp"
                             android:text='good'
                             android:textSize="@dimen/_10sdp" />
                     </RelativeLayout>
-
 
 
                 </RelativeLayout>

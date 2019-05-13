@@ -43,6 +43,13 @@ public class PreferenceConnector {
     public static final String USER_DOB = "USER_DOB";
     public static final String ABOUT_ME = "ABOUT_ME";
 
+    //""""""" bank account on the complete profile step """"""//
+    public static final String FIRST_NAME = "FIRST_NAME";
+    public static final String LAST_NAME = "LAST_NAME";
+    public static final String BANK_ACC_NO = "BANK_ACC_NO";
+    public static final String BRANCH_CODE = "BRANCH_CODE";
+    public static final String BANK_NAME = "BANK_NAME";
+
 
 
 

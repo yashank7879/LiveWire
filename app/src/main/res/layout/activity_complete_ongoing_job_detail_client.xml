@@ -132,7 +132,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/poppins_medium"
-                                android:text='@{JobDetail.requestedUserData.get(0).distance_in_km +" Km away",default = "N/A"}'
+                                android:text='@{JobDetail.requestedUserData.get(0).distance_in_km +" Km",default = "N/A"}'
                                 android:textColor="@color/colorDarkGray"
                                 android:textSize="@dimen/_9sdp" />
 
@@ -283,6 +283,8 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_details_of_help"
                         android:layout_gravity="center"
+                        android:layout_alignParentStart="true"
+                        android:layout_toLeftOf="@+id/tv_job_status"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:fontFamily="@font/poppins_semibold"
                         android:text='@{JobDetail.sub_category,default = "N/A"}'
@@ -317,6 +319,8 @@
                         style="@style/smallPopinsRegularStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_toLeftOf="@+id/tv_job_status"
                         android:layout_below="@+id/tv_category"
                         android:layout_gravity="center"
                         android:text='@{JobDetail.parent_category,default = "N/A"}'
@@ -381,7 +385,7 @@
                             android:layout_toEndOf="@+id/rate_range"
                             android:fontFamily="@font/poppins_semibold"
                             android:textColor="@color/colorBlack"
-                            android:text='@{"R"+JobDetail.requestedUserData.get(0).min_rate +" to "+"R"+JobDetail.requestedUserData.get(0).max_rate,default = "N/A"}'
+                            android:text='@{"R"+JobDetail.requestedUserData.get(0).min_rate,default = "N/A"}'
                             android:textSize="@dimen/_12sdp" />
 
                         <TextView

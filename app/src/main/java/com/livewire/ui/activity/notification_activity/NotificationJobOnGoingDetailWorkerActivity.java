@@ -22,6 +22,7 @@ import com.livewire.databinding.ActivityNotificationJobOngoingDetailWorkerBindin
 import com.livewire.responce.JobDetailWorkerResponce;
 import com.livewire.ui.activity.ClientMainActivity;
 import com.livewire.ui.activity.WorkerMainActivity;
+import com.livewire.ui.activity.chat.ChattingActivity;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
 import com.livewire.utils.ProgressDialog;
@@ -40,8 +41,10 @@ public class NotificationJobOnGoingDetailWorkerActivity extends AppCompatActivit
 
     private ProgressDialog progressDialog;
     private ScrollView detailMainLayout;
-    private String jobId="";
+    private String jobId = "";
     private JobDetailWorkerResponce workerResponce;
+    private String userId="";
+    private String clientProfileImg="";
 
 
     @Override
@@ -61,17 +64,18 @@ public class NotificationJobOnGoingDetailWorkerActivity extends AppCompatActivit
         findViewById(R.id.btn_ignore).setOnClickListener(this);
         findViewById(R.id.btn_accept).setOnClickListener(this);
         binding.btnAcceptRejectLayout.setVisibility(View.VISIBLE);
+        binding.llChat.setOnClickListener(this);
 
         Bundle extra = getIntent().getExtras();
         assert extra != null;
-        String userType =  extra.getString("for_user_type");
+        String userType = extra.getString("for_user_type");
         //"""""""""" check the user type and then go to the activivty """""//
         if (PreferenceConnector.readString(this, PreferenceConnector.USER_MODE, "").equals(userType)) {
             if (extra.getString("type").equals("Ongoing_job_request")) {
                 jobId = extra.getString("reference_id");
                 getJobDetailApi();
             }
-        }else {// if user type is same
+        } else {// if user type is same
             Intent intent = new Intent(this, ClientMainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra("MyProfile", "MyProfile");
@@ -82,12 +86,11 @@ public class NotificationJobOnGoingDetailWorkerActivity extends AppCompatActivit
 
 
     private void getJobDetailApi() {
-
-        if (Constant.isNetworkAvailable(this,binding.detailMainLayout)){
+        if (Constant.isNetworkAvailable(this, binding.detailMainLayout)) {
             progressDialog.show();
-            AndroidNetworking.post(BASE_URL+JOBPOSTSEND_GET_WORKER_JOB_DETAIL_API)
-                    .addBodyParameter("job_id",jobId)
-                    .addBodyParameter("job_type","2")
+            AndroidNetworking.post(BASE_URL + JOBPOSTSEND_GET_WORKER_JOB_DETAIL_API)
+                    .addBodyParameter("job_id", jobId)
+                    .addBodyParameter("job_type", "2")
                     .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
                     .setPriority(Priority.MEDIUM)
                     .build()
@@ -100,11 +103,11 @@ public class NotificationJobOnGoingDetailWorkerActivity extends AppCompatActivit
                                 status = response.getString("status");
                                 String message = response.getString("message");
                                 if (status.equals("success")) {
-                                     workerResponce = new Gson().fromJson(String.valueOf(response),JobDetailWorkerResponce.class);
+                                    workerResponce = new Gson().fromJson(String.valueOf(response), JobDetailWorkerResponce.class);
                                     binding.setWorkerResponcd(workerResponce.getData());
                                     setJobDetailData();
-                                }else {
-                                    Constant.snackBar(binding.detailMainLayout,message);
+                                } else {
+                                    Constant.snackBar(binding.detailMainLayout, message);
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -113,7 +116,7 @@ public class NotificationJobOnGoingDetailWorkerActivity extends AppCompatActivit
 
                         @Override
                         public void onError(ANError anError) {
-                        progressDialog.dismiss();
+                            progressDialog.dismiss();
                         }
                     });
         }
@@ -124,14 +127,23 @@ public class NotificationJobOnGoingDetailWorkerActivity extends AppCompatActivit
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_back:
-              onBackPressed();
+                onBackPressed();
                 break;
             case R.id.btn_ignore:
-               acceptRejectrequestApi(workerResponce.getData().getUserId(), workerResponce.getData().getJobId(), "2");
+                acceptRejectrequestApi(workerResponce.getData().getUserId(), workerResponce.getData().getJobId(), "2");
                 break;
             case R.id.btn_accept:
                 acceptRejectrequestApi(workerResponce.getData().getUserId(), workerResponce.getData().getJobId(), "1");
                 break;
+
+            case R.id.ll_chat: {
+                Intent intent = new Intent(this, ChattingActivity.class);
+                intent.putExtra("otherUID", userId);
+                intent.putExtra("titleName", binding.tvName.getText().toString().trim());
+                intent.putExtra("profilePic", clientProfileImg);
+                startActivity(intent);
+            }
+            break;
             default:
         }
     }
@@ -146,7 +158,8 @@ public class NotificationJobOnGoingDetailWorkerActivity extends AppCompatActivit
     }
 
     private void setJobDetailData() {
-
+        userId = workerResponce.getData().getUserId();
+        clientProfileImg  = workerResponce.getData().getProfileImage();
         binding.tvTime.setText(Constant.getDayDifference(workerResponce.getData().getCrd(), workerResponce.getData().getCurrentDateTime()));
         Picasso.with(binding.ivProfileImg.getContext())
                 .load(workerResponce.getData().getProfileImage()).fit().into(binding.ivProfileImg);
@@ -157,7 +170,7 @@ public class NotificationJobOnGoingDetailWorkerActivity extends AppCompatActivit
 
         SpannableStringBuilder builder = new SpannableStringBuilder();
         SpannableString minprice = new SpannableString("R" + workerResponce.getData().getMin_rate());
-        minprice.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorDarkBlack)), 0, minprice.length(), 0);
+        /*minprice.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorDarkBlack)), 0, minprice.length(), 0);
         //  userName.setSpan(new StyleSpan(Typeface.BOLD), 0, userName.length(), 0);
         builder.append(minprice);
         SpannableString toString = new SpannableString(" to ");
@@ -166,14 +179,14 @@ public class NotificationJobOnGoingDetailWorkerActivity extends AppCompatActivit
 
         SpannableString maxprice = new SpannableString("R" + workerResponce.getData().getMax_rate());
         maxprice.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorDarkBlack)), 0, maxprice.length(), 0);
-        //  userName.setSpan(new StyleSpan(Typeface.BOLD), 0, userName.length(), 0);
-        builder.append(maxprice);
+        //  userName.setSpan(new StyleSpan(Typeface.BOLD), 0, userName.length(), 0);*/
+        builder.append(minprice);
 
         binding.tvRangePrice.setText(builder);
 
         //""""""""
-        if (workerResponce.getData().getJob_confirmed().equals("4")){
-           // name = workerResponce.getData().getName();
+        if (workerResponce.getData().getJob_confirmed().equals("4")) {
+            // name = workerResponce.getData().getName();
             binding.btnAcceptRejectLayout.setVisibility(View.GONE);
             binding.svMoreInfo.setVisibility(View.VISIBLE);
             for (JobDetailWorkerResponce.ReviewBean reviewBean : workerResponce.getReview()) {
@@ -192,7 +205,7 @@ public class NotificationJobOnGoingDetailWorkerActivity extends AppCompatActivit
                     binding.ratingBarUserReview.setRating(Float.parseFloat(reviewBean.getRating()));
                 }
             }
-            if(workerResponce.getData().getReview_status().equals("1")){
+            if (workerResponce.getData().getReview_status().equals("1")) {
                 binding.btnGiveReview.setVisibility(View.GONE);
             }
 
@@ -201,7 +214,7 @@ public class NotificationJobOnGoingDetailWorkerActivity extends AppCompatActivit
             binding.tvOfferPriceValue.setText("R" + workerResponce.getData().getJob_offer());
             float totalPaid = (Float.parseFloat(workerResponce.getData().getJob_offer()) * Float.parseFloat(workerResponce.getData().getNumber_of_days()) * Float.parseFloat(workerResponce.getData().getJob_time_duration()));
             float adminCommision = (totalPaid * 3) / 100;
-           // binding.tvCommisionPrice.setText("R" + adminCommision);
+            // binding.tvCommisionPrice.setText("R" + adminCommision);
             binding.tvTotalPrice.setText("R" + totalPaid);
             // }
         }

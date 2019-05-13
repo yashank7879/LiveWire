@@ -138,28 +138,38 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
     private void setWorkerDataResponce(JobDetailWorkerResponce.DataBean jobDetail) {
         jobId = jobDetail.getJobId();
         userId = jobDetail.getUserId();
-        binding.tvDistance.setText(jobDetail.getDistance_in_km() + " Km away");
-
+        binding.tvDistance.setText(jobDetail.getDistance_in_km() + " Km");
         name = jobDetail.getName();
         binding.tvTime.setText(Constant.getDayDifference(jobDetail.getCrd(), jobDetail.getCurrentDateTime()));
 
-        if (jobDetail.getJob_confirmed().equals("0")) { // pending request
+        if (jobDetail.getJob_confirmed().equals("0") && jobDetail.getJob_status().equals("0")) { // pending request
             binding.btnSendRequest.setBackground(null);
             binding.btnSendRequest.setText(R.string.Work_offer_pending);
             binding.btnSendRequest.setTextColor(ContextCompat.getColor(this, R.color.colorOrange));
             binding.btnSendRequest.setClickable(false);
-        }else if (jobDetail.getJob_confirmed().equals("2")) {// job not accepted
+        }else if (jobDetail.getJob_confirmed().equals("2")) {// job not decline
             binding.btnSendRequest.setClickable(false);
             binding.btnSendRequest.setText(R.string.application_decline);
             binding.btnSendRequest.setBackground(null);
             binding.btnSendRequest.setTextColor(ContextCompat.getColor(this,R.color.colorRed));
-        } else if (jobDetail.getJob_confirmed().equals("3")) {// job not send
+        } else if (jobDetail.getJob_confirmed().equals("3") && jobDetail.getJob_status().equals("0")) {// job not send
             binding.btnSendRequest.setBackground(this.getResources().getDrawable(R.drawable.button_black_bg));
             binding.btnSendRequest.setText(R.string.apply);
             binding.btnSendRequest.setTextColor(ContextCompat.getColor(this, R.color.colorWhite));
         }else if (jobDetail.getJob_confirmed().equals("4") || jobDetail.getJob_confirmed().equals("1")){// JOB IS COMPLITED || job is confirmed
             binding.btnSendRequest.setVisibility(View.GONE);
+        }else if (jobDetail.getJob_status().equals("1")){  // work is accepted by other user
+            binding.btnSendRequest.setEnabled(false);
+            binding.btnSendRequest.setBackground(null);
+            binding.btnSendRequest.setText(R.string.work_accepted);
+            binding.btnSendRequest.setTextColor(ContextCompat.getColor(this, R.color.colorBlack));
+        }else if (jobDetail.getJob_status().equals("4")){ // work completed by other user
+            binding.btnSendRequest.setEnabled(false);
+            binding.btnSendRequest.setBackground(null);
+            binding.btnSendRequest.setText(R.string.work_completed);
+            binding.btnSendRequest.setTextColor(ContextCompat.getColor(this, R.color.colorBlack));
         }
+
         Picasso.with(binding.ivProfileImg.getContext())
                 .load(jobDetail.getProfileImage())
                 .fit().into(binding.ivProfileImg);
@@ -193,11 +203,22 @@ public class JobHelpOfferedDetailWorkerActivity extends AppCompatActivity implem
         Intent intent = null;
         switch (v.getId()) {
             case R.id.btn_send_request:
-                if (PreferenceConnector.readString(this, PreferenceConnector.IS_BANK_ACC, "").equals("1")) {
+              /*  if (PreferenceConnector.readString(this, PreferenceConnector.IS_BANK_ACC, "").equals("1")) {
                     sendRequestApi();
                 } else {
                     showAddBankAccountDialog();
+                }*/
+
+                if (PreferenceConnector.readString(this,PreferenceConnector.AVAILABILITY_1,"").equals("1")) {// check avaialability
+                    if (PreferenceConnector.readString(this, PreferenceConnector.IS_BANK_ACC, "0").equals("1")) {// check bank account detail
+                        sendRequestApi();
+                    } else {
+                        showAddBankAccountDialog();
+                    }
+                }else{
+                    Constant.showAvaialabilityAlert(this);
                 }
+
                 break;
             case R.id.iv_back:
                 onBackPressed();

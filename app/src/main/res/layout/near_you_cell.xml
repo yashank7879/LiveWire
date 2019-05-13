@@ -13,6 +13,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
+        android:layout_toLeftOf="@+id/range"
+        android:layout_alignParentStart="true"
         android:fontFamily="@font/poppins_semibold"
         android:text="Cook"
         android:textColor="@color/colorDarkBlack"
@@ -25,6 +27,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_category"
         android:text="House &amp; Home"
+        android:layout_toLeftOf="@+id/tv_range"
+        android:layout_alignParentStart="true"
         android:textColor="@color/colorDarkGray" />
 
     <TextView
@@ -49,7 +53,7 @@
         android:layout_below="@+id/range"
         android:layout_toStartOf="@+id/hr"
         android:text="$ 60.30"
-        android:textColor="@color/colorDarkGray" />
+        android:textColor="@color/colorDarkBlack" />
 
     <TextView
         android:id="@+id/hr"
@@ -67,7 +71,7 @@
         android:id="@+id/view1_id"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/tv_range"
+        android:layout_below="@+id/tv_subcategory"
         android:layout_marginTop="@dimen/_8sdp"
         android:layout_marginBottom="@dimen/_8sdp"
         android:background="@color/colorExtraLightGray" />
@@ -126,7 +130,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
-            android:text="1 km away"
+            android:text="1 km"
             android:textColor="@color/colorDarkGray"
             android:textSize="@dimen/_9sdp" />
 

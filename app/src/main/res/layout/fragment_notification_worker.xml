@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.livewire.ui.fragments.NotificationWorkerFragment">
+    tools:context="com.livewire.ui.fragments.notification_worker_tab.NotificationWorkerFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView

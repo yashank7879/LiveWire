@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:id="@+id/main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorWhite"
+            android:orientation="vertical"
+            tools:context="com.livewire.ui.activity.complete_profile.AddYourSkillsActivity">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp">
+
+                <ImageView
+                    android:id="@+id/iv_back"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_35sdp"
+                    android:padding="@dimen/_5sdp"
+                    android:tint="@color/colorDarkBlack"
+                    app:srcCompat="@drawable/ic_left_arrow" />
+
+                <TextView
+                    android:id="@+id/tv_cancel"
+                    style="@style/mediumPopinsLightStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/_3sdp"
+                    android:padding="@dimen/_5sdp"
+                    android:text="@string/cancel"
+                    android:visibility="gone"
+                    />
+
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_width="@dimen/_80sdp"
+                android:layout_height="@dimen/_80sdp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/notes_book_ico" />
+
+            <TextView
+                style="@style/mediumPopinsMediumStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="@dimen/_10sdp"
+                android:text="@string/introduce_yourself"
+                android:textColor="@color/colorDarkBlack" />
+
+            <TextView
+                style="@style/SmallPopinsLightStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginRight="@dimen/_20sdp"
+                android:gravity="center_horizontal"
+                android:text="@string/tell_us_a_about_your_life_experience_qualifications_and_passions"
+                android:textColor="@color/colorDarkGray" />
+
+
+            <!-- <LinearLayout
+                 android:id="@+id/rl_dob"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_marginBottom="@dimen/_5sdp"
+                 android:layout_marginLeft="@dimen/_20sdp"
+                 android:layout_marginRight="@dimen/_20sdp"
+                 android:layout_marginTop="@dimen/_20sdp"
+                 android:weightSum="1">
+
+                 <TextView
+                     android:id="@+id/tv_dob"
+                     style="@style/SmallPopinsLightStyle"
+                     android:layout_width="0dp"
+                     android:layout_height="wrap_content"
+                     android:layout_weight="1"
+                     android:hint="@string/date_of_birth"
+                     android:maxLines="1"
+                     android:scrollHorizontally="true"
+                     android:textColor="@color/colorDarkBlack"
+                     android:textColorHint="@color/colorDarkGray" />
+
+                 <android.support.v7.widget.AppCompatImageView
+                     android:layout_width="@dimen/_20sdp"
+                     android:layout_height="@dimen/_20sdp"
+                     android:layout_marginStart="@dimen/_10sdp"
+                     android:padding="@dimen/_2sdp"
+                     app:srcCompat="@drawable/ic_calender" />
+
+             </LinearLayout>
+
+             <View
+                 android:layout_width="match_parent"
+                 android:layout_height="@dimen/_1sdp"
+                 android:layout_marginBottom="@dimen/_5sdp"
+                 android:layout_marginLeft="@dimen/_20sdp"
+                 android:layout_marginRight="@dimen/_20sdp"
+                 android:background="@color/colorLightGray" />
+
+             <TextView
+                 style="@style/SmallPopinsLightStyle"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="end"
+                 android:layout_marginEnd="@dimen/_20sdp"
+                 android:text="@string/minimum_age_is_40_years"
+                 android:textColor="@color/colorDarkGray"
+                 android:textSize="@dimen/_8sdp" />-->
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_100sdp"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginRight="@dimen/_20sdp"
+                android:background="@drawable/bg_pay_card_item"
+                android:layout_marginTop="@dimen/_20sdp">
+
+                <EditText
+                    android:id="@+id/et_about_me"
+                    style="@style/SmallPopinsLightStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:hint="@string/write_here"
+                    android:maxHeight="@dimen/_120sdp"
+                    android:padding="@dimen/_5sdp"
+                    android:maxLength="200"
+                    />
+            </RelativeLayout>
+            <TextView
+                style="@style/SmallPopinsLightStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:text="@string/maximum_200_words"
+                android:textColor="@color/colorDarkGray"
+                android:textSize="@dimen/_8sdp" />
+
+            <Button
+                android:id="@+id/btn_next"
+                style="@style/mediumPopinsMediumStyle"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_gravity="bottom"
+                android:layout_marginLeft="@dimen/_30sdp"
+                android:layout_marginRight="@dimen/_30sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:background="@drawable/button_black_bg"
+                android:text="@string/next"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite" />
+
+            <TextView
+                android:id="@+id/btn_skip"
+                style="@style/SmallPopinsLightStyle"
+                android:layout_width="@dimen/_65sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="@dimen/_8sdp"
+                android:background="#dddfe1"
+                android:gravity="center"
+                android:text="@string/skip"
+                android:textAllCaps="false"
+                android:textSize="@dimen/_8sdp"/>
+
+        </LinearLayout>
+
+        <!--<FrameLayout
+            android:id="@+id/fl_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </FrameLayout>-->
+    </RelativeLayout>
+</layout>

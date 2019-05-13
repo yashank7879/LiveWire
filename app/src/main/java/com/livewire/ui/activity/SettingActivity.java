@@ -73,7 +73,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         binding.llLogout.setOnClickListener(this);
         binding.ivBack.setOnClickListener(this);
         tvBankAcc = findViewById(R.id.tv_bank_account);
-        binding.llAddCreditCard.setOnClickListener(this);
+        binding.llFaq.setOnClickListener(this);
         binding.llShareApp.setOnClickListener(this);
 
         if (PreferenceConnector.readString(this, PreferenceConnector.USER_MODE, "").equals("worker")) {// show Bank acc
@@ -82,10 +82,10 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             }*/
             binding.llAddBankAcc.setVisibility(View.VISIBLE);
             binding.rlAvailable.setVisibility(View.VISIBLE);
-        } else if (PreferenceConnector.readString(this, PreferenceConnector.USER_MODE, "").equals("client")) {// show credit card
+        } /*else if (PreferenceConnector.readString(this, PreferenceConnector.USER_MODE, "").equals("client")) {// show credit card
             binding.llAddCreditCard.setVisibility(View.VISIBLE);
             binding.rlAvailable.setVisibility(View.VISIBLE);
-        }
+        }*/
 
         if (PreferenceConnector.readString(this, PreferenceConnector.PASS_WORD, "").isEmpty()) {
             binding.llChangePass.setVisibility(View.GONE);
@@ -126,14 +126,12 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.ll_change_pass:
                 openChnagePassDialog();
                 break;
-
             case R.id.ll_add_bank_acc:
                 if (Constant.isNetworkAvailable(this, binding.settingMainLayout)) {
                     intent = new Intent(this, AddBankAccountActivity.class);
                     startActivity(intent);
                 }
                 break;
-
             case R.id.ll_about_us:
                 if (Constant.isNetworkAvailable(this, binding.settingMainLayout)) {
                     intent = new Intent(this, AboutUsActivity.class);
@@ -141,7 +139,6 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                     startActivity(intent);
                 }
                 break;
-
             case R.id.ll_terms_condition:
                 if (Constant.isNetworkAvailable(this, binding.settingMainLayout)) {
                     intent = new Intent(this, AboutUsActivity.class);
@@ -149,7 +146,6 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                     startActivity(intent);
                 }
                 break;
-
             case R.id.ll_privacy_policy:
                 if (Constant.isNetworkAvailable(this, binding.settingMainLayout)) {
                     intent = new Intent(this, AboutUsActivity.class);
@@ -163,11 +159,10 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.iv_back:
                 onBackPressed();
                 break;
-            case R.id.ll_add_credit_card:
+            case R.id.ll_faq:
                 if (Constant.isNetworkAvailable(this, binding.settingMainLayout)) {
-                    intent = new Intent(this, AddCreditCardActivity.class);
-                    intent.putExtra("FromSetting", "Setting");
-                    startActivity(intent);
+                    startActivity(new Intent(this,FaqsActivity.class));
+                    //Toast.makeText(this, "under devlopment mode", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.ll_share_app: {

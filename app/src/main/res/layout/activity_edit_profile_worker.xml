@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="userData"
             type="com.livewire.responce.MyProfileResponce.DataBean" />
@@ -110,7 +109,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_1sdp"
                         android:layout_marginBottom="@dimen/_15sdp"
-
                         android:layout_marginTop="@dimen/_5sdp"
                         android:background="@color/colorLightGray" />
 
@@ -137,7 +135,6 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:background="@color/colorLightGray" />
 
-
                 </LinearLayout>
 
                 <RelativeLayout
@@ -161,8 +158,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/poppins_regular"
-                        android:text="@string/add_skill"
-                        android:textColor="@color/colorLightGray" />
+                        android:text="@string/add_skills"
+                        android:textColor="@color/colorGreen" />
+
                     <!-- <Spinner
                          android:id="@+id/language_spinner"
                          android:layout_width="@dimen/_220sdp"

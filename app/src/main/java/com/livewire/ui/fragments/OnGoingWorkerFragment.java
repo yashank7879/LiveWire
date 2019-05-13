@@ -56,7 +56,9 @@ import java.util.List;
 import static com.livewire.utils.ApiCollection.BASE_URL;
 import static com.livewire.utils.ApiCollection.GET_JOB_LIST_API;
 import static com.livewire.utils.ApiCollection.GET_SUBCATEGORY_LIST_API;
+import static com.livewire.utils.ApiCollection.GET_WORKER_SKILL_API;
 import static com.livewire.utils.ApiCollection.JOBPOSTSEND_REQUEST_2_API;
+import static com.livewire.utils.Constant.fromProfile;
 
 
 public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapter.SubCategoryLisner, AdapterView.OnItemSelectedListener,View.OnClickListener,OngoingAdapter.OnGoingItemOnClick {
@@ -175,6 +177,13 @@ public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapte
     @Override
     public void onResume() {
         super.onResume();
+        if (fromProfile) {
+            skillsStrin = "";
+            filterLayout.setVisibility(View.GONE);
+            subCategoryList.clear();
+            subCategoryTempList.clear();
+            addItemsInSubCategoryTempList();
+        }
         ongoingListApi();
     }
 
@@ -233,7 +242,8 @@ public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapte
     //"""""""""" sub category list api """""""""""""//
     private void subCategoryListApi() {
         if (Constant.isNetworkAvailable(mContext, mainLayout)) {
-            AndroidNetworking.get(BASE_URL + GET_SUBCATEGORY_LIST_API)
+            AndroidNetworking.get(BASE_URL + GET_WORKER_SKILL_API)
+                    .addHeaders("authToken", PreferenceConnector.readString(mContext, PreferenceConnector.AUTH_TOKEN,""))
                     .setPriority(Priority.MEDIUM)
                     .build()
                     .getAsJSONObject(new JSONObjectRequestListener() {
@@ -245,6 +255,7 @@ public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapte
                                 status = response.getString("status");
                                 String message = response.getString("message");
                                 if (status.equals("success")) {
+                                    subCategoryTempList.clear();
                                     subCategoryResponse = new Gson().fromJson(String.valueOf(response), SubCategoryResponse.class);
 
                                     for (int i = 0; i < subCategoryResponse.getData().size(); i++) {
@@ -255,12 +266,15 @@ public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapte
                                         subCategoryTempList.add(dataBean);
                                     }
                                     // subCategoryTempList.addAll(subCategoryResponse.getData());
-
                                     SubCategoryResponse.DataBean dataBean = new SubCategoryResponse.DataBean();
                                     dataBean.setCategoryName("Skills");
                                     subCategoryTempList.add(0, dataBean);
+                                    subCategoryAdapterList.notifyDataSetChanged();
                                 } else {
-                                    Constant.snackBar(mainLayout, message);
+                                    SubCategoryResponse.DataBean dataBean = new SubCategoryResponse.DataBean();
+                                    dataBean.setCategoryName("Skills");
+                                    subCategoryTempList.add(0, dataBean);
+                                    //Constant.snackBar(mainLayout, message);
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -324,6 +338,7 @@ public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapte
                         Constant.snackBar(addSkillsLayout, "Please Select at least one Skill");
                     } else {
                         skillsString();
+                        subCategoryAdapterList.notifyDataSetChanged();
                         subCategoryAdapter.notifyDataSetChanged();
                         filterLayout.setVisibility(View.VISIBLE);
                         ongoingListApi();
@@ -386,8 +401,10 @@ public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapte
                 break;
             case R.id.tv_clear_all:
                 subCategoryList.clear();
+                subCategoryTempList.clear();
                 filterLayout.setVisibility(View.GONE);
                 skillsStrin = "";
+                addItemsInSubCategoryTempList();
                 ongoingListApi();
                 break;
             default:
@@ -448,25 +465,36 @@ public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapte
         switch (key) {
             case "MoreInfo":
                 Intent intent = new Intent(mContext, JobOnGoingDetailWorkerActivity.class);
-                intent.putExtra("JobDetail",dataBean.getJobId());
+                intent.putExtra("JobIdKey",dataBean.getJobId());
                 startActivity(intent);
                 break;
             case "Accept":
                 //acceptRejectrequestApi(dataBean.getUserId(), dataBean.getJobId(), "1", pos);
-                if (PreferenceConnector.readString(mContext,PreferenceConnector.IS_BANK_ACC,"").equals("1")) {
-                    acceptRejectrequestApi(dataBean.getUserId(), dataBean.getJobId(), "1",pos);
-                }else {
-                    showAddBankAccountDialog();
+                if (PreferenceConnector.readString(mContext,PreferenceConnector.AVAILABILITY_1,"").equals("1")) {// check avaialability
+                    if (PreferenceConnector.readString(mContext,PreferenceConnector.IS_BANK_ACC,"").equals("1")) {
+                        acceptRejectrequestApi(dataBean.getUserId(), dataBean.getJobId(), "1",pos);
+                    }else {
+                        showAddBankAccountDialog();
+                    }
+                }else{
+                    Constant.showAvaialabilityAlert(mContext);
                 }
+
                 break;
             case "Reject":
                // acceptRejectrequestApi(dataBean.getUserId(), dataBean.getJobId(), "2", pos);
-                if (PreferenceConnector.readString(mContext,PreferenceConnector.IS_BANK_ACC,"").equals("1")) {
-                    acceptRejectrequestApi(dataBean.getUserId(), dataBean.getJobId(), "2", pos);
 
-                }else {
-                    showAddBankAccountDialog();
+                if (PreferenceConnector.readString(mContext,PreferenceConnector.AVAILABILITY_1,"").equals("1")) {// check avaialability
+                    if (PreferenceConnector.readString(mContext,PreferenceConnector.IS_BANK_ACC,"").equals("1")) {
+                        acceptRejectrequestApi(dataBean.getUserId(), dataBean.getJobId(), "2", pos);
+
+                    }else {
+                        showAddBankAccountDialog();
+                    }
+                }else{
+                    Constant.showAvaialabilityAlert(mContext);
                 }
+
                 break;
                 default:
         }
@@ -545,6 +573,23 @@ public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapte
             }
         });
     }
+    }
+
+    // create static responce list
+    private void addItemsInSubCategoryTempList() {
+
+        for (int i = 0; i < subCategoryResponse.getData().size(); i++) {
+            SubCategoryResponse.DataBean dataBean = new SubCategoryResponse.DataBean();
+            dataBean.setCategoryName(subCategoryResponse.getData().get(i).getCategoryName());
+            dataBean.setCategoryId(subCategoryResponse.getData().get(i).getCategoryId());
+            dataBean.setPosition(i + 1);
+            subCategoryTempList.add(dataBean);
+        }
+        // subCategoryTempList.addAll(subCategoryResponse.getData());
+
+        SubCategoryResponse.DataBean dataBean = new SubCategoryResponse.DataBean();
+        dataBean.setCategoryName("Skills");
+        subCategoryTempList.add(0, dataBean);
     }
 }
 

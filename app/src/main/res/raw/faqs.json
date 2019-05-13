@@ -1,0 +1,127 @@
+[
+    {
+      "parentId":"1",
+      "tittle":"GENERAL QUESTIONS",
+      "isTitle": true,
+      "SubQue":[
+        {
+          "subId":"",
+          "subQuestion":"How does Live Wire work?",
+          "ans":"Live Wire is a networking and recruitment tool. People who lack time or skills for the demands of daily life can meet and recruit retired people who offer their skills on an hourly or project basis."
+        },
+        {
+          "subId":"",
+          "subQuestion":"Why should I use Live Wire chat and not share my personal contact details?",
+          "ans":"For your own privacy and protection, we recommend not sharing personal details until the booking has been made. Do not give your telephone number and do not provide your exact address when registering – your Suburb is ample to locate Live Wires near you."
+        }
+      ]
+    },
+  {
+    "parentId":"1",
+    "tittle":"GENERAL QUESTIONS",
+    "isTitle": false,
+    "SubQue":[
+      {
+        "subId":"",
+        "subQuestion":"Why should I use Live Wire chat and not share my personal contact details?",
+        "ans":"For your own privacy and protection, we recommend not sharing personal details until the booking has been made. Do not give your telephone number and do not provide your exact address when registering – your Suburb is ample to locate Live Wires near you."
+      }
+    ]
+  },
+    {
+      "parentId":"2",
+      "tittle":"INFORMATION FOR HIRERS",
+      "isTitle": true,
+      "SubQue":[
+        {
+          "subId":"",
+          "subQuestion":"Why does Live Wire limit the recruitment pool to those who are over 40 and no longer working full time?",
+          "ans":"In a nutshell, these people have maturity, experience, reliability, self-management, integrity and flexibility – qualities that make them ideal candidates for help at home where one’s nearest and dearest are involved!"
+        }
+      ]
+    },
+
+  {
+    "parentId":"2",
+    "tittle":"INFORMATION FOR HIRERS",
+    "isTitle": false,
+    "SubQue":[
+      {
+        "subId":"",
+        "subQuestion":"What happens if a WORKER does not respond to my enquiry?",
+        "ans":"We always recommend messaging more than one of your ‘matches’ and selecting the one that best meets your needs and availability."
+      }
+    ]
+  },
+    {
+    "parentId":"2",
+    "tittle":"INFORMATION FOR HIRERS",
+      "isTitle": false,
+    "SubQue":[
+      {
+        "subId":"",
+        "subQuestion":"Why should I pay by Credit Card via Live Wire and not pay cash?",
+        "ans":"We encourage you use Live Wire’s online payment feature for making payments. Making an online payment gives you protection i.e. in case of dispute, you can request a refund. Also, making an online payment is the only way to collect feedback. Once you have booked a WORKER Live Wire holds the funds securely until you confirm that the service has taken place. Only then are funds transferred to the WORKER"
+      }
+    ]
+  },
+  {
+    "parentId":"2",
+    "tittle":"INFORMATION FOR HIRERS",
+    "isTitle": false,
+    "SubQue":[
+      {
+        "subId":"",
+        "subQuestion":"How can I be sure that my credit card details are secure?",
+        "ans":"We use Peach Payments, a leading platform for secure payments. When a user opts to store card details Live Wire, these details are stored by Peach Payments in a PCI DSS level 1 compliant vault. Sensitive cardholder details are directly transmitted from users’ browsers to Peach Payment’s systems. Merchants' staff and systems do not have access to complete card number details at any point in time, on Peach Payments platforms."
+      }
+    ]
+  },
+  {
+      "parentId":"3",
+      "tittle":"INFORMATION FOR WORKERS",
+    "isTitle": true,
+      "SubQue":[
+        {
+          "subId":"",
+          "subQuestion":"When will I be paid?",
+          "ans":"For short term projects, you will be paid once the HIRER has confirmed the project is complete. For long term projects, payment is made once per month. Payment date is set for 25th of the month. The minimum pay-out is R100, When payment has been released, it will reflect in your bank account in 2 – 3working days"
+        },
+        {
+          "subId":"",
+          "subQuestion":"What fee does Live Wire charge?",
+          "ans":"Live Wire charges a commission of 10%. This amount is automatically deducted from the payment made by the HIRER. Make sure the minimum hourly rate you set allows for our commission."
+        },
+        {
+          "subId":"",
+          "subQuestion":"Why should I continue to use Live Wire to collect payment rather than making private arrangements with regular HIRERS?",
+          "ans":"We highly encourage you to always collect payment via the platform. This allows you to receive feedback. The more feedback you collect (even if it is from the same customer) the higher your listing appears on our platform."
+        }
+      ]
+    },
+
+  {
+    "parentId":"3",
+    "tittle":"INFORMATION FOR WORKERS",
+    "isTitle": false,
+    "SubQue":[
+      {
+        "subId":"",
+        "subQuestion":"What fee does Live Wire charge?",
+        "ans":"Live Wire charges a commission of 10%. This amount is automatically deducted from the payment made by the HIRER. Make sure the minimum hourly rate you set allows for our commission."
+      }
+    ]
+  },
+  {
+    "parentId":"3",
+    "tittle":"INFORMATION FOR WORKERS",
+    "isTitle": false,
+    "SubQue":[
+      {
+        "subId":"",
+        "subQuestion":"Why should I continue to use Live Wire to collect payment rather than making private arrangements with regular HIRERS?",
+        "ans":"We highly encourage you to always collect payment via the platform. This allows you to receive feedback. The more feedback you collect (even if it is from the same customer) the higher your listing appears on our platform."
+      }
+    ]
+  }
+]

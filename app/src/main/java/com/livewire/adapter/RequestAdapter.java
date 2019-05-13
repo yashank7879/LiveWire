@@ -50,7 +50,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.MyViewHo
                 holder.rlRequest.setVisibility(View.VISIBLE);
                 RequestResponceClient.DataBean dataBean = requestList.get(position);
                 holder.tvName.setText(dataBean.getName());
-                holder.tvDistance.setText(dataBean.getDistance_in_km() + " Km away");
+                holder.tvDistance.setText(dataBean.getDistance_in_km() + " Km");
                 Picasso.with(holder.ivProfileImg.getContext()).load(dataBean.getProfileImage()).placeholder(R.drawable.ic_user).fit().into(holder.ivProfileImg);
             if (!dataBean.getRating().isEmpty()){
                 holder.ratingBar.setRating(Float.parseFloat(dataBean.getRating()));

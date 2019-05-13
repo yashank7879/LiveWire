@@ -79,7 +79,7 @@ public class CustomInfoWindowFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binding.tvName.setText(userData.getName());
-        binding.tvDistance.setText(userData.getDistance_in_km()+" km away");
+        binding.tvDistance.setText(userData.getDistance_in_km()+" km");
         if (!userData.getRating().isEmpty())
         binding.ratingBar.setRating(Float.parseFloat(userData.getRating()));
 

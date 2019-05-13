@@ -664,7 +664,7 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
             TextView tvCancel = dialog.findViewById(R.id.tv_cancel);
             final RelativeLayout addSkillsLayout = dialog.findViewById(R.id.add_skills_layout);
             final EditText etMinPrice = dialog.findViewById(R.id.et_min_price);
-            final EditText etMaxPrice = dialog.findViewById(R.id.et_max_price);
+           // final EditText etMaxPrice = dialog.findViewById(R.id.et_max_price);
             Button btnAddSkills = dialog.findViewById(R.id.btn_add_skills);
             final Spinner categorySpinner = dialog.findViewById(R.id.category_spinner);
             subCategorySpinner = dialog.findViewById(R.id.sub_category_spinner);
@@ -673,12 +673,12 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
             categoryAdapter.setDropDownViewResource(R.layout.spinner_drop_down);
             categorySpinner.setOnItemSelectedListener(this);
             categorySpinner.setAdapter(categoryAdapter);
-            Constant.hideSoftKeyBoard(EditProfileWorkerActivity.this, etMaxPrice);
+            Constant.hideSoftKeyBoard(EditProfileWorkerActivity.this, etMinPrice);
             btnAddSkills.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    dialogValidations(categorySpinner, etMinPrice, etMaxPrice, addSkillsLayout, dialog);
-                    Constant.hideSoftKeyBoard(EditProfileWorkerActivity.this, etMaxPrice);
+                    dialogValidations(categorySpinner, etMinPrice, addSkillsLayout, dialog);
+                    Constant.hideSoftKeyBoard(EditProfileWorkerActivity.this,etMinPrice);
 
                 }
             });
@@ -686,12 +686,12 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
             tvCancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Constant.hideSoftKeyBoard(EditProfileWorkerActivity.this, etMaxPrice);
+                    Constant.hideSoftKeyBoard(EditProfileWorkerActivity.this, etMinPrice);
                     dialog.dismiss();
                 }
             });
 
-            etMaxPrice.addTextChangedListener(new TextWatcher() {
+          /*  etMaxPrice.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -713,7 +713,7 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
                         etMaxPrice.setSelection(pos);
                     }
                 }
-            });
+            });*/
             etMinPrice.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -746,7 +746,6 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
     public String perfectDecimal(String str, int maxBeforePoint, int maxDecimal) { //price format "15455.15"
         if (str.charAt(0) == '.') str = "0" + str;
         int max = str.length();
-
         String rFinal = "";
         boolean after = false;
         int i = 0;
@@ -773,7 +772,7 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
 
 
     ///"""""""""""" dialog validationd""""""""""""
-    private void dialogValidations(Spinner categorySpinner, TextView minPrice, TextView maxPrice, RelativeLayout addSkillsLayout, Dialog dialog) {
+    private void dialogValidations(Spinner categorySpinner, TextView minPrice, RelativeLayout addSkillsLayout, Dialog dialog) {
 /*        int minPric = Integer.parseInt(minPrice.getText().toString());
         int maxPric = Integer.parseInt(maxPrice.getText().toString());*/
         if (skillsResponce.getData().get(categorySpinner.getSelectedItemPosition()).getCategoryName().equals("Select Category")) {
@@ -783,19 +782,20 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
         } else if (minPrice.getText().toString().equals("") || minPrice.getText().toString().length() == 0) {
             Constant.snackBar(addSkillsLayout, "Please enter min price");
             minPrice.requestFocus();
-        } else if (Float.parseFloat(minPrice.getText().toString()) < 3) {
-            Constant.snackBar(addSkillsLayout, "Min price should not be less than 3 dollar");
+        } else if (Float.parseFloat(minPrice.getText().toString()) < 1) {
+            Constant.snackBar(addSkillsLayout, "Min price should not be less than 1 Rand");
             minPrice.requestFocus();
-        } else if (maxPrice.getText().toString().equals("") || maxPrice.getText().toString().length() == 0) {
+        }
+       /* else if (maxPrice.getText().toString().equals("") || maxPrice.getText().toString().length() == 0) {
             Constant.snackBar(addSkillsLayout, "Please enter max price");
             maxPrice.requestFocus();
-        }/*else if ((maxPric-minPric) < 0){
+        }else if ((maxPric-minPric) < 0){
             Constant.snackBar(addSkillsLayout, "Min price and Max price can't be same");
             maxPrice.requestFocus();
-        }*/ else if (Float.parseFloat(minPrice.getText().toString()) >= Float.parseFloat(maxPrice.getText().toString())) {
+        } else if (Float.parseFloat(minPrice.getText().toString()) >= Float.parseFloat(maxPrice.getText().toString())) {
             Constant.snackBar(addSkillsLayout, "Min price always less than Max price");
             minPrice.requestFocus();
-        } else {
+        }*/ else {
             Constant.hideSoftKeyBoard(this, minPrice);
             AddSkillsResponce.DataBean dataBean = skillsResponce.getData().get(categorySpinner.getSelectedItemPosition());
             AddedSkillBean addedSkillBean = new AddedSkillBean();
@@ -806,7 +806,7 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
             AddedSkillBean.SubCatagory subCatagory = new AddedSkillBean.SubCatagory();
             subCatagory.setSubCatId(subcatBean.getCategoryId());
             subCatagory.setSubName(subcatBean.getCategoryName());
-            subCatagory.setMax_rate(Float.parseFloat(maxPrice.getText().toString()));
+           // subCatagory.setMax_rate(Float.parseFloat(maxPrice.getText().toString()));
             subCatagory.setMin_rate(Float.parseFloat(minPrice.getText().toString()));
 
             boolean isExsist = false;

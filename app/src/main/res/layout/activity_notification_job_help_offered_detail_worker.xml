@@ -130,7 +130,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_medium"
-                            android:text='@{jobDetail.distance_in_km + " Km away" , default = "N/A"}'
+                            android:text='@{jobDetail.distance_in_km + " Km" , default = "N/A"}'
                             android:textColor="@color/colorDarkGray"
                             android:textSize="@dimen/_9sdp" />
 
@@ -272,6 +272,8 @@
                         android:id="@+id/tv_category"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_toLeftOf="@+id/tv_date"
+                        android:layout_alignParentStart="true"
                         android:layout_below="@+id/tv_details_of_help"
                         android:layout_gravity="center"
                         android:fontFamily="@font/poppins_semibold"
@@ -306,6 +308,8 @@
                         android:id="@+id/tv_sub_category"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_toLeftOf="@+id/tv_date"
+                        android:layout_alignParentStart="true"
                         android:layout_below="@+id/tv_category"
                         android:layout_gravity="center"
                         android:fontFamily="@font/poppins_regular"
@@ -398,6 +402,14 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_description"
                         android:visibility="gone">
+
+                        <View
+                            android:id="@+id/view3_id"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:background="@color/colorExtraLightGray" />
+
 
                         <TextView
                             android:id="@+id/tv_payment_info"

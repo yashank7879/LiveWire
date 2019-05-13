@@ -141,7 +141,7 @@ public class MyJobAdapter extends RecyclerView.Adapter {
             String jobType = dataBean.getJob_type().equals("1") ? "Short Term" : "Long Term";
             holderJob4.btnSendRequest.setText(jobType);
             holderJob4.tvName.setText(dataBean.getRequestedUserData().get(0).getName());
-            holderJob4.tvDistance.setText(dataBean.getRequestedUserData().get(0).getDistance_in_km() + " Km away");
+            holderJob4.tvDistance.setText(dataBean.getRequestedUserData().get(0).getDistance_in_km() + " Km");
 
             holderJob4.tvCategory.setText(dataBean.getSub_category());
             holderJob4.tvSubcategory.setText(dataBean.getParent_category());
@@ -189,7 +189,7 @@ public class MyJobAdapter extends RecyclerView.Adapter {
                     holder.rlOfferRange.setVisibility(View.VISIBLE);
                     holder.tvOfferPrice.setText("R" + dataBean.getJob_offer());
                     holder.tvName.setText(dataBean.getRequestedUserData().get(0).getName());
-                    holder.tvDistance.setText(dataBean.getRequestedUserData().get(0).getDistance_in_km() + " Km away");
+                    holder.tvDistance.setText(dataBean.getRequestedUserData().get(0).getDistance_in_km() + " Km");
                     Picasso.with(holder.ivProfileImg.getContext()).load(dataBean.getRequestedUserData().get(0).getProfileImage()).error(R.drawable.ic_user).fit().into(holder.ivProfileImg);
 
                     if (!dataBean.getRequestedUserData().get(0).getRating().isEmpty()) {
@@ -226,7 +226,12 @@ public class MyJobAdapter extends RecyclerView.Adapter {
 
                     SpannableStringBuilder builder = new SpannableStringBuilder();
                     SpannableString minprice = new SpannableString("R" + dataBean.getRequestedUserData().get(0).getMin_rate());
+
                     minprice.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.colorDarkBlack)), 0, minprice.length(), 0);
+                    //  userName.setSpan(new StyleSpan(Typeface.BOLD), 0, userName.length(), 0);
+                    builder.append(minprice);
+                    builder.append("/hr");
+                    /* minprice.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.colorDarkBlack)), 0, minprice.length(), 0);
                     //  userName.setSpan(new StyleSpan(Typeface.BOLD), 0, userName.length(), 0);
                     builder.append(minprice);
                     SpannableString toString = new SpannableString(" to ");
@@ -237,7 +242,8 @@ public class MyJobAdapter extends RecyclerView.Adapter {
                     //  userName.setSpan(new StyleSpan(Typeface.BOLD), 0, userName.length(), 0);
                     builder.append(maxprice);
 
-                    builder.append("/hr");
+                    builder.append("/hr");*/
+
 
                     holder.tvRangePrice.setText(builder);
                 }
@@ -276,7 +282,7 @@ public class MyJobAdapter extends RecyclerView.Adapter {
                 holder.tvJobConfirm.setVisibility(View.VISIBLE);
                 holder.requestPending.setVisibility(View.GONE);
                 holder.tvName.setText(dataBean.getRequestedUserData().get(0).getName());
-                holder.tvDistance.setText(dataBean.getRequestedUserData().get(0).getDistance_in_km() + " Km away");
+                holder.tvDistance.setText(dataBean.getRequestedUserData().get(0).getDistance_in_km() + " Km");
                 Picasso.with(holder.ivProfileImg.getContext())
                         .load(dataBean.getRequestedUserData().get(0).getProfileImage())
                         .fit()

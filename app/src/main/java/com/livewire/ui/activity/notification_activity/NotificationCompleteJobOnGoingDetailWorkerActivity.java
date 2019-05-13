@@ -151,6 +151,8 @@ public class NotificationCompleteJobOnGoingDetailWorkerActivity extends AppCompa
                 intent.putExtra("profilePic", clientProfileImg);
                 startActivity(intent);
             }
+            break;
+
             default:
         }
     }
@@ -205,7 +207,7 @@ public class NotificationCompleteJobOnGoingDetailWorkerActivity extends AppCompa
 
         SpannableStringBuilder builder = new SpannableStringBuilder();
         SpannableString minprice = new SpannableString("R" + workerResponce.getData().getMin_rate());
-        minprice.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorDarkBlack)), 0, minprice.length(), 0);
+        /*minprice.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorDarkBlack)), 0, minprice.length(), 0);
         //  userName.setSpan(new StyleSpan(Typeface.BOLD), 0, userName.length(), 0);
         builder.append(minprice);
         SpannableString toString = new SpannableString(" to ");
@@ -215,9 +217,9 @@ public class NotificationCompleteJobOnGoingDetailWorkerActivity extends AppCompa
         SpannableString maxprice = new SpannableString("R" + workerResponce.getData().getMax_rate());
         maxprice.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorDarkBlack)), 0, maxprice.length(), 0);
         //  userName.setSpan(new StyleSpan(Typeface.BOLD), 0, userName.length(), 0);
-        builder.append(maxprice);
+        builder.append(maxprice);*/
 
-        binding.tvRangePrice.setText(builder);
+        binding.tvRangePrice.setText(minprice);
     }
 
     private void openReviewDialog() {

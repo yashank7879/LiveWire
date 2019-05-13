@@ -59,9 +59,10 @@
 
         <TextView
             android:id="@+id/tv_category"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/_180sdp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_semibold"
+            android:singleLine="true"
             android:text="Cook"
             android:textColor="@color/colorDarkBlack"
             android:textSize="@dimen/_12sdp" />
@@ -69,9 +70,10 @@
         <TextView
             android:id="@+id/tv_subcategory"
             style="@style/smallPopinsRegularStyle"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/_180sdp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_category"
+            android:singleLine="true"
             android:text="House &amp; Home"
             android:textColor="@color/colorDarkGray" />
 
@@ -129,8 +131,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/view1_id"
-            android:paddingBottom="@dimen/_8sdp"
-            android:paddingTop="@dimen/_8sdp">
+            android:paddingTop="@dimen/_8sdp"
+            android:paddingBottom="@dimen/_8sdp">
 
             <!--gone-->
             <RelativeLayout
@@ -161,7 +163,6 @@
 
                 <RatingBar
                     android:id="@+id/rating_bar"
-                    android:theme="@style/RatingBarTheme"
                     style="@style/Widget.AppCompat.RatingBar.Small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -169,7 +170,7 @@
                     android:layout_toEndOf="@+id/iv_profile_img"
                     android:numStars="5"
                     android:progressTint="@color/coloryellow"
-                    />
+                    android:theme="@style/RatingBarTheme" />
 
                 <LinearLayout
                     android:id="@+id/ll_km_away"
@@ -183,7 +184,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/poppins_medium"
-                        android:text="1 km away"
+                        android:text="1 km "
                         android:textColor="@color/colorDarkGray"
                         android:textSize="@dimen/_9sdp" />
 
@@ -237,22 +238,22 @@
                     style="@style/smallPopinsRegularStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="end"
                     android:layout_below="@+id/btn_send_request"
-                    android:layout_toStartOf="@+id/hr1"
-                    android:text="$ 40.80 to 70.00/hr"
-                    android:layout_alignParentEnd="true"/>
-
-              <!--  <TextView
-                    android:id="@+id/hr1"
-                    style="@style/SmallPopinsLightStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/tv_range_price"
                     android:layout_alignParentEnd="true"
-                    android:text="@string/hr"
-                    android:textColor="@color/colorDarkBlack"
-                    android:textSize="@dimen/_8sdp" />-->
+                    android:layout_toStartOf="@+id/hr1"
+                    android:gravity="end"
+                    android:text="$ 40.80 to 70.00/hr" />
+
+                <!--  <TextView
+                      android:id="@+id/hr1"
+                      style="@style/SmallPopinsLightStyle"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_alignBaseline="@+id/tv_range_price"
+                      android:layout_alignParentEnd="true"
+                      android:text="@string/hr"
+                      android:textColor="@color/colorDarkBlack"
+                      android:textSize="@dimen/_8sdp" />-->
 
             </RelativeLayout>
 
@@ -260,12 +261,12 @@
                 android:id="@+id/ll_more_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
                 android:layout_below="@+id/rl_range"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:background="?android:attr/selectableItemBackground"
-                android:paddingBottom="@dimen/_3sdp"
-                android:paddingTop="@dimen/_3sdp">
+                android:paddingTop="@dimen/_3sdp"
+                android:paddingBottom="@dimen/_3sdp">
 
                 <TextView
                     android:id="@+id/tv_more_info"

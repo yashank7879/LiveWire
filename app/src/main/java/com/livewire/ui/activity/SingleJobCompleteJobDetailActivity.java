@@ -103,7 +103,7 @@ public class SingleJobCompleteJobDetailActivity extends AppCompatActivity implem
         binding.tvDateMonth.setText(Constant.DateFomatChange(data.getData().getJob_start_date()).substring(3));
 
         binding.tvName.setText(data.getData().getRequestedUserData().get(0).getName());
-        binding.tvDistance.setText(data.getData().getRequestedUserData().get(0).getDistance_in_km() + " Km away");
+        binding.tvDistance.setText(data.getData().getRequestedUserData().get(0).getDistance_in_km() + " Km");
 
         name = data.getData().getRequestedUserData().get(0).getName();
         for (JobDetailClientResponce.ReviewBean reviewBean : data.getReview()) {

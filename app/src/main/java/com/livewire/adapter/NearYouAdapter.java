@@ -57,26 +57,24 @@ public class NearYouAdapter extends RecyclerView.Adapter<NearYouAdapter.MyViewHo
             holder.tvSubcategory.setText(data.getParent_category());
             holder.tvName.setText(data.getName());
             Picasso.with(holder.ivProfileImg.getContext()).load(data.getProfileImage()).into(holder.ivProfileImg);
-            holder.tvDistance.setText(data.getDistance_in_km() + " Km away");
+            holder.tvDistance.setText(data.getDistance_in_km() + " Km");
             float rating =  data.getRating().isEmpty() ? 0:Float.parseFloat(data.getRating());
             holder.ratingBar.setRating(rating);
 
             SpannableStringBuilder builder = new SpannableStringBuilder();
             SpannableString minprice = new SpannableString("R" + data.getMin_rate());
-            minprice.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.colorDarkBlack)), 0, minprice.length(), 0);
+            /*minprice.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.colorDarkBlack)), 0, minprice.length(), 0);
             //  userName.setSpan(new StyleSpan(Typeface.BOLD), 0, userName.length(), 0);
             builder.append(minprice);
             SpannableString toString = new SpannableString(" to ");
             builder.append(toString);
 
-
             SpannableString maxprice = new SpannableString("R" + data.getMax_rate());
             maxprice.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.colorDarkBlack)), 0, maxprice.length(), 0);
             //  userName.setSpan(new StyleSpan(Typeface.BOLD), 0, userName.length(), 0);
-            builder.append(maxprice);
+            builder.append(maxprice);*/
 
-
-            holder.tvRange.setText(builder);
+            holder.tvRange.setText(minprice);
 
 
         }

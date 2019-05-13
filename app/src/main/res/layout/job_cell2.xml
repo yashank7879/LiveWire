@@ -50,16 +50,17 @@
         <TextView
             android:id="@+id/tv_category"
             android:fontFamily="@font/poppins_semibold"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/_180sdp"
             android:layout_height="wrap_content"
             android:text="Cook"
+            android:singleLine="true"
             android:textSize="@dimen/_12sdp"
             android:textColor="@color/colorDarkBlack" />
 
         <TextView
             android:id="@+id/tv_subcategory"
             style="@style/smallPopinsRegularStyle"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/_180sdp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_category"
             android:text="House &amp; Home"
@@ -153,7 +154,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_medium"
-                android:text="1 km away"
+                android:text="1 km "
                 android:textSize="@dimen/_9sdp"
                 android:textColor="@color/colorDarkGray"
                 />

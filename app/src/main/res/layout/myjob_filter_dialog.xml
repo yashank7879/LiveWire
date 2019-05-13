@@ -4,8 +4,7 @@
     android:id="@+id/c_dialog_main_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/dialog_bg"
-    >
+    android:background="@drawable/dialog_bg">
 
     <TextView
         android:id="@+id/heading"
@@ -41,11 +40,11 @@
         android:id="@+id/ll_all_app"
         android:layout_width="@dimen/_70sdp"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
         android:layout_below="@+id/id_sort_by"
-        android:layout_marginBottom="@dimen/_5sdp"
+        android:layout_alignParentStart="true"
         android:layout_marginStart="@dimen/_20sdp"
         android:layout_marginTop="@dimen/_8sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
         android:orientation="vertical">
 
         <ImageView
@@ -77,9 +76,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/id_sort_by"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/_5sdp"
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_8sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
         android:orientation="vertical">
 
         <ImageView
@@ -109,11 +108,11 @@
         android:id="@+id/ll_ongoing"
         android:layout_width="@dimen/_70sdp"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:layout_below="@+id/id_sort_by"
-        android:layout_marginBottom="@dimen/_5sdp"
-        android:layout_marginEnd="@dimen/_20sdp"
+        android:layout_alignParentEnd="true"
         android:layout_marginTop="@dimen/_8sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
         android:orientation="vertical">
 
         <ImageView
@@ -147,16 +146,40 @@
         android:layout_below="@+id/ll_once"
         android:layout_marginStart="@dimen/_15sdp"
         android:text="@string/filter_by"
+        android:paddingTop="@dimen/_5sdp"
         android:textColor="@color/colorGreen"
         android:textSize="@dimen/_10sdp" />
+
+
+    <LinearLayout
+        android:id="@+id/ll_all"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_toEndOf="@+id/id_filter"
+        android:layout_below="@+id/ll_once"
+        android:orientation="horizontal"
+        android:layout_marginStart="@dimen/_80sdp"
+        >
+
+        <android.support.v7.widget.AppCompatCheckBox
+            android:id="@+id/cb_all_app"
+            style="@style/smallPopinsRegularStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text="@string/all_application"
+            android:textColor="@color/colorDarkGray"
+            android:textSize="@dimen/_9sdp" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/chack_box1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_below="@+id/id_filter"
-        >
+        android:orientation="horizontal">
 
         <android.support.v7.widget.AppCompatCheckBox
             android:id="@+id/cb_new_app"
@@ -191,16 +214,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/chack_box1"
-        android:orientation="horizontal"
-        >
+        android:orientation="horizontal">
 
         <android.support.v7.widget.AppCompatCheckBox
             android:id="@+id/cb_confirm"
             style="@style/smallPopinsRegularStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:layout_weight=".9"
             android:singleLine="true"
             android:text="@string/confirm_application"
@@ -228,8 +250,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/check_box"
         android:layout_marginLeft="@dimen/_10sdp"
-        android:layout_marginRight="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_2sdp">
+        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginRight="@dimen/_10sdp">
 
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/iv_category_spin"
@@ -261,22 +283,20 @@
         android:id="@+id/view1"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_1sdp"
-        android:layout_marginBottom="@dimen/_10sdp"
+        android:layout_below="@+id/select_category_rl"
         android:layout_marginLeft="@dimen/_10sdp"
         android:layout_marginRight="@dimen/_10sdp"
-        android:background="@color/colorLightGray"
-        android:layout_below="@+id/select_category_rl"
-        />
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:background="@color/colorLightGray" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/view1"
         android:layout_marginLeft="@dimen/_10sdp"
         android:layout_marginRight="@dimen/_10sdp"
-        android:layout_below="@+id/view1"
-        android:orientation="horizontal"
-        >
+        android:orientation="horizontal">
 
     </android.support.v7.widget.RecyclerView>
 

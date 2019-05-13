@@ -223,7 +223,11 @@ public class MapviewClientFragment extends Fragment implements OnMapReadyCallbac
     private void showMarkers(NearByResponce.DataBean data) {
         if (mMap != null) {
             try {
-                final Marker marker2 = mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(data.getLatitude()), Double.parseDouble(data.getLongitude()))).snippet(data.getUserId()));
+                double lat = Double.parseDouble(data.getLatitude()) + 0.005;
+                double lng = Double.parseDouble(data.getLongitude()) + 0.005;
+                Log.e(TAG, "change lat"+lat +"------"+"change lng"+lng);
+                Log.e(TAG, "actual lat"+data.getLatitude() +"------"+"actual lng"+data.getLongitude());
+                final Marker marker2 = mMap.addMarker(new MarkerOptions().position(new LatLng(lat,lng)).snippet(data.getUserId()));
                 final int offsetX = (int) getResources().getDimension(R.dimen.marker_offset_x);
                 final int offsetY = (int) getResources().getDimension(R.dimen.marker_offset_y);
                 final InfoWindow.MarkerSpecification markerSpec =
@@ -307,7 +311,6 @@ public class MapviewClientFragment extends Fragment implements OnMapReadyCallbac
                         if (task.isSuccessful()) {
                             // Set the map's camera position to the current location of the device.
                             mLastKnownLocation = (Location) task.getResult();
-
                             if (mLastKnownLocation!=null){
                             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                     new LatLng(mLastKnownLocation.getLatitude(),

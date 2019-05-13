@@ -221,7 +221,6 @@ public class NearByClientFragment extends Fragment implements View.OnClickListen
         final Typeface tf = ResourcesCompat.getFont(mContext,R.font.poppins_medium);
         final Typeface rl = ResourcesCompat.getFont(mContext,R.font.poppins_regular);
 
-
         //""""" Zero position selected so change fontFamily """""""""""//
         for (int i=0;i<binding.slidingTabs.getTabCount();i++){
             LinearLayout tabLayout1 = (LinearLayout) ((ViewGroup) binding.slidingTabs.getChildAt(0)).getChildAt(i);

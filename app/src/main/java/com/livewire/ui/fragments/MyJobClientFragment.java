@@ -25,6 +25,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -69,7 +70,7 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
     private List<MyjobResponceClient.DataBean> myJobList;
     private SwipeRefreshLayout swipeRefreshLayout;
     private int width;
-    private String requestStatus = "new";
+    private String requestStatus = "alljob";
     private String jobType = "all";
     private AppCompatCheckBox cbPending;
     private AppCompatCheckBox cbConfirm;
@@ -91,8 +92,9 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
     private SubCategoryAdapter subCategoryAdapterList;
     private RecyclerView rvFilter;
     private RelativeLayout filterLayout;
-    private boolean isOpenFilter= true;
+    private boolean isOpenFilter = true;
     private TextView tvClearAll;
+    private CheckBox cbAllApp;
 
     public MyJobClientFragment() {
         // Required empty public constructor
@@ -154,7 +156,6 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
         rvMyjob.setAdapter(adapter);
 
 
-
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() { //swipe to refresh rcyclerview data
@@ -195,6 +196,7 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
         //actionBarIntialize(view);
         myJobListApi();
     }
+
     //"""""""""" sub category list api """""""""""""//
     private void SubCategoryListApi() {
         if (Constant.isNetworkAvailable(mContext, mainLayout)) {
@@ -273,6 +275,7 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
         dataBean.setCategoryName("Skills");
         subCategoryTempList.add(0, dataBean);
     }
+
     private void actionBarIntialize(View view) {
         View actionBar = view.findViewById(R.id.action_bar1);
         TextView header = actionBar.findViewById(R.id.tv_live_wire);
@@ -300,7 +303,7 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
 
     //""""""""""" My job list api     """"""""""""//
     private void myJobListApi() {// help offer api calling
-        if (Constant.isNetworkAvailable(mContext, mainLayout)){
+        if (Constant.isNetworkAvailable(mContext, mainLayout)) {
             progressDialog.show();
             AndroidNetworking.post(BASE_URL + GET_MY_JOB_LIST_API)
                     .addHeaders("authToken", PreferenceConnector.readString(mContext, PreferenceConnector.AUTH_TOKEN, ""))
@@ -371,6 +374,11 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
                 cbNewApp.setChecked(true);
                 break;
 
+            case R.id.cb_all_app:
+                allUnCheckBox();
+                cbAllApp.setChecked(true);
+                break;
+
             case R.id.iv_profile: {
                 Intent intent = new Intent(mContext, MyProfileClientActivity.class);
                 startActivity(intent);
@@ -378,7 +386,7 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
             break;
             case R.id.btn_filter:
                 if (isOpenFilter)
-                openFilterDialog();
+                    openFilterDialog();
                 break;
             case R.id.tv_clear_all:
                 subCategoryList.clear();
@@ -397,6 +405,7 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
         cbNewApp.setChecked(false);
         cbCompletedApp.setChecked(false);
         cbConfirm.setChecked(false);
+        cbAllApp.setChecked(false);
     }
 
     // open filter
@@ -408,11 +417,11 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
         dialog.setContentView(R.layout.myjob_filter_dialog);
         dialog.getWindow().setLayout((width * 10) / 11, WindowManager.LayoutParams.WRAP_CONTENT);
         LinearLayout llOnce;
-        final ImageView ivOnce,ivAllApp;
+        final ImageView ivOnce, ivAllApp;
         LinearLayout llOngoing;
         LinearLayout llAllApp;
         final ImageView ivOngoing;
-        final TextView tvOngoing,tvAllApp;
+        final TextView tvOngoing, tvAllApp;
         Button btnSendRequest;
 
         RelativeLayout cDialogMainLayout = (RelativeLayout) dialog.findViewById(R.id.c_dialog_main_layout);
@@ -436,6 +445,8 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
         cbNewApp = dialog.findViewById(R.id.cb_new_app);
         cbCompletedApp = dialog.findViewById(R.id.cb_completed_app);
         subCategorySpinner = dialog.findViewById(R.id.sub_category_spinner);
+        cbAllApp = dialog.findViewById(R.id.cb_all_app);
+
         ArrayAdapter categoryAdapter = new ArrayAdapter<>(mContext, R.layout.spinner_item, subCategoryTempList);
         categoryAdapter.setDropDownViewResource(R.layout.spinner_drop_down);
         subCategorySpinner.setOnItemSelectedListener(this);
@@ -445,21 +456,22 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
         cbPending.setOnClickListener(this);
         cbCompletedApp.setOnClickListener(this);
         cbNewApp.setOnClickListener(this);
-        if (requestStatus.equals("new"))
-        cbNewApp.setChecked(true);
+        cbAllApp.setOnClickListener(this);
+        if (requestStatus.equals("alljob"))
+            cbAllApp.setChecked(true);
         btnSendRequest = dialog.findViewById(R.id.btn_send_request);
         TextView tvCancel = dialog.findViewById(R.id.tv_cancel);
         isDialogStatus(ivOnce, ivOngoing, tvOngoing, tvOnce, ivAllApp, tvAllApp);
 
         // Log.d("openFilter pending: ", String.valueOf(cbPending.isChecked()));
-       // Log.d("openFilter confirm: ", String.valueOf(cbConfirm.isChecked()));
+        // Log.d("openFilter confirm: ", String.valueOf(cbConfirm.isChecked()));
         tvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 tempJobTyp = "all";
                 jobType = tempJobTyp;
-                requestStatus = "new";
-                skillsStrin="";
+                requestStatus = "alljob";
+                skillsStrin = "";
                 filterLayout.setVisibility(View.GONE);
                 subCategoryList.clear();
                 subCategoryTempList.clear();
@@ -485,7 +497,11 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
                     requestStatus = "complete";//4
                 }
                 if (cbNewApp.isChecked()) {
-                    requestStatus ="new";
+                    requestStatus = "new";
+                }
+
+                if (cbAllApp.isChecked()) {
+                    requestStatus = "alljob";
                 }
 
                /* if (!cbConfirm.isChecked() && !cbPending.isChecked() && !cbCompletedApp.isChecked()) {
@@ -496,7 +512,7 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
                 }*/
                 if (subCategoryList.size() > 0) {
                     filterLayout.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     filterLayout.setVisibility(View.GONE);
                 }
                 subCategoryAdapterList.notifyDataSetChanged();
@@ -511,7 +527,7 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
         llOnce.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                inActiveData(ivOnce, ivOngoing, tvOngoing, tvOnce,tvAllApp,ivAllApp);
+                inActiveData(ivOnce, ivOngoing, tvOngoing, tvOnce, tvAllApp, ivAllApp);
                 tempJobTyp = "1";
                 tvOnce.setTextColor(ContextCompat.getColor(mContext, R.color.colorDarkBlack));
                 ivOnce.setBackground(getResources().getDrawable(R.drawable.active_btn_balck_bg));
@@ -524,7 +540,7 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
         llOngoing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                inActiveData(ivOnce, ivOngoing, tvOngoing, tvOnce,tvAllApp,ivAllApp);
+                inActiveData(ivOnce, ivOngoing, tvOngoing, tvOnce, tvAllApp, ivAllApp);
                 tempJobTyp = "2";
                 tvOngoing.setTextColor(ContextCompat.getColor(mContext, R.color.colorDarkBlack));
                 ivOngoing.setBackground(getResources().getDrawable(R.drawable.active_btn_balck_bg));
@@ -537,9 +553,9 @@ public class MyJobClientFragment extends Fragment implements View.OnClickListene
         llAllApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                inActiveData(ivOnce, ivOngoing, tvOngoing, tvOnce,tvAllApp,ivAllApp);
+                inActiveData(ivOnce, ivOngoing, tvOngoing, tvOnce, tvAllApp, ivAllApp);
                 tempJobTyp = "all";
-                requestStatus="";
+                requestStatus = "";
                 tvAllApp.setTextColor(ContextCompat.getColor(mContext, R.color.colorDarkBlack));
                 ivAllApp.setBackground(getResources().getDrawable(R.drawable.active_btn_balck_bg));
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

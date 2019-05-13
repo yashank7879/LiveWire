@@ -64,7 +64,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/action_bar"
-                android:visibility="gone"
+                android:visibility="visible"
                 >
 
                 <com.loopeer.shadow.ShadowView
@@ -73,12 +73,14 @@
                     android:layout_height="wrap_content"
                     app:shadowColor="#666666"
                     app:shadowMarginBottom="3dp"
-                    app:shadowRadius="@dimen/_5sdp">
+                    app:shadowRadius="@dimen/_5sdp"
+                    >
 
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingStart="@dimen/_10sdp">
+                        android:paddingStart="@dimen/_10sdp"
+                        >
 
                         <TextView
                             android:id="@+id/tv_request"
@@ -142,7 +144,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/poppins_medium"
-                                    android:text='@{workerResponcd != null ? workerResponcd.distance_in_km + " Km away" : "N/A", default = "N/A"}'
+                                    android:text='@{workerResponcd != null ? workerResponcd.distance_in_km + " Km" : "N/A", default = "N/A"}'
                                     android:textColor="@color/colorDarkGray"
                                     android:textSize="@dimen/_9sdp" />
 
@@ -214,19 +216,19 @@
 
                 </com.loopeer.shadow.ShadowView>
 
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/details_id"
+                        android:layout_marginLeft="@dimen/_8sdp"
+                        android:layout_marginRight="@dimen/_8sdp"
+                        android:layout_marginTop="@dimen/_minus1sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:divider="@android:color/transparent"
+                        android:visibility="visible"
+                        app:cardElevation="3dp"
+                        app:cardPreventCornerOverlap="false">
 
-                <com.loopeer.shadow.ShadowView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/details_id"
-                    android:layout_marginLeft="@dimen/_5sdp"
-                    android:layout_marginTop="-1dp"
-                    android:layout_marginRight="@dimen/_5sdp"
-                    app:shadowColor="#666666"
-                    app:shadowMarginBottom="3dp"
-                    app:shadowMarginLeft="3dp"
-                    app:shadowMarginRight="3dp"
-                    app:shadowRadius="@dimen/_5sdp">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -253,7 +255,7 @@
 
                             <TextView
                                 android:id="@+id/tv_category"
-                                android:layout_width="wrap_content"
+                                android:layout_width="@dimen/_250sdp"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/tv_details_of_help"
                                 android:layout_marginTop="@dimen/_5sdp"
@@ -265,7 +267,7 @@
                             <TextView
                                 android:id="@+id/tv_sub_category"
                                 style="@style/smallPopinsRegularStyle"
-                                android:layout_width="wrap_content"
+                                android:layout_width="@dimen/_250sdp"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/tv_category"
                                 android:text='@{workerResponcd.parentCategoryName, default = "N/A"}'
@@ -354,6 +356,7 @@
                                     android:layout_below="@+id/tv_offer_rate"
                                     android:layout_marginStart="@dimen/_5sdp"
                                     android:layout_toEndOf="@+id/rate_range"
+                                    android:textColor="@color/colorDarkBlack"
                                     android:fontFamily="@font/poppins_semibold"
                                     android:text="@string/n_a"
                                     android:textSize="@dimen/_12sdp" />
@@ -805,7 +808,10 @@
                     </RelativeLayout>
 
 
-                </com.loopeer.shadow.ShadowView>
+                    </android.support.v7.widget.CardView>
+
+
+
             </RelativeLayout>
 
             <RelativeLayout

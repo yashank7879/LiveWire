@@ -25,13 +25,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.EditLongTermJobActivity"
+        <activity android:name=".ui.activity.complete_profile.WriteSometingActivity"></activity>
+        <activity android:name=".ui.activity.FaqsActivity" />
+        <activity
+            android:name=".ui.activity.EditLongTermJobActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden"/>
-
-        <activity android:name=".ui.activity.EditShortJobActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.activity.EditShortJobActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden"/>
+            android:windowSoftInputMode="adjustPan|stateHidden" />
 
         <service
             android:name="com.oppwa.mobile.connect.service.ConnectService"
@@ -39,8 +42,7 @@
 
         <activity
             android:name=".ui.activity.SplashActivity"
-            android:theme="@style/Transparent"
-           >
+            android:theme="@style/Transparent">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -316,11 +318,11 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.activity.AddYourSkillsActivity"
+            android:name=".ui.activity.complete_profile.AddYourSkillsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".ui.activity.UploadIntroVideoActivity"
+            android:name=".ui.activity.complete_profile.UploadIntroVideoActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
@@ -340,11 +342,11 @@
 
                 <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.DEFAULT"
-                    />
+                <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.activity.complete_profile.BankAccountActivity" />
     </application>
 
 </manifest>

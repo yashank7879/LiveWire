@@ -138,7 +138,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/poppins_medium"
-                                android:text="1 km away"
+                                android:text="1 km"
                                 android:textColor="@color/colorDarkGray"
                                 android:textSize="@dimen/_9sdp" />
 
@@ -288,7 +288,7 @@
 
                     <TextView
                         android:id="@+id/tv_category"
-                        android:layout_width="wrap_content"
+                        android:layout_width="@dimen/_220sdp"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_details_of_help"
                         android:layout_gravity="center"
@@ -301,7 +301,7 @@
                     <TextView
                         android:id="@+id/tv_sub_category"
                         style="@style/smallPopinsRegularStyle"
-                        android:layout_width="wrap_content"
+                        android:layout_width="@dimen/_220sdp"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_category"
                         android:layout_gravity="center"

@@ -171,7 +171,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-
      /*   key = getIntent().getStringExtra("UserTypeKey");
         if (getIntent().getStringExtra("UserTypeKey").equals("client")) {// if client side
             flUserProfile.setVisibility(View.VISIBLE);
