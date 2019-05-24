@@ -17,6 +17,7 @@ import com.livewire.R;
 import com.livewire.databinding.ActivityCompleteOngoingJobDetailClientBinding;
 import com.livewire.responce.JobDetailClientResponce;
 import com.livewire.responce.JobDetailWorkerResponce;
+import com.livewire.ui.activity.chat.ChattingActivity;
 import com.livewire.ui.dialog.ReviewDialog;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
@@ -39,6 +40,7 @@ public class CompleteOngoingJobDetailClientActivity extends AppCompatActivity im
     private String jobId="";
     private String name="";
     private String userId="";
+    private String workerProfilePic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,7 @@ public class CompleteOngoingJobDetailClientActivity extends AppCompatActivity im
         binding.ivBack.setOnClickListener(this);
         binding.btnGiveReview.setOnClickListener(this);
         binding.rlUserData.setOnClickListener(this);
+        binding.llChat.setOnClickListener(this);
         if (getIntent().getStringExtra("JobIdKey") != null) {
             jobId = getIntent().getStringExtra("JobIdKey");
         }
@@ -101,6 +104,8 @@ public class CompleteOngoingJobDetailClientActivity extends AppCompatActivity im
         Picasso.with(binding.ivProfileImg.getContext()).load(data.getData().getRequestedUserData()
                 .get(0).getProfileImage())
                 .fit().into(binding.ivProfileImg);
+        workerProfilePic =  data.getData().getRequestedUserData()
+                .get(0).getProfileImage();
 
         binding.tvStartDate.setText(Constant.DateFomatChange(data.getData().getJob_start_date()));
         binding.tvEndDate.setText(Constant.DateFomatChange(data.getData().getJob_end_date()));
@@ -135,6 +140,7 @@ public class CompleteOngoingJobDetailClientActivity extends AppCompatActivity im
 
     @Override
     public void onClick(View view) {
+        Intent intent =null;
         switch (view.getId()) {
             case R.id.iv_back:
                 onBackPressed();
@@ -143,8 +149,15 @@ public class CompleteOngoingJobDetailClientActivity extends AppCompatActivity im
                 openReviewDialog();
                 break;
             case R.id.rl_user_data:
-               Intent intent = new Intent(this, WorkerProfileDetailClientActivity.class);
+                intent = new Intent(this, WorkerProfileDetailClientActivity.class);
                 intent.putExtra("UserIdKey", userId);
+                startActivity(intent);
+                break;
+            case R.id.ll_chat:
+                intent = new Intent(this, ChattingActivity.class);
+                intent.putExtra("otherUID", userId);
+                intent.putExtra("titleName", binding.tvName.getText().toString());
+                intent.putExtra("profilePic", workerProfilePic);
                 startActivity(intent);
                 break;
             default:

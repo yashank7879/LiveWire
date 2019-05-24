@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -101,7 +102,10 @@ public class AboutUsActivity extends AppCompatActivity {
 
     private void openWebView(String aboutus) {
         binding.webView.loadUrl(aboutus);
-
+        WebSettings settings =  binding.webView.getSettings();
+        settings.setJavaScriptEnabled(true);
+        settings.setUseWideViewPort(true);
+        settings.setLoadWithOverviewMode(true);
         binding.webView.setVisibility(View.VISIBLE);
         binding.webView.setWebViewClient(new MyWebViewClient());
     }

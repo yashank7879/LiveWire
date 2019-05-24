@@ -86,9 +86,9 @@ public class EditProfileClientActivity extends AppCompatActivity implements View
             MyProfileResponce userResponce = (MyProfileResponce) getIntent().getSerializableExtra("ClientProfileInfo");
             binding.setUserInfo(userResponce.getData());
 
-            if (!userResponce.getData().getLatitude().isEmpty()) {
-                locationLat = Double.parseDouble(userResponce.getData().getLatitude());
-                locationLng = Double.parseDouble(userResponce.getData().getLongitude());
+            if (!userResponce.getData().getAddress_latitude().isEmpty()) {
+                locationLat = Double.parseDouble(userResponce.getData().getAddress_latitude());
+                locationLng = Double.parseDouble(userResponce.getData().getAddress_longitude());
             }
 
            if (!PreferenceConnector.readString(this,PreferenceConnector.SOCIAL_LOGIN,"").isEmpty()){
@@ -100,7 +100,7 @@ public class EditProfileClientActivity extends AppCompatActivity implements View
             String location = userResponce.getData().getProfile_address().isEmpty() ? "" : userResponce.getData().getProfile_address();
             binding.tvTownResident.setText(location);
 
-            locationPlace = userResponce.getData().getTown();
+            locationPlace = userResponce.getData().getProfile_current_address();
             Picasso.with(binding.ivProfileImg.getContext())
                     .load(userResponce.getData().getProfileImage())
                     .into(binding.ivProfileImg);
@@ -489,6 +489,4 @@ public class EditProfileClientActivity extends AppCompatActivity implements View
                     }
                 });
     }
-
-
 }

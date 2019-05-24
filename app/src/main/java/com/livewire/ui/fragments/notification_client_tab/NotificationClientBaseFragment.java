@@ -7,8 +7,10 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +19,6 @@ import android.widget.TextView;
 
 import com.livewire.R;
 import com.livewire.adapter.NotificationPagerAdpter;
-import com.livewire.databinding.FragmentNotificationClientBaseBinding;
 import com.livewire.ui.fragments.NotificationWorkerClientFragment;
 
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class NotificationClientBaseFragment extends Fragment {
-    FragmentNotificationClientBaseBinding binding;
+    //FragmentNotificationClientBaseBinding binding;
 private Context mContext;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -63,13 +64,18 @@ private Context mContext;
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_notification_client_base, container, false);
-    return binding.getRoot();
+       // binding = DataBindingUtil.inflate(inflater,R.layout.fragment_notification_client_base, container, false);
+        //  return binding.getRoot();
+        return inflater.inflate(R.layout.fragment_notification_client_base, container, false);
+
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        view.setFocusableInTouchMode(true);
+        view.setClickable(true);
+        view.requestFocus();
         List<Fragment> fragmentList = new ArrayList<>();
         List<String> headerList = new ArrayList<>();
         fragmentList.add(new NotificationClientFragment());
@@ -78,14 +84,16 @@ private Context mContext;
         headerList.add("Worker");
         NotificationPagerAdpter adapter = new NotificationPagerAdpter(getChildFragmentManager(),getActivity(),fragmentList,headerList);
 
-        binding.viewpager.setAdapter(adapter);
-        binding.slidingTabs.setupWithViewPager(binding.viewpager);
+        ViewPager viewPager = view.findViewById(R.id.viewpager);
+        TabLayout slidingTabs = view.findViewById(R.id.sliding_tabs);
+        viewPager.setAdapter(adapter);
+        slidingTabs.setupWithViewPager(viewPager);
         final Typeface tf = ResourcesCompat.getFont(mContext,R.font.poppins_medium);
         final Typeface rl = ResourcesCompat.getFont(mContext,R.font.poppins_regular);
 
         //""""" Zero position selected so change fontFamily """""""""""//
-        for (int i=0;i<binding.slidingTabs.getTabCount();i++){
-            LinearLayout tabLayout1 = (LinearLayout) ((ViewGroup) binding.slidingTabs.getChildAt(0)).getChildAt(i);
+        for (int i=0;i<slidingTabs.getTabCount();i++){
+            LinearLayout tabLayout1 = (LinearLayout) ((ViewGroup) slidingTabs.getChildAt(0)).getChildAt(i);
             TextView tabTextView = (TextView) tabLayout1.getChildAt(1);
             tabTextView.setAllCaps(false);
             tabTextView.setTypeface(tf);

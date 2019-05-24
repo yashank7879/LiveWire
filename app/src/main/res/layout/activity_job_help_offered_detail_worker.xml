@@ -13,7 +13,7 @@
         android:id="@+id/detail_main_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorWhite">
+       >
 
 
         <com.loopeer.shadow.ShadowView
@@ -69,6 +69,7 @@
             android:layout_height="wrap_content"
             android:visibility="gone"
             android:layout_below="@+id/action_bar"
+            android:background="@color/colorWhite"
             >
 
         <com.loopeer.shadow.ShadowView

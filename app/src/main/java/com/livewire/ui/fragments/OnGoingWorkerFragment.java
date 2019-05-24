@@ -60,7 +60,6 @@ import static com.livewire.utils.ApiCollection.GET_WORKER_SKILL_API;
 import static com.livewire.utils.ApiCollection.JOBPOSTSEND_REQUEST_2_API;
 import static com.livewire.utils.Constant.fromProfile;
 
-
 public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapter.SubCategoryLisner, AdapterView.OnItemSelectedListener,View.OnClickListener,OngoingAdapter.OnGoingItemOnClick {
     private Context mContext;
     private SwipeRefreshLayout swipeRefresh;
@@ -74,7 +73,7 @@ public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapte
     private int limit = 5;
     private int start = 0;
     private FloatingActionButton btnFilter;
-    private SubCategoryResponse subCategoryResponse;
+    private static SubCategoryResponse subCategoryResponse;
     private ArrayList<SubCategoryResponse.DataBean> subCategoryTempList;
     private SubCategoryAdapter subCategoryAdapterList;
     private ArrayList<CategoryModel> subCategoryList;
@@ -577,7 +576,6 @@ public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapte
 
     // create static responce list
     private void addItemsInSubCategoryTempList() {
-
         for (int i = 0; i < subCategoryResponse.getData().size(); i++) {
             SubCategoryResponse.DataBean dataBean = new SubCategoryResponse.DataBean();
             dataBean.setCategoryName(subCategoryResponse.getData().get(i).getCategoryName());
@@ -586,7 +584,6 @@ public class OnGoingWorkerFragment extends Fragment implements SubCategoryAdapte
             subCategoryTempList.add(dataBean);
         }
         // subCategoryTempList.addAll(subCategoryResponse.getData());
-
         SubCategoryResponse.DataBean dataBean = new SubCategoryResponse.DataBean();
         dataBean.setCategoryName("Skills");
         subCategoryTempList.add(0, dataBean);

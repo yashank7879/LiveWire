@@ -42,7 +42,7 @@
         android:layout_margin="@dimen/_10sdp"
         android:paddingLeft="@dimen/_5sdp"
         android:paddingRight="@dimen/_5sdp"
-        android:text="@string/demo_text"
+        android:text="@string/please_give_the_rate_you_will_offer_this_person_per_hour"
         android:textAlignment="center"
         android:textColor="@color/colorDarkBlack" />
 

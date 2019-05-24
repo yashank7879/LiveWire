@@ -8,11 +8,10 @@ import java.util.List;
  */
 
 public class MyProfileResponce implements Serializable {
-
     /**
      * status : success
-     * message : OK
-     * data : {"userId":"27","name":"purva","email":"purva@gmail.com","password":"$2y$10$aOPg40NLDgzQ1tRTrv7DaeMJzvcNtB1/rSpDrZO2HCLCkJBtVvLUq","profileImage":"","intro_video":"CcOiVUsDn5brAXR8.3gp","video_thumb":"","town":"indore","latitude":"1.0215","longitude":"1.0256","userType":"worker","firebase_id":"","Is_notify":"1","completeProfile":"1","deviceType":"2","deviceToken":"","socialId":"","socialType":"","authToken":"bd9453e36bf063bee77c996a55ef0020fa3d500d","availability":"1","status":"1","crd":"2018-10-17 05:36:20","upd":"2018-10-29 15:13:55","category":[{"parentCategoryId":"1","categoryName":"Family","parent_id":"0","subcat":[{"categoryId":"7","categoryName":"Babysitting","parent_id":"1","max_rate":"100","min_rate":"50"},{"categoryId":"9","categoryName":"Transport","parent_id":"1","max_rate":"500","min_rate":"450"}]}],"user_intro_video":"http://dev.livewire.work/./uploads/introVideo/CcOiVUsDn5brAXR8.3gp","thumbImage":"http://dev.livewire.work/./uploads/profile/default.png"}
+     * message : Ok
+     * data : {"userId":"3","name":"test","email":"test@gmail.com","password":"$2y$10$iDbHU2EzXREH2wZot6dTgOIZsPnOSbXbDEECQsw8OItsGQpI5DdDK","profileImage":"https://livewire.work/./uploads/profile/thumb/o8P0RY1TWVOhuxbJ.jpeg","dob":"0000-00-00","confirm_dob":"1","intro_video":"https://livewire.work/./uploads/introVideo/kR9CJqecwoNLVd42.mp4","video_thumb":"https://livewire.work/./uploads/video_thumb/thumb/zewhuKLv6Oc10BF3.png","intro_discription":"nothing","profile_address":"Indore,Madhya Pradesh,India","address_country":"India","address_state":"Madhya Pradesh","address_city":"Indore","address_latitude":"22.70489859875548","address_longitude":"75.90900220123854","profile_current_address":"Indore,Madhya Pradesh,India","current_country":"India","current_state":"Madhya Pradesh","current_city":"Indore","current_latitude":"22.70489859875548","current_longitude":"75.90900220123854","userType":"","user_mode":"client","app_user_mode":"client","firebase_id":"","Is_notify":"1","completeProfile":"1","deviceType":"1","deviceToken":"","socialId":"","socialType":"","authToken":"b2f68000567e8203407917f3f861e54c3f94b80e","stripe_customer_id":"","availability":"1","status":"1","crd":"2019-04-19 06:02:08","upd":"2019-05-14 11:24:41","rating":"3.111111111111111","job_created":"1350","job_completed_by_client":"306","total_expense":"261,110.00","total_income":{"total_income":"541,505.41","job_completed":"6"},"category":[{"parentCategoryId":"1","categoryName":"Family Wellbeing","parent_id":"0","subcat":[{"categoryId":"8","categoryName":"Tuition / Extra lessons","parent_id":"1","max_rate":"0","min_rate":"34"},{"categoryId":"9","categoryName":"Transport","parent_id":"1","max_rate":"0","min_rate":"456"},{"categoryId":"10","categoryName":"Counselling","parent_id":"1","max_rate":"0","min_rate":"33"},{"categoryId":"41","categoryName":"Mentoring & Personal Development","parent_id":"1","max_rate":"0","min_rate":"56"},{"categoryId":"7","categoryName":"Child Minding / Babysitting","parent_id":"1","max_rate":"0","min_rate":"3"}]},{"parentCategoryId":"2","categoryName":"Home & Garden","parent_id":"0","subcat":[{"categoryId":"12","categoryName":"Gardening","parent_id":"2","max_rate":"0","min_rate":"33"},{"categoryId":"11","categoryName":"DIY / home maintenance","parent_id":"2","max_rate":"0","min_rate":"45"},{"categoryId":"13","categoryName":"Cooking / Baking","parent_id":"2","max_rate":"0","min_rate":"65"},{"categoryId":"14","categoryName":"Pet Care","parent_id":"2","max_rate":"0","min_rate":"45"},{"categoryId":"15","categoryName":"Sewing / Knitting","parent_id":"2","max_rate":"0","min_rate":"35"},{"categoryId":"16","categoryName":"Decorating","parent_id":"2","max_rate":"0","min_rate":"76"},{"categoryId":"36","categoryName":"Cleaning & House Organization","parent_id":"2","max_rate":"0","min_rate":"56"}]},{"parentCategoryId":"3","categoryName":"Entertainment & Parties","parent_id":"0","subcat":[{"categoryId":"17","categoryName":"Travel Companion","parent_id":"3","max_rate":"0","min_rate":"65"},{"categoryId":"18","categoryName":"Transport","parent_id":"3","max_rate":"0","min_rate":"78"},{"categoryId":"33","categoryName":"Party and Function Co-ordination","parent_id":"3","max_rate":"0","min_rate":"76"},{"categoryId":"52","categoryName":"Catering","parent_id":"3","max_rate":"0","min_rate":"555"}]},{"parentCategoryId":"4","categoryName":"Administrative / Clerical","parent_id":"0","subcat":[{"categoryId":"19","categoryName":"Telephonic","parent_id":"4","max_rate":"0","min_rate":"767"},{"categoryId":"20","categoryName":"Clerical","parent_id":"4","max_rate":"0","min_rate":"987"},{"categoryId":"53","categoryName":"Computers & Information Technology","parent_id":"4","max_rate":"0","min_rate":"1258"}]},{"parentCategoryId":"54","categoryName":"Travel & Hospitality","parent_id":"0","subcat":[{"categoryId":"55","categoryName":"Restaurant / Guest House Assistance","parent_id":"54","max_rate":"0","min_rate":"234"}]}]}
      */
 
     private String status;
@@ -45,83 +44,95 @@ public class MyProfileResponce implements Serializable {
 
     public static class DataBean implements Serializable{
         /**
-         * userId : 27
-         * name : purva
-         * email : purva@gmail.com
-         * password : $2y$10$aOPg40NLDgzQ1tRTrv7DaeMJzvcNtB1/rSpDrZO2HCLCkJBtVvLUq
-         * profileImage :
-         * intro_video : CcOiVUsDn5brAXR8.3gp
-         * video_thumb :
-         * town : indore
-         * latitude : 1.0215
-         * longitude : 1.0256
-         * userType : worker
+         * userId : 3
+         * name : test
+         * email : test@gmail.com
+         * password : $2y$10$iDbHU2EzXREH2wZot6dTgOIZsPnOSbXbDEECQsw8OItsGQpI5DdDK
+         * profileImage : https://livewire.work/./uploads/profile/thumb/o8P0RY1TWVOhuxbJ.jpeg
+         * dob : 0000-00-00
+         * confirm_dob : 1
+         * intro_video : https://livewire.work/./uploads/introVideo/kR9CJqecwoNLVd42.mp4
+         * video_thumb : https://livewire.work/./uploads/video_thumb/thumb/zewhuKLv6Oc10BF3.png
+         * intro_discription : nothing
+         * profile_address : Indore,Madhya Pradesh,India
+         * address_country : India
+         * address_state : Madhya Pradesh
+         * address_city : Indore
+         * address_latitude : 22.70489859875548
+         * address_longitude : 75.90900220123854
+         * profile_current_address : Indore,Madhya Pradesh,India
+         * current_country : India
+         * current_state : Madhya Pradesh
+         * current_city : Indore
+         * current_latitude : 22.70489859875548
+         * current_longitude : 75.90900220123854
+         * userType :
+         * user_mode : client
+         * app_user_mode : client
          * firebase_id :
          * Is_notify : 1
          * completeProfile : 1
-         * deviceType : 2
+         * deviceType : 1
          * deviceToken :
          * socialId :
          * socialType :
-         * authToken : bd9453e36bf063bee77c996a55ef0020fa3d500d
+         * authToken : b2f68000567e8203407917f3f861e54c3f94b80e
+         * stripe_customer_id :
          * availability : 1
          * status : 1
-         * crd : 2018-10-17 05:36:20
-         * upd : 2018-10-29 15:13:55
-         * category : [{"parentCategoryId":"1","categoryName":"Family","parent_id":"0","subcat":[{"categoryId":"7","categoryName":"Babysitting","parent_id":"1","max_rate":"100","min_rate":"50"},{"categoryId":"9","categoryName":"Transport","parent_id":"1","max_rate":"500","min_rate":"450"}]}]
-         * user_intro_video : http://dev.livewire.work/./uploads/introVideo/CcOiVUsDn5brAXR8.3gp
-         * thumbImage : http://dev.livewire.work/./uploads/profile/default.png
+         * crd : 2019-04-19 06:02:08
+         * upd : 2019-05-14 11:24:41
+         * rating : 3.111111111111111
+         * job_created : 1350
+         * job_completed_by_client : 306
+         * total_expense : 261,110.00
+         * total_income : {"total_income":"541,505.41","job_completed":"6"}
+         * category : [{"parentCategoryId":"1","categoryName":"Family Wellbeing","parent_id":"0","subcat":[{"categoryId":"8","categoryName":"Tuition / Extra lessons","parent_id":"1","max_rate":"0","min_rate":"34"},{"categoryId":"9","categoryName":"Transport","parent_id":"1","max_rate":"0","min_rate":"456"},{"categoryId":"10","categoryName":"Counselling","parent_id":"1","max_rate":"0","min_rate":"33"},{"categoryId":"41","categoryName":"Mentoring & Personal Development","parent_id":"1","max_rate":"0","min_rate":"56"},{"categoryId":"7","categoryName":"Child Minding / Babysitting","parent_id":"1","max_rate":"0","min_rate":"3"}]},{"parentCategoryId":"2","categoryName":"Home & Garden","parent_id":"0","subcat":[{"categoryId":"12","categoryName":"Gardening","parent_id":"2","max_rate":"0","min_rate":"33"},{"categoryId":"11","categoryName":"DIY / home maintenance","parent_id":"2","max_rate":"0","min_rate":"45"},{"categoryId":"13","categoryName":"Cooking / Baking","parent_id":"2","max_rate":"0","min_rate":"65"},{"categoryId":"14","categoryName":"Pet Care","parent_id":"2","max_rate":"0","min_rate":"45"},{"categoryId":"15","categoryName":"Sewing / Knitting","parent_id":"2","max_rate":"0","min_rate":"35"},{"categoryId":"16","categoryName":"Decorating","parent_id":"2","max_rate":"0","min_rate":"76"},{"categoryId":"36","categoryName":"Cleaning & House Organization","parent_id":"2","max_rate":"0","min_rate":"56"}]},{"parentCategoryId":"3","categoryName":"Entertainment & Parties","parent_id":"0","subcat":[{"categoryId":"17","categoryName":"Travel Companion","parent_id":"3","max_rate":"0","min_rate":"65"},{"categoryId":"18","categoryName":"Transport","parent_id":"3","max_rate":"0","min_rate":"78"},{"categoryId":"33","categoryName":"Party and Function Co-ordination","parent_id":"3","max_rate":"0","min_rate":"76"},{"categoryId":"52","categoryName":"Catering","parent_id":"3","max_rate":"0","min_rate":"555"}]},{"parentCategoryId":"4","categoryName":"Administrative / Clerical","parent_id":"0","subcat":[{"categoryId":"19","categoryName":"Telephonic","parent_id":"4","max_rate":"0","min_rate":"767"},{"categoryId":"20","categoryName":"Clerical","parent_id":"4","max_rate":"0","min_rate":"987"},{"categoryId":"53","categoryName":"Computers & Information Technology","parent_id":"4","max_rate":"0","min_rate":"1258"}]},{"parentCategoryId":"54","categoryName":"Travel & Hospitality","parent_id":"0","subcat":[{"categoryId":"55","categoryName":"Restaurant / Guest House Assistance","parent_id":"54","max_rate":"0","min_rate":"234"}]}]
          */
 
-        private String userId="";
-        private String name="";
-        private String email="";
-        private String password="";
-        private String profileImage="";
-        private String intro_video="";
-        private String video_thumb="";
-        private String town="";
-        private String address_latitude="";
-        private String address_longitude="";
-        private String userType="";
-        private String firebase_id="";
-        private String Is_notify="";
-        private String completeProfile="";
-        private String deviceType="";
-        private String deviceToken="";
-        private String socialId="";
-        private String socialType="";
-        private String authToken="";
-        private String availability="";
-        private String status="";
-        private String crd="";
-        private String upd="";
-        private String user_intro_video="";
-        private String thumbImage="";
-        private String totalIncome="";
-        private String rating="";
-        private String intro_discription="";
-        private String job_created="";
-        private String complete_job="";
-        private String profile_address="";
-
-        public String getComplete_job() {
-            return complete_job;
-        }
-
-        public void setComplete_job(String complete_job) {
-            this.complete_job = complete_job;
-        }
-
-        public String getJob_created() {
-            return job_created;
-        }
-
-        public void setJob_created(String job_created) {
-            this.job_created = job_created;
-        }
-
-
+        private String userId;
+        private String name;
+        private String email;
+        private String password;
+        private String profileImage;
+        private String dob;
+        private String confirm_dob;
+        private String intro_video;
+        private String video_thumb;
+        private String intro_discription;
+        private String profile_address;
+        private String address_country;
+        private String address_state;
+        private String address_city;
+        private String address_latitude;
+        private String address_longitude;
+        private String profile_current_address;
+        private String current_country;
+        private String current_state;
+        private String current_city;
+        private String current_latitude;
+        private String current_longitude;
+        private String userType;
+        private String user_mode;
+        private String app_user_mode;
+        private String firebase_id;
+        private String Is_notify;
+        private String completeProfile;
+        private String deviceType;
+        private String deviceToken;
+        private String socialId;
+        private String socialType;
+        private String authToken;
+        private String stripe_customer_id;
+        private String availability;
+        private String status;
+        private String crd;
+        private String upd;
+        private String rating;
+        private String job_created;
+        private String job_completed_by_client;
+        private String total_expense;
+        private TotalIncomeBean total_income;
         private List<CategoryBean> category;
 
         public String getUserId() {
@@ -164,6 +175,22 @@ public class MyProfileResponce implements Serializable {
             this.profileImage = profileImage;
         }
 
+        public String getDob() {
+            return dob;
+        }
+
+        public void setDob(String dob) {
+            this.dob = dob;
+        }
+
+        public String getConfirm_dob() {
+            return confirm_dob;
+        }
+
+        public void setConfirm_dob(String confirm_dob) {
+            this.confirm_dob = confirm_dob;
+        }
+
         public String getIntro_video() {
             return intro_video;
         }
@@ -180,28 +207,108 @@ public class MyProfileResponce implements Serializable {
             this.video_thumb = video_thumb;
         }
 
-        public String getTown() {
-            return town;
+        public String getIntro_discription() {
+            return intro_discription;
         }
 
-        public void setTown(String town) {
-            this.town = town;
+        public void setIntro_discription(String intro_discription) {
+            this.intro_discription = intro_discription;
         }
 
-        public String getLatitude() {
+        public String getProfile_address() {
+            return profile_address;
+        }
+
+        public void setProfile_address(String profile_address) {
+            this.profile_address = profile_address;
+        }
+
+        public String getAddress_country() {
+            return address_country;
+        }
+
+        public void setAddress_country(String address_country) {
+            this.address_country = address_country;
+        }
+
+        public String getAddress_state() {
+            return address_state;
+        }
+
+        public void setAddress_state(String address_state) {
+            this.address_state = address_state;
+        }
+
+        public String getAddress_city() {
+            return address_city;
+        }
+
+        public void setAddress_city(String address_city) {
+            this.address_city = address_city;
+        }
+
+        public String getAddress_latitude() {
             return address_latitude;
         }
 
-        public void setLatitude(String address_latitude) {
+        public void setAddress_latitude(String address_latitude) {
             this.address_latitude = address_latitude;
         }
 
-        public String getLongitude() {
+        public String getAddress_longitude() {
             return address_longitude;
         }
 
-        public void setLongitude(String address_longitude) {
+        public void setAddress_longitude(String address_longitude) {
             this.address_longitude = address_longitude;
+        }
+
+        public String getProfile_current_address() {
+            return profile_current_address;
+        }
+
+        public void setProfile_current_address(String profile_current_address) {
+            this.profile_current_address = profile_current_address;
+        }
+
+        public String getCurrent_country() {
+            return current_country;
+        }
+
+        public void setCurrent_country(String current_country) {
+            this.current_country = current_country;
+        }
+
+        public String getCurrent_state() {
+            return current_state;
+        }
+
+        public void setCurrent_state(String current_state) {
+            this.current_state = current_state;
+        }
+
+        public String getCurrent_city() {
+            return current_city;
+        }
+
+        public void setCurrent_city(String current_city) {
+            this.current_city = current_city;
+        }
+
+        public String getCurrent_latitude() {
+            return current_latitude;
+        }
+
+        public void setCurrent_latitude(String current_latitude) {
+            this.current_latitude = current_latitude;
+        }
+
+        public String getCurrent_longitude() {
+            return current_longitude;
+        }
+
+        public void setCurrent_longitude(String current_longitude) {
+            this.current_longitude = current_longitude;
         }
 
         public String getUserType() {
@@ -210,6 +317,22 @@ public class MyProfileResponce implements Serializable {
 
         public void setUserType(String userType) {
             this.userType = userType;
+        }
+
+        public String getUser_mode() {
+            return user_mode;
+        }
+
+        public void setUser_mode(String user_mode) {
+            this.user_mode = user_mode;
+        }
+
+        public String getApp_user_mode() {
+            return app_user_mode;
+        }
+
+        public void setApp_user_mode(String app_user_mode) {
+            this.app_user_mode = app_user_mode;
         }
 
         public String getFirebase_id() {
@@ -276,6 +399,14 @@ public class MyProfileResponce implements Serializable {
             this.authToken = authToken;
         }
 
+        public String getStripe_customer_id() {
+            return stripe_customer_id;
+        }
+
+        public void setStripe_customer_id(String stripe_customer_id) {
+            this.stripe_customer_id = stripe_customer_id;
+        }
+
         public String getAvailability() {
             return availability;
         }
@@ -308,20 +439,44 @@ public class MyProfileResponce implements Serializable {
             this.upd = upd;
         }
 
-        public String getUser_intro_video() {
-            return user_intro_video;
+        public String getRating() {
+            return rating;
         }
 
-        public void setUser_intro_video(String user_intro_video) {
-            this.user_intro_video = user_intro_video;
+        public void setRating(String rating) {
+            this.rating = rating;
         }
 
-        public String getThumbImage() {
-            return thumbImage;
+        public String getJob_created() {
+            return job_created;
         }
 
-        public void setThumbImage(String thumbImage) {
-            this.thumbImage = thumbImage;
+        public void setJob_created(String job_created) {
+            this.job_created = job_created;
+        }
+
+        public String getJob_completed_by_client() {
+            return job_completed_by_client;
+        }
+
+        public void setJob_completed_by_client(String job_completed_by_client) {
+            this.job_completed_by_client = job_completed_by_client;
+        }
+
+        public String getTotal_expense() {
+            return total_expense;
+        }
+
+        public void setTotal_expense(String total_expense) {
+            this.total_expense = total_expense;
+        }
+
+        public TotalIncomeBean getTotal_income() {
+            return total_income;
+        }
+
+        public void setTotal_income(TotalIncomeBean total_income) {
+            this.total_income = total_income;
         }
 
         public List<CategoryBean> getCategory() {
@@ -332,44 +487,38 @@ public class MyProfileResponce implements Serializable {
             this.category = category;
         }
 
-        public String getTotalIncome() {
-            return totalIncome;
+        public static class TotalIncomeBean implements Serializable {
+            /**
+             * total_income : 541,505.41
+             * job_completed : 6
+             */
+
+            private String total_income;
+            private String job_completed;
+
+            public String getTotal_income() {
+                return total_income;
+            }
+
+            public void setTotal_income(String total_income) {
+                this.total_income = total_income;
+            }
+
+            public String getJob_completed() {
+                return job_completed;
+            }
+
+            public void setJob_completed(String job_completed) {
+                this.job_completed = job_completed;
+            }
         }
 
-        public void setTotalIncome(String totalIncome) {
-            this.totalIncome = totalIncome;
-        }
-
-        public String getRating() {
-            return rating;
-        }
-
-        public void setRating(String rating) {
-            this.rating = rating;
-        }
-
-        public String getIntro_discription() {
-            return intro_discription;
-        }
-
-        public void setIntro_discription(String intro_discription) {
-            this.intro_discription = intro_discription;
-        }
-
-        public String getProfile_address() {
-            return profile_address;
-        }
-
-        public void setProfile_address(String profile_address) {
-            this.profile_address = profile_address;
-        }
-
-        public static class CategoryBean implements Serializable{
+        public static class CategoryBean implements Serializable {
             /**
              * parentCategoryId : 1
-             * categoryName : Family
+             * categoryName : Family Wellbeing
              * parent_id : 0
-             * subcat : [{"categoryId":"7","categoryName":"Babysitting","parent_id":"1","max_rate":"100","min_rate":"50"},{"categoryId":"9","categoryName":"Transport","parent_id":"1","max_rate":"500","min_rate":"450"}]
+             * subcat : [{"categoryId":"8","categoryName":"Tuition / Extra lessons","parent_id":"1","max_rate":"0","min_rate":"34"},{"categoryId":"9","categoryName":"Transport","parent_id":"1","max_rate":"0","min_rate":"456"},{"categoryId":"10","categoryName":"Counselling","parent_id":"1","max_rate":"0","min_rate":"33"},{"categoryId":"41","categoryName":"Mentoring & Personal Development","parent_id":"1","max_rate":"0","min_rate":"56"},{"categoryId":"7","categoryName":"Child Minding / Babysitting","parent_id":"1","max_rate":"0","min_rate":"3"}]
              */
 
             private String parentCategoryId;
@@ -411,11 +560,11 @@ public class MyProfileResponce implements Serializable {
 
             public static class SubcatBean implements Serializable{
                 /**
-                 * categoryId : 7
-                 * categoryName : Babysitting
+                 * categoryId : 8
+                 * categoryName : Tuition / Extra lessons
                  * parent_id : 1
-                 * max_rate : 100
-                 * min_rate : 50
+                 * max_rate : 0
+                 * min_rate : 34
                  */
 
                 private String categoryId;

@@ -23,11 +23,7 @@ import com.livewire.ui.fragments.NotificationWorkerClientFragment;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link NotificationworkerBaseFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class NotificationworkerBaseFragment extends Fragment {
     FragmentNotificationWorkerBaseBinding binding;
     private Context mContext;
@@ -63,7 +59,7 @@ public class NotificationworkerBaseFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        //"""""" Inflate the layout for this fragment """""""""""//
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_notification_worker_base, container, false);
         return binding.getRoot();
     }

@@ -280,8 +280,6 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
 
             }
         });
-
-
     }
 
 
@@ -370,8 +368,8 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
 
         locationPlace = userData.getData().getProfile_address();
 
-        placeLatitude = userData.getData().getLatitude();
-        placeLongitude = userData.getData().getLongitude();
+        placeLatitude = userData.getData().getAddress_latitude();
+        placeLongitude = userData.getData().getAddress_longitude();
 
         //"""""""" editable edit text """""""""""//
         /*if (!PreferenceConnector.readString(this,PreferenceConnector.SOCIAL_LOGIN,"").isEmpty()){
@@ -486,9 +484,7 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         width = displaymetrics.widthPixels;
 
-
         progressDialog = new ProgressDialog(this);
-
 
         binding.actionBar2.ivBack.setOnClickListener(this);
         binding.actionBar2.tvLiveWire.setText(R.string.edit_profile);
@@ -498,14 +494,12 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
         addSkillsAdapter = new EditCategaryAdapter(this, addedSkillBeans);
         binding.recyclerView.setAdapter(addSkillsAdapter);
 
-
         binding.tvSkip.setOnClickListener(this);
         binding.tvLocation.setOnClickListener(this);
 
         binding.addSkillsRl.setOnClickListener(this);
         binding.flUserProfile.setOnClickListener(this);
         binding.videoImg.setOnClickListener(this);
-
 
         if (getIntent().hasExtra("imageKey")) {
             if (getIntent().getStringExtra("imageKey") != null) {
@@ -557,7 +551,6 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
             case R.id.iv_remove_video:
                 if (isvideoUrl) {
                     deleteDialog();
-
                 } else {
 
                     binding.ivRemoveVideo.setVisibility(View.GONE);
@@ -1713,9 +1706,7 @@ public class EditProfileWorkerActivity extends AppCompatActivity implements View
                                 progressDialog.hide();
                                 e.printStackTrace();
                             }
-
                         }
-
                         @Override
                         public void onError(ANError anError) {
 

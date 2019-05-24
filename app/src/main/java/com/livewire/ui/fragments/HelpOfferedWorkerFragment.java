@@ -63,7 +63,6 @@ import static com.livewire.utils.ApiCollection.GET_WORKER_SKILL_API;
 import static com.livewire.utils.ApiCollection.JOBPOSTSEND_REQUEST_2_API;
 import static com.livewire.utils.Constant.fromProfile;
 
-
 public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener, SubCategoryAdapter.SubCategoryLisner, HelpOfferedAdapter.HelpOfferItemListener {
     private Context mContext;
     private RelativeLayout mainLayout;
@@ -85,7 +84,6 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
     private RelativeLayout filterLayout;
     private RecyclerView rvFilter;
     private SubCategoryAdapter subCategoryAdapterList;
-
     private int limit = 5;
     private int start = 0;
     private Animation mLoadAnimation;
@@ -221,6 +219,7 @@ public class HelpOfferedWorkerFragment extends Fragment implements View.OnClickL
                                 status = response.getString("status");
                                 String message = response.getString("message");
                                 if (status.equals("success")) {
+                                    subCategoryTempList.clear();
                                     subCategoryResponse = new Gson().fromJson(String.valueOf(response), SubCategoryResponse.class);
 
                                     addItemsInSubCategoryTempList();

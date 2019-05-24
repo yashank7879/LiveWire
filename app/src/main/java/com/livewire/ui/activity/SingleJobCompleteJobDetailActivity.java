@@ -16,6 +16,7 @@ import com.google.gson.Gson;
 import com.livewire.R;
 import com.livewire.databinding.ActivitySingleJobCompleteJobDetailBinding;
 import com.livewire.responce.JobDetailClientResponce;
+import com.livewire.ui.activity.chat.ChattingActivity;
 import com.livewire.ui.dialog.ReviewDialog;
 import com.livewire.utils.Constant;
 import com.livewire.utils.PreferenceConnector;
@@ -36,6 +37,8 @@ public class SingleJobCompleteJobDetailActivity extends AppCompatActivity implem
     private String jobId = "";
     private String userId = "";
     private String name = "";
+    private String workerProfilePic;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +48,7 @@ public class SingleJobCompleteJobDetailActivity extends AppCompatActivity implem
         binding.ivBack.setOnClickListener(this);
         binding.rlUserData.setOnClickListener(this);
         binding.btnDilog.setOnClickListener(this);
+        binding.llChat.setOnClickListener(this);
         if (getIntent().getStringExtra("JobIdKey") != null) {
             jobId = getIntent().getStringExtra("JobIdKey");
         }
@@ -97,7 +101,8 @@ public class SingleJobCompleteJobDetailActivity extends AppCompatActivity implem
         Picasso.with(binding.ivProfileImg.getContext())
                 .load(data.getData().getRequestedUserData()
                         .get(0).getProfileImage()).fit().into(binding.ivProfileImg);
-
+        workerProfilePic =  data.getData().getRequestedUserData()
+                .get(0).getProfileImage();
         binding.tvTime.setText(Constant.getDayDifference(data.getData().getCrd(), data.getData().getCurrentDateTime()));
         binding.tvDate.setText(Constant.DateFomatChange(data.getData().getJob_start_date()).substring(0, 2) + " ");
         binding.tvDateMonth.setText(Constant.DateFomatChange(data.getData().getJob_start_date()).substring(3));
@@ -131,6 +136,7 @@ public class SingleJobCompleteJobDetailActivity extends AppCompatActivity implem
 
     @Override
     public void onClick(View view) {
+        Intent intent =null;
         switch (view.getId()) {
             case R.id.iv_back:
                 onBackPressed();
@@ -139,8 +145,15 @@ public class SingleJobCompleteJobDetailActivity extends AppCompatActivity implem
                 openReviewDialog();
                 break;
             case R.id.rl_user_data:
-                Intent intent = new Intent(this, WorkerProfileDetailClientActivity.class);
+                 intent = new Intent(this, WorkerProfileDetailClientActivity.class);
                 intent.putExtra("UserIdKey", userId);
+                startActivity(intent);
+                break;
+            case R.id.ll_chat:
+                 intent = new Intent(this, ChattingActivity.class);
+                intent.putExtra("otherUID", userId);
+                intent.putExtra("titleName", binding.tvName.getText().toString());
+                intent.putExtra("profilePic", workerProfilePic);
                 startActivity(intent);
                 break;
             default:

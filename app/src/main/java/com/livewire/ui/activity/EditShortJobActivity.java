@@ -84,6 +84,8 @@ public class EditShortJobActivity extends AppCompatActivity implements View.OnCl
     private int mYear, mMonth, mDay;
     private String parentSkillId = "";
     private Spinner categorySpinner;
+    private boolean isFirst;
+    private int subcatPosition=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,7 +131,8 @@ public class EditShortJobActivity extends AppCompatActivity implements View.OnCl
         width = displaymetrics.widthPixels;
         addVlaueInCurrency();
         progressDialog = new ProgressDialog(this);
-      //  subcatBeanList = new ArrayList<>();
+        subcatBeanList = new ArrayList<>();
+        //  subcatBeanList = new ArrayList<>();
 
         //"""""" textview location horizontal move """""""//
         binding.tvLocation.setOnClickListener(this);
@@ -147,6 +150,7 @@ public class EditShortJobActivity extends AppCompatActivity implements View.OnCl
         currencyAdapter.setDropDownViewResource(R.layout.spinner_drop_down);
         binding.currencySpinner.setOnItemSelectedListener(this);
         binding.currencySpinner.setAdapter(currencyAdapter);
+
 
         //""""  to hide keyboard """""""//
         binding.etDescription.setImeOptions(EditorInfo.IME_ACTION_DONE);
@@ -279,8 +283,8 @@ public class EditShortJobActivity extends AppCompatActivity implements View.OnCl
             Constant.snackBar(binding.svSingleJob, "Please select currency");
         } else if (binding.etBudget.getText().toString().trim().equals("0")) {
             Constant.snackBar(binding.svSingleJob, "Please enter correct Budget");
-        } else if (Float.parseFloat(binding.etBudget.getText().toString()) < 3) {
-            Constant.snackBar(binding.svSingleJob, "Budget price should not be less than 3 dollar");
+        } else if (Float.parseFloat(binding.etBudget.getText().toString()) < 1) {
+            Constant.snackBar(binding.svSingleJob, "Budget price should not be less than 1 Rand");
         } else if (Validation.isEmpty(binding.tvLocation)) {
             Constant.snackBar(binding.svSingleJob, "Please enter your Location");
         }/* else if (Validation.isEmpty(etDescription)) {
@@ -384,6 +388,7 @@ public class EditShortJobActivity extends AppCompatActivity implements View.OnCl
     private void openSkillDialog() {
         if (Constant.isNetworkAvailable(this, binding.svSingleJob)) {
             final Dialog dialog = new Dialog(this);
+
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             dialog.setContentView(R.layout.select_skills_dialog);
@@ -393,7 +398,7 @@ public class EditShortJobActivity extends AppCompatActivity implements View.OnCl
 
             TextView tvHeader = dialog.findViewById(R.id.tv_header);
             tvHeader.setText(R.string.select_skill);
-             categorySpinner = dialog.findViewById(R.id.category_spinner);
+            categorySpinner = dialog.findViewById(R.id.category_spinner);
             subCategorySpinner = dialog.findViewById(R.id.sub_category_spinner);
             Button btnAddSkills = dialog.findViewById(R.id.btn_add_skills);
 
@@ -402,9 +407,12 @@ public class EditShortJobActivity extends AppCompatActivity implements View.OnCl
             categorySpinner.setOnItemSelectedListener(this);
             categorySpinner.setAdapter(categoryAdapter);
 
+            subCateoryAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, subcatBeanList);
+            subCateoryAdapter.setDropDownViewResource(R.layout.spinner_drop_down);
+            subCategorySpinner.setOnItemSelectedListener(this);
+            subCategorySpinner.setAdapter(subCateoryAdapter);
 
-
-           // setDataInSpinner();
+            setDataInSpinner();
 
             tvCancel.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -429,22 +437,23 @@ public class EditShortJobActivity extends AppCompatActivity implements View.OnCl
     private void setDataInSpinner() {
         for (int i = 0; i < skillsResponce.getData().size(); i++) {
             AddSkillsResponce.DataBean dataBean = skillsResponce.getData().get(i);
-            if (dataBean.getCategoryId().equals(parentSkillId)) {
+            if (dataBean.getCategoryId().equals(parentSkillId)) {//parent
                 categorySpinner.setSelection(i);
-                for (int i1 = 0; i1 <  dataBean.getSubcat().size(); i1++) {
-                    AddSkillsResponce.DataBean.SubcatBean subcatBean =  dataBean.getSubcat().get(i1);
+                for (int i1 = 0; i1 < dataBean.getSubcat().size(); i1++) { //child
+                    AddSkillsResponce.DataBean.SubcatBean subcatBean = dataBean.getSubcat().get(i1);
                     if (subcatBean.getCategoryId().equals(skillId)) {
-                        subCategorySpinner.setSelection(i1);
-                        subCateoryAdapter.notifyDataSetChanged();
+                        subcatPosition = i1;
+                        Log.e(TAG, "test " + subcatBean.getCategoryName());
+
                     }
+                    subCategorySpinner.setSelection(subcatPosition);
+                    subCateoryAdapter.notifyDataSetChanged();
                 }
             }
         }
-
     }
 
     //"""""""" dialog validations """"""""""""""//
-
     private void skillDialogValidation(Spinner categorySpinner, RelativeLayout addSkillsLayout, Dialog dialog) {
         if (skillsResponce.getData().get(categorySpinner.getSelectedItemPosition()).getCategoryName().equals("Select Category")) {
             Constant.snackBar(addSkillsLayout, "Please Select Category");
@@ -463,15 +472,21 @@ public class EditShortJobActivity extends AppCompatActivity implements View.OnCl
         switch (parent.getId()) {
             case R.id.category_spinner:
                 Log.e(TAG, skillsResponce.getData().get(position).getCategoryName());
-                ArrayAdapter<AddSkillsResponce.DataBean.SubcatBean> subCateoryAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, skillsResponce.getData().get(position).getSubcat());
-                subCateoryAdapter.setDropDownViewResource(R.layout.spinner_drop_down);
-                subCategorySpinner.setOnItemSelectedListener(this);
-                subCategorySpinner.setAdapter(subCateoryAdapter);
+                subcatBeanList.clear();
+                subcatBeanList.addAll(skillsResponce.getData().get(position).getSubcat());
+                subCategorySpinner.setSelection(subcatPosition);
+                subCateoryAdapter.notifyDataSetChanged();
                 break;
             case R.id.currency_spinner:
                 currency = currencyList.get(position);
                 if (!currency.equals("Currency"))
                     binding.tvCurrency.setText(currency);
+                break;
+
+            case R.id.sub_category_spinner:
+                if (position != 0) {
+                   // Log.e(TAG, subcatBeanList.get(position).getCategoryName());
+                }
                 break;
         }
     }

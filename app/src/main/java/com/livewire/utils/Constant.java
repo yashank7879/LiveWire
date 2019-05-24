@@ -83,6 +83,7 @@ public class Constant {
     public static final String ARG_GROUP_CHAT_ROOMS_DELETE = "event_chat_deleteMute";
     public static final String ARG_GROUP_CHAT_ROOMS = "group_chat_rooms";
     public static final String ARG_HISTORY = "chat_history";
+    public static final String ARG_WebNotification = "webNotification";
     public static final String BlockUsers = "block_users";
     public static final String blockedBy = "blockedBy";
     public static String isNotification = "isNotification";
@@ -171,14 +172,10 @@ public class Constant {
                 new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         try {
-
             Date startDate = simpleDateFormat.parse(departDateTime);
             Date endDate = simpleDateFormat.parse(curruntTime);
-
             //milliseconds
             long different = endDate.getTime() - startDate.getTime();
-
-
             long secondsInMilli = 1000;
             long minutesInMilli = secondsInMilli * 60;
             long hoursInMilli = minutesInMilli * 60;

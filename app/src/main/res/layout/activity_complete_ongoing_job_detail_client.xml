@@ -452,16 +452,6 @@
 
 
                         <TextView
-                            android:id="@+id/tv_more_deatail"
-                            style="@style/SmallPopinsMediumStyle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_5sdp"
-                            android:fontFamily="@font/poppins_medium"
-                            android:text="@string/more_details"
-                            android:textColor="@color/colorGreen" />
-
-                        <TextView
                             android:id="@+id/start_date"
                             style="@style/SmallPopinsMediumStyle"
                             android:layout_width="wrap_content"

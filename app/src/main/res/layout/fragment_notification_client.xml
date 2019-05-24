@@ -5,7 +5,9 @@
     <RelativeLayout
         android:id="@+id/main_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/colorWhite"
+        >
 
         <include
             android:id="@+id/action_bar1"
@@ -37,9 +39,6 @@
                </RelativeLayout>
 
            </com.loopeer.shadow.ShadowView>-->
-
-
-
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipe_refresh"

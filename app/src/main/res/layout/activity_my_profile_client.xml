@@ -414,6 +414,29 @@
 
 
                                 <TextView
+                                    android:id="@+id/total_paid"
+                                    style="@style/SmallPopinsLightStyle"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/view8"
+                                    android:layout_marginStart="@dimen/_10sdp"
+                                    android:drawablePadding="@dimen/_2sdp"
+                                    android:text="@string/total_paid"
+                                    android:textColor="@color/colorGreen" />
+
+                                <TextView
+                                    android:id="@+id/tv_total_paid_price"
+                                    style="@style/largePopinsMediumStyle"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/total_paid"
+                                    android:layout_marginStart="@dimen/_10sdp"
+                                    android:text='@{userResponce.total_expense != "" ?  "R "+userResponce.total_expense  : "R 0",default = "N/A"}'
+                                    android:textColor="@color/colorDarkBlack" />
+
+<!--
+
+                                <TextView
                                     android:id="@+id/total_income"
                                     style="@style/SmallPopinsLightStyle"
                                     android:layout_width="wrap_content"
@@ -431,8 +454,9 @@
                                     android:layout_height="wrap_content"
                                     android:layout_below="@+id/total_income"
                                     android:layout_marginStart="@dimen/_10sdp"
-                                    android:text='@{userResponce.totalIncome != "" ?  "R "+userResponce.totalIncome  : "R 0",default = "N/A"}'
+                                    android:text='@{userResponce.total_income.total_income != null ?  "R "+userResponce.total_income.total_income  : "R 0",default = "N/A"}'
                                     android:textColor="@color/colorDarkGray" />
+-->
 
 
                                 <TextView
@@ -454,8 +478,8 @@
                                     android:layout_alignParentEnd="true"
                                     android:layout_below="@+id/completed"
                                     android:layout_marginEnd="@dimen/_10sdp"
-                                    android:text='@{userResponce.totalIncome != "" ?  userResponce.totalIncome  : "0 ",default ="N/A"}'
-                                    android:textColor="@color/colorDarkGray" />
+                                    android:text='@{userResponce.job_completed_by_client != "" ?  userResponce.job_completed_by_client  : "0 ",default ="N/A"}'
+                                    android:textColor="@color/colorDarkBlack" />
 
                                 <!-- <TextView
                                      android:id="@+id/jobs"
@@ -470,7 +494,7 @@
                                      android:textColor="@color/colorDarkGray" />-->
 
 
-                                <TextView
+                               <!-- <TextView
                                     android:id="@+id/total_paid"
                                     style="@style/SmallPopinsLightStyle"
                                     android:layout_width="wrap_content"
@@ -489,20 +513,20 @@
                                     android:layout_height="wrap_content"
                                     android:layout_below="@+id/total_paid"
                                     android:layout_marginStart="@dimen/_10sdp"
-                                    android:text='@{userResponce.totalIncome != "" ?  "R "+userResponce.totalIncome  : "R 0",default = "N/A"}'
-                                    android:textColor="@color/colorDarkGray" />
+                                    android:text='@{userResponce.total_expense != "" ?  "R "+userResponce.total_expense  : "R 0",default = "N/A"}'
+                                    android:textColor="@color/colorDarkGray" />-->
 
                                 <TextView
                                     android:id="@+id/tv_created_work"
                                     style="@style/SmallPopinsLightStyle"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_alignParentEnd="true"
-                                    android:layout_below="@+id/tv_total_income_price"
+                                    android:layout_below="@+id/tv_complte_job"
                                     android:layout_marginEnd="@dimen/_10sdp"
                                     android:layout_marginTop="@dimen/_8sdp"
                                     android:drawablePadding="@dimen/_2sdp"
                                     android:text="@string/project_created"
+                                    android:layout_marginStart="@dimen/_10sdp"
                                     android:textColor="@color/colorGreen" />
 
                                 <TextView
@@ -510,11 +534,11 @@
                                     style="@style/largePopinsMediumStyle"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_alignParentEnd="true"
                                     android:layout_below="@+id/tv_created_work"
                                     android:layout_marginEnd="@dimen/_10sdp"
+                                    android:layout_marginStart="@dimen/_10sdp"
                                     android:text='@{userResponce.job_created != "" ?  ""+userResponce.job_created  : "0",default = "N/A"}'
-                                    android:textColor="@color/colorDarkGray" />
+                                    android:textColor="@color/colorDarkBlack" />
 
 
                                 <View
@@ -553,7 +577,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_below="@+id/about_me"
                                     android:layout_marginStart="@dimen/_10sdp"
-                                    android:text='@{userResponce.intro_video.empty ? "No video Added " : "Intro Video"}'
+                                    android:text='@{userResponce.intro_video.empty ? "No video Added " : "Watch Intro Video"}'
                                     android:textColor="@color/colorGreen" />
 
                                 <!-- android:text="@string/watch_intro_video"-->

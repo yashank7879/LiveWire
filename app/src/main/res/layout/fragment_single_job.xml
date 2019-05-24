@@ -31,7 +31,7 @@
             android:layout_marginRight="@dimen/_20sdp"
             android:ellipsize="marquee"
             android:gravity="center"
-            android:text="@string/live_wire_will_find_workers_with_the_skills_you_are_looking_for_you_can_then_view_their_hourly_rates_profile_video_and_chat_to_candidates_before_recruiting"/>
+            android:text="@string/find_help_in_once_off_situations_where_a_helping_hand_is_needed_view_worker_profile_videos_and_chat_to_them_before_you_hire_a_budget_is_set_for_these_projects"/>
 
 
         <RelativeLayout

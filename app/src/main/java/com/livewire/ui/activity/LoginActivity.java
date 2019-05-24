@@ -66,6 +66,7 @@ import com.livewire.utils.PreferenceConnector;
 import com.livewire.utils.PreferenceConnectorRem;
 import com.livewire.utils.ProgressDialog;
 import com.livewire.utils.Validation;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -148,7 +149,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-        //""' shake fields """"""""//
+        //"""""""" shake fields """"""""//
         shake = AnimationUtils.loadAnimation(this, R.anim.shakeanim);
         TextView tvLiveWire = findViewById(R.id.tv_live_wire);
         TextView btnSignup = findViewById(R.id.btn_signup);
@@ -164,6 +165,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         forgotpassId = findViewById(R.id.forgotpass_id);
         fb_btn = findViewById(R.id.fb_btn);
         btnWatchVideo = findViewById(R.id.btn_watch_video);
+        findViewById(R.id.fl_play_video).setOnClickListener(this);
 
         fb_btn.setReadPermissions("email");
 
@@ -252,16 +254,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.fb_btn:
                 fbResponce();
                 break;
-                case R.id.btn_watch_video:
-                    if (Constant.isNetworkAvailable(this, mainLayout)) {
+            case R.id.btn_watch_video:
+            case R.id.fl_play_video:
+                if (Constant.isNetworkAvailable(this, mainLayout)) {
                  /*   Intent intent = new Intent(this, PlayVideoActivity.class);
                     intent.putExtra("VideoUrlKey", videoUrl);
                     startActivity(intent);*/
-                        Intent i = new Intent(Intent.ACTION_VIEW);
-                        i.setDataAndType(Uri.parse("https://livewire.work/uploads/LiveWireHomeVideol.mp4"), "video/mp4");
-                        startActivity(i);
-                    }
-                    break;
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+                    i.setDataAndType(Uri.parse("https://livewire.work/uploads/LiveWireHomeVideol.mp4"), "video/mp4");
+                    startActivity(i);
+                }
+                break;
         }
     }
 
@@ -311,7 +315,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             model.socialType = "fb";
                             signUpApiForSocial(model);*/
                         //Toast.makeText(LoginActivity.this, "Name" + fb_mail, Toast.LENGTH_SHORT).show();
-                    } else checkSocialfbLogin(fbId,"fb");
+                    } else checkSocialfbLogin(fbId, "fb");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -574,35 +578,35 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
- /*   ///""""""" open location dialog if user want to sign up at client side """"""""//
-    private void openLocationDialog(final String id, final String socialType) {
-        final LocationDialog dialog = new LocationDialog();
-        dialog.show(getSupportFragmentManager(), "");
-        dialog.setCancelable(false);
-        dialog.getLocationInfo(new LocationDialog.LocationDialogListner() {
-            @Override
-            public void onLocationOnClick(String town, LatLng latLng, LinearLayout layout) {
-                dialog.dismiss();
-                UserModel model = new UserModel();
-                model.name = personName;
-                model.email = email;
-                //  model.userType = key;
-                model.deviceType = "2";
-                model.town = town;
-                model.latitude = String.valueOf(latLng.latitude);
-                model.longitude = String.valueOf(latLng.longitude);
-                if (imageUrl != null) {
-                    // imageUrl = String.valueOf(acct.getPhotoUrl());
-                    model.profileImage = imageUrl;
-                }
-                model.deviceToken = FirebaseInstanceId.getInstance().getToken();
-                model.socialId = id;
-                model.socialType = socialType;
-                signUpApiForSocial(model, "");
-            }
-        });
-    }
-*/
+    /*   ///""""""" open location dialog if user want to sign up at client side """"""""//
+       private void openLocationDialog(final String id, final String socialType) {
+           final LocationDialog dialog = new LocationDialog();
+           dialog.show(getSupportFragmentManager(), "");
+           dialog.setCancelable(false);
+           dialog.getLocationInfo(new LocationDialog.LocationDialogListner() {
+               @Override
+               public void onLocationOnClick(String town, LatLng latLng, LinearLayout layout) {
+                   dialog.dismiss();
+                   UserModel model = new UserModel();
+                   model.name = personName;
+                   model.email = email;
+                   //  model.userType = key;
+                   model.deviceType = "2";
+                   model.town = town;
+                   model.latitude = String.valueOf(latLng.latitude);
+                   model.longitude = String.valueOf(latLng.longitude);
+                   if (imageUrl != null) {
+                       // imageUrl = String.valueOf(acct.getPhotoUrl());
+                       model.profileImage = imageUrl;
+                   }
+                   model.deviceToken = FirebaseInstanceId.getInstance().getToken();
+                   model.socialId = id;
+                   model.socialType = socialType;
+                   signUpApiForSocial(model, "");
+               }
+           });
+       }
+   */
     private void openEmailIdDialog(String fbId, String fb) {
         final EmailDialog dialog = new EmailDialog();
         dialog.show(getSupportFragmentManager(), "");
@@ -678,12 +682,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.COMPLETE_PROFILE_STATUS, userResponce.getData().getCompleteProfile());
                                     PreferenceConnector.writeString(LoginActivity.this, PreferenceConnector.USER_DOB, userResponce.getData().getConfirm_dob());
 
-
                                     if (userResponce.getData().getUser_mode().equals("worker")) {// if user is worker
                                         Intent intent = null;
                                         addUserFirebaseDatabase();
                                         finishAffinity();
                                         intent = new Intent(LoginActivity.this, WorkerMainActivity.class);
+                                        intent.putExtra("workerMyProfile","workerMyProfile");
                                         startActivity(intent);
                                         finish();
                                         soicialLogOut();
@@ -691,22 +695,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                         addUserFirebaseDatabase();
                                         finishAffinity();
                                         Intent intent = null;
-                                        if (isSignUp.equals("First")) {// first sign up
+
+                                       /*
+                                       //"""""""" first sign up case is removed """"22/05/19"""""//
+                                       if (isSignUp.equals("First")){// first sign up
                                             intent = new Intent(LoginActivity.this, MyProfileClientActivity.class);
                                             intent.putExtra("SignUp", "SignUp");
                                         } else {
                                             intent = new Intent(LoginActivity.this, ClientMainActivity.class);
-                                        }
+                                        }*/
 
+                                        intent = new Intent(LoginActivity.this, ClientMainActivity.class);
+                                        intent.putExtra("ClientMyProfile", "ClientMyProfile");
                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                         startActivity(intent);
                                         finish();
                                         soicialLogOut();
                                     }
-
-                        /*    Intent intent = new Intent(LoginActivity.this, CompleteProfileActivity.class);
-                            startActivity(intent);
-                            finish();*/
 
                                 } else {
                                     soicialLogOut();
@@ -840,9 +845,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                                     if (userResponce.getData().getUser_mode().equals("worker")) {// if user is worker
                                         Intent intent = null;
-
                                         finishAffinity();
+                                      //  intent = new Intent(LoginActivity.this, MyProfileWorkerActivity.class);
                                         intent = new Intent(LoginActivity.this, WorkerMainActivity.class);
+                                        intent.putExtra("workerMyProfile","workerMyProfile");
+
                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                         startActivity(intent);
                                         finish();
@@ -861,7 +868,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                         }*/
                                     } else { // if user is Client
                                         finishAffinity();
-                                        Intent intent = new Intent(LoginActivity.this, ClientMainActivity.class);
+                                       // Intent intent = new Intent(LoginActivity.this, MyProfileClientActivity.class);
+                                      Intent intent = new Intent(LoginActivity.this, ClientMainActivity.class);
+                                        intent.putExtra("ClientMyProfile", "ClientMyProfile");
                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                         startActivity(intent);
                                         finish();
@@ -869,7 +878,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                         intent.putExtra("SignUp","SignUp");
                                         startActivity(intent);
                                         finish();*/
-
                                     }
 
                                 } else {

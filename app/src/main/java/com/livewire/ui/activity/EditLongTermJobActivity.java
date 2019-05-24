@@ -84,23 +84,29 @@ public class EditLongTermJobActivity extends AppCompatActivity implements View.O
     private int mYear;
     private int mMonth;
     private int mDay;
-    private Calendar startDateTime =Calendar.getInstance();
+    private Calendar startDateTime = Calendar.getInstance();
     private String startDateString = "";
     private String endDateString = "";
-    private Calendar endDateTime =Calendar.getInstance();
+    private Calendar endDateTime = Calendar.getInstance();
     private ArrayList<WeekListModel> weekList;
     List<String> hourList;
     private ArrayAdapter<String> hourRequireAdapter;
-    private int eYear,eMonth,eDay;
-    private boolean isClickStart=false;
-    private String hourRequired="";
+    private int eYear, eMonth, eDay;
+    private boolean isClickStart = false;
+    private String hourRequired = "";
+    private String parentSkillId = "";
+    private Spinner categorySpinner;
+    private int subcatPosition = 0;
+    private ArrayAdapter<AddSkillsResponce.DataBean.SubcatBean> subCateoryAdapter;
+    private List<AddSkillsResponce.DataBean.SubcatBean> subcatBeanList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_edit_long_term_job);
         intializeView();
-        if (getIntent().getSerializableExtra("JobDetail") != null){
+        if (getIntent().getSerializableExtra("JobDetail") != null) {
             JobDetailClientResponce jobDetail = (JobDetailClientResponce) getIntent().getSerializableExtra("JobDetail");
             setData(jobDetail);
         }
@@ -117,32 +123,34 @@ public class EditLongTermJobActivity extends AppCompatActivity implements View.O
         binding.etDescription.setText(jobDetail.getData().getJob_description());
         binding.tvLocation.setText(jobDetail.getData().getJob_location());
         locationPlace = jobDetail.getData().getJob_location();
+        parentSkillId = "" + jobDetail.getData().getParent_category_id();
+
 
         String[] sdate = jobDetail.getData().getJob_start_date().split("-");
         String day = sdate[2];
         String month = sdate[1];
         String year = sdate[0];
-        binding.tvStartDate.setText(day+"-"+month+"-"+year);
+        binding.tvStartDate.setText(day + "-" + month + "-" + year);
         startDateString = binding.tvStartDate.getText().toString();
         mYear = Integer.parseInt(year);
-        mMonth = Integer.parseInt(month)-1;
+        mMonth = Integer.parseInt(month) - 1;
         mDay = Integer.parseInt(day);
-        startDateTime.set(Integer.parseInt(year),Integer.parseInt(month)-1,Integer.parseInt(day));
+        startDateTime.set(Integer.parseInt(year), Integer.parseInt(month) - 1, Integer.parseInt(day));
 
         String[] edate = jobDetail.getData().getJob_end_date().split("-");
         String day1 = edate[2];
         String month1 = edate[1];
         String year1 = edate[0];
-        binding.tvEndDate.setText(day1+"-"+month1+"-"+year1);
+        binding.tvEndDate.setText(day1 + "-" + month1 + "-" + year1);
         endDateString = binding.tvEndDate.getText().toString();
         eDay = Integer.parseInt(day1);
-        eMonth = Integer.parseInt(month1)-1;
+        eMonth = Integer.parseInt(month1) - 1;
         eYear = Integer.parseInt(year1);
 
         List<String> list = new ArrayList<String>(Arrays.asList(jobDetail.getData().getJob_week_days().split(",")));
         for (int i = 0; i < weekList.size(); i++) {
             for (int j = 0; j < list.size(); j++) {
-                if (weekList.get(i).getWeekDays().equalsIgnoreCase(list.get(j))){
+                if (weekList.get(i).getWeekDays().equalsIgnoreCase(list.get(j))) {
                     weekList.get(i).setisWeekDay(true);
                 }
             }
@@ -160,15 +168,16 @@ public class EditLongTermJobActivity extends AppCompatActivity implements View.O
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
         width = displaymetrics.widthPixels;
         progressDialog = new ProgressDialog(this);
+        subcatBeanList = new ArrayList<>();
 
         weekList = new ArrayList<>();
-        weekList.add(new WeekListModel("Monday", false));
-        weekList.add(new WeekListModel("Tuesday", false));
-        weekList.add(new WeekListModel("Wednesday", false));
-        weekList.add(new WeekListModel("Thursday", false));
-        weekList.add(new WeekListModel("Friday", false));
-        weekList.add(new WeekListModel("Saturday", false));
-        weekList.add(new WeekListModel("Sunday", false));
+        weekList.add(new WeekListModel("monday", false));
+        weekList.add(new WeekListModel("tuesday", false));
+        weekList.add(new WeekListModel("wednesday", false));
+        weekList.add(new WeekListModel("thursday", false));
+        weekList.add(new WeekListModel("friday", false));
+        weekList.add(new WeekListModel("saturday", false));
+        weekList.add(new WeekListModel("sunday", false));
 
         //etHourRequierd.addTextChangedListener(watcherClass);
         binding.selectSkillsRl.setOnClickListener(this);
@@ -216,7 +225,7 @@ public class EditLongTermJobActivity extends AppCompatActivity implements View.O
             @Override
             protected List<String> doInBackground(Void... voids) {
                 try {
-                    hourList.add(0, "Hour Required Per Day");
+                    hourList.add(0, "Hours");
                     double hour = 0.5;
                     for (int i = 0; i <= 48; i++) {
                         if (hour < 24) {
@@ -287,7 +296,7 @@ public class EditLongTermJobActivity extends AppCompatActivity implements View.O
         mMonth = calendar.get(Calendar.MONTH);
         mDay = calendar.get(Calendar.DAY_OF_MONTH);*/
         Constant.hideSoftKeyBoard(this, binding.etDescription);
-         DatePickerDialog startDateDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+        DatePickerDialog startDateDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 startDateTime = Calendar.getInstance();
@@ -315,14 +324,14 @@ public class EditLongTermJobActivity extends AppCompatActivity implements View.O
             endDateTime.clear();
             startDateDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
         }
-        isClickStart= true;
+        isClickStart = true;
         startDateDialog.show();
-     }
+    }
 
     //""""End date picker dialog """""""""""""//
     private void openEndDateDialog() {
         if (!startDateString.equals("")) {
-             Calendar calendar = Calendar.getInstance();
+            Calendar calendar = Calendar.getInstance();
             if (isClickStart) {
                 eYear = calendar.get(Calendar.YEAR);
                 eMonth = calendar.get(Calendar.MONTH);
@@ -332,7 +341,7 @@ public class EditLongTermJobActivity extends AppCompatActivity implements View.O
             DatePickerDialog endDateDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                  //  endDateTime = Calendar.getInstance();
+                    //  endDateTime = Calendar.getInstance();
                     endDateTime.set(Calendar.YEAR, year);
                     endDateTime.set(Calendar.MONTH, month);
                     endDateTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
@@ -344,7 +353,7 @@ public class EditLongTermJobActivity extends AppCompatActivity implements View.O
                     } else {
                         Toast.makeText(EditLongTermJobActivity.this, "Can't select past date", Toast.LENGTH_SHORT).show();
                     }
-                    eYear =year;
+                    eYear = year;
                     eMonth = month;
                     eDay = dayOfMonth;
                 }
@@ -399,7 +408,7 @@ public class EditLongTermJobActivity extends AppCompatActivity implements View.O
     }
 
     private void jobValidations() {
-       // Log.e(TAG, "jobValidations: "+binding.hourRequireSpinner.getSelectedItem().toString() );
+        // Log.e(TAG, "jobValidations: "+binding.hourRequireSpinner.getSelectedItem().toString() );
         if (Validation.isEmpty(binding.tvSelectedSkill)) {
             Constant.snackBar(binding.svOngoingJob, "Please Select Skill");
         } else if (Validation.isEmpty(binding.tvStartDate)) {
@@ -408,8 +417,8 @@ public class EditLongTermJobActivity extends AppCompatActivity implements View.O
             Constant.snackBar(binding.svOngoingJob, "Please enter End date");
         } else if (Validation.isEmpty(binding.tvWeekDays)) {
             Constant.snackBar(binding.svOngoingJob, "Please Select week days");
-        } else if (hourRequired.equals("Hour Required Per Day") || hourRequired.isEmpty()) {
-            Constant.snackBar(binding.svOngoingJob, "Please select hour Required per day");
+        } else if (hourRequired.equals("Hours") || hourRequired.isEmpty()) {
+            Constant.snackBar(binding.svOngoingJob, "Please select hours per day");
         } else if (Validation.isEmpty(binding.tvLocation)) {
             Constant.snackBar(binding.svOngoingJob, "Please enter your Location");
         } /*else if (Validation.isEmpty(binding.etDescription)) {
@@ -459,6 +468,7 @@ public class EditLongTermJobActivity extends AppCompatActivity implements View.O
             }
         }
     }
+
     //"""""""""  On going job creation api calling """""""""""//
     private void onGoingJobUpdateApi(JobCreationModel model) {
         if (Constant.isNetworkAvailable(this, binding.svOngoingJob)) {
@@ -522,7 +532,7 @@ public class EditLongTermJobActivity extends AppCompatActivity implements View.O
             TextView tvCancel = dialog.findViewById(R.id.tv_cancel);
             final RelativeLayout addSkillsLayout = dialog.findViewById(R.id.select_skill_rl);
 
-            final Spinner categorySpinner = dialog.findViewById(R.id.category_spinner);
+            categorySpinner = dialog.findViewById(R.id.category_spinner);
             subCategorySpinner = dialog.findViewById(R.id.sub_category_spinner);
             Button btnAddSkills = dialog.findViewById(R.id.btn_add_skills);
             TextView tvHeader = dialog.findViewById(R.id.tv_header);
@@ -533,7 +543,12 @@ public class EditLongTermJobActivity extends AppCompatActivity implements View.O
             categorySpinner.setOnItemSelectedListener(this);
             categorySpinner.setAdapter(categoryAdapter);
 
+            subCateoryAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, subcatBeanList);
+            subCateoryAdapter.setDropDownViewResource(R.layout.spinner_drop_down);
+            subCategorySpinner.setOnItemSelectedListener(this);
+            subCategorySpinner.setAdapter(subCateoryAdapter);
 
+            setDataInSpinner();
             tvCancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -608,6 +623,7 @@ public class EditLongTermJobActivity extends AppCompatActivity implements View.O
                             dataBean.setSubcat(new ArrayList<AddSkillsResponce.DataBean.SubcatBean>());
                             dataBean.getSubcat().add(subcatBean);
                             skillsResponce.getData().add(0, dataBean);
+                            preFieldDialog();
                         } else {
                             Constant.snackBar(binding.svOngoingJob, message);
                         }
@@ -625,26 +641,58 @@ public class EditLongTermJobActivity extends AppCompatActivity implements View.O
         }
     }
 
+    private void preFieldDialog() {
+
+    }
+
+    private void setDataInSpinner() {
+        for (int i = 0; i < skillsResponce.getData().size(); i++) {
+            AddSkillsResponce.DataBean dataBean = skillsResponce.getData().get(i);
+            if (dataBean.getCategoryId().equals(parentSkillId)) {//parent
+                categorySpinner.setSelection(i);
+                for (int i1 = 0; i1 < dataBean.getSubcat().size(); i1++) { //child
+                    AddSkillsResponce.DataBean.SubcatBean subcatBean = dataBean.getSubcat().get(i1);
+                    if (subcatBean.getCategoryId().equals(skillId)) {
+                        subcatPosition = i1;
+                        Log.e(TAG, "test " + subcatBean.getCategoryName());
+
+                    }
+                    subCategorySpinner.setSelection(subcatPosition);
+                    subCateoryAdapter.notifyDataSetChanged();
+                }
+            }
+        }
+    }
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch (parent.getId()) {
             case R.id.category_spinner:
+                if (position != 0)
+                  //  parentSkillId  = skillsResponce.getData().get(position).getParent_id();
+
+                subcatBeanList.clear();
+                subcatBeanList.addAll(skillsResponce.getData().get(position).getSubcat());
+                subCategorySpinner.setSelection(subcatPosition);
+                subCateoryAdapter.notifyDataSetChanged();
                 /*if (position >= 1) {*/
                 //Log.e(TAG, skillsResponce.getData().get(position).getCategoryName());
-                ArrayAdapter<AddSkillsResponce.DataBean.SubcatBean> subCateoryAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, skillsResponce.getData().get(position).getSubcat());
-                subCateoryAdapter.setDropDownViewResource(R.layout.spinner_drop_down);
-                subCategorySpinner.setOnItemSelectedListener(this);
-                subCategorySpinner.setAdapter(subCateoryAdapter);
+
                 ///  Log.d("onItemSelected: ", parent.getSelectedItem().toString());
                 // ivCategorySpin.startAnimation(AnimationUtils.loadAnimation(this, R.anim.spinner_icon_rotator));
                 //   }
                 break;
 
             case R.id.hour_require_spinner:
-                if (!parent.getSelectedItem().toString().equals("Hour Required Per Day")){
+                if (!parent.getSelectedItem().toString().equals("Hours")) {
                     binding.tvHourRequierd.setText(parent.getSelectedItem().toString());
                     hourRequired = parent.getSelectedItem().toString();
                 }
+                break;
+
+            case R.id.sub_category_spinner:
+                if (position != 0)
+                    //skillId = subcatBeanList.get(position).getCategoryId();
                 break;
             default:
         }
@@ -652,6 +700,6 @@ public class EditLongTermJobActivity extends AppCompatActivity implements View.O
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-    //not used this method//
+        //not used this method//
     }
 }

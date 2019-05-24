@@ -133,7 +133,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private void intializeView() {
         progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false);
-        //""""""" all permission """"""""""""
+        //""""""" all permission """"""""""""//
         PermissionAll permissionAll = new PermissionAll();
         permissionAll.RequestMultiplePermission(SignupActivity.this);
 
@@ -210,9 +210,9 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View v) {
         int id = v.getId();
         switch (id) {
-            case R.id.btn_worker_signup:
+            /*case R.id.btn_worker_signup:
                 etWorkerValdidations();
-                break;
+                break;*/
             case R.id.btn_client_signup:
                 etClientValdidations();
                 break;
@@ -620,7 +620,9 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             Intent intent = null;
             addUserFirebaseDatabase();
             finishAffinity();
+           // intent = new Intent(SignupActivity.this, MyProfileWorkerActivity.class);
             intent = new Intent(SignupActivity.this, WorkerMainActivity.class);
+            intent.putExtra("workerMyProfile","workerMyProfile");
             startActivity(intent);
             finish();
             soicialLogOut();
@@ -628,13 +630,19 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             addUserFirebaseDatabase();
             finishAffinity();
             Intent intent = null;
+           /*
+            //"""""""" first sign up case is removed """"22/05/19"""""//
             if (isSignUp.equals("First")) {// first sign up
                 intent = new Intent(SignupActivity.this, MyProfileClientActivity.class);
                 intent.putExtra("SignUp", "SignUp");
             } else {
                 intent = new Intent(SignupActivity.this, ClientMainActivity.class);
-            }
+            }*/
 
+           // intent = new Intent(SignupActivity.this, MyProfileClientActivity.class);
+            intent = new Intent(SignupActivity.this, ClientMainActivity.class);
+            intent.putExtra("ClientMyProfile", "ClientMyProfile");
+            intent.putExtra("SignUp", "SignUp");
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             finish();
@@ -955,8 +963,9 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         addUserFirebaseDatabase();
 
         finishAffinity();
-      //  Intent intent = new Intent(SignupActivity.this, ClientMainActivity.class);
-        Intent intent = new Intent(SignupActivity.this, MyProfileClientActivity.class);
+        //Intent intent = new Intent(SignupActivity.this, MyProfileClientActivity.class);
+        Intent intent = new Intent(SignupActivity.this, ClientMainActivity.class);
+        intent.putExtra("ClientMyProfile", "ClientMyProfile");
         intent.putExtra("SignUp","SignUp");
         startActivity(intent);
         finish();
@@ -973,107 +982,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             Log.d(TAG, e.getMessage());
         }
     }
-
-    //"""""""  worker validations  """""""""//
-    private void etWorkerValdidations() {
-        if (Validation.isEmpty(etFullName)) {
-            Constant.snackBar(mainLayout, getString(R.string.please_enter_fullname));
-            etFullName.startAnimation(shake);
-        } else if (etFullName.getText().toString().length() < 2) {
-            Constant.snackBar(mainLayout, getString(R.string.full_name_should_not_less_than_characters));
-            etFullName.startAnimation(shake);
-        }  else if (Validation.isEmpty(etEmail)) {
-            Constant.snackBar(mainLayout, getString(R.string.please_enter_email_id));
-            etEmail.startAnimation(shake);
-        } else if (etEmail.getText().toString().trim().contains(" ")) {
-            etEmail.startAnimation(shake);
-            Constant.snackBar(mainLayout, getString(R.string.email_can_hold_space));
-        } else if (!Validation.isEmailValid(etEmail)) {
-            etEmail.startAnimation(shake);
-            etEmail.requestFocus();
-            Constant.snackBar(mainLayout, getString(R.string.please_enter_valid_email_id));
-        } else if (Validation.isEmpty(etPass)) {
-            etPass.startAnimation(shake);
-            Constant.snackBar(mainLayout, getString(R.string.pass_can_hold_space));
-        } else if (etPass.getText().toString().length() < 6) {
-            etPass.startAnimation(shake);
-            etPass.requestFocus();
-            Constant.snackBar(mainLayout, getString(R.string.pass_should_have_minimum_six_char));
-        } else if (etPass.getText().toString().length() > 10) {
-            etPass.startAnimation(shake);
-            etPass.requestFocus();
-            Constant.snackBar(mainLayout, getString(R.string.password_should_not_be_more_than_ten_characters));
-        }else {
-            UserModel model = new UserModel();
-            model.name = etFullName.getText().toString();
-            model.email = etEmail.getText().toString();
-            model.password = etPass.getText().toString();
-            model.userType = "worker";
-            model.deviceType = "2";
-            model.deviceToken = FirebaseInstanceId.getInstance().getToken();
-            signUpWorkerApi(model);
-        }
-    }
-
-    private void signUpWorkerApi(UserModel model) {
-        if (Constant.isNetworkAvailable(this, mainLayout)) {
-            progressDialog.show();
-            // progressBar.setVisibility(View.VISIBLE);
-            AndroidNetworking.post(BASE_URL+USER_REGISTRATION_API)
-                    .addBodyParameter(model)
-                    .setPriority(Priority.MEDIUM).
-                    build().getAsJSONObject(new JSONObjectRequestListener() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    try {
-                        progressDialog.dismiss();
-                        //progressBar.setVisibility(View.GONE);
-                        String status = response.getString("status");
-                        String message = response.getString("message");
-                        if (status.equals("success")) {
-                            SignUpResponce userResponce = new Gson().fromJson(String.valueOf(response), SignUpResponce.class);
-                            PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.USER_INFO_JSON, response.toString());
-                            setSignUpWorkerdata(userResponce);
-
-                        } else {
-                            Constant.snackBar(mainLayout, message);
-                        }
-
-                    } catch (JSONException e) {
-                        progressDialog.dismiss();
-                        e.printStackTrace();
-                    }
-                }
-
-                @Override
-                public void onError(ANError anError) {
-
-                }
-            });
-        }
-    }
-
-    //"""""" set sign up responce """""""""""""//
-    private void setSignUpWorkerdata(SignUpResponce userResponce) {
-        Log.e("sign up response", userResponce.getData().toString());
-        PreferenceConnector.writeBoolean(SignupActivity.this, PreferenceConnector.IS_LOG_IN, true);
-        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.AUTH_TOKEN, userResponce.getData().getAuthToken());
-        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.COMPLETE_PROFILE_STATUS, userResponce.getData().getCompleteProfile());
-        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.USER_TYPE, userResponce.getData().getUserType());
-        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.USER_MODE, userResponce.getData().getUser_mode());
-        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.PASS_WORD, etPass.getText().toString());
-        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.STRIPE_CUSTOMER_ID, userResponce.getData().getStripe_customer_id());
-        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.IS_BANK_ACC, userResponce.getData().getIs_bank_account());
-        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.MY_USER_ID, userResponce.getData().getUserId());
-        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.USER_DOB, userResponce.getData().getConfirm_dob());
-        PreferenceConnector.writeString(SignupActivity.this, PreferenceConnector.AVAILABILITY_1, userResponce.getData().getAvailability());
-
-        finishAffinity();
-        Intent intent = new Intent(SignupActivity.this, CompleteProfileActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
 
     //***********Create an image file name*******************//
     private File createImageFile() throws IOException {

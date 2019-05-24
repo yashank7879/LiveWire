@@ -32,13 +32,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/_35sdp">
+                android:layout_marginTop="@dimen/_10sdp"
+            >
 
                 <ImageView
                     android:id="@+id/image_view"
-                    android:layout_width="@dimen/_80sdp"
-                    android:layout_height="@dimen/_80sdp"
-                    android:src="@drawable/loader_wht" />
+                    android:layout_width="@dimen/_160sdp"
+                    android:layout_height="@dimen/_130sdp"
+                    android:src="@drawable/logo_ico"/>
 
                 <TextView
                     android:id="@+id/tv_live_wire"
@@ -47,7 +48,9 @@
                     android:layout_gravity="center_vertical"
                     android:fontFamily="@font/opensans_regular"
                     android:textColor="@android:color/white"
-                    android:textSize="@dimen/_20sdp" />
+                    android:textSize="@dimen/_20sdp"
+                    android:visibility="gone"
+                    />
 
             </LinearLayout>
 
@@ -289,7 +292,7 @@
                         android:background="@drawable/google_btn_shape"
                         android:fontFamily="@font/poppins_light"
                         android:gravity="center"
-                        android:text="@string/login_with_google"
+                        android:text="@string/signup_with_google"
                         android:textColor="@color/colorWhite"
                         android:textSize="@dimen/_10sdp" />
 
@@ -318,7 +321,7 @@
                         android:background="@drawable/fb_btn_shape"
                         android:fontFamily="@font/poppins_light"
                         android:gravity="center"
-                        android:text="Login with Facebook"
+                        android:text="@string/signup_with_facebook"
                         android:textColor="@color/colorWhite"
                         android:textSize="@dimen/_10sdp" />
 

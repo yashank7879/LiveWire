@@ -16,6 +16,7 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.google.gson.Gson;
 import com.livewire.R;
 import com.livewire.adapter.ShowSkillsAdapter;
+import com.livewire.databinding.ActivityClientProfileDetailWorkerBinding;
 import com.livewire.databinding.ActivityWorkerProfileDetailClientActivityBinding;
 import com.livewire.responce.MyProfileResponce;
 import com.livewire.ui.activity.chat.ChattingActivity;
@@ -32,7 +33,7 @@ import java.util.ArrayList;
 import static com.livewire.utils.ApiCollection.BASE_URL;
 
 public class ClientProfileDetailWorkerActivity extends AppCompatActivity implements View.OnClickListener {
-    ActivityWorkerProfileDetailClientActivityBinding binding;
+    ActivityClientProfileDetailWorkerBinding binding;
     private ProgressDialog progressDialog;
     private String userId = "";
     private MyProfileResponce userResponce;
@@ -43,7 +44,7 @@ public class ClientProfileDetailWorkerActivity extends AppCompatActivity impleme
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_worker_profile_detail_client_activity);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_client_profile_detail_worker);
         progressDialog = new ProgressDialog(this);
 
         if (getIntent().getStringExtra("UserIdKey") != null) {
@@ -180,6 +181,7 @@ public class ClientProfileDetailWorkerActivity extends AppCompatActivity impleme
                     intent.putExtra("profilePic", userResponce.getData().getProfileImage());
                 startActivity(intent);
             }
+            break;
             case R.id.rl_rating_bar://OtherReviewListActivity
                 Intent intent = new Intent(this, OtherReviewListActivity.class);
                 intent.putExtra("userId", userResponce.getData().getUserId());

@@ -9,8 +9,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
-import com.livewire.ui.fragments.CompletedJobWorkerFragment;
-import com.livewire.ui.fragments.ConfirmJobWorkerFragment;
 import com.livewire.ui.fragments.HelpOfferedWorkerFragment;
 import com.livewire.ui.fragments.OnGoingWorkerFragment;
 
@@ -53,9 +51,9 @@ public class JobRequestFragmentAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return "Short term";
+                return "Short Term Work";
             case 1:
-                return "Long term";
+                return "Long Term Work";
             default:
                 return null;
         }

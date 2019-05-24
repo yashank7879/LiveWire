@@ -123,6 +123,12 @@ public class ClientMainActivity extends AppCompatActivity implements View.OnClic
             replaceFragment(new PostJobHomeFragment(), false, R.id.fl_container); // first time replace home fragment
             clickId = R.id.add_ll;
             showAlertWorkerDialog();
+        }else if (getIntent().getStringExtra("ClientMyProfile") != null){// come from the login or signup
+            binding.tvHeading.setText(R.string.creat_project);
+            replaceFragment(new PostJobHomeFragment(), false, R.id.fl_container); // first time replace home fragment
+            clickId = R.id.add_ll;
+            Intent intent = new Intent(this, MyProfileClientActivity.class);
+            startActivity(intent);
         } else {
             binding.tvHeading.setText(R.string.creat_project);
             replaceFragment(new PostJobHomeFragment(), false, R.id.fl_container); // first time replace home fragment

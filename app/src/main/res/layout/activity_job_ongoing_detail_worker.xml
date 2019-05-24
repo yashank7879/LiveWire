@@ -13,13 +13,12 @@
         android:id="@+id/detail_main_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorWhite"
         >
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorWhite">
+          >
 
             <com.loopeer.shadow.ShadowView
                 android:id="@+id/action_bar"

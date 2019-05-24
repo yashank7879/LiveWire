@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +19,10 @@ import com.livewire.utils.Constant;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -47,7 +50,7 @@ public class ChatHistoryAdapter extends RecyclerView.Adapter<ChatHistoryAdapter.
     public void onBindViewHolder(@NonNull MyViewHolder holder, int i) {
         Chat chat = historyList.get(i);
         if (chat.image == 1) {
-            holder.tvMsg.setText("Image");
+            holder.tvMsg.setText(R.string.image);
         } else {
             holder.tvMsg.setText(chat.message);
         }
@@ -57,24 +60,17 @@ public class ChatHistoryAdapter extends RecyclerView.Adapter<ChatHistoryAdapter.
             holder.tvUnreadCount.setText("" + chat.unreadCount);
             holder.tvUnreadCount.setVisibility(View.VISIBLE);
         }else holder.tvUnreadCount.setVisibility(View.GONE);
-        //holder.tvMsg.setText(chat.lastMsg);
 
         Picasso.with(holder.ivProfileImage.getContext()).load(chat.profilePic).fit().into(holder.ivProfileImage);
 
-
-        /*SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.US);
         try {
-            Object val=ServerValue.TIMESTAMP;
-            String currentTime = sd.format(new Date((Lo ng) val));
             String crd = sd.format(new Date((Long) chat.timestamp));
-
-           // holder.tvTime.setText(Constant.getDayDifference(crd,currentTime));
-
+            String currentTime = sd.format(Calendar.getInstance().getTime());
             holder.tv_time.setText(Constant.getDayDifference(crd,currentTime));
-
-        } catch (Exception ignored) {
-
-        }*/
+        } catch (Exception e) {
+            Log.e( "onBindViewHolder: ",e.getLocalizedMessage() );
+        }
     }
 
     @Override
@@ -108,7 +104,6 @@ public class ChatHistoryAdapter extends RecyclerView.Adapter<ChatHistoryAdapter.
                     mContext.startActivity(intent);
                 }
             });
-
         }
     }
 }

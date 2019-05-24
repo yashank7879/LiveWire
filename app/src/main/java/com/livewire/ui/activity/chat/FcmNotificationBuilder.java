@@ -144,7 +144,6 @@ public class FcmNotificationBuilder {
         JSONObject data = new JSONObject();
         Map<String,Object> params = new HashMap<>();;
 
-
             data.put(KEY_TITLE, mUsername);
             data.put(KEY_TEXT, mMessage);
             data.put(KEY_USERNAME, mUsername);

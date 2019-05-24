@@ -139,13 +139,13 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
 
 
         weekList = new ArrayList<>();
-        weekList.add(new WeekListModel("Monday", false));
-        weekList.add(new WeekListModel("Tuesday", false));
-        weekList.add(new WeekListModel("Wednesday", false));
-        weekList.add(new WeekListModel("Thursday", false));
-        weekList.add(new WeekListModel("Friday", false));
-        weekList.add(new WeekListModel("Saturday", false));
-        weekList.add(new WeekListModel("Sunday", false));
+        weekList.add(new WeekListModel("monday", false));
+        weekList.add(new WeekListModel("tuesday", false));
+        weekList.add(new WeekListModel("wednesday", false));
+        weekList.add(new WeekListModel("thursday", false));
+        weekList.add(new WeekListModel("friday", false));
+        weekList.add(new WeekListModel("saturday", false));
+        weekList.add(new WeekListModel("sunday", false));
 
 
 
@@ -198,7 +198,7 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
             @Override
             protected List<String> doInBackground(Void... voids) {
                 try {
-                    hourList.add(0, "Hour Required Per Day");
+                    hourList.add(0, "Hours");
                     double hour = 0.5;
                     for (int i = 0; i <= 48; i++) {
                         if (hour < 24) {
@@ -319,8 +319,8 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
             Constant.snackBar(binding.svOngoingJob, "Please enter End date");
         } else if (Validation.isEmpty(binding.tvWeekDays)) {
             Constant.snackBar(binding.svOngoingJob, "Please Select week days");
-        } else if (hourRequired.equals("Hour Required Per Day") || hourRequired.isEmpty()) {
-            Constant.snackBar(binding.svOngoingJob, "Please select hour Required per day");
+        } else if (hourRequired.equals("Hours") || hourRequired.isEmpty()) {
+            Constant.snackBar(binding.svOngoingJob, "Please select hours per day");
         } else if (Validation.isEmpty(binding.tvLocation)) {
             Constant.snackBar(binding.svOngoingJob, "Please enter your Location");
         } /*else if (Validation.isEmpty(binding.etDescription)) {
@@ -622,7 +622,7 @@ public class OngoingJobFragment extends Fragment implements View.OnClickListener
                 break;
 
             case R.id.hour_require_spinner:
-                if (!parent.getSelectedItem().toString().equals("Hour Required Per Day")) {
+                if (!parent.getSelectedItem().toString().equals("Hours")) {
                     binding.tvHourRequierd.setText(parent.getSelectedItem().toString());
                     hourRequired = parent.getSelectedItem().toString();
                 }

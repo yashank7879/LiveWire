@@ -40,6 +40,7 @@ import com.livewire.adapter.ChattingAdapter;
 import com.livewire.databinding.ActivityChattingBinding;
 import com.livewire.model.Chat;
 import com.livewire.model.UserInfoFcm;
+import com.livewire.model.WebNotificationModel;
 import com.livewire.utils.Constant;
 import com.livewire.utils.ImageRotator;
 import com.livewire.utils.PreferenceConnector;
@@ -106,7 +107,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
             titleName = getIntent().getStringExtra("titleName");
             binding.titleName.setText(titleName);
             otherUID = getIntent().getStringExtra("otherUID");
-            MY_UID = getIntent().getStringExtra("otherUID");
+            Constant.MY_UID = getIntent().getStringExtra("otherUID");
             if (!otherprofilePic.isEmpty()) {
                 Picasso.with(binding.headerImage.getContext()).load(otherprofilePic)
                         .placeholder(R.drawable.ic_user)
@@ -118,7 +119,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
             if (extra != null) {
                 otherUID = extra.getString("opponentChatId");
                 titleName = extra.getString("titleName");
-                MY_UID = otherUID;
+                Constant.MY_UID = otherUID;
                 binding.titleName.setText(titleName);
             }
             gettingDataFromUserTable(otherUID);
@@ -159,7 +160,6 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
                 super.onScrolled(recyclerView, dx, dy);
 
                 if (linearLayoutManager.findFirstVisibleItemPosition() != -1) {
-
                     tv_days_status.setText(chatList.get(linearLayoutManager.findFirstVisibleItemPosition()).banner_date);
                     tv_days_status.setVisibility(View.VISIBLE);
                 }
@@ -168,9 +168,8 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
 
         binding.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
-
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 mTotalItemCount = linearLayoutManager.getItemCount();
                 mLastVisibleItemPosition = linearLayoutManager.findLastVisibleItemPosition();
@@ -288,9 +287,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
 
             }
         });
-
     }
-
 
     private void getChat() {
         firebaseDatabase.getReference().child(Constant.ARG_CHAT_ROOMS).child(myUid).child(otherUID).orderByKey()
@@ -535,12 +532,19 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         myChat.type = "user";
         myChat.unreadCount = ++Count;
 
+
+        WebNotificationModel webNotifi = new WebNotificationModel();
+        webNotifi.title = binding.titleName.getText().toString();
+        webNotifi.url = "https://livewire.work/user/userChat/?uId="+otherUID;
+        if (image_FirebaseURL != null) {
+            webNotifi.body = "Image";
+        }else webNotifi.body = msg;
+
       /*  if (isOtherUserOnline) {
             myChat.isMsgReadTick = 1;
         } else {
             myChat.isMsgReadTick = 0;
         }*/
-
 
         firebaseDatabase.getReference().child(Constant.ARG_CHAT_ROOMS).child(myUid).child(otherUID).child(pushkey).setValue(myChat);
         firebaseDatabase.getReference().child(Constant.ARG_CHAT_ROOMS).child(otherUID).child(myUid).child(pushkey).setValue(myChat);
@@ -548,6 +552,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         firebaseDatabase.getReference().child(Constant.ARG_HISTORY).child(myUid).child(otherUID).setValue(otherChat);
         firebaseDatabase.getReference().child(Constant.ARG_HISTORY).child(otherUID).child(myUid).setValue(myChat);
 
+        firebaseDatabase.getReference().child(Constant.ARG_WebNotification).child(otherUID).setValue(webNotifi);
 
         if (isNotification) {
             if (image_FirebaseURL != null) {
@@ -564,7 +569,6 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
         image_FirebaseURL = null;
 //        loading_view.setVisibility(View.GONE);
     }
-
 
     private void sendPushNotificationToReceiver(String title, String message, String username, String uid, String firebaseToken) {
         FcmNotificationBuilder.initialize()
@@ -775,7 +779,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
                 }
                 break;
             case R.id.iv_back:
-                MY_UID = "";
+                Constant.MY_UID = "";
                 onBackPressed();
                 break;
             case R.id.iv_popup_menu: {
@@ -828,7 +832,7 @@ public class ChattingActivity extends AppCompatActivity implements View.OnClickL
     public void onBackPressed() {
         super.onBackPressed();
         Constant.hideSoftKeyBoard(this, binding.edMessage);
-        MY_UID = "";
+        Constant.MY_UID = "";
     }
 
     private void getBlockUserData() {

@@ -126,6 +126,7 @@
 
     <style name="MyTabLayoutTextAppearance" parent="TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse">
         <item name="android:textSize">@dimen/_12sdp</item>
+        <item name="android:elevation">@dimen/_5sdp</item>
 
     </style>
 

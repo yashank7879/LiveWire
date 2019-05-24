@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import static com.livewire.utils.ApiCollection.BASE_URL;
 import static com.livewire.utils.ApiCollection.CHANGE_USER_MODE_API;
 import static com.livewire.utils.ApiCollection.CONFIRMATION_DATE_OF_BIRTH_API;
+import static com.livewire.utils.ApiCollection.GET_MY_PROFILE_API;
 import static com.livewire.utils.ApiCollection.GET_MY_USER_PROFILE_API;
 
 public class MyProfileClientActivity extends AppCompatActivity implements View.OnClickListener {
@@ -268,7 +269,8 @@ public class MyProfileClientActivity extends AppCompatActivity implements View.O
     private void myProfileApi() {// help offer api calling
         if (Constant.isNetworkAvailable(this, binding.svProfile)) {
             progressDialog.show();
-            AndroidNetworking.get(BASE_URL + GET_MY_USER_PROFILE_API)
+          //  AndroidNetworking.get(BASE_URL + GET_MY_USER_PROFILE_API)
+            AndroidNetworking.get(BASE_URL + GET_MY_PROFILE_API)
                     .addHeaders("authToken", PreferenceConnector.readString(this, PreferenceConnector.AUTH_TOKEN, ""))
                     .setPriority(Priority.MEDIUM)
                     .build()
@@ -333,7 +335,7 @@ public class MyProfileClientActivity extends AppCompatActivity implements View.O
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
 
-                        binding.llWorker.setBackgroundColor(ContextCompat.getColor(MyProfileClientActivity.this, R.color.colorDarkBlack));
+                       /* binding.llWorker.setBackgroundColor(ContextCompat.getColor(MyProfileClientActivity.this, R.color.colorDarkBlack));
                         binding.tvWorker.setTextColor(ContextCompat.getColor(MyProfileClientActivity.this, R.color.colorWhite));
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             binding.ivWorker.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(MyProfileClientActivity.this, R.color.colorWhite)));
@@ -342,7 +344,7 @@ public class MyProfileClientActivity extends AppCompatActivity implements View.O
                         binding.tvHirer.setTextColor(ContextCompat.getColor(MyProfileClientActivity.this, R.color.colorDarkGray));
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             binding.ivClient.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(MyProfileClientActivity.this, R.color.colorDarkGray)));
-                        }
+                        }*/
 
                         ageLimitApi();
                         dialog.cancel();

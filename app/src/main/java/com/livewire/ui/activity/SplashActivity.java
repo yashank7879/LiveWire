@@ -26,8 +26,6 @@ public class SplashActivity extends AppCompatActivity {
     private TextView tvLiveWire;
     private Handler mHandlers = new Handler();
     private Runnable mRunnable;
-    private LinearLayout upperLl;
-    private Animation zoomOut;
     private FrameLayout upperFl;
 
     @Override
@@ -43,7 +41,7 @@ public class SplashActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_splash);
-        upperLl = findViewById(R.id.upper_ll);
+       // upperLl = findViewById(R.id.upper_ll);
         upperFl = findViewById(R.id.fl_upper);
         image = findViewById(R.id.image_view);
         tvLiveWire = findViewById(R.id.tv_live_wire);
@@ -79,7 +77,7 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        imageRotatorAndTextColorChange();
+       // imageRotatorAndTextColorChange();
     }
 
     private void imageRotatorAndTextColorChange() {
@@ -89,20 +87,24 @@ public class SplashActivity extends AppCompatActivity {
         tvLiveWire.setText(Constant.liveWireText(this));
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        image.startAnimation(rotate);
-        image.setVisibility(View.VISIBLE);
-    }
+
 
     @Override
     protected void onPause() {
         super.onPause();
-        mHandlers.removeCallbacks(mRunnable);
     }
 
-   /* @Override
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        mHandlers.removeCallbacks(mRunnable);
+    }
+    /* @Override
     protected void onPostResume() {
         super.onPostResume();
         upperFl.startAnimation(zoomOut);

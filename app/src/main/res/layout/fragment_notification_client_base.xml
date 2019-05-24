@@ -1,24 +1,15 @@
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/main_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
 
-        <com.loopeer.shadow.ShadowView
-            android:id="@+id/sv_action_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:shadowColor="@color/colorDarkGray"
-            app:shadowMarginBottom="3dp"
-            app:shadowRadius="@dimen/_5sdp"
-            android:layout_marginBottom="@dimen/_1sdp"
-            >
-
             <LinearLayout
+                android:id="@+id/sv_action_bar"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_40sdp"
                 android:weightSum="2"
@@ -55,10 +46,19 @@
 
                 </LinearLayout>
 
+
+
             </LinearLayout>
 
-        </com.loopeer.shadow.ShadowView>
 
+        <View
+            android:id="@+id/view1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_3sdp"
+            android:background="@drawable/bottom_shadow_view"
+            android:layout_below="@id/sliding_tabs"
+            android:layout_marginTop="@dimen/_minus1sdp"
+            />
         <android.support.design.widget.TabLayout
             android:id="@+id/sliding_tabs"
             android:layout_width="match_parent"
@@ -74,7 +74,7 @@
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/sliding_tabs" />
+            android:layout_below="@+id/view1" />
 
 
 
@@ -134,4 +134,3 @@
          </RelativeLayout>-->
 
     </RelativeLayout>
-</layout>

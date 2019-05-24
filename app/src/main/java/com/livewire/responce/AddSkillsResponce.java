@@ -1,5 +1,7 @@
 package com.livewire.responce;
 
+import android.support.annotation.NonNull;
+
 import java.util.List;
 
 /**
@@ -86,6 +88,7 @@ public class AddSkillsResponce {
             this.parent_id = parent_id;
         }
 
+        @NonNull
         @Override
         public String toString() {
             return categoryName;
@@ -134,6 +137,7 @@ public class AddSkillsResponce {
                 this.parent_id = parent_id;
             }
 
+            @NonNull
             @Override
             public String toString() {
                 return categoryName;

@@ -232,7 +232,8 @@
                         style="@style/mediumPopinsRegularStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:hint="@string/tell_something_about_yourself"
+                        android:text="@string/tell_something_about_yourself"
+                      android:textColor="@color/colorGreen"
                         android:layout_marginBottom="@dimen/_8sdp"
                         />
 
@@ -256,7 +257,7 @@
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:maxLength="200"
-                        android:hint="@string/write_us"
+                        android:hint="@string/write_here"
                         android:layout_marginStart="@dimen/_5sdp"
                         android:minHeight="@dimen/_25sdp"
                         android:padding="@dimen/_2sdp"
@@ -276,12 +277,13 @@
                     android:layout_marginRight="@dimen/_20sdp"/>
 
                 <TextView
-                    style="@style/mediumPopinsLightStyle"
+                    style="@style/mediumPopinsRegularStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_20sdp"
                     android:text="@string/upload_a_intro_video"
-                    android:textColor="@color/colorLightGray" />
+                    android:textColor="@color/colorGreen"
+                    />
 
 
                 <FrameLayout

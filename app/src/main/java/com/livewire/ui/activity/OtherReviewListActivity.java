@@ -55,7 +55,6 @@ public class OtherReviewListActivity extends AppCompatActivity implements View.O
             userId = getIntent().getStringExtra("userId");
 
         }
-        binding.tvNoReview.setText(R.string.this_user_dont_have_any_review_yet);
 
         progressDialog = new ProgressDialog(this);
 

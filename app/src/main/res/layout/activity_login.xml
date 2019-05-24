@@ -15,8 +15,6 @@
         android:orientation="vertical"
         tools:context=".ui.activity.LoginActivity">
 
-
-
         <RelativeLayout
             android:id="@+id/sub_layout"
             android:layout_width="match_parent"
@@ -36,13 +34,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/_35sdp">
+                android:layout_marginTop="@dimen/_3sdp">
 
                 <ImageView
                     android:id="@+id/image_view"
-                    android:layout_width="@dimen/_80sdp"
-                    android:layout_height="@dimen/_80sdp"
-                    android:src="@drawable/loader_wht" />
+                    android:layout_width="@dimen/_160sdp"
+                    android:layout_height="@dimen/_130sdp"
+                    android:src="@drawable/logo_ico"/>
 
                 <TextView
                     android:id="@+id/tv_live_wire"
@@ -51,7 +49,9 @@
                     android:layout_gravity="center_vertical"
                     android:fontFamily="@font/opensans_regular"
                     android:textColor="@android:color/white"
-                    android:textSize="@dimen/_20sdp" />
+                    android:textSize="@dimen/_20sdp"
+                    android:visibility="gone"
+                    />
 
             </LinearLayout>
 
@@ -311,8 +311,6 @@
 
             </LinearLayout>
 
-
-
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -330,7 +328,6 @@
                     android:layout_gravity="center_vertical"
                     />
 
-
                 <TextView
                     android:id="@+id/btn_signup"
                     android:layout_width="wrap_content"
@@ -347,16 +344,54 @@
 
             <Button
                 android:id="@+id/btn_watch_video"
-                android:layout_width="@dimen/_120sdp"
+                android:layout_width="@dimen/_180sdp"
                 android:layout_height="@dimen/_28sdp"
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/_5sdp"
                 android:background="@drawable/button_green_bg"
                 android:fontFamily="@font/poppins_light"
-                android:text="@string/watch_video"
+                android:text="@string/watch_intro_video"
                 android:textAllCaps="false"
                 android:textColor="@color/colorWhite"
-                android:textSize="@dimen/_14sdp" />
+                android:textSize="@dimen/_14sdp"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/watch_intro_video"
+                style="@style/mediumPopinsMediumStyle"
+                android:textColor="@color/colorGreen"
+                android:layout_marginStart="@dimen/_20sdp"
+                />
+
+            <FrameLayout
+                android:id="@+id/fl_play_video"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_150sdp"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_20sdp"
+                android:src="@drawable/watchintrovideo"
+                />
+
+                <ImageView
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    app:srcCompat="@drawable/ic_play_button"
+                    android:tint="@color/colorDarkBlack"
+                    android:padding="@dimen/_15sdp"
+                    android:background="@drawable/circle_white"
+                    android:layout_gravity="center"
+                    android:alpha=".8"
+                    />
+            </FrameLayout>
         </LinearLayout>
 
         <ProgressBar
